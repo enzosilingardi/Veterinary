@@ -1,6 +1,6 @@
 package Model;
 
-public class Veterinarian_Branch {
+public class Rel_Veterinarian_Branch {
 
 	protected int id_VB;
 	protected Veterinarian id_Veterinarian;
@@ -25,18 +25,18 @@ public class Veterinarian_Branch {
 		this.id_Branch = id_Branch;
 	}
 	
-	public Veterinarian_Branch() {
+	public Rel_Veterinarian_Branch() {
 		super();
 	}
 	
-	public Veterinarian_Branch(int id_VB, Veterinarian id_Veterinarian, Branch id_Branch) {
+	public Rel_Veterinarian_Branch(int id_VB, Veterinarian id_Veterinarian, Branch id_Branch) {
 		super();
 		this.id_VB = id_VB;
 		this.id_Veterinarian = id_Veterinarian;
 		this.id_Branch = id_Branch;
 	}
 	
-	public Veterinarian_Branch(Veterinarian id_Veterinarian, Branch id_Branch) {
+	public Rel_Veterinarian_Branch(Veterinarian id_Veterinarian, Branch id_Branch) {
 		super();
 		this.id_Veterinarian = id_Veterinarian;
 		this.id_Branch = id_Branch;

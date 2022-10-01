@@ -1,6 +1,6 @@
 package Model;
 
-public class Client_Pet {
+public class Rel_Client_Pet {
 
 	protected int id_CP;
 	protected Client id_Client;
@@ -25,18 +25,18 @@ public class Client_Pet {
 		this.id_Pet = id_Pet;
 	}
 	
-	public Client_Pet() {
+	public Rel_Client_Pet() {
 		super();
 	}
 	
-	public Client_Pet(int id_CP, Client id_Client, Pet id_Pet) {
+	public Rel_Client_Pet(int id_CP, Client id_Client, Pet id_Pet) {
 		super();
 		this.id_CP = id_CP;
 		this.id_Client = id_Client;
 		this.id_Pet = id_Pet;
 	}
 	
-	public Client_Pet(Client id_Client, Pet id_Pet) {
+	public Rel_Client_Pet(Client id_Client, Pet id_Pet) {
 		super();
 		this.id_Client = id_Client;
 		this.id_Pet = id_Pet;

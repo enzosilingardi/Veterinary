@@ -1,6 +1,6 @@
 package Model;
 
-public class Manager extends User {
+public class Manager extends Users {
 
 	 protected int id_Manager;
 	 protected String working_Day;

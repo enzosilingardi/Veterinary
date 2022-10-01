@@ -1,6 +1,6 @@
 package Model;
 
-public class User {
+public class Users {
 
 	protected int id_User;
 	protected String username;
@@ -72,10 +72,10 @@ public class User {
 		this.id_Profile = id_Profile;
 	}
 	
-	public User() {
+	public Users() {
 		super();
 	}
-	public User(int id_User, String username, String dni, String name, String address, String phone_Number,
+	public Users(int id_User, String username, String dni, String name, String address, String phone_Number,
 			String birthdate, String gender, Profile id_Profile) {
 		super();
 		this.id_User = id_User;
@@ -88,7 +88,7 @@ public class User {
 		this.gender = gender;
 		this.id_Profile = id_Profile;
 	}
-	public User(String username, String dni, String name, String address, String phone_Number, String birthdate,
+	public Users(String username, String dni, String name, String address, String phone_Number, String birthdate,
 			String gender, Profile id_Profile) {
 		super();
 		this.username = username;

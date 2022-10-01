@@ -1,6 +1,6 @@
 package Model;
 
-public class Veterinarian extends User {
+public class Veterinarian extends Users {
 
 	protected int id_Veterinarian;
 	protected String medical_License;

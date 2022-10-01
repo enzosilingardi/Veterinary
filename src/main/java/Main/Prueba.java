@@ -57,7 +57,7 @@ public class Prueba extends JFrame {
 				try{
 					cn = (Connection) Connect.getConexion();
 					stm = cn.createStatement();
-					String consulta = "SELECT name FROM DB_Veterinary.Tables";
+					String consulta = "SELECT name FROM master.dbo.sysdatabases";
 					ResultSet resultado = stm.executeQuery(consulta);
 					
 					while (resultado.next()) {
