@@ -2,15 +2,16 @@ package Model;
 
 public class Rel_Medical_Instrument_Operating_Room {
 
-	protected int id_MO;
+	protected int id_MIOR;
 	protected Medical_Instrument id_Medical_Instrument;
 	protected Operating_Room id_Operating_Room;
 	
-	public int getId_MO() {
-		return id_MO;
+	
+	public int getId_MIOR() {
+		return id_MIOR;
 	}
-	public void setId_MO(int id_MO) {
-		this.id_MO = id_MO;
+	public void setId_MIOR(int id_MIOR) {
+		this.id_MIOR = id_MIOR;
 	}
 	public Medical_Instrument getId_Medical_Instrument() {
 		return id_Medical_Instrument;
@@ -29,10 +30,10 @@ public class Rel_Medical_Instrument_Operating_Room {
 		super();
 	}
 	
-	public Rel_Medical_Instrument_Operating_Room(int id_MO, Medical_Instrument id_Medical_Instrument,
+	public Rel_Medical_Instrument_Operating_Room(int id_MIOR, Medical_Instrument id_Medical_Instrument,
 			Operating_Room id_Operating_Room) {
 		super();
-		this.id_MO = id_MO;
+		this.id_MIOR = id_MIOR;
 		this.id_Medical_Instrument = id_Medical_Instrument;
 		this.id_Operating_Room = id_Operating_Room;
 	}

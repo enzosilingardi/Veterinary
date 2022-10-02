@@ -10,6 +10,7 @@ public class Client {
 	protected String phone_Number;
 	protected String birthdate;
 	protected String gender;
+	protected String email;
 	
 	public int getId_Client() {
 		return Id_Client;
@@ -60,13 +61,19 @@ public class Client {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 	public Client() {
 		super();
 	}
 	
 	public Client(int id_Client, String dni, String name, String address, City id_City, String phone_Number,
-			String birthdate, String gender) {
+			String birthdate, String gender, String email) {
 		super();
 		Id_Client = id_Client;
 		this.dni = dni;
@@ -76,10 +83,11 @@ public class Client {
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
+		this.email = email;
 	}
 	
 	public Client(String dni, String name, String address, City id_City, String phone_Number, String birthdate,
-			String gender) {
+			String gender, String email) {
 		super();
 		this.dni = dni;
 		this.name = name;
@@ -88,7 +96,10 @@ public class Client {
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
+		this.email = email;
 	}
+	
+	
 	
 	
 	

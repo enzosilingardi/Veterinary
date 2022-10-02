@@ -1,11 +1,11 @@
 package Model;
 
-public class Rel_Provider_Provider_Type_Product_Order {
+public class Rel_Provider_Provider_Type_Product_Orders {
 
 	protected int id_PPTPO;
 	protected Provider id_Provider;
 	protected Provider_Type id_Provider_Type;
-	protected Order id_Order;
+	protected Orders id_Order;
 	protected Product id_Product;
 	
 	public int getId_PPTPO() {
@@ -26,10 +26,10 @@ public class Rel_Provider_Provider_Type_Product_Order {
 	public void setId_Provider_Type(Provider_Type id_Provider_Type) {
 		this.id_Provider_Type = id_Provider_Type;
 	}
-	public Order getId_Order() {
+	public Orders getId_Order() {
 		return id_Order;
 	}
-	public void setId_Order(Order id_Order) {
+	public void setId_Order(Orders id_Order) {
 		this.id_Order = id_Order;
 	}
 	public Product getId_Product() {
@@ -39,12 +39,12 @@ public class Rel_Provider_Provider_Type_Product_Order {
 		this.id_Product = id_Product;
 	}
 	
-	public Rel_Provider_Provider_Type_Product_Order() {
+	public Rel_Provider_Provider_Type_Product_Orders() {
 		super();
 	}
 	
-	public Rel_Provider_Provider_Type_Product_Order(int id_PPTPO, Provider id_Provider, Provider_Type id_Provider_Type,
-			Order id_Order, Product id_Product) {
+	public Rel_Provider_Provider_Type_Product_Orders(int id_PPTPO, Provider id_Provider, Provider_Type id_Provider_Type,
+			Orders id_Order, Product id_Product) {
 		super();
 		this.id_PPTPO = id_PPTPO;
 		this.id_Provider = id_Provider;
@@ -53,8 +53,8 @@ public class Rel_Provider_Provider_Type_Product_Order {
 		this.id_Product = id_Product;
 	}
 	
-	public Rel_Provider_Provider_Type_Product_Order(Provider id_Provider, Provider_Type id_Provider_Type,
-			Order id_Order, Product id_Product) {
+	public Rel_Provider_Provider_Type_Product_Orders(Provider id_Provider, Provider_Type id_Provider_Type,
+			Orders id_Order, Product id_Product) {
 		super();
 		this.id_Provider = id_Provider;
 		this.id_Provider_Type = id_Provider_Type;

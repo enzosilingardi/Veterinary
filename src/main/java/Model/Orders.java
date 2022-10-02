@@ -1,6 +1,6 @@
 package Model;
 
-public class Order {
+public class Orders {
 
 	protected int id_Order;
 	protected int quantity;
@@ -31,11 +31,11 @@ public class Order {
 		this.id_Provider = id_Provider;
 	}
 	
-	public Order() {
+	public Orders() {
 		super();
 	}
 	
-	public Order(int id_Order, int quantity, Product id_Product, Provider id_Provider) {
+	public Orders(int id_Order, int quantity, Product id_Product, Provider id_Provider) {
 		super();
 		this.id_Order = id_Order;
 		this.quantity = quantity;
@@ -43,7 +43,7 @@ public class Order {
 		this.id_Provider = id_Provider;
 	}
 	
-	public Order(int quantity, Product id_Product, Provider id_Provider) {
+	public Orders(int quantity, Product id_Product, Provider id_Provider) {
 		super();
 		this.quantity = quantity;
 		this.id_Product = id_Product;

@@ -11,6 +11,7 @@ public class Users {
     protected String birthdate;
     protected String gender;
     protected Profile id_Profile;
+    protected String email;
 	
     public int getId_User() {
 		return id_User;
@@ -72,11 +73,19 @@ public class Users {
 		this.id_Profile = id_Profile;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public Users() {
 		super();
 	}
+	
 	public Users(int id_User, String username, String dni, String name, String address, String phone_Number,
-			String birthdate, String gender, Profile id_Profile) {
+			String birthdate, String gender, Profile id_Profile, String email) {
 		super();
 		this.id_User = id_User;
 		this.username = username;
@@ -87,9 +96,11 @@ public class Users {
 		this.birthdate = birthdate;
 		this.gender = gender;
 		this.id_Profile = id_Profile;
+		this.email = email;
 	}
+	
 	public Users(String username, String dni, String name, String address, String phone_Number, String birthdate,
-			String gender, Profile id_Profile) {
+			String gender, Profile id_Profile, String email) {
 		super();
 		this.username = username;
 		this.dni = dni;
@@ -99,8 +110,8 @@ public class Users {
 		this.birthdate = birthdate;
 		this.gender = gender;
 		this.id_Profile = id_Profile;
+		this.email = email;
 	}
-	
 	
 	
     
