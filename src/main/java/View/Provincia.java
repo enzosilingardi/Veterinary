@@ -5,17 +5,82 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.*;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class Provincia extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
 
+	
+	class ComboItem
+	{
+	    private String key;
+	    private String value;
+
+	    public ComboItem(String key, String value)
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	public void consultarPaises(JComboBox paises) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		String SSQL = "SELECT * FROM Country ORDER BY id_Country";
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			paises.addItem(new ComboItem(result.getString("name"),result.getString("id_Country")));
+			
+			while (result.next()) {
+				paises.addItem(new ComboItem(result.getString("name"),result.getString("id_Country")));
+				
+			}
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		}
+		
+
+	
+
+	
 	/**
 	 * Launch the application.
 	 */
@@ -50,20 +115,20 @@ public class Provincia extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(60, 79, 46, 14);
+		lblNombre.setBounds(84, 61, 46, 14);
 		contentPane.add(lblNombre);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(149, 76, 179, 20);
+		txtNombre.setBounds(173, 58, 179, 20);
 		contentPane.add(txtNombre);
 		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(76, 148, 89, 23);
+		btnAgregar.setBounds(82, 166, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(217, 148, 89, 23);
+		btnEliminar.setBounds(239, 166, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -72,8 +137,19 @@ public class Provincia extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(301, 196, 89, 23);
+		btnVolver.setBounds(316, 210, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JLabel lblPais = new JLabel("País");
+		lblPais.setBounds(84, 114, 46, 14);
+		contentPane.add(lblPais);
+		
+		JComboBox cbPais = new JComboBox();
+		cbPais.setBounds(173, 110, 179, 22);
+		contentPane.add(cbPais);
+		
+		consultarPaises(cbPais);
+		
 	}
 
 }

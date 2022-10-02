@@ -8,7 +8,7 @@ public class Connect {
     public static Connection getConexion() throws ClassNotFoundException{
         
         String connectionUrl = "jdbc:sqlserver://DESKTOP-UQUV652\\SQLEXPRESS:1433;"
-                +"database=DB_Veterinary;"
+                +"database=master;"
                 +"user=superusuario;"
                 +"password=contrasuperu1;"
                 +"encrypt=true;"
