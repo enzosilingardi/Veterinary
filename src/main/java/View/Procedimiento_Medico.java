@@ -6,18 +6,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
+import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Cita extends JFrame {
+public class Procedimiento_Medico extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtMascota;
 	private JTextField txtVeterinario;
+	private JTextField txtMascota;
 	private JTextField txtSucursal;
 
 	/**
@@ -27,7 +27,7 @@ public class Cita extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Cita frame = new Cita();
+					Procedimiento_Medico frame = new Procedimiento_Medico();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,66 +39,46 @@ public class Cita extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Cita() {
-		setTitle("Cita");
+	public Procedimiento_Medico() {
+		setTitle("Procedimientos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 367);
+		setBounds(100, 100, 450, 430);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Citas");
-		lblTitulo.setBounds(199, 11, 46, 14);
+		JLabel lblTitulo = new JLabel("Procedimientos");
+		lblTitulo.setBounds(186, 11, 99, 14);
 		contentPane.add(lblTitulo);
 		
-		JLabel lblMascota = new JLabel("Mascota");
-		lblMascota.setBounds(81, 53, 46, 14);
-		contentPane.add(lblMascota);
+		JLabel lblTipo = new JLabel("Tipo");
+		lblTipo.setBounds(53, 53, 46, 14);
+		contentPane.add(lblTipo);
 		
 		JLabel lblVeterinario = new JLabel("Veterinario");
-		lblVeterinario.setBounds(81, 96, 70, 14);
+		lblVeterinario.setBounds(53, 109, 71, 14);
 		contentPane.add(lblVeterinario);
 		
-		JLabel lblTipoCita = new JLabel("Tipo de cita");
-		lblTipoCita.setBounds(81, 138, 70, 14);
-		contentPane.add(lblTipoCita);
+		JLabel lblMascota = new JLabel("Mascota");
+		lblMascota.setBounds(53, 157, 46, 14);
+		contentPane.add(lblMascota);
 		
 		JLabel lblSucursal = new JLabel("Sucursal");
-		lblSucursal.setBounds(81, 185, 57, 14);
+		lblSucursal.setBounds(53, 207, 46, 14);
 		contentPane.add(lblSucursal);
 		
-		txtMascota = new JTextField();
-		txtMascota.setBounds(178, 50, 160, 20);
-		contentPane.add(txtMascota);
-		txtMascota.setColumns(10);
-		
-		txtVeterinario = new JTextField();
-		txtVeterinario.setBounds(178, 93, 160, 20);
-		contentPane.add(txtVeterinario);
-		txtVeterinario.setColumns(10);
-		
-		txtSucursal = new JTextField();
-		txtSucursal.setBounds(178, 182, 160, 20);
-		contentPane.add(txtSucursal);
-		txtSucursal.setColumns(10);
-		
-		JComboBox cbTipoCita = new JComboBox();
-		cbTipoCita.setModel(new DefaultComboBoxModel(new String[] {"Control", "Vacunación", "Asistencia"}));
-		cbTipoCita.setBounds(178, 134, 160, 22);
-		contentPane.add(cbTipoCita);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(44, 232, 89, 23);
+		btnAgregar.setBounds(47, 309, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(161, 232, 89, 23);
+		btnModificar.setBounds(164, 309, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(282, 232, 89, 23);
+		btnEliminar.setBounds(285, 309, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -107,7 +87,27 @@ public class Cita extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(313, 280, 89, 23);
+		btnVolver.setBounds(316, 357, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JComboBox cbTipo = new JComboBox();
+		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"Cita", "Visita", "Intervencion"}));
+		cbTipo.setBounds(186, 49, 156, 22);
+		contentPane.add(cbTipo);
+		
+		txtVeterinario = new JTextField();
+		txtVeterinario.setBounds(186, 106, 156, 20);
+		contentPane.add(txtVeterinario);
+		txtVeterinario.setColumns(10);
+		
+		txtMascota = new JTextField();
+		txtMascota.setBounds(186, 154, 156, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		txtSucursal = new JTextField();
+		txtSucursal.setBounds(186, 204, 156, 20);
+		contentPane.add(txtSucursal);
+		txtSucursal.setColumns(10);
 	}
 }

@@ -85,18 +85,9 @@ public class Main extends JFrame {
 		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
 		mnVentas.add(mntmPresupuestos);
 		
-		JMenu mnTurnos = new JMenu("Turnos");
+		JMenuItem mnTurnos = new JMenuItem("Turnos");
 		mnTurnos.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnTurnos);
-		
-		JMenuItem mntmCitas = new JMenuItem("Citas");
-		mnTurnos.add(mntmCitas);
-		
-		JMenuItem mntmVisitas = new JMenuItem("Visitas");
-		mnTurnos.add(mntmVisitas);
-		
-		JMenuItem mntmIntervenciones = new JMenuItem("Intervenciones");
-		mnTurnos.add(mntmIntervenciones);
 		
 		JMenu mnArchivos = new JMenu("Archivos");
 		mnArchivos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -249,32 +240,23 @@ public class Main extends JFrame {
 		});
 		mnArchivos.add(mntmABMUsuario);
 		
-		JMenuItem mntmABMCita = new JMenuItem("ABM Cita");
-		mntmABMCita.addActionListener(new ActionListener() {
+		JMenuItem mntmABMProcedimiento = new JMenuItem("ABM Procedimiento");
+		mntmABMProcedimiento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Cita cita = new Cita();
-				cita.setVisible(true);
+				Procedimiento_Medico procedimiento = new Procedimiento_Medico();
+				procedimiento.setVisible(true);
 			}
 		});
-		mnArchivos.add(mntmABMCita);
+		mnArchivos.add(mntmABMProcedimiento);
 		
-		JMenuItem mntmABMVisita = new JMenuItem("ABM Visita");
-		mntmABMVisita.addActionListener(new ActionListener() {
+		JMenuItem mntmABMPerfil = new JMenuItem("ABM Perfil");
+		mntmABMPerfil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Visita visita = new Visita();
-				visita.setVisible(true);
+				Perfil perfil = new Perfil();
+				perfil.setVisible(true);
 			}
 		});
-		mnArchivos.add(mntmABMVisita);
-		
-		JMenuItem mntmABMIntervencion = new JMenuItem("ABM Intervencion");
-		mntmABMIntervencion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Intervencion intervencion = new Intervencion();
-				intervencion.setVisible(true);
-			}
-		});
-		mnArchivos.add(mntmABMIntervencion);
+		mnArchivos.add(mntmABMPerfil);
 		
 		JMenuItem mntmHistorialesMedicos = new JMenuItem("Historiales médicos");
 		mntmHistorialesMedicos.setHorizontalAlignment(SwingConstants.CENTER);
