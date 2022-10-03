@@ -100,6 +100,7 @@ public class Provincia extends JFrame {
 
 	private void limpiar() {
 		txtNombre.setText("");
+		cbPaises.setSelectedIndex(0);
 		
 	}
 	
@@ -140,8 +141,9 @@ public class Provincia extends JFrame {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Province (name,id_Country) VALUES (?,?)" );
 					ps.setString(1, nombre);
+					ps.setInt(2, pais);
 					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "País guardado");
+					JOptionPane.showMessageDialog(null, "Provincia guardada");
 					limpiar();
 					
 				}catch(SQLException E) {
@@ -156,6 +158,31 @@ public class Provincia extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String nombre = txtNombre.getText();
+				int pais = (Integer) cbPaises.getSelectedItem();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name=? AND id_Country=?)" );
+					ps.setString(1, nombre);
+					ps.setInt(2, pais);
+					ps.executeUpdate();
+					JOptionPane.showMessageDialog(null, "Provincia borrada");
+					limpiar();
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
 		btnEliminar.setBounds(239, 166, 89, 23);
 		contentPane.add(btnEliminar);
 		

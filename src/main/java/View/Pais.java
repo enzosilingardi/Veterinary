@@ -101,7 +101,7 @@ public class Pais extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Country WHERE nombre=?)" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Country WHERE name=?)" );
 					ps.setString(1, nombre);
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "País borrado");
