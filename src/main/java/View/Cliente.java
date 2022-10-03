@@ -44,7 +44,7 @@ public class Cliente extends JFrame {
 	public Cliente() {
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 449);
+		setBounds(100, 100, 459, 539);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -110,24 +110,24 @@ public class Cliente extends JFrame {
 		txtTelefono.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(37, 328, 89, 23);
+		btnAgregar.setBounds(48, 418, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(154, 328, 89, 23);
+		btnModificar.setBounds(165, 418, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(275, 328, 89, 23);
+		btnEliminar.setBounds(286, 418, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBounds(317, 466, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(306, 376, 89, 23);
 		contentPane.add(btnVolver);
 	}
 }
