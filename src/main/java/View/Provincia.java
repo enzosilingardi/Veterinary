@@ -21,6 +21,7 @@ public class Provincia extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
+	private JComboBox cbPaises;
 
 	
 	class ComboItem
@@ -99,7 +100,7 @@ public class Provincia extends JFrame {
 
 	private void limpiar() {
 		txtNombre.setText("");
-		cbPais
+		
 	}
 	
 	
@@ -133,7 +134,7 @@ public class Provincia extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
-				String pais = cbPaises.getValue();
+				int pais = (Integer) cbPaises.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
