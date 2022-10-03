@@ -6,6 +6,8 @@ public class Orders {
 	protected int quantity;
 	protected Product id_Product;
 	protected Provider id_Provider;
+	protected Branch id_Branch;
+	
 	public int getId_Order() {
 		return id_Order;
 	}
@@ -30,26 +32,33 @@ public class Orders {
 	public void setId_Provider(Provider id_Provider) {
 		this.id_Provider = id_Provider;
 	}
+	public Branch getId_Branch() {
+		return id_Branch;
+	}
+	public void setId_Branch(Branch id_Branch) {
+		this.id_Branch = id_Branch;
+	}
 	
 	public Orders() {
 		super();
 	}
 	
-	public Orders(int id_Order, int quantity, Product id_Product, Provider id_Provider) {
+	public Orders(int id_Order, int quantity, Product id_Product, Provider id_Provider, Branch id_Branch) {
 		super();
 		this.id_Order = id_Order;
 		this.quantity = quantity;
 		this.id_Product = id_Product;
 		this.id_Provider = id_Provider;
+		this.id_Branch = id_Branch;
 	}
 	
-	public Orders(int quantity, Product id_Product, Provider id_Provider) {
+	public Orders(int quantity, Product id_Product, Provider id_Provider, Branch id_Branch) {
 		super();
 		this.quantity = quantity;
 		this.id_Product = id_Product;
 		this.id_Provider = id_Provider;
+		this.id_Branch = id_Branch;
 	}
-	
 	
 	
 }

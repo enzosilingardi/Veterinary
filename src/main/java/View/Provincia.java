@@ -97,6 +97,12 @@ public class Provincia extends JFrame {
 		});
 	}
 
+	private void limpiar() {
+		txtNombre.setText("");
+		cbPais
+	}
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -124,6 +130,27 @@ public class Provincia extends JFrame {
 		contentPane.add(txtNombre);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombre = txtNombre.getText();
+				String pais = cbPaises.getValue();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Province (name,id_Country) VALUES (?,?)" );
+					ps.setString(1, nombre);
+					ps.executeUpdate();
+					JOptionPane.showMessageDialog(null, "País guardado");
+					limpiar();
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnAgregar.setBounds(82, 166, 89, 23);
 		contentPane.add(btnAgregar);
 		
@@ -144,11 +171,11 @@ public class Provincia extends JFrame {
 		lblPais.setBounds(84, 114, 46, 14);
 		contentPane.add(lblPais);
 		
-		JComboBox cbPais = new JComboBox();
-		cbPais.setBounds(173, 110, 179, 22);
-		contentPane.add(cbPais);
+		JComboBox cbPaises = new JComboBox();
+		cbPaises.setBounds(173, 110, 179, 22);
+		contentPane.add(cbPaises);
 		
-		consultarPaises(cbPais);
+		consultarPaises(cbPaises);
 		
 	}
 

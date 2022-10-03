@@ -5,10 +5,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.*;
 import java.awt.event.ActionEvent;
 
 public class Pais extends JFrame {
@@ -32,6 +37,10 @@ public class Pais extends JFrame {
 		});
 	}
 
+	private void limpiar() {
+		txtNombre.setText("");
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -59,10 +68,54 @@ public class Pais extends JFrame {
 		contentPane.add(txtNombre);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String nombre = txtNombre.getText();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Country (name) VALUES (?)" );
+					ps.setString(1, nombre);
+					ps.executeUpdate();
+					JOptionPane.showMessageDialog(null, "País guardado");
+					limpiar();
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnAgregar.setBounds(74, 148, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String nombre = txtNombre.getText();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Country WHERE nombre=?)" );
+					ps.setString(1, nombre);
+					ps.executeUpdate();
+					JOptionPane.showMessageDialog(null, "País borrado");
+					limpiar();
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnEliminar.setBounds(215, 148, 89, 23);
 		contentPane.add(btnEliminar);
 		
