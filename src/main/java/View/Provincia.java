@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import View.Provincia.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -63,7 +64,7 @@ public class Provincia extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			paises.addItem(new ComboItem(result.getString("name"),result.getString("id_Country")));
+			paises.addItem("");
 			
 			while (result.next()) {
 				paises.addItem(new ComboItem(result.getString("name"),result.getString("id_Country")));
@@ -135,13 +136,18 @@ public class Provincia extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
-				int pais = (Integer) cbPaises.getSelectedItem();
+				Object pais = cbPaises.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Province (name,id_Country) VALUES (?,?)" );
 					ps.setString(1, nombre);
-					ps.setInt(2, pais);
+					if (((ComboItem) pais).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione un país");
+					}else {
+						ps.setString(2, ((ComboItem) pais).getValue());
+					}
+					
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "Provincia guardada");
 					limpiar();
