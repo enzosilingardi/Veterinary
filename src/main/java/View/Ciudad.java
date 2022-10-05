@@ -12,6 +12,7 @@ import View.Provincia.ComboItem;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -55,31 +56,34 @@ public class Ciudad extends JFrame {
 	    }
 	}
 	
-	public void consultarProvincias(JComboBox provincias) {
+	public DefaultComboBoxModel cargarProvincia() {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		String SSQL = "SELECT * FROM Province ORDER BY id_Province";
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
 		
 		try {
 			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Province ORDER BY id_Province";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			provincias.addItem(new ComboItem(result.getString("name"),result.getString("id_Province")));
+			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				provincias.addItem(new ComboItem(result.getString("name"),result.getString("id_Province")));
+				modelo.addElement(new ComboItem(result.getString("name"),result.getString("id_Country")));
 				
 			}
+			cn.close();
 		}catch(SQLException e) {
 				JOptionPane.showMessageDialog(null,e);
 			}catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-		}
+		return modelo;
+    }
 		
 
 	/**
@@ -98,6 +102,36 @@ public class Ciudad extends JFrame {
 		});
 	}
 
+	public int existeCiudad(Object provincia, String ciudad) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM City WHERE id_Province = ? AND name = ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1,(String) provincia);
+			pst.setString(2, ciudad);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
 	private void limpiar() {
 		txtNombre.setText("");
 		cbProvincias.setSelectedIndex(0);
@@ -134,16 +168,37 @@ public class Ciudad extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String nombre = txtNombre.getText();
-				int provincia = (Integer) cbProvincias.getSelectedItem();
+				Object provincia = cbProvincias.getSelectedItem();
+				
+				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("INSERT INTO City (name,id_Province) VALUES (?,?)" );
-					ps.setString(1, nombre);
-					ps.setInt(2, provincia);
-					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Ciudad guardada");
-					limpiar();
+					
+					
+					if (((ComboItem) provincia).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una provincia");
+					}else {
+						if(existeCiudad(((ComboItem) cbProvincias.getSelectedItem()).getValue(),nombre)!=0) {
+						JOptionPane.showMessageDialog(null, "Ciudad ya existe");
+					}else {
+						ps.setString(1, nombre);
+						ps.setString(2, ((ComboItem) provincia).getValue());
+					}
+						
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Ciudad guardada");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar ciudad");
+		                limpiar();
+		            }
+				
 					
 				}catch(SQLException E) {
 					JOptionPane.showMessageDialog(null,E);
@@ -170,15 +225,15 @@ public class Ciudad extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
-				int pais = (Integer) cbProvincias.getSelectedItem();
+				Object provincia = cbProvincias.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM City WHERE name=? AND id_Province=?)" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM City WHERE name=? AND id_Province=?" );
 					ps.setString(1, nombre);
-					ps.setInt(2, pais);
+					ps.setString(2, ((ComboItem) provincia).getValue());;
 					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Provincia borrada");
+					JOptionPane.showMessageDialog(null, "Ciudad borrada");
 					limpiar();
 					
 				}catch(SQLException E) {
@@ -196,10 +251,10 @@ public class Ciudad extends JFrame {
 		lblProvincia.setBounds(73, 104, 46, 14);
 		contentPane.add(lblProvincia);
 		
-		JComboBox cbProvincias = new JComboBox();
+		cbProvincias = new JComboBox();
 		cbProvincias.setBounds(162, 100, 179, 22);
 		contentPane.add(cbProvincias);
 		
-		consultarProvincias(cbProvincias);
+		cbProvincias.setModel(cargarProvincia());
 	}
 }

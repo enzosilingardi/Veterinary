@@ -246,13 +246,13 @@ public class Provincia extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String nombre = txtNombre.getText();
-				int pais = (Integer) cbPaises.getSelectedItem();
+				Object pais = cbPaises.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name=? AND id_Country=?" );
 					ps.setString(1, nombre);
-					ps.setInt(2, pais);
+					ps.setString(2, ((ComboItem) pais).getValue());;
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "Provincia borrada");
 					limpiar();
