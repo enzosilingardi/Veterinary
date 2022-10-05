@@ -12,6 +12,8 @@ import View.Provincia.ComboItem;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.*;
@@ -53,18 +55,48 @@ public class Provincia extends JFrame {
 	    }
 	}
 	
+	public DefaultComboBoxModel cargarPaises() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Country ORDER BY id_Country";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("name"),result.getString("id_Country")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
 	public void consultarPaises(JComboBox paises) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		String SSQL = "SELECT * FROM Country ORDER BY id_Country";
+		
 		
 		try {
 			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Country ORDER BY id_Country";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			paises.addItem("");
+			paises.addItem(new ComboItem("",""));
 			
 			while (result.next()) {
 				paises.addItem(new ComboItem(result.getString("name"),result.getString("id_Country")));
@@ -172,7 +204,7 @@ public class Provincia extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name=? AND id_Country=?)" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name=? AND id_Country=?" );
 					ps.setString(1, nombre);
 					ps.setInt(2, pais);
 					ps.executeUpdate();
@@ -205,11 +237,11 @@ public class Provincia extends JFrame {
 		lblPais.setBounds(84, 114, 46, 14);
 		contentPane.add(lblPais);
 		
-		JComboBox cbPaises = new JComboBox();
+		cbPaises = new JComboBox();
 		cbPaises.setBounds(173, 110, 179, 22);
 		contentPane.add(cbPaises);
 		
-		consultarPaises(cbPaises);
+		cbPaises.setModel(cargarPaises());
 		
 	}
 
