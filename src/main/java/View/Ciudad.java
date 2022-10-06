@@ -33,7 +33,7 @@ public class Ciudad extends JFrame {
 	    private String key;
 	    private String value;
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -69,7 +69,7 @@ public class Ciudad extends JFrame {
 			String SSQL = "SELECT * FROM Province ORDER BY id_Province";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
 				modelo.addElement(new ComboItem(result.getString("name"),result.getString("id_Country")));

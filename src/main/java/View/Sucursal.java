@@ -5,18 +5,86 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+import View.Ciudad.ComboItem;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class Sucursal extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtDireccion;
-	private JTextField txtCiudad;
+	private JComboBox cbCiudad;
 
+	class ComboItem
+	{
+	    private String key;
+	    private String value;
+
+	    public ComboItem(String key, String value)
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	public DefaultComboBoxModel cargarCiudad() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM City ORDER BY id_City";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("name"),result.getString("id_City")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
 	/**
 	 * Launch the application.
 	 */
@@ -33,6 +101,42 @@ public class Sucursal extends JFrame {
 		});
 	}
 
+	public int existeSucursal(Object ciudad, String direccion) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Branch WHERE id_City = ? AND address = ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1,(String) ciudad);
+			pst.setString(2, direccion);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	
+	private void limpiar() {
+		txtDireccion.setText("");
+		cbCiudad.setSelectedIndex(0);
+		
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -63,18 +167,53 @@ public class Sucursal extends JFrame {
 		lblCiudad.setBounds(71, 111, 46, 14);
 		contentPane.add(lblCiudad);
 		
-		txtCiudad = new JTextField();
-		txtCiudad.setBounds(165, 108, 174, 20);
-		contentPane.add(txtCiudad);
-		txtCiudad.setColumns(10);
-		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String direccion = txtDireccion.getText();
+				Object ciudad = cbCiudad.getSelectedItem();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address,id_City) VALUES (?,?)" );
+					
+					
+					if (((ComboItem) ciudad).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una ciudad");
+					}else {
+						if(existeSucursal(((ComboItem) cbCiudad.getSelectedItem()).getValue(),direccion)!=0) {
+						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
+					}else {
+						ps.setString(1, direccion);
+						ps.setString(2, ((ComboItem) ciudad).getValue());
+					}
+						
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
+		                limpiar();
+		            }
+				
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnAgregar.setBounds(39, 161, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(156, 161, 89, 23);
-		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.setBounds(277, 161, 89, 23);
@@ -88,6 +227,11 @@ public class Sucursal extends JFrame {
 		});
 		btnVolver.setBounds(308, 209, 89, 23);
 		contentPane.add(btnVolver);
+		
+		cbCiudad = new JComboBox();
+		cbCiudad.setBounds(165, 107, 174, 22);
+		contentPane.add(cbCiudad);
+		
+		cbCiudad.setModel(cargarCiudad());
 	}
-
 }
