@@ -216,6 +216,28 @@ public class Sucursal extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String direccion = txtDireccion.getText();
+				Object ciudad = cbCiudad.getSelectedItem();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE address=? AND id_City=?" );
+					ps.setString(1, direccion);
+					ps.setString(2, ((ComboItem) ciudad).getValue());;
+					ps.executeUpdate();
+					JOptionPane.showMessageDialog(null, "Ciudad borrada");
+					limpiar();
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnEliminar.setBounds(277, 161, 89, 23);
 		contentPane.add(btnEliminar);
 		

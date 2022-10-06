@@ -11,6 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 
 public class Main extends JFrame {
 
@@ -43,20 +44,6 @@ public class Main extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenuItem mntmClientes = new JMenuItem("Clientes");
-		mntmClientes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Cliente cliente = new Cliente();
-				cliente.setVisible(true);
-			}
-		});
-		mntmClientes.setHorizontalAlignment(SwingConstants.CENTER);
-		menuBar.add(mntmClientes);
-		
-		JMenuItem mntmVeterinarios = new JMenuItem("Veterinarios");
-		mntmVeterinarios.setHorizontalAlignment(SwingConstants.CENTER);
-		menuBar.add(mntmVeterinarios);
-		
 		JMenu mnVentas = new JMenu("Ventas");
 		mnVentas.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnVentas);
@@ -84,10 +71,6 @@ public class Main extends JFrame {
 		
 		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
 		mnVentas.add(mntmPresupuestos);
-		
-		JMenuItem mnTurnos = new JMenuItem("Turnos");
-		mnTurnos.setHorizontalAlignment(SwingConstants.CENTER);
-		menuBar.add(mnTurnos);
 		
 		JMenu mnArchivos = new JMenu("Archivos");
 		mnArchivos.setHorizontalAlignment(SwingConstants.CENTER);
@@ -258,13 +241,36 @@ public class Main extends JFrame {
 		});
 		mnArchivos.add(mntmABMPerfil);
 		
-		JMenuItem mntmHistorialesMedicos = new JMenuItem("Historiales médicos");
-		mntmHistorialesMedicos.setHorizontalAlignment(SwingConstants.CENTER);
-		menuBar.add(mntmHistorialesMedicos);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JButton btnClientes = new JButton("Clientes");
+		btnClientes.setBounds(10, 11, 104, 81);
+		contentPane.add(btnClientes);
+		
+		JButton btnTurnos = new JButton("Turnos");
+		btnTurnos.setBounds(124, 11, 104, 81);
+		contentPane.add(btnTurnos);
+		
+		JButton btnHistoriales = new JButton("Historiales");
+		btnHistoriales.setBounds(238, 11, 104, 81);
+		contentPane.add(btnHistoriales);
+		
+		JButton btnVeterinarios = new JButton("Veterinarios");
+		btnVeterinarios.setBounds(352, 11, 104, 81);
+		contentPane.add(btnVeterinarios);
+		
+		JButton btnSucursales = new JButton("Sucursales");
+		btnSucursales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TablaSucursales sucursales = new TablaSucursales();
+				sucursales.setVisible(true);
+			}
+		});
+		btnSucursales.setBounds(466, 11, 104, 81);
+		contentPane.add(btnSucursales);
 	}
-
 }
