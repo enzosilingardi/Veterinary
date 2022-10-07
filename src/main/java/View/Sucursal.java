@@ -215,7 +215,7 @@ public class Sucursal extends JFrame {
 
 					ps.setString(1, ((ComboItem) direccion).getValue());;
 					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Ciudad borrada");
+					JOptionPane.showMessageDialog(null, "Sucursal borrada");
 					limpiar();
 					
 				}catch(SQLException E) {
