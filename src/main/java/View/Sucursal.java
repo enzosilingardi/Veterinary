@@ -25,8 +25,7 @@ import javax.swing.JComboBox;
 public class Sucursal extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtDireccion;
-	private JComboBox cbCiudad;
+	private JComboBox cbDireccion;
 
 	class ComboItem
 	{
@@ -56,7 +55,7 @@ public class Sucursal extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarCiudad() {
+	public DefaultComboBoxModel cargarDireccion() {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -66,13 +65,13 @@ public class Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM City ORDER BY id_City";
+			String SSQL = "SELECT * FROM Address ORDER BY id_Address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("name"),result.getString("id_City")));
+				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Address")));
 				
 			}
 			cn.close();
@@ -101,17 +100,17 @@ public class Sucursal extends JFrame {
 		});
 	}
 
-	public int existeSucursal(Object ciudad, String direccion) {
+	public int existeSucursal(Object direccion) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Branch WHERE id_City = ? AND address = ?;";
+			String SSQL = "SELECT count(*) FROM Branch WHERE id_Address = ? ;";
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,(String) ciudad);
-			pst.setString(2, direccion);
+			pst.setString(1,(String) direccion);
+
 			result = pst.executeQuery();
 			
 			if (result.next()) {
@@ -133,8 +132,7 @@ public class Sucursal extends JFrame {
 	
 	
 	private void limpiar() {
-		txtDireccion.setText("");
-		cbCiudad.setSelectedIndex(0);
+		cbDireccion.setSelectedIndex(0);
 		
 	}
 	/**
@@ -155,39 +153,29 @@ public class Sucursal extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblDireccion = new JLabel("Direccion");
-		lblDireccion.setBounds(71, 51, 67, 14);
+		lblDireccion.setBounds(71, 80, 67, 14);
 		contentPane.add(lblDireccion);
-		
-		txtDireccion = new JTextField();
-		txtDireccion.setBounds(165, 48, 174, 20);
-		contentPane.add(txtDireccion);
-		txtDireccion.setColumns(10);
-		
-		JLabel lblCiudad = new JLabel("Ciudad");
-		lblCiudad.setBounds(71, 111, 46, 14);
-		contentPane.add(lblCiudad);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String direccion = txtDireccion.getText();
-				Object ciudad = cbCiudad.getSelectedItem();
+
+				Object direccion = cbDireccion.getSelectedItem();
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address,id_City) VALUES (?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (id_Address) VALUES (?)" );
 					
 					
-					if (((ComboItem) ciudad).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una ciudad");
+					if (((ComboItem) direccion).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
 					}else {
-						if(existeSucursal(((ComboItem) cbCiudad.getSelectedItem()).getValue(),direccion)!=0) {
+						if(existeSucursal(((ComboItem) cbDireccion.getSelectedItem()).getValue())!=0) {
 						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
 					}else {
-						ps.setString(1, direccion);
-						ps.setString(2, ((ComboItem) ciudad).getValue());
+						ps.setString(1, ((ComboItem) direccion).getValue());
 					}
 						
 					}
@@ -212,20 +200,20 @@ public class Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(39, 161, 89, 23);
+		btnAgregar.setBounds(61, 161, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String direccion = txtDireccion.getText();
-				Object ciudad = cbCiudad.getSelectedItem();
+
+				Object direccion = cbDireccion.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE address=? AND id_City=?" );
-					ps.setString(1, direccion);
-					ps.setString(2, ((ComboItem) ciudad).getValue());;
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Address = ? " );
+
+					ps.setString(1, ((ComboItem) direccion).getValue());;
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "Ciudad borrada");
 					limpiar();
@@ -238,7 +226,7 @@ public class Sucursal extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(277, 161, 89, 23);
+		btnEliminar.setBounds(270, 161, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -250,10 +238,8 @@ public class Sucursal extends JFrame {
 		btnVolver.setBounds(308, 209, 89, 23);
 		contentPane.add(btnVolver);
 		
-		cbCiudad = new JComboBox();
-		cbCiudad.setBounds(165, 107, 174, 22);
-		contentPane.add(cbCiudad);
-		
-		cbCiudad.setModel(cargarCiudad());
+		cbDireccion = new JComboBox();
+		cbDireccion.setBounds(160, 76, 196, 22);
+		contentPane.add(cbDireccion);
 	}
 }
