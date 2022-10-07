@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Direccion extends JFrame {
 
@@ -100,11 +102,16 @@ public class Direccion extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(229, 303, 89, 23);
+		btnEliminar.setBounds(262, 303, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBounds(313, 351, 89, 23);
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVolver.setBounds(330, 351, 89, 23);
 		contentPane.add(btnVolver);
 	}
 }

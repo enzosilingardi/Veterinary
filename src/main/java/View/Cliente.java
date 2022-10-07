@@ -17,7 +17,6 @@ public class Cliente extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
-	private JTextField txtDireccion;
 	private JTextField txtDni;
 	private JTextField txtFechaNacimiento;
 	private JTextField txtTelefono;
@@ -67,11 +66,6 @@ public class Cliente extends JFrame {
 		txtNombre.setBounds(224, 54, 171, 20);
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
-		
-		txtDireccion = new JTextField();
-		txtDireccion.setBounds(224, 94, 171, 20);
-		contentPane.add(txtDireccion);
-		txtDireccion.setColumns(10);
 		
 		JLabel lblDni = new JLabel("DNI");
 		lblDni.setBounds(37, 144, 153, 14);
@@ -129,5 +123,9 @@ public class Cliente extends JFrame {
 			}
 		});
 		contentPane.add(btnVolver);
+		
+		JComboBox cbDireccion = new JComboBox();
+		cbDireccion.setBounds(224, 96, 171, 22);
+		contentPane.add(cbDireccion);
 	}
 }

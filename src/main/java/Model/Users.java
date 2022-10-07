@@ -6,7 +6,7 @@ public class Users {
 	protected String username;
     protected String dni;
     protected String name;
-    protected String address;
+    protected Address id_Address;
     protected String phone_Number;
     protected String birthdate;
     protected String gender;
@@ -40,11 +40,12 @@ public class Users {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAddress() {
-		return address;
+	
+	public Address getId_Address() {
+		return id_Address;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setId_Address(Address id_Address) {
+		this.id_Address = id_Address;
 	}
 	public String getPhone_Number() {
 		return phone_Number;
@@ -84,14 +85,14 @@ public class Users {
 		super();
 	}
 	
-	public Users(int id_User, String username, String dni, String name, String address, String phone_Number,
+	public Users(int id_User, String username, String dni, String name, Address id_Address, String phone_Number,
 			String birthdate, String gender, Profile id_Profile, String email) {
 		super();
 		this.id_User = id_User;
 		this.username = username;
 		this.dni = dni;
 		this.name = name;
-		this.address = address;
+		this.id_Address = id_Address;
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
@@ -99,13 +100,13 @@ public class Users {
 		this.email = email;
 	}
 	
-	public Users(String username, String dni, String name, String address, String phone_Number, String birthdate,
+	public Users(String username, String dni, String name, Address id_Address, String phone_Number, String birthdate,
 			String gender, Profile id_Profile, String email) {
 		super();
 		this.username = username;
 		this.dni = dni;
 		this.name = name;
-		this.address = address;
+		this.id_Address = id_Address;
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
