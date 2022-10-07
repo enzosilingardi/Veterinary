@@ -26,20 +26,19 @@ public class Manager extends Users {
 		super();
 	}
 
-	public Manager(int id_User, String username, String dni, String name, String address, String phone_Number,
-			String birthdate, String gender, Profile id_Profile, String email, int id_Manager, String working_Day) {
-		super(id_User, username, dni, name, address, phone_Number, birthdate, gender, id_Profile, email);
-		this.id_Manager = id_Manager;
+	public Manager(int id_User, String username, String dni, String name, Address id_Address, String phone_Number,
+			String birthdate, String gender, Profile id_Profile, String email, String working_Day) {
+		super(id_User, username, dni, name, id_Address, phone_Number, birthdate, gender, id_Profile, email);
 		this.working_Day = working_Day;
 	}
 
-	public Manager(String username, String dni, String name, String address, String phone_Number, String birthdate,
-			String gender, Profile id_Profile, String email, int id_Manager, String working_Day) {
-		super(username, dni, name, address, phone_Number, birthdate, gender, id_Profile, email);
-		this.id_Manager = id_Manager;
+	public Manager(String username, String dni, String name, Address id_Address, String phone_Number, String birthdate,
+			String gender, Profile id_Profile, String email, String working_Day) {
+		super(username, dni, name, id_Address, phone_Number, birthdate, gender, id_Profile, email);
 		this.working_Day = working_Day;
 	}
 
+	
 	
 	
 	
