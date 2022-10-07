@@ -5,8 +5,7 @@ public class Client {
 	protected int Id_Client;
 	protected String dni;
 	protected String name;
-	protected String address;
-	protected City id_City;
+	protected Address id_Address;
 	protected String phone_Number;
 	protected String birthdate;
 	protected String gender;
@@ -30,18 +29,13 @@ public class Client {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
 	
-	public City getId_City() {
-		return id_City;
+	
+	public Address getId_Address() {
+		return id_Address;
 	}
-	public void setId_City(City id_City) {
-		this.id_City = id_City;
+	public void setId_Address(Address id_Address) {
+		this.id_Address = id_Address;
 	}
 	public String getPhone_Number() {
 		return phone_Number;
@@ -72,34 +66,30 @@ public class Client {
 		super();
 	}
 	
-	public Client(int id_Client, String dni, String name, String address, City id_City, String phone_Number,
-			String birthdate, String gender, String email) {
+	public Client(int id_Client, String dni, String name, Address id_Address, String phone_Number, String birthdate,
+			String gender, String email) {
 		super();
 		Id_Client = id_Client;
 		this.dni = dni;
 		this.name = name;
-		this.address = address;
-		this.id_City = id_City;
+		this.id_Address = id_Address;
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
 		this.email = email;
 	}
 	
-	public Client(String dni, String name, String address, City id_City, String phone_Number, String birthdate,
-			String gender, String email) {
+	public Client(String dni, String name, Address id_Address, String phone_Number, String birthdate, String gender,
+			String email) {
 		super();
 		this.dni = dni;
 		this.name = name;
-		this.address = address;
-		this.id_City = id_City;
+		this.id_Address = id_Address;
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
 		this.email = email;
 	}
-	
-	
 	
 	
 	
