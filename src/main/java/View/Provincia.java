@@ -144,6 +144,38 @@ public class Provincia extends JFrame {
 		
 	}
 	
+	public int provinciaEnUso(String provincia) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(City.id_Province)\r\n"
+					+ "FROM Province\r\n"
+					+ "JOIN City ON Province.id_Province = City.id_Province\r\n"
+					+ "WHERE Province.name LIKE ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, provincia);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -165,6 +197,7 @@ public class Provincia extends JFrame {
 		cbPaises.setSelectedIndex(0);
 		
 	}
+	
 	
 	
 	/**
@@ -245,17 +278,29 @@ public class Provincia extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				int result = 0;
 				String nombre = txtNombre.getText();
 				Object pais = cbPaises.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name=? AND id_Country=?" );
-					ps.setString(1, nombre);
-					ps.setString(2, ((ComboItem) pais).getValue());;
-					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Provincia borrada");
-					limpiar();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name = ? AND id_Country = ?;" );
+					if(provinciaEnUso(nombre) != 0) {
+						JOptionPane.showMessageDialog(null, "Provincia está en uso, por favor elimine todos los registros relacionados");
+					}else {
+						ps.setString(1, nombre);
+						ps.setString(2, ((ComboItem) pais).getValue());;
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Provincia eliminada");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar provincia");
+		                limpiar();
+		            }
 					
 				}catch(SQLException E) {
 					JOptionPane.showMessageDialog(null,E);
