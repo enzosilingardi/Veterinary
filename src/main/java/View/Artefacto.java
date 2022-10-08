@@ -192,7 +192,7 @@ public class Artefacto extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number, id_Branch) VALUES (?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Instrument (id_Operating_Room, instrument_Name, instrument_Description) VALUES (?,?,?)" );
 					
 					
 					if (((ComboItem) quirofano).getValue() == "") {
@@ -201,9 +201,9 @@ public class Artefacto extends JFrame {
 						if(existeArtefacto(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),nombre)!=0) {
 						JOptionPane.showMessageDialog(null, "Artefacto ya existe");
 					}else {
-						ps.setString(1, nombre);
-						ps.setString(2, descripcion);
-						ps.setString(3, ((ComboItem) quirofano).getValue());
+						ps.setString(2, nombre);
+						ps.setString(3, descripcion);
+						ps.setString(1, ((ComboItem) quirofano).getValue());
 					}
 						
 					}
@@ -239,7 +239,7 @@ public class Artefacto extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE name = ? AND id_Operating_Room = ?" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE instrument_Name = ? AND id_Operating_Room = ?" );
 					ps.setString(1, nombre);
 					ps.setString(2, ((ComboItem) quirofano).getValue());
 					ps.executeUpdate();
