@@ -5,11 +5,21 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+import View.Sucursal.ComboItem;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class Direccion extends JFrame {
@@ -19,7 +29,98 @@ public class Direccion extends JFrame {
 	private JTextField txtNumero;
 	private JTextField txtPiso;
 	private JTextField txtDepto;
+	private JComboBox cbCiudad;
+	
+	
+	class ComboItem
+	{
+	    private String key;
+	    private String value;
 
+	    public ComboItem(String key, String value)
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	public DefaultComboBoxModel cargarCiudad() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM City ORDER BY id_City";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("name"),result.getString("id_City")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
+	public int existeDireccion(Object ciudad, String nombre, int numero) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Address WHERE id_City = ? AND address_Name = ? AND address_Number = ?  ;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1,(String) ciudad);
+			pst.setString(2,nombre);
+			pst.setInt(3,numero);
+			
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -36,6 +137,16 @@ public class Direccion extends JFrame {
 		});
 	}
 
+	
+	
+	private void limpiar() {
+		txtNombre.setText("");
+		cbCiudad.setSelectedIndex(0);
+		txtNumero.setText("");
+		txtPiso.setText("");
+		txtDepto.setText("");
+		
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -73,9 +184,10 @@ public class Direccion extends JFrame {
 		lblCiudad.setBounds(46, 53, 46, 14);
 		contentPane.add(lblCiudad);
 		
-		JComboBox cbCiudad = new JComboBox();
+		cbCiudad = new JComboBox();
 		cbCiudad.setBounds(228, 49, 162, 22);
 		contentPane.add(cbCiudad);
+		cbCiudad.setModel(cargarCiudad());
 		
 		txtNombre = new JTextField();
 		txtNombre.setBounds(228, 97, 162, 20);
@@ -98,6 +210,59 @@ public class Direccion extends JFrame {
 		txtDepto.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String nombre = txtNombre.getText();
+				Object ciudad = cbCiudad.getSelectedItem();
+				int numero = Integer.parseInt(txtNumero.getText());
+				int piso = Integer.parseInt(txtPiso.getText());
+				int depto = Integer.parseInt(txtDepto.getText());
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Address (id_City, address_Name, address_Number, floor_Number, dept_Number) VALUES (?,?,?,?,?)" );
+					
+					
+					if (((ComboItem) ciudad).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una ciudad");
+					}else {
+						if(existeDireccion(((ComboItem) cbCiudad.getSelectedItem()).getValue(),nombre,numero)!=0) {
+						JOptionPane.showMessageDialog(null, "Direccion ya existe");
+					}else {
+						ps.setString(1, ((ComboItem) ciudad).getValue());
+						ps.setString(2, nombre);
+						ps.setInt(3,numero);
+						ps.setInt(4,piso);
+						ps.setInt(5,depto);
+						
+					}
+						
+					}
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Direccion guardada");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar direccion");
+		                limpiar();
+		            }
+				
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnAgregar.setBounds(88, 303, 89, 23);
 		contentPane.add(btnAgregar);
 		
