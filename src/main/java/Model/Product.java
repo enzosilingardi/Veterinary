@@ -8,6 +8,7 @@ public class Product {
 	protected float sale_Price;
 	protected String description;
 	protected Provider id_Provider;
+	protected Stock id_Stock;
 	
 	public int getId_Product() {
 		return id_Product;
@@ -47,12 +48,20 @@ public class Product {
 		this.id_Provider = id_Provider;
 	}
 	
+	
+	public Stock getId_Stock() {
+		return id_Stock;
+	}
+	public void setId_Stock(Stock id_Stock) {
+		this.id_Stock = id_Stock;
+	}
+	
 	public Product() {
 		super();
 	}
 	
 	public Product(int id_Product, String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider) {
+			Provider id_Provider, Stock id_Stock) {
 		super();
 		this.id_Product = id_Product;
 		this.product_Name = product_Name;
@@ -60,17 +69,19 @@ public class Product {
 		this.sale_Price = sale_Price;
 		this.description = description;
 		this.id_Provider = id_Provider;
+		this.id_Stock = id_Stock;
 	}
-	
-	public Product(String product_Name, float cost_Price, float sale_Price, String description, Provider id_Provider) {
+	p
+	ublic Product(String product_Name, float cost_Price, float sale_Price, String description, Provider id_Provider,
+			Stock id_Stock) {
 		super();
 		this.product_Name = product_Name;
 		this.cost_Price = cost_Price;
 		this.sale_Price = sale_Price;
 		this.description = description;
 		this.id_Provider = id_Provider;
+		this.id_Stock = id_Stock;
 	}
-	
 	
 	
 	

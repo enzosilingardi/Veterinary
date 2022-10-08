@@ -5,6 +5,7 @@ public class Branch {
 	protected int id_Branch;
 	protected Address id_Address;
 	
+	
 	public int getId_Branch() {
 		return id_Branch;
 	}

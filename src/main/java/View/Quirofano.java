@@ -150,7 +150,7 @@ public class Quirofano extends JFrame {
 			String SSQL = "SELECT count(Medical_Instrument.id_Operating_Room)\r\n"
 					+ "FROM Operating_Room\r\n"
 					+ "JOIN Medical_Instrument ON Operating_Room.id_Operating_Room = Medical_Instrument.id_Operating_Room\r\n"
-					+ "WHERE room_Number.name LIKE ?;";
+					+ "WHERE Operating_Room.room_Number LIKE ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, quirofano);
 			result = pst.executeQuery();

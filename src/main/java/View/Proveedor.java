@@ -10,13 +10,14 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class Proveedor extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
-	private JTextField txtDireccion;
 	private JTextField txtTelefono;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -40,7 +41,7 @@ public class Proveedor extends JFrame {
 	public Proveedor() {
 		setTitle("Proveedor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 372);
+		setBounds(100, 100, 450, 441);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -64,7 +65,7 @@ public class Proveedor extends JFrame {
 		contentPane.add(lblTelefono);
 		
 		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(62, 208, 46, 14);
+		lblTipo.setBounds(59, 277, 46, 14);
 		contentPane.add(lblTipo);
 		
 		txtNombre = new JTextField();
@@ -72,31 +73,17 @@ public class Proveedor extends JFrame {
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
 		
-		txtDireccion = new JTextField();
-		txtDireccion.setBounds(154, 104, 184, 20);
-		contentPane.add(txtDireccion);
-		txtDireccion.setColumns(10);
-		
 		txtTelefono = new JTextField();
 		txtTelefono.setBounds(154, 154, 184, 20);
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JTextField txtTipo = new JTextField();
-		txtTipo.setBounds(154, 205, 184, 20);
-		contentPane.add(txtTipo);
-		txtTipo.setColumns(10);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(40, 251, 89, 23);
+		btnAgregar.setBounds(37, 320, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(157, 251, 89, 23);
-		contentPane.add(btnModificar);
-		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(278, 251, 89, 23);
+		btnEliminar.setBounds(275, 320, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -105,8 +92,24 @@ public class Proveedor extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(309, 299, 89, 23);
+		btnVolver.setBounds(306, 368, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JComboBox cbTipo = new JComboBox();
+		cbTipo.setBounds(151, 273, 184, 22);
+		contentPane.add(cbTipo);
+		
+		JComboBox cbDireccion = new JComboBox();
+		cbDireccion.setBounds(154, 103, 184, 22);
+		contentPane.add(cbDireccion);
+		
+		JLabel lblEmail = new JLabel("E-mail");
+		lblEmail.setBounds(62, 208, 46, 14);
+		contentPane.add(lblEmail);
+		
+		textField = new JTextField();
+		textField.setBounds(154, 205, 184, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
 	}
-
 }

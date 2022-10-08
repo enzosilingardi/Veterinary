@@ -5,10 +5,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+import View.Artefacto.ComboItem;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class Tipo_Proveedor extends JFrame {
@@ -31,6 +40,77 @@ public class Tipo_Proveedor extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public int existeTipo(String titular, String cuit) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Provider_Type WHERE owner = ? AND cuit = ? ;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, titular);
+			pst.setString(2, cuit);
+
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	public int tipoEnUso(String titular, String cuit) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(Provider.id_Provider_Type)\r\n"
+					+ "FROM Provider_Type\r\n"
+					+ "JOIN Provider ON Provider.id_Provider_Type = Provider_Type.id_Provider_Type\r\n"
+					+ "WHERE Provider_Type.owner LIKE ? AND Provider_Type.cuit LIKE ? ;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, titular);
+			pst.setString(2, cuit);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	
+	private void limpiar() {
+		txtTitular.setText("");
+		txtCuit.setText("");
+		
 	}
 
 	/**
@@ -69,15 +149,92 @@ public class Tipo_Proveedor extends JFrame {
 		txtCuit.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(44, 164, 89, 23);
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String titular = txtTitular.getText();
+				String cuit = txtCuit.getText();
+
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider_Type (owner, cuit) VALUES (?,?)" );
+					
+					
+					
+					if(existeTipo(titular,cuit)!=0) {
+						JOptionPane.showMessageDialog(null, "Artefacto ya existe");
+					}else {
+						ps.setString(1, titular);
+						ps.setString(2, cuit);
+					}
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Tipo guardado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar tipo");
+		                limpiar();
+		            }
+				
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnAgregar.setBounds(64, 164, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(161, 164, 89, 23);
-		contentPane.add(btnModificar);
-		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(282, 164, 89, 23);
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int result = 0;
+				String titular = txtTitular.getText();
+				String cuit = txtCuit.getText();
+
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider_Type WHERE owner = ? AND cuit = ?;" );
+					if(tipoEnUso(titular,cuit) != 0) {
+						JOptionPane.showMessageDialog(null, "Tipo está en uso, por favor elimine todos los registros relacionados");
+					}else {
+						ps.setString(1, titular);
+						ps.setString(2, cuit);;
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Tipo eliminado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar tipo");
+		                limpiar();
+		            }
+					
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnEliminar.setBounds(260, 164, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");

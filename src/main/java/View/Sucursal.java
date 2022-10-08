@@ -27,6 +27,7 @@ public class Sucursal extends JFrame {
 	private JPanel contentPane;
 	private JComboBox cbDireccion;
 
+
 	class ComboItem
 	{
 	    private String key;
@@ -83,6 +84,8 @@ public class Sucursal extends JFrame {
 			}
 		return modelo;
     }
+	
+
 	
 	/**
 	 * Launch the application.
@@ -141,7 +144,7 @@ public class Sucursal extends JFrame {
 	public Sucursal() {
 		setTitle("Sucursal");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 323);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -200,7 +203,7 @@ public class Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(61, 161, 89, 23);
+		btnAgregar.setBounds(57, 167, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -226,7 +229,7 @@ public class Sucursal extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(270, 161, 89, 23);
+		btnEliminar.setBounds(266, 167, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -235,7 +238,7 @@ public class Sucursal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(308, 209, 89, 23);
+		btnVolver.setBounds(304, 215, 89, 23);
 		contentPane.add(btnVolver);
 		
 		cbDireccion = new JComboBox();
