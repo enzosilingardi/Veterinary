@@ -56,10 +56,9 @@ public class Food_Product extends Product {
 	}
 
 	public Food_Product(int id_Product, String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, int id_Food_P, int food_Weight, String expiration_Date, float price_Per_Kilo,
+			Provider id_Provider, Stock id_Stock, int food_Weight, String expiration_Date, float price_Per_Kilo,
 			float price_Per_Bag) {
-		super(id_Product, product_Name, cost_Price, sale_Price, description, id_Provider);
-		this.id_Food_P = id_Food_P;
+		super(id_Product, product_Name, cost_Price, sale_Price, description, id_Provider, id_Stock);
 		this.food_Weight = food_Weight;
 		this.expiration_Date = expiration_Date;
 		this.price_Per_Kilo = price_Per_Kilo;
@@ -67,10 +66,9 @@ public class Food_Product extends Product {
 	}
 
 	public Food_Product(String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, int id_Food_P, int food_Weight, String expiration_Date, float price_Per_Kilo,
+			Provider id_Provider, Stock id_Stock, int food_Weight, String expiration_Date, float price_Per_Kilo,
 			float price_Per_Bag) {
-		super(product_Name, cost_Price, sale_Price, description, id_Provider);
-		this.id_Food_P = id_Food_P;
+		super(product_Name, cost_Price, sale_Price, description, id_Provider, id_Stock);
 		this.food_Weight = food_Weight;
 		this.expiration_Date = expiration_Date;
 		this.price_Per_Kilo = price_Per_Kilo;
@@ -78,6 +76,5 @@ public class Food_Product extends Product {
 	}
 
 	
-
 	
 }
