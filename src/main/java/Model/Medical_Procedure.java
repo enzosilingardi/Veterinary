@@ -6,23 +6,25 @@ import java.time.LocalTime;
 public class Medical_Procedure {
 
 	protected int id_procedure;
-	protected String procedure_Type;
+	protected Procedure_Type id_Procedure_Type;
 	protected LocalDate procedure_Date;
 	protected LocalTime procedure_Time;
 	protected Veterinarian id_Veterinarian;
 	protected Pet id_Pet;
 	protected Branch id_Branch;
+	
 	public int getId_procedure() {
 		return id_procedure;
 	}
 	public void setId_procedure(int id_procedure) {
 		this.id_procedure = id_procedure;
 	}
-	public String getProcedure_Type() {
-		return procedure_Type;
+	
+	public Procedure_Type getId_Procedure_Type() {
+		return id_Procedure_Type;
 	}
-	public void setProcedure_Type(String procedure_Type) {
-		this.procedure_Type = procedure_Type;
+	public void setId_Procedure_Type(Procedure_Type id_Procedure_Type) {
+		this.id_Procedure_Type = id_Procedure_Type;
 	}
 	public LocalDate getProcedure_Date() {
 		return procedure_Date;
@@ -54,15 +56,16 @@ public class Medical_Procedure {
 	public void setId_Branch(Branch id_Branch) {
 		this.id_Branch = id_Branch;
 	}
+	
 	public Medical_Procedure() {
 		super();
 	}
 	
-	public Medical_Procedure(int id_procedure, String procedure_Type, LocalDate procedure_Date,
+	public Medical_Procedure(int id_procedure, Procedure_Type id_Procedure_Type, LocalDate procedure_Date,
 			LocalTime procedure_Time, Veterinarian id_Veterinarian, Pet id_Pet, Branch id_Branch) {
 		super();
 		this.id_procedure = id_procedure;
-		this.procedure_Type = procedure_Type;
+		this.id_Procedure_Type = id_Procedure_Type;
 		this.procedure_Date = procedure_Date;
 		this.procedure_Time = procedure_Time;
 		this.id_Veterinarian = id_Veterinarian;
@@ -70,10 +73,10 @@ public class Medical_Procedure {
 		this.id_Branch = id_Branch;
 	}
 	
-	public Medical_Procedure(String procedure_Type, LocalDate procedure_Date, LocalTime procedure_Time,
+	public Medical_Procedure(Procedure_Type id_Procedure_Type, LocalDate procedure_Date, LocalTime procedure_Time,
 			Veterinarian id_Veterinarian, Pet id_Pet, Branch id_Branch) {
 		super();
-		this.procedure_Type = procedure_Type;
+		this.id_Procedure_Type = id_Procedure_Type;
 		this.procedure_Date = procedure_Date;
 		this.procedure_Time = procedure_Time;
 		this.id_Veterinarian = id_Veterinarian;
