@@ -303,10 +303,10 @@ public class Cliente extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Direccion guardada");
+		                JOptionPane.showMessageDialog(null, "Cliente guardado");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar direccion");
+		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");
 		                limpiar();
 		            }
 				

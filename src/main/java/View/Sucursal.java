@@ -213,7 +213,7 @@ public class Sucursal extends JFrame {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Address = ? " );
 
-					ps.setString(1, ((ComboItem) direccion).getValue());;
+					ps.setString(1, ((ComboItem) direccion).getValue());
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "Sucursal borrada");
 					limpiar();

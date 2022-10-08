@@ -275,10 +275,10 @@ public class Ciudad extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Provincia eliminada");
+		                JOptionPane.showMessageDialog(null, "Ciudad eliminada");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar provincia");
+		                JOptionPane.showMessageDialog(null, "Error al eliminar ciudad");
 		                limpiar();
 		            }
 					
