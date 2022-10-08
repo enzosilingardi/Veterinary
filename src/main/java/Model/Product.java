@@ -71,8 +71,8 @@ public class Product {
 		this.id_Provider = id_Provider;
 		this.id_Stock = id_Stock;
 	}
-	p
-	ublic Product(String product_Name, float cost_Price, float sale_Price, String description, Provider id_Provider,
+	
+	public Product(String product_Name, float cost_Price, float sale_Price, String description, Provider id_Provider,
 			Stock id_Stock) {
 		super();
 		this.product_Name = product_Name;
