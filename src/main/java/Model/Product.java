@@ -3,12 +3,13 @@ package Model;
 public class Product {
 
 	protected int id_Product;
+	protected Provider id_Provider;
 	protected String product_Name;
+	protected String description;
 	protected float cost_Price;
 	protected float sale_Price;
-	protected String description;
-	protected Provider id_Provider;
-	protected Stock id_Stock;
+	
+	
 	
 	public int getId_Product() {
 		return id_Product;
@@ -48,41 +49,29 @@ public class Product {
 		this.id_Provider = id_Provider;
 	}
 	
-	
-	public Stock getId_Stock() {
-		return id_Stock;
-	}
-	public void setId_Stock(Stock id_Stock) {
-		this.id_Stock = id_Stock;
-	}
-	
+
 	public Product() {
 		super();
 	}
-	
-	public Product(int id_Product, String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, Stock id_Stock) {
+	public Product(int id_Product, Provider id_Provider, String product_Name, String description, float cost_Price,
+			float sale_Price) {
 		super();
 		this.id_Product = id_Product;
+		this.id_Provider = id_Provider;
 		this.product_Name = product_Name;
+		this.description = description;
 		this.cost_Price = cost_Price;
 		this.sale_Price = sale_Price;
-		this.description = description;
-		this.id_Provider = id_Provider;
-		this.id_Stock = id_Stock;
 	}
-	
-	public Product(String product_Name, float cost_Price, float sale_Price, String description, Provider id_Provider,
-			Stock id_Stock) {
+	public Product(Provider id_Provider, String product_Name, String description, float cost_Price, float sale_Price) {
 		super();
+		this.id_Provider = id_Provider;
 		this.product_Name = product_Name;
+		this.description = description;
 		this.cost_Price = cost_Price;
 		this.sale_Price = sale_Price;
-		this.description = description;
-		this.id_Provider = id_Provider;
-		this.id_Stock = id_Stock;
 	}
 	
-	
+
 	
 }

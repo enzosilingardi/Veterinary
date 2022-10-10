@@ -22,17 +22,19 @@ public class Medical_Product extends Product {
 		super();
 	}
 	
-	public Medical_Product(int id_Product, String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, Stock id_Stock, String expiration_Date) {
-		super(id_Product, product_Name, cost_Price, sale_Price, description, id_Provider, id_Stock);
+	public Medical_Product(int id_Product, Provider id_Provider, String product_Name, String description,
+			float cost_Price, float sale_Price, String expiration_Date) {
+		super(id_Product, id_Provider, product_Name, description, cost_Price, sale_Price);
 		this.expiration_Date = expiration_Date;
 	}
 	
-	public Medical_Product(String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, Stock id_Stock, String expiration_Date) {
-		super(product_Name, cost_Price, sale_Price, description, id_Provider, id_Stock);
+	public Medical_Product(Provider id_Provider, String product_Name, String description, float cost_Price,
+			float sale_Price, String expiration_Date) {
+		super(id_Provider, product_Name, description, cost_Price, sale_Price);
 		this.expiration_Date = expiration_Date;
 	}
+	
+	
 	
 	
 	

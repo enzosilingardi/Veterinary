@@ -20,16 +20,17 @@ public class Accesory_Product extends Product {
 		super();
 	}
 
-	public Accesory_Product(int id_Product, String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, Stock id_Stock) {
-		super(id_Product, product_Name, cost_Price, sale_Price, description, id_Provider, id_Stock);
+	public Accesory_Product(int id_Product, Provider id_Provider, String product_Name, String description,
+			float cost_Price, float sale_Price) {
+		super(id_Product, id_Provider, product_Name, description, cost_Price, sale_Price);
 	}
 
-	public Accesory_Product(String product_Name, float cost_Price, float sale_Price, String description,
-			Provider id_Provider, Stock id_Stock) {
-		super(product_Name, cost_Price, sale_Price, description, id_Provider, id_Stock);
+	public Accesory_Product(Provider id_Provider, String product_Name, String description, float cost_Price,
+			float sale_Price) {
+		super(id_Provider, product_Name, description, cost_Price, sale_Price);
 	}
 
+	
 	
 	
 	
