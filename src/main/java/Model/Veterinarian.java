@@ -24,19 +24,17 @@ public class Veterinarian extends Users {
 		super();
 	}
 	
-	public Veterinarian(int id_User, String username, String dni, String name, Address id_Address, String phone_Number,
-			String birthdate, String gender, Profile id_Profile, String email, int id_Veterinarian,
+	public Veterinarian(int id_User, String username, String password, String dni, String name, Address id_Address,
+			String phone_Number, String birthdate, String gender, Profile id_Profile, String email,
 			String medical_License) {
-		super(id_User, username, dni, name, id_Address, phone_Number, birthdate, gender, id_Profile, email);
-		
+		super(id_User, username, password, dni, name, id_Address, phone_Number, birthdate, gender, id_Profile, email);
 		this.medical_License = medical_License;
 	}
 	
-	public Veterinarian(String username, String dni, String name, Address id_Address, String phone_Number,
-			String birthdate, String gender, Profile id_Profile, String email, int id_Veterinarian,
+	public Veterinarian(String username, String password, String dni, String name, Address id_Address,
+			String phone_Number, String birthdate, String gender, Profile id_Profile, String email,
 			String medical_License) {
-		super(username, dni, name, id_Address, phone_Number, birthdate, gender, id_Profile, email);
-		
+		super(username, password, dni, name, id_Address, phone_Number, birthdate, gender, id_Profile, email);
 		this.medical_License = medical_License;
 	}
 	

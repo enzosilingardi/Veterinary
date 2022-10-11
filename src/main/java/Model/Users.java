@@ -4,6 +4,7 @@ public class Users {
 
 	protected int id_User;
 	protected String username;
+	protected String password;
     protected String dni;
     protected String name;
     protected Address id_Address;
@@ -27,6 +28,13 @@ public class Users {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getDni() {
 		return dni;
@@ -85,11 +93,12 @@ public class Users {
 		super();
 	}
 	
-	public Users(int id_User, String username, String dni, String name, Address id_Address, String phone_Number,
-			String birthdate, String gender, Profile id_Profile, String email) {
+	public Users(int id_User, String username, String password, String dni, String name, Address id_Address,
+			String phone_Number, String birthdate, String gender, Profile id_Profile, String email) {
 		super();
 		this.id_User = id_User;
 		this.username = username;
+		this.password = password;
 		this.dni = dni;
 		this.name = name;
 		this.id_Address = id_Address;
@@ -100,10 +109,11 @@ public class Users {
 		this.email = email;
 	}
 	
-	public Users(String username, String dni, String name, Address id_Address, String phone_Number, String birthdate,
-			String gender, Profile id_Profile, String email) {
+	public Users(String username, String password, String dni, String name, Address id_Address, String phone_Number,
+			String birthdate, String gender, Profile id_Profile, String email) {
 		super();
 		this.username = username;
+		this.password = password;
 		this.dni = dni;
 		this.name = name;
 		this.id_Address = id_Address;
@@ -113,6 +123,8 @@ public class Users {
 		this.id_Profile = id_Profile;
 		this.email = email;
 	}
+	
+	
 	
 	
     
