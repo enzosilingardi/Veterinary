@@ -3,8 +3,9 @@ package Model;
 public class Stock {
 
 	protected int id_Stock;
-	protected int amount;
 	protected Product id_Product;
+	protected int amount;
+	
 
 	
 	public int getId_Stock() {
@@ -30,20 +31,19 @@ public class Stock {
 		super();
 	}
 	
-	public Stock(int id_Stock, int amount, Product id_Product) {
+	public Stock(int id_Stock, Product id_Product, int amount) {
 		super();
 		this.id_Stock = id_Stock;
-		this.amount = amount;
 		this.id_Product = id_Product;
-		
+		this.amount = amount;
 	}
 	
-	public Stock(int amount, Product id_Product) {
+	public Stock(Product id_Product, int amount) {
 		super();
-		this.amount = amount;
 		this.id_Product = id_Product;
-		
+		this.amount = amount;
 	}
+	
 	
 	
 	

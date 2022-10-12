@@ -3,9 +3,10 @@ package Model;
 public class Client {
 
 	protected int Id_Client;
+	protected Address id_Address;
 	protected String dni;
 	protected String name;
-	protected Address id_Address;
+	protected String surname;
 	protected String phone_Number;
 	protected String birthdate;
 	protected String gender;
@@ -16,6 +17,12 @@ public class Client {
 	}
 	public void setId_Client(int id_Client) {
 		Id_Client = id_Client;
+	}
+	public Address getId_Address() {
+		return id_Address;
+	}
+	public void setId_Address(Address id_Address) {
+		this.id_Address = id_Address;
 	}
 	public String getDni() {
 		return dni;
@@ -29,13 +36,11 @@ public class Client {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	public Address getId_Address() {
-		return id_Address;
+	public String getSurname() {
+		return surname;
 	}
-	public void setId_Address(Address id_Address) {
-		this.id_Address = id_Address;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
 	public String getPhone_Number() {
 		return phone_Number;
@@ -66,25 +71,27 @@ public class Client {
 		super();
 	}
 	
-	public Client(int id_Client, String dni, String name, Address id_Address, String phone_Number, String birthdate,
-			String gender, String email) {
+	public Client(int id_Client, Address id_Address, String dni, String name, String surname, String phone_Number,
+			String birthdate, String gender, String email) {
 		super();
 		Id_Client = id_Client;
+		this.id_Address = id_Address;
 		this.dni = dni;
 		this.name = name;
-		this.id_Address = id_Address;
+		this.surname = surname;
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;
 		this.email = email;
 	}
 	
-	public Client(String dni, String name, Address id_Address, String phone_Number, String birthdate, String gender,
-			String email) {
+	public Client(Address id_Address, String dni, String name, String surname, String phone_Number, String birthdate,
+			String gender, String email) {
 		super();
+		this.id_Address = id_Address;
 		this.dni = dni;
 		this.name = name;
-		this.id_Address = id_Address;
+		this.surname = surname;
 		this.phone_Number = phone_Number;
 		this.birthdate = birthdate;
 		this.gender = gender;

@@ -3,8 +3,9 @@ package Model;
 public class Province {
 
 	protected int id_province;
-	protected String name;
 	protected Country id_Country;
+	protected String name;
+	
 	
 	public int getId_province() {
 		return id_province;
@@ -29,18 +30,19 @@ public class Province {
 		super();
 	}
 	
-	public Province(int id_province, String name, Country id_Country) {
+	public Province(int id_province, Country id_Country, String name) {
 		super();
 		this.id_province = id_province;
-		this.name = name;
 		this.id_Country = id_Country;
+		this.name = name;
 	}
 	
-	public Province(String name, Country id_Country) {
+	public Province(Country id_Country, String name) {
 		super();
-		this.name = name;
 		this.id_Country = id_Country;
+		this.name = name;
 	}
+	
 	
 	
 	

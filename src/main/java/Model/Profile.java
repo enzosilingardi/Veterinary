@@ -3,7 +3,7 @@ package Model;
 public class Profile {
 
 	protected int id_profile;
-	protected String description;
+	protected String profile_Name;
 	
 	public int getId_profile() {
 		return id_profile;
@@ -11,26 +11,27 @@ public class Profile {
 	public void setId_profile(int id_profile) {
 		this.id_profile = id_profile;
 	}
-	public String getDescription() {
-		return description;
+	
+	public String getProfile_Name() {
+		return profile_Name;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setProfile_Name(String profile_Name) {
+		this.profile_Name = profile_Name;
 	}
 	
 	public Profile() {
 		super();
 	}
 	
-	public Profile(int id_profile, String description) {
+	public Profile(int id_profile, String profile_Name) {
 		super();
 		this.id_profile = id_profile;
-		this.description = description;
+		this.profile_Name = profile_Name;
 	}
 	
-	public Profile(String description) {
+	public Profile(String profile_Name) {
 		super();
-		this.description = description;
+		this.profile_Name = profile_Name;
 	}
 	
 	

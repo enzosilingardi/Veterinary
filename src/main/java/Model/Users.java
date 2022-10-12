@@ -3,15 +3,11 @@ package Model;
 public class Users {
 
 	protected int id_User;
+	protected Profile id_Profile;
+	protected String name;
+	protected String surname;
 	protected String username;
 	protected String password;
-    protected String dni;
-    protected String name;
-    protected Address id_Address;
-    protected String phone_Number;
-    protected String birthdate;
-    protected String gender;
-    protected Profile id_Profile;
     protected String email;
 	
     public int getId_User() {
@@ -20,27 +16,11 @@ public class Users {
 	public void setId_User(int id_User) {
 		this.id_User = id_User;
 	}
-	
-	
-	
-	public String getUsername() {
-		return username;
+	public Profile getId_Profile() {
+		return id_Profile;
 	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getDni() {
-		return dni;
-	}
-	public void setDni(String dni) {
-		this.dni = dni;
+	public void setId_Profile(Profile id_Profile) {
+		this.id_Profile = id_Profile;
 	}
 	public String getName() {
 		return name;
@@ -48,40 +28,24 @@ public class Users {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public Address getId_Address() {
-		return id_Address;
+	public String getSurname() {
+		return surname;
 	}
-	public void setId_Address(Address id_Address) {
-		this.id_Address = id_Address;
+	public void setSurname(String surname) {
+		this.surname = surname;
 	}
-	public String getPhone_Number() {
-		return phone_Number;
+	public String getUsername() {
+		return username;
 	}
-	public void setPhone_Number(String phone_Number) {
-		this.phone_Number = phone_Number;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public String getBirthdate() {
-		return birthdate;
+	public String getPassword() {
+		return password;
 	}
-	public void setBirthdate(String birthdate) {
-		this.birthdate = birthdate;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	
-	
-	public Profile getId_Profile() {
-		return id_Profile;
-	}
-	public void setId_Profile(Profile id_Profile) {
-		this.id_Profile = id_Profile;
-	}
-	
 	public String getEmail() {
 		return email;
 	}
@@ -93,37 +57,27 @@ public class Users {
 		super();
 	}
 	
-	public Users(int id_User, String username, String password, String dni, String name, Address id_Address,
-			String phone_Number, String birthdate, String gender, Profile id_Profile, String email) {
+	public Users(int id_User, Profile id_Profile, String name, String surname, String username, String password,
+			String email) {
 		super();
 		this.id_User = id_User;
+		this.id_Profile = id_Profile;
+		this.name = name;
+		this.surname = surname;
 		this.username = username;
 		this.password = password;
-		this.dni = dni;
-		this.name = name;
-		this.id_Address = id_Address;
-		this.phone_Number = phone_Number;
-		this.birthdate = birthdate;
-		this.gender = gender;
-		this.id_Profile = id_Profile;
 		this.email = email;
 	}
 	
-	public Users(String username, String password, String dni, String name, Address id_Address, String phone_Number,
-			String birthdate, String gender, Profile id_Profile, String email) {
+	public Users(Profile id_Profile, String name, String surname, String username, String password, String email) {
 		super();
+		this.id_Profile = id_Profile;
+		this.name = name;
+		this.surname = surname;
 		this.username = username;
 		this.password = password;
-		this.dni = dni;
-		this.name = name;
-		this.id_Address = id_Address;
-		this.phone_Number = phone_Number;
-		this.birthdate = birthdate;
-		this.gender = gender;
-		this.id_Profile = id_Profile;
 		this.email = email;
 	}
-	
 	
 	
 	

@@ -3,11 +3,14 @@ package Model;
 public class Provider {
 
 	protected int id_Provider;
-	protected String name;
-	protected String phone_Number;
-	protected String address;
 	protected Provider_Type id_Provider_Type;
+	protected Address id_Address;
+	protected String provider_Name;
+	protected String name;
+	protected String surname;
+	protected String phone_Number;
 	protected String email;
+	protected String cuit;
 	
 	public int getId_Provider() {
 		return id_Provider;
@@ -15,29 +18,23 @@ public class Provider {
 	public void setId_Provider(int id_Provider) {
 		this.id_Provider = id_Provider;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPhone_Number() {
-		return phone_Number;
-	}
-	public void setPhone_Number(String phone_Number) {
-		this.phone_Number = phone_Number;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
 	public Provider_Type getId_Provider_Type() {
 		return id_Provider_Type;
 	}
 	public void setId_Provider_Type(Provider_Type id_Provider_Type) {
 		this.id_Provider_Type = id_Provider_Type;
+	}
+	public Address getId_Address() {
+		return id_Address;
+	}
+	public void setId_Address(Address id_Address) {
+		this.id_Address = id_Address;
+	}
+	public String getProvider_Name() {
+		return provider_Name;
+	}
+	public void setProvider_Name(String provider_Name) {
+		this.provider_Name = provider_Name;
 	}
 	public String getName() {
 		return name;
@@ -45,29 +42,60 @@ public class Provider {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getSurname() {
+		return surname;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	public String getPhone_Number() {
+		return phone_Number;
+	}
+	public void setPhone_Number(String phone_Number) {
+		this.phone_Number = phone_Number;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getCuit() {
+		return cuit;
+	}
+	public void setCuit(String cuit) {
+		this.cuit = cuit;
+	}
 	
 	public Provider() {
 		super();
 	}
 	
-	public Provider(int id_Provider, String name, String phone_Number, String address, Provider_Type id_Provider_Type,
-			String email) {
+	public Provider(int id_Provider, Provider_Type id_Provider_Type, Address id_Address, String provider_Name,
+			String name, String surname, String phone_Number, String email, String cuit) {
 		super();
 		this.id_Provider = id_Provider;
-		this.name = name;
-		this.phone_Number = phone_Number;
-		this.address = address;
 		this.id_Provider_Type = id_Provider_Type;
+		this.id_Address = id_Address;
+		this.provider_Name = provider_Name;
+		this.name = name;
+		this.surname = surname;
+		this.phone_Number = phone_Number;
 		this.email = email;
+		this.cuit = cuit;
 	}
 	
-	public Provider(String name, String phone_Number, String address, Provider_Type id_Provider_Type, String email) {
+	public Provider(Provider_Type id_Provider_Type, Address id_Address, String provider_Name, String name,
+			String surname, String phone_Number, String email, String cuit) {
 		super();
-		this.name = name;
-		this.phone_Number = phone_Number;
-		this.address = address;
 		this.id_Provider_Type = id_Provider_Type;
+		this.id_Address = id_Address;
+		this.provider_Name = provider_Name;
+		this.name = name;
+		this.surname = surname;
+		this.phone_Number = phone_Number;
 		this.email = email;
+		this.cuit = cuit;
 	}
 	
 	

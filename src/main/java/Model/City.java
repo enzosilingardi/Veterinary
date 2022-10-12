@@ -3,8 +3,9 @@ package Model;
 public class City {
 
 	protected int id_City;
-	protected String name;
 	protected Province id_Province;
+	protected String name;
+	
 	
 	public int getId_City() {
 		return id_City;
@@ -29,18 +30,19 @@ public class City {
 		super();
 	}
 	
-	public City(int id_City, String name, Province id_Province) {
+	public City(int id_City, Province id_Province, String name) {
 		super();
 		this.id_City = id_City;
-		this.name = name;
 		this.id_Province = id_Province;
+		this.name = name;
 	}
 	
-	public City(String name, Province id_Province) {
+	public City(Province id_Province, String name) {
 		super();
-		this.name = name;
 		this.id_Province = id_Province;
+		this.name = name;
 	}
+	
 	
 	
 	
