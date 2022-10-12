@@ -48,17 +48,8 @@ public class Main extends JFrame {
 		mnVentas.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnVentas);
 		
-		JMenu mnProductos = new JMenu("Productos");
-		mnVentas.add(mnProductos);
-		
-		JMenuItem mntmAlimento = new JMenuItem("Alimento");
-		mnProductos.add(mntmAlimento);
-		
-		JMenuItem mntmAccesorios = new JMenuItem("Accesorios");
-		mnProductos.add(mntmAccesorios);
-		
-		JMenuItem mntmMedicos = new JMenuItem("Medicos");
-		mnProductos.add(mntmMedicos);
+		JMenuItem mntmProductos = new JMenuItem("Productos");
+		mnVentas.add(mntmProductos);
 		
 		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
 		mnVentas.add(mntmProveedores);
@@ -94,36 +85,6 @@ public class Main extends JFrame {
 		});
 		mnArchivos.add(mntmABMMascota);
 		
-		JMenu mnABMProducto = new JMenu("ABM Producto");
-		mnArchivos.add(mnABMProducto);
-		
-		JMenuItem mntmABMAlimenticio = new JMenuItem("Alimenticio");
-		mntmABMAlimenticio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Producto_Alimenticio alimento = new Producto_Alimenticio();
-				alimento.setVisible(true);
-			}
-		});
-		mnABMProducto.add(mntmABMAlimenticio);
-		
-		JMenuItem mntmAccesorio = new JMenuItem("Accesorio");
-		mntmAccesorio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Producto_Accesorio accesorio = new Producto_Accesorio();
-				accesorio.setVisible(true);
-			}
-		});
-		mnABMProducto.add(mntmAccesorio);
-		
-		JMenuItem mntmMedico = new JMenuItem("Medico");
-		mntmMedico.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Producto_Medico medico = new Producto_Medico();
-				medico.setVisible(true);
-			}
-		});
-		mnABMProducto.add(mntmMedico);
-		
 		JMenuItem mntmABMProveedor = new JMenuItem("ABM Proveedor");
 		mntmABMProveedor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,6 +92,14 @@ public class Main extends JFrame {
 				proveedor.setVisible(true);
 			}
 		});
+		
+		JMenuItem mntmABMProducto = new JMenuItem("ABM Producto");
+		mntmABMProducto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Producto producto = new Producto();
+				producto.setVisible(true);			}
+		});
+		mnArchivos.add(mntmABMProducto);
 		mnArchivos.add(mntmABMProveedor);
 		
 		JMenuItem mntmABMTipoProveedor = new JMenuItem("ABM Tipo Proveedor");
@@ -204,15 +173,6 @@ public class Main extends JFrame {
 			}
 		});
 		mnArchivos.add(mntmABMPais);
-		
-		JMenuItem mntmABMGestor = new JMenuItem("ABM Gestor");
-		mntmABMGestor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Gestor gestor = new Gestor();
-				gestor.setVisible(true);
-			}
-		});
-		mnArchivos.add(mntmABMGestor);
 		
 		JMenuItem mntmABMUsuario = new JMenuItem("ABM Usuario");
 		mntmABMUsuario.addActionListener(new ActionListener() {

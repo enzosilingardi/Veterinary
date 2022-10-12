@@ -10,11 +10,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class Stock extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
 	private JTextField textField_1;
 
 	/**
@@ -58,11 +58,6 @@ public class Stock extends JFrame {
 		lblCantidad.setBounds(72, 106, 56, 14);
 		contentPane.add(lblCantidad);
 		
-		textField = new JTextField();
-		textField.setBounds(148, 50, 197, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
 		textField_1 = new JTextField();
 		textField_1.setBounds(148, 103, 197, 20);
 		contentPane.add(textField_1);
@@ -88,6 +83,10 @@ public class Stock extends JFrame {
 		});
 		btnVolver.setBounds(313, 210, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JComboBox cbProducto = new JComboBox();
+		cbProducto.setBounds(148, 49, 197, 22);
+		contentPane.add(cbProducto);
 	}
 
 }

@@ -29,8 +29,6 @@ public class Quirofano extends JFrame {
 	private JButton btnAgregar;
 	private JButton btnEliminar;
 	private JButton btnVolver;
-	private JLabel lblSucursal;
-	private JComboBox cbSucursal;
 	
 	class ComboItem
 	{
@@ -175,7 +173,7 @@ public class Quirofano extends JFrame {
 	
 	private void limpiar() {
 		txtNumero.setText("");
-		cbSucursal.setSelectedIndex(0);
+
 		
 	}
 	/**
@@ -184,7 +182,7 @@ public class Quirofano extends JFrame {
 	public Quirofano() {
 		setTitle("Quirófano");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 273);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -208,7 +206,7 @@ public class Quirofano extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int numero = Integer.parseInt(txtNumero.getText());
-				Object sucursal = cbSucursal.getSelectedItem();
+
 				
 				int result = 0;
 				
@@ -217,28 +215,6 @@ public class Quirofano extends JFrame {
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number, id_Branch) VALUES (?,?)" );
 					
 					
-					if (((ComboItem) sucursal).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
-					}else {
-						if(existeQuirofano(((ComboItem) cbSucursal.getSelectedItem()).getValue(),numero)!=0) {
-						JOptionPane.showMessageDialog(null, "Quirófano ya existe");
-					}else {
-						ps.setInt(1, numero);
-						ps.setString(2, ((ComboItem) sucursal).getValue());
-					}
-						
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano guardado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar quirófano");
-		                limpiar();
-		            }
-				
 					
 				}catch(SQLException E) {
 					JOptionPane.showMessageDialog(null,E);
@@ -248,7 +224,7 @@ public class Quirofano extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(70, 179, 89, 23);
+		btnAgregar.setBounds(64, 142, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		btnEliminar = new JButton("Eliminar");
@@ -258,7 +234,6 @@ public class Quirofano extends JFrame {
 
 				int result = 0;
 				int numero = Integer.parseInt(txtNumero.getText());
-				Object sucursal = cbSucursal.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
@@ -267,7 +242,6 @@ public class Quirofano extends JFrame {
 						JOptionPane.showMessageDialog(null, "Quirófano está en uso, por favor elimine todos los registros relacionados");
 					}else {
 						ps.setInt(1, numero);
-						ps.setString(2, ((ComboItem) sucursal).getValue());;
 					}
 					
 					result = ps.executeUpdate();
@@ -290,7 +264,7 @@ public class Quirofano extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(250, 179, 89, 23);
+		btnEliminar.setBounds(244, 142, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		btnVolver = new JButton("Volver");
@@ -299,16 +273,7 @@ public class Quirofano extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(295, 227, 89, 23);
+		btnVolver.setBounds(289, 190, 89, 23);
 		contentPane.add(btnVolver);
-		
-		lblSucursal = new JLabel("Sucursal");
-		lblSucursal.setBounds(46, 123, 59, 14);
-		contentPane.add(lblSucursal);
-		
-		cbSucursal = new JComboBox();
-		cbSucursal.setBounds(185, 119, 183, 22);
-		contentPane.add(cbSucursal);
-		cbSucursal.setModel(cargarSucursal());
 	}
 }

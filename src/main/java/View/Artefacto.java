@@ -27,7 +27,6 @@ public class Artefacto extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtDescripcion;
-	private JComboBox cbQuirofano;
 
 	
 	class ComboItem
@@ -138,7 +137,6 @@ public class Artefacto extends JFrame {
 	private void limpiar() {
 		txtNombre.setText("");
 		txtDescripcion.setText("");
-		cbQuirofano.setSelectedIndex(0);
 		
 	}
 	
@@ -148,7 +146,7 @@ public class Artefacto extends JFrame {
 	public Artefacto() {
 		setTitle("Artefacto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 376);
+		setBounds(100, 100, 450, 304);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -177,16 +175,11 @@ public class Artefacto extends JFrame {
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 		
-		JLabel lblQuirofano = new JLabel("Quirofano");
-		lblQuirofano.setBounds(75, 165, 70, 14);
-		contentPane.add(lblQuirofano);
-		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
 				String descripcion = txtDescripcion.getText();
-				Object quirofano = cbQuirofano.getSelectedItem();
 				
 				int result = 0;
 				
@@ -195,18 +188,7 @@ public class Artefacto extends JFrame {
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Instrument (id_Operating_Room, instrument_Name, instrument_Description) VALUES (?,?,?)" );
 					
 					
-					if (((ComboItem) quirofano).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione un quirófano");
-					}else {
-						if(existeArtefacto(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),nombre)!=0) {
-						JOptionPane.showMessageDialog(null, "Artefacto ya existe");
-					}else {
-						ps.setString(2, nombre);
-						ps.setString(3, descripcion);
-						ps.setString(1, ((ComboItem) quirofano).getValue());
-					}
-						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
@@ -227,7 +209,7 @@ public class Artefacto extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(46, 227, 89, 23);
+		btnAgregar.setBounds(59, 171, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -235,13 +217,11 @@ public class Artefacto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String nombre = txtNombre.getText();
-				Object quirofano = cbQuirofano.getSelectedItem();
 				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE instrument_Name = ? AND id_Operating_Room = ?" );
 					ps.setString(1, nombre);
-					ps.setString(2, ((ComboItem) quirofano).getValue());
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "Artefacto borrado");
 					limpiar();
@@ -255,7 +235,7 @@ public class Artefacto extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(284, 227, 89, 23);
+		btnEliminar.setBounds(237, 171, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -264,13 +244,8 @@ public class Artefacto extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(315, 275, 89, 23);
+		btnVolver.setBounds(296, 219, 89, 23);
 		contentPane.add(btnVolver);
-		
-		cbQuirofano = new JComboBox();
-		cbQuirofano.setBounds(163, 161, 184, 22);
-		contentPane.add(cbQuirofano);
-		cbQuirofano.setModel(cargarQuirofano());
 	}
 
 }

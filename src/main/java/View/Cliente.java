@@ -36,6 +36,7 @@ public class Cliente extends JFrame {
 	private JComboBox cbDireccion;
 	private JComboBox cbGenero;
 	private JTextField txtEmail;
+	private JTextField txtApellido;
 	
 	
 	
@@ -185,7 +186,7 @@ public class Cliente extends JFrame {
 	public Cliente() {
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 459, 529);
+		setBounds(100, 100, 459, 575);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -201,7 +202,7 @@ public class Cliente extends JFrame {
 		contentPane.add(lblNombre);
 		
 		JLabel lblDireccion = new JLabel("Direccion");
-		lblDireccion.setBounds(37, 100, 153, 14);
+		lblDireccion.setBounds(37, 137, 153, 14);
 		contentPane.add(lblDireccion);
 		
 		txtNombre = new JTextField();
@@ -210,38 +211,38 @@ public class Cliente extends JFrame {
 		txtNombre.setColumns(10);
 		
 		JLabel lblDni = new JLabel("DNI");
-		lblDni.setBounds(37, 144, 153, 14);
+		lblDni.setBounds(37, 181, 153, 14);
 		contentPane.add(lblDni);
 		
 		txtDni = new JTextField();
-		txtDni.setBounds(224, 138, 171, 20);
+		txtDni.setBounds(224, 175, 171, 20);
 		contentPane.add(txtDni);
 		txtDni.setColumns(10);
 		
 		JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento");
-		lblFechaNacimiento.setBounds(37, 192, 153, 14);
+		lblFechaNacimiento.setBounds(37, 229, 153, 14);
 		contentPane.add(lblFechaNacimiento);
 		
 		txtFechaNacimiento = new JTextField();
-		txtFechaNacimiento.setBounds(224, 186, 171, 20);
+		txtFechaNacimiento.setBounds(224, 223, 171, 20);
 		contentPane.add(txtFechaNacimiento);
 		txtFechaNacimiento.setColumns(10);
 		
 		JLabel lblGenero = new JLabel("Genero");
-		lblGenero.setBounds(37, 241, 153, 14);
+		lblGenero.setBounds(37, 278, 153, 14);
 		contentPane.add(lblGenero);
 		
 		cbGenero = new JComboBox();
-		cbGenero.setBounds(224, 234, 171, 22);
+		cbGenero.setBounds(224, 271, 171, 22);
 		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));
 		contentPane.add(cbGenero);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
-		lblTelefono.setBounds(37, 295, 153, 14);
+		lblTelefono.setBounds(37, 332, 153, 14);
 		contentPane.add(lblTelefono);
 		
 		txtTelefono = new JTextField();
-		txtTelefono.setBounds(224, 289, 171, 20);
+		txtTelefono.setBounds(224, 326, 171, 20);
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
@@ -320,15 +321,15 @@ public class Cliente extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(60, 408, 89, 23);
+		btnAgregar.setBounds(51, 454, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(242, 408, 89, 23);
+		btnEliminar.setBounds(233, 454, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBounds(305, 456, 89, 23);
+		btnVolver.setBounds(296, 502, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -337,17 +338,26 @@ public class Cliente extends JFrame {
 		contentPane.add(btnVolver);
 		
 		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(224, 96, 171, 22);
+		cbDireccion.setBounds(224, 133, 171, 22);
 		contentPane.add(cbDireccion);
 		cbDireccion.setModel(cargarDireccion());
 		
 		JLabel lblEmail = new JLabel("E-Mail");
-		lblEmail.setBounds(37, 349, 46, 14);
+		lblEmail.setBounds(37, 386, 46, 14);
 		contentPane.add(lblEmail);
 		
 		txtEmail = new JTextField();
-		txtEmail.setBounds(224, 346, 171, 20);
+		txtEmail.setBounds(224, 383, 171, 20);
 		contentPane.add(txtEmail);
 		txtEmail.setColumns(10);
+		
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setBounds(37, 95, 46, 14);
+		contentPane.add(lblApellido);
+		
+		txtApellido = new JTextField();
+		txtApellido.setBounds(224, 92, 171, 20);
+		contentPane.add(txtApellido);
+		txtApellido.setColumns(10);
 	}
 }

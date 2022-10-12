@@ -25,9 +25,8 @@ import javax.swing.DefaultComboBoxModel;
 public class Tipo_Proveedor extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtTitular;
-	private JTextField txtCuit;
 	private JComboBox cbTipo;
+	private JTextField txtNombre;
 
 	/**
 	 * Launch the application.
@@ -45,7 +44,7 @@ public class Tipo_Proveedor extends JFrame {
 		});
 	}
 	
-	public int existeTipo(String titular, String cuit) {
+	public int existeTipo(String titular) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -55,7 +54,6 @@ public class Tipo_Proveedor extends JFrame {
 			String SSQL = "SELECT count(*) FROM Provider_Type WHERE owner = ? AND cuit = ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, titular);
-			pst.setString(2, cuit);
 
 			result = pst.executeQuery();
 			
@@ -76,7 +74,7 @@ public class Tipo_Proveedor extends JFrame {
 		
 	}
 	
-	public int tipoEnUso(String tipo, String cuit) {
+	public int tipoEnUso(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -88,8 +86,7 @@ public class Tipo_Proveedor extends JFrame {
 					+ "JOIN Provider ON Provider.id_Provider_Type = Provider_Type.id_Provider_Type\r\n"
 					+ "WHERE Provider_Type.type_Name LIKE ? AND Provider_Type.cuit LIKE ? ;";
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, tipo);
-			pst.setString(2, cuit);
+			pst.setString(1, nombre);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
@@ -111,9 +108,8 @@ public class Tipo_Proveedor extends JFrame {
 	
 	
 	private void limpiar() {
-		cbTipo.setSelectedIndex(0);
-		txtTitular.setText("");
-		txtCuit.setText("");
+
+		txtNombre.setText("");
 		
 	}
 
@@ -123,7 +119,7 @@ public class Tipo_Proveedor extends JFrame {
 	public Tipo_Proveedor() {
 		setTitle("Tipo Proveedor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 371);
+		setBounds(100, 100, 450, 281);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -134,31 +130,11 @@ public class Tipo_Proveedor extends JFrame {
 		lblTitulo.setBounds(168, 11, 119, 14);
 		contentPane.add(lblTitulo);
 		
-		JLabel lblTitular = new JLabel("Titular");
-		lblTitular.setBounds(61, 108, 46, 14);
-		contentPane.add(lblTitular);
-		
-		txtTitular = new JTextField();
-		txtTitular.setBounds(142, 105, 198, 20);
-		contentPane.add(txtTitular);
-		txtTitular.setColumns(10);
-		
-		JLabel lblCuit = new JLabel("CUIT");
-		lblCuit.setBounds(61, 163, 46, 14);
-		contentPane.add(lblCuit);
-		
-		txtCuit = new JTextField();
-		txtCuit.setBounds(142, 160, 198, 20);
-		contentPane.add(txtCuit);
-		txtCuit.setColumns(10);
-		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String tipo = cbTipo.getSelectedItem().toString();
-				String titular = txtTitular.getText();
-				String cuit = txtCuit.getText();
+				String nombre = txtNombre.getText();
 
 				
 				int result = 0;
@@ -169,12 +145,10 @@ public class Tipo_Proveedor extends JFrame {
 					
 					
 					
-					if(existeTipo(titular,cuit)!=0) {
+					if(existeTipo(nombre)!=0) {
 						JOptionPane.showMessageDialog(null, "Artefacto ya existe");
 					}else {
-						ps.setString(1, tipo);
-						ps.setString(2, titular);
-						ps.setString(3, cuit);
+						ps.setString(1, nombre);
 					}
 						
 					
@@ -199,7 +173,7 @@ public class Tipo_Proveedor extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(55, 223, 89, 23);
+		btnAgregar.setBounds(55, 130, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -207,18 +181,16 @@ public class Tipo_Proveedor extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				int result = 0;
-				String tipo = cbTipo.getSelectedItem().toString();
-				String cuit = txtCuit.getText();
+				String nombre = txtNombre.getText();
 
 				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider_Type WHERE type_Name = ? AND cuit = ?;" );
-					if(tipoEnUso(tipo,cuit) != 0) {
+					if(tipoEnUso(nombre) != 0) {
 						JOptionPane.showMessageDialog(null, "Tipo está en uso, por favor elimine todos los registros relacionados");
 					}else {
-						ps.setString(1, tipo);
-						ps.setString(2, cuit);;
+						ps.setString(1, nombre);
 					}
 					
 					result = ps.executeUpdate();
@@ -240,7 +212,7 @@ public class Tipo_Proveedor extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(251, 223, 89, 23);
+		btnEliminar.setBounds(251, 130, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -249,17 +221,17 @@ public class Tipo_Proveedor extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(304, 271, 89, 23);
+		btnVolver.setBounds(304, 178, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(61, 57, 46, 14);
-		contentPane.add(lblTipo);
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(55, 61, 46, 14);
+		contentPane.add(lblNombre);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Empresa", "Farmaceutico", "Autonomo"}));
-		comboBox.setBounds(142, 53, 198, 22);
-		contentPane.add(comboBox);
+		txtNombre = new JTextField();
+		txtNombre.setBounds(153, 58, 203, 20);
+		contentPane.add(txtNombre);
+		txtNombre.setColumns(10);
 	}
 
 }

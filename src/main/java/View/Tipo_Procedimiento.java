@@ -11,11 +11,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Admin extends JFrame {
+public class Tipo_Procedimiento extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
-	private JTextField txtContraseña;
 
 	/**
 	 * Launch the application.
@@ -24,7 +23,7 @@ public class Admin extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Admin frame = new Admin();
+					Tipo_Procedimiento frame = new Tipo_Procedimiento();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -36,45 +35,36 @@ public class Admin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Admin() {
-		setTitle("Admin");
+	public Tipo_Procedimiento() {
+		setTitle("Tipo de Procemiento");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 430, 276);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Admin");
-		lblTitulo.setBounds(190, 11, 46, 14);
+		JLabel lblTitulo = new JLabel("Tipo de procedmiento");
+		lblTitulo.setBounds(154, 11, 141, 14);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(65, 56, 46, 14);
+		lblNombre.setBounds(46, 57, 61, 14);
 		contentPane.add(lblNombre);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(150, 53, 194, 20);
+		txtNombre.setBounds(145, 54, 190, 20);
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
 		
-		JLabel lblContraseña = new JLabel("Contraseña");
-		lblContraseña.setBounds(65, 108, 75, 14);
-		contentPane.add(lblContraseña);
-		
-		txtContraseña = new JTextField();
-		txtContraseña.setBounds(150, 105, 194, 20);
-		contentPane.add(txtContraseña);
-		txtContraseña.setColumns(10);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(42, 163, 89, 23);
+		btnAgregar.setBounds(66, 127, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(159, 163, 89, 23);
-		contentPane.add(btnModificar);
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(224, 127, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -82,12 +72,8 @@ public class Admin extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(311, 211, 89, 23);
+		btnVolver.setBounds(284, 175, 89, 23);
 		contentPane.add(btnVolver);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(280, 163, 89, 23);
-		contentPane.add(btnEliminar);
 	}
 
 }

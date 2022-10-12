@@ -16,9 +16,6 @@ import java.awt.event.ActionEvent;
 public class Procedimiento_Medico extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtVeterinario;
-	private JTextField txtMascota;
-	private JTextField txtSucursal;
 
 	/**
 	 * Launch the application.
@@ -42,7 +39,7 @@ public class Procedimiento_Medico extends JFrame {
 	public Procedimiento_Medico() {
 		setTitle("Procedimientos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 430);
+		setBounds(100, 100, 450, 348);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -57,28 +54,16 @@ public class Procedimiento_Medico extends JFrame {
 		lblTipo.setBounds(53, 53, 46, 14);
 		contentPane.add(lblTipo);
 		
-		JLabel lblVeterinario = new JLabel("Veterinario");
-		lblVeterinario.setBounds(53, 109, 71, 14);
-		contentPane.add(lblVeterinario);
-		
 		JLabel lblMascota = new JLabel("Mascota");
-		lblMascota.setBounds(53, 157, 46, 14);
+		lblMascota.setBounds(53, 112, 46, 14);
 		contentPane.add(lblMascota);
 		
-		JLabel lblSucursal = new JLabel("Sucursal");
-		lblSucursal.setBounds(53, 207, 46, 14);
-		contentPane.add(lblSucursal);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(47, 309, 89, 23);
+		btnAgregar.setBounds(71, 202, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(164, 309, 89, 23);
-		contentPane.add(btnModificar);
-		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(285, 309, 89, 23);
+		btnEliminar.setBounds(249, 202, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -87,27 +72,15 @@ public class Procedimiento_Medico extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(316, 357, 89, 23);
+		btnVolver.setBounds(309, 250, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JComboBox cbTipo = new JComboBox();
-		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"Cita", "Visita", "Intervencion"}));
 		cbTipo.setBounds(186, 49, 156, 22);
 		contentPane.add(cbTipo);
 		
-		txtVeterinario = new JTextField();
-		txtVeterinario.setBounds(186, 106, 156, 20);
-		contentPane.add(txtVeterinario);
-		txtVeterinario.setColumns(10);
-		
-		txtMascota = new JTextField();
-		txtMascota.setBounds(186, 154, 156, 20);
-		contentPane.add(txtMascota);
-		txtMascota.setColumns(10);
-		
-		txtSucursal = new JTextField();
-		txtSucursal.setBounds(186, 204, 156, 20);
-		contentPane.add(txtSucursal);
-		txtSucursal.setColumns(10);
+		JComboBox cbMascota = new JComboBox();
+		cbMascota.setBounds(186, 108, 156, 22);
+		contentPane.add(cbMascota);
 	}
 }

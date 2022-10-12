@@ -34,6 +34,7 @@ public class Mascota extends JFrame {
 	private JTextField txtTipo;
 	private JTextField txtEdad;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JTextField txtRaza;
 
 	
 	class ComboItem
@@ -268,11 +269,11 @@ public class Mascota extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(54, 308, 89, 23);
+		btnAgregar.setBounds(54, 338, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(245, 308, 89, 23);
+		btnEliminar.setBounds(245, 338, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -281,7 +282,7 @@ public class Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(289, 356, 89, 23);
+		btnVolver.setBounds(289, 386, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JLabel lblDuenio = new JLabel("Dueño");
@@ -292,5 +293,14 @@ public class Mascota extends JFrame {
 		cbDuenio.setBounds(175, 53, 141, 22);
 		contentPane.add(cbDuenio);
 		cbDuenio.setModel(cargarCliente());
+		
+		JLabel lblRaza = new JLabel("Raza (Opcional)");
+		lblRaza.setBounds(45, 300, 98, 14);
+		contentPane.add(lblRaza);
+		
+		txtRaza = new JTextField();
+		txtRaza.setBounds(175, 297, 141, 20);
+		contentPane.add(txtRaza);
+		txtRaza.setColumns(10);
 	}
 }

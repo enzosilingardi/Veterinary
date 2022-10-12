@@ -10,14 +10,12 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class Historial_Medico extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtIntervencion;
-	private JTextField txtVisita;
-	private JTextField txtCita;
-	private JTextField txtMascota;
+	private JTextField txtDescripcion;
 
 	/**
 	 * Launch the application.
@@ -41,7 +39,7 @@ public class Historial_Medico extends JFrame {
 	public Historial_Medico() {
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 427);
+		setBounds(100, 100, 450, 346);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -56,48 +54,16 @@ public class Historial_Medico extends JFrame {
 		lblMascota.setBounds(74, 64, 46, 14);
 		contentPane.add(lblMascota);
 		
-		JLabel lblCita = new JLabel("Cita");
-		lblCita.setBounds(74, 120, 46, 14);
-		contentPane.add(lblCita);
-		
-		JLabel lblVisita = new JLabel("Visita");
-		lblVisita.setBounds(74, 176, 46, 14);
-		contentPane.add(lblVisita);
-		
-		JLabel lblIntervencion = new JLabel("Intervención");
-		lblIntervencion.setBounds(74, 232, 77, 14);
-		contentPane.add(lblIntervencion);
-		
-		txtIntervencion = new JTextField();
-		txtIntervencion.setBounds(162, 229, 172, 20);
-		contentPane.add(txtIntervencion);
-		txtIntervencion.setColumns(10);
-		
-		txtVisita = new JTextField();
-		txtVisita.setBounds(162, 176, 172, 20);
-		contentPane.add(txtVisita);
-		txtVisita.setColumns(10);
-		
-		txtCita = new JTextField();
-		txtCita.setBounds(162, 117, 172, 20);
-		contentPane.add(txtCita);
-		txtCita.setColumns(10);
-		
-		txtMascota = new JTextField();
-		txtMascota.setBounds(162, 61, 172, 20);
-		contentPane.add(txtMascota);
-		txtMascota.setColumns(10);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(43, 293, 89, 23);
+		btnAgregar.setBounds(43, 202, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(160, 293, 89, 23);
+		btnModificar.setBounds(160, 202, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(281, 293, 89, 23);
+		btnEliminar.setBounds(281, 202, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -106,8 +72,21 @@ public class Historial_Medico extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(312, 341, 89, 23);
+		btnVolver.setBounds(312, 250, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JLabel lblDescripcion = new JLabel("Descripcion");
+		lblDescripcion.setBounds(74, 121, 77, 14);
+		contentPane.add(lblDescripcion);
+		
+		txtDescripcion = new JTextField();
+		txtDescripcion.setBounds(162, 118, 172, 20);
+		contentPane.add(txtDescripcion);
+		txtDescripcion.setColumns(10);
+		
+		JComboBox cbMascota = new JComboBox();
+		cbMascota.setBounds(164, 60, 170, 22);
+		contentPane.add(cbMascota);
 	}
 
 }
