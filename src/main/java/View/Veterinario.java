@@ -10,12 +10,14 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class Veterinario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtUsuario;
 	private JTextField txtMatricula;
+	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -39,7 +41,7 @@ public class Veterinario extends JFrame {
 	public Veterinario() {
 		setTitle("Veterinario");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 418, 397);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -50,34 +52,21 @@ public class Veterinario extends JFrame {
 		lblTitulo.setBounds(185, 11, 86, 14);
 		contentPane.add(lblTitulo);
 		
-		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setBounds(65, 56, 46, 14);
-		contentPane.add(lblUsuario);
-		
 		JLabel lblMatricula = new JLabel("Matrícula");
-		lblMatricula.setBounds(65, 119, 57, 14);
+		lblMatricula.setBounds(56, 213, 57, 14);
 		contentPane.add(lblMatricula);
 		
-		txtUsuario = new JTextField();
-		txtUsuario.setBounds(158, 53, 180, 20);
-		contentPane.add(txtUsuario);
-		txtUsuario.setColumns(10);
-		
 		txtMatricula = new JTextField();
-		txtMatricula.setBounds(158, 116, 180, 20);
+		txtMatricula.setBounds(175, 210, 163, 20);
 		contentPane.add(txtMatricula);
 		txtMatricula.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(46, 179, 89, 23);
+		btnAgregar.setBounds(56, 269, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(163, 179, 89, 23);
-		contentPane.add(btnModificar);
-		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(284, 179, 89, 23);
+		btnEliminar.setBounds(210, 269, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -86,8 +75,34 @@ public class Veterinario extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(315, 227, 89, 23);
+		btnVolver.setBounds(282, 317, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(56, 62, 59, 14);
+		contentPane.add(lblNombre);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(175, 59, 163, 20);
+		contentPane.add(textField);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(175, 110, 163, 20);
+		contentPane.add(textField_1);
+		
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setBounds(56, 113, 59, 14);
+		contentPane.add(lblApellido);
+		
+		JLabel lblDireccion = new JLabel("Direccion");
+		lblDireccion.setBounds(56, 163, 66, 14);
+		contentPane.add(lblDireccion);
+		
+		JComboBox cbDireccion = new JComboBox();
+		cbDireccion.setBounds(175, 159, 163, 22);
+		contentPane.add(cbDireccion);
 	}
 
 }

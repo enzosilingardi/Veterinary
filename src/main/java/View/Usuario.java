@@ -16,12 +16,11 @@ import java.awt.event.ActionEvent;
 public class Usuario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtFechaNacimiento;
-	private JTextField txtDni;
 	private JTextField txtContraseña;
 	private JTextField txtNombreUsuario;
-	private JTextField txtDireccion;
-	private JTextField txtNivelPermiso;
+	private JTextField txtNombre;
+	private JTextField txtApellido;
+	private JTextField txtEmail;
 
 	/**
 	 * Launch the application.
@@ -64,36 +63,12 @@ public class Usuario extends JFrame {
 		lblContraseña.setBounds(70, 97, 74, 14);
 		contentPane.add(lblContraseña);
 		
-		JLabel lblDni = new JLabel("DNI");
-		lblDni.setBounds(70, 139, 46, 14);
-		contentPane.add(lblDni);
-		
-		JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento");
-		lblFechaNacimiento.setBounds(70, 181, 110, 14);
-		contentPane.add(lblFechaNacimiento);
-		
-		JLabel lblGenero = new JLabel("Género");
-		lblGenero.setBounds(70, 223, 46, 14);
-		contentPane.add(lblGenero);
-		
-		JLabel lblDireccion = new JLabel("Dirección");
-		lblDireccion.setBounds(70, 265, 46, 14);
-		contentPane.add(lblDireccion);
-		
-		JLabel lblNivelPermiso = new JLabel("Nivel de permiso");
-		lblNivelPermiso.setBounds(70, 308, 94, 14);
-		contentPane.add(lblNivelPermiso);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(40, 362, 89, 23);
+		btnAgregar.setBounds(74, 362, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.setBounds(157, 362, 89, 23);
-		contentPane.add(btnModificar);
-		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(278, 362, 89, 23);
+		btnEliminar.setBounds(264, 362, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -105,16 +80,6 @@ public class Usuario extends JFrame {
 		btnVolver.setBounds(309, 410, 89, 23);
 		contentPane.add(btnVolver);
 		
-		txtFechaNacimiento = new JTextField();
-		txtFechaNacimiento.setBounds(189, 178, 163, 20);
-		contentPane.add(txtFechaNacimiento);
-		txtFechaNacimiento.setColumns(10);
-		
-		txtDni = new JTextField();
-		txtDni.setBounds(189, 136, 163, 20);
-		contentPane.add(txtDni);
-		txtDni.setColumns(10);
-		
 		txtContraseña = new JTextField();
 		txtContraseña.setBounds(189, 94, 163, 20);
 		contentPane.add(txtContraseña);
@@ -125,20 +90,40 @@ public class Usuario extends JFrame {
 		contentPane.add(txtNombreUsuario);
 		txtNombreUsuario.setColumns(10);
 		
-		JComboBox cbGenero = new JComboBox();
-		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));
-		cbGenero.setBounds(189, 219, 163, 22);
-		contentPane.add(cbGenero);
+		JLabel lblPerfil = new JLabel("Perfil");
+		lblPerfil.setBounds(70, 145, 46, 14);
+		contentPane.add(lblPerfil);
 		
-		txtDireccion = new JTextField();
-		txtDireccion.setBounds(189, 262, 163, 20);
-		contentPane.add(txtDireccion);
-		txtDireccion.setColumns(10);
+		JComboBox cbPerfil = new JComboBox();
+		cbPerfil.setBounds(189, 141, 163, 22);
+		contentPane.add(cbPerfil);
 		
-		txtNivelPermiso = new JTextField();
-		txtNivelPermiso.setBounds(189, 305, 163, 20);
-		contentPane.add(txtNivelPermiso);
-		txtNivelPermiso.setColumns(10);
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(70, 198, 59, 14);
+		contentPane.add(lblNombre);
+		
+		txtNombre = new JTextField();
+		txtNombre.setBounds(189, 195, 163, 20);
+		contentPane.add(txtNombre);
+		txtNombre.setColumns(10);
+		
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setBounds(70, 249, 59, 14);
+		contentPane.add(lblApellido);
+		
+		txtApellido = new JTextField();
+		txtApellido.setBounds(189, 246, 163, 20);
+		contentPane.add(txtApellido);
+		txtApellido.setColumns(10);
+		
+		JLabel lblEmail = new JLabel("E-Mail");
+		lblEmail.setBounds(70, 302, 46, 14);
+		contentPane.add(lblEmail);
+		
+		txtEmail = new JTextField();
+		txtEmail.setBounds(189, 299, 164, 20);
+		contentPane.add(txtEmail);
+		txtEmail.setColumns(10);
 	}
 
 }

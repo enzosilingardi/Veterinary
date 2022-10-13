@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 public class Perfil extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtTipo;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -38,7 +38,7 @@ public class Perfil extends JFrame {
 	public Perfil() {
 		setTitle("Perfil");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 248);
+		setBounds(100, 100, 416, 248);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -46,24 +46,15 @@ public class Perfil extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblTitulo = new JLabel("Perfil");
-		lblTitulo.setBounds(195, 11, 46, 14);
+		lblTitulo.setBounds(175, 11, 46, 14);
 		contentPane.add(lblTitulo);
 		
-		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(52, 80, 46, 14);
-		contentPane.add(lblTipo);
-		
-		txtTipo = new JTextField();
-		txtTipo.setBounds(143, 77, 207, 20);
-		contentPane.add(txtTipo);
-		txtTipo.setColumns(10);
-		
 		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.setBounds(87, 131, 89, 23);
+		btnAgregar.setBounds(60, 131, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(248, 131, 89, 23);
+		btnEliminar.setBounds(221, 131, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -72,8 +63,17 @@ public class Perfil extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(317, 175, 89, 23);
+		btnVolver.setBounds(290, 175, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(44, 68, 46, 14);
+		contentPane.add(lblNombre);
+		
+		textField = new JTextField();
+		textField.setBounds(122, 65, 188, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
 	}
 
 }
