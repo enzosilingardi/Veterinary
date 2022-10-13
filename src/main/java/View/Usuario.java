@@ -12,6 +12,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Usuario extends JFrame {
 
@@ -81,6 +83,13 @@ public class Usuario extends JFrame {
 		contentPane.add(btnVolver);
 		
 		txtContrasenia = new JTextField();
+		txtContrasenia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (txtContrasenia.getText().length() >= 16 ) 
+		            e.consume(); 
+			}
+		});
 		txtContrasenia.setBounds(189, 94, 163, 20);
 		contentPane.add(txtContrasenia);
 		txtContrasenia.setColumns(10);
