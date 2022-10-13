@@ -11,12 +11,13 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtUsuario;
-	private JTextField txtContraseña;
+	private JPasswordField txtContrasenia;
 
 	/**
 	 * Launch the application.
@@ -54,19 +55,14 @@ public class Login extends JFrame {
 		lblUsuario.setBounds(62, 71, 46, 14);
 		contentPane.add(lblUsuario);
 		
-		JLabel lblContraseña = new JLabel("Contraseña");
-		lblContraseña.setBounds(62, 122, 56, 14);
-		contentPane.add(lblContraseña);
+		JLabel lblContrasenia = new JLabel("Contraseña");
+		lblContrasenia.setBounds(62, 122, 56, 14);
+		contentPane.add(lblContrasenia);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setBounds(156, 68, 134, 20);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
-		
-		txtContraseña = new JTextField();
-		txtContraseña.setBounds(156, 119, 134, 20);
-		contentPane.add(txtContraseña);
-		txtContraseña.setColumns(10);
 		
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.setBounds(49, 184, 89, 23);
@@ -80,5 +76,9 @@ public class Login extends JFrame {
 		});
 		btnCerrar.setBounds(246, 184, 89, 23);
 		contentPane.add(btnCerrar);
+		
+		txtContrasenia = new JPasswordField();
+		txtContrasenia.setBounds(156, 119, 134, 20);
+		contentPane.add(txtContrasenia);
 	}
 }

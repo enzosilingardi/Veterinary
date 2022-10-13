@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 public class Usuario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtContraseña;
+	private JTextField txtContrasenia;
 	private JTextField txtNombreUsuario;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
@@ -59,9 +59,9 @@ public class Usuario extends JFrame {
 		lblNombreUsuario.setBounds(70, 56, 110, 14);
 		contentPane.add(lblNombreUsuario);
 		
-		JLabel lblContraseña = new JLabel("Contraseña");
-		lblContraseña.setBounds(70, 97, 74, 14);
-		contentPane.add(lblContraseña);
+		JLabel lblContrasenia = new JLabel("Contraseña");
+		lblContrasenia.setBounds(70, 97, 74, 14);
+		contentPane.add(lblContrasenia);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.setBounds(74, 362, 89, 23);
@@ -80,10 +80,10 @@ public class Usuario extends JFrame {
 		btnVolver.setBounds(309, 410, 89, 23);
 		contentPane.add(btnVolver);
 		
-		txtContraseña = new JTextField();
-		txtContraseña.setBounds(189, 94, 163, 20);
-		contentPane.add(txtContraseña);
-		txtContraseña.setColumns(10);
+		txtContrasenia = new JTextField();
+		txtContrasenia.setBounds(189, 94, 163, 20);
+		contentPane.add(txtContrasenia);
+		txtContrasenia.setColumns(10);
 		
 		txtNombreUsuario = new JTextField();
 		txtNombreUsuario.setBounds(189, 53, 163, 20);
