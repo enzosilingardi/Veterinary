@@ -16,8 +16,8 @@ public class Veterinario extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtMatricula;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtNombre;
+	private JTextField txtApellido;
 
 	/**
 	 * Launch the application.
@@ -82,15 +82,15 @@ public class Veterinario extends JFrame {
 		lblNombre.setBounds(56, 62, 59, 14);
 		contentPane.add(lblNombre);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(175, 59, 163, 20);
-		contentPane.add(textField);
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(175, 59, 163, 20);
+		contentPane.add(txtNombre);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(175, 110, 163, 20);
-		contentPane.add(textField_1);
+		txtApellido = new JTextField();
+		txtApellido.setColumns(10);
+		txtApellido.setBounds(175, 110, 163, 20);
+		contentPane.add(txtApellido);
 		
 		JLabel lblApellido = new JLabel("Apellido");
 		lblApellido.setBounds(56, 113, 59, 14);
