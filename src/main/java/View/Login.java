@@ -12,6 +12,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Login extends JFrame {
 
@@ -56,7 +58,7 @@ public class Login extends JFrame {
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
-		lblContrasenia.setBounds(62, 122, 56, 14);
+		lblContrasenia.setBounds(62, 122, 76, 14);
 		contentPane.add(lblContrasenia);
 		
 		txtUsuario = new JTextField();
@@ -78,6 +80,13 @@ public class Login extends JFrame {
 		contentPane.add(btnCerrar);
 		
 		txtContrasenia = new JPasswordField();
+		txtContrasenia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (txtContrasenia.getText().length() >= 16 ) 
+		            e.consume(); 
+			}
+		});
 		txtContrasenia.setBounds(156, 119, 134, 20);
 		contentPane.add(txtContrasenia);
 	}
