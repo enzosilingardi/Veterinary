@@ -6,7 +6,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -14,6 +18,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
 
@@ -35,6 +43,35 @@ public class Login extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public int existeUsuario(String usuario, String contrasenia) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Users WHERE username = ? AND password = ?   ;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, usuario);
+			pst.setString(2, contrasenia);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
 	}
 
 	/**
@@ -67,6 +104,24 @@ public class Login extends JFrame {
 		txtUsuario.setColumns(10);
 		
 		JButton btnIngresar = new JButton("Ingresar");
+		btnIngresar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String usuario = txtUsuario.getText();
+				String contrasenia = txtContrasenia.getText();
+				
+					if(existeUsuario(usuario,contrasenia) != 0) {
+						Main main = new Main();
+						main.setVisible(true);
+						dispose();
+					}else {
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+					}
+					
+				
+				
+			}
+		});
 		btnIngresar.setBounds(49, 184, 89, 23);
 		contentPane.add(btnIngresar);
 		
