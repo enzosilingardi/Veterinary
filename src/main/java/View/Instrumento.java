@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
-public class Artefacto extends JFrame {
+public class Instrumento extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
@@ -92,7 +92,7 @@ public class Artefacto extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Artefacto frame = new Artefacto();
+					Instrumento frame = new Instrumento();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,18 +101,16 @@ public class Artefacto extends JFrame {
 		});
 	}
 
-	public int existeArtefacto(Object quirofano, String nombre) {
+	public int existeInstrumento(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Medical_Instrument WHERE name = ? AND id_Operating_Room = ? ;";
+			String SSQL = "SELECT count(instrument_Name) FROM Medical_Instrument WHERE instrument_Name = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
-			pst.setString(2,(String) quirofano);
-
 			result = pst.executeQuery();
 			
 			if (result.next()) {
@@ -143,8 +141,8 @@ public class Artefacto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Artefacto() {
-		setTitle("Artefacto");
+	public Instrumento() {
+		setTitle("Instrumento");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 304);
 		contentPane = new JPanel();
@@ -153,7 +151,7 @@ public class Artefacto extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Artefactos");
+		JLabel lblTitulo = new JLabel("Instrumentos");
 		lblTitulo.setBounds(195, 11, 80, 14);
 		contentPane.add(lblTitulo);
 		
@@ -185,24 +183,29 @@ public class Artefacto extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Instrument (id_Operating_Room, instrument_Name, instrument_Description) VALUES (?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Instrument (instrument_Name, instrument_Description) VALUES (?,?)" );
 					
-					
+					if(existeInstrumento(nombre) != 0) {
+						JOptionPane.showMessageDialog(null, "Instrumento ya existe");
+					}else {
+						ps.setString(1, nombre);
+						ps.setString(2, descripcion);
+					}
 					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Artefacto guardado");
+		                JOptionPane.showMessageDialog(null, "Instrumento guardado");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar artefacto");
+		                JOptionPane.showMessageDialog(null, "Error al guardar instrumento");
 		                limpiar();
 		            }
 				
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -220,14 +223,14 @@ public class Artefacto extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE instrument_Name = ? AND id_Operating_Room = ?" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE instrument_Name = ?" );
 					ps.setString(1, nombre);
 					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Artefacto borrado");
+					JOptionPane.showMessageDialog(null, "Instrumento borrado");
 					limpiar();
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

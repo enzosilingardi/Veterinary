@@ -195,7 +195,7 @@ public class Sucursal extends JFrame {
 				
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -222,7 +222,7 @@ public class Sucursal extends JFrame {
 					limpiar();
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import View.Artefacto.ComboItem;
+import View.Instrumento.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

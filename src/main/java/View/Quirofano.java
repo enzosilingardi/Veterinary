@@ -107,18 +107,16 @@ public class Quirofano extends JFrame {
 	}
 
 	
-	public int existeQuirofano(Object sucursal, int numero) {
+	public int existeInstrumento(int numero) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Operating_Room WHERE room_Number = ? AND id_Branch = ? ;";
+			String SSQL = "SELECT count(room_Number) FROM Operating_Room WHERE room_Number = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, numero);
-			pst.setString(2,(String) sucursal);
-
 			result = pst.executeQuery();
 			
 			if (result.next()) {
@@ -212,12 +210,16 @@ public class Quirofano extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number, id_Branch) VALUES (?,?)" );
-					
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number) VALUES (?)" );
+					if(existeInstrumento(numero) != 0) {
+						JOptionPane.showMessageDialog(null, "Quirofano ya existe");
+					}else {
+						ps.setInt(1, numero);
+					}
 					
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -255,7 +257,7 @@ public class Quirofano extends JFrame {
 		            }
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

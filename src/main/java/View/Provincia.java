@@ -264,7 +264,7 @@ public class Provincia extends JFrame {
 				
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -217,7 +217,7 @@ public class Direccion extends JFrame {
 				Object ciudad = cbCiudad.getSelectedItem();
 				int numero = Integer.parseInt(txtNumero.getText());
 				int piso = Integer.parseInt(txtPiso.getText());
-				int depto = Integer.parseInt(txtDepto.getText());
+				String depto = txtDepto.getText();
 				
 				int result = 0;
 				
@@ -236,7 +236,7 @@ public class Direccion extends JFrame {
 						ps.setString(2, nombre);
 						ps.setInt(3,numero);
 						ps.setInt(4,piso);
-						ps.setInt(5,depto);
+						ps.setString(5,depto);
 						
 					}
 						
@@ -255,7 +255,7 @@ public class Direccion extends JFrame {
 				
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -93,7 +93,7 @@ public class Login extends JFrame {
 			
 			
 		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
+			e.printStackTrace();
 			
 		}catch (ClassNotFoundException e1) {
 			// TODO Auto-generated catch block

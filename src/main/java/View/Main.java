@@ -150,14 +150,14 @@ public class Main extends JFrame {
 		});
 		mnArchivos.add(mntmABMQuirofano);
 		
-		JMenuItem mntmABMArtefacto = new JMenuItem("ABM Artefacto");
-		mntmABMArtefacto.addActionListener(new ActionListener() {
+		JMenuItem mntmABMInstrumento= new JMenuItem("ABM Instrumento");
+		mntmABMInstrumento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Artefacto artefacto = new Artefacto();
-				artefacto.setVisible(true);
+				Instrumento instrumento = new Instrumento();
+				instrumento.setVisible(true);
 			}
 		});
-		mnArchivos.add(mntmABMArtefacto);
+		mnArchivos.add(mntmABMInstrumento);
 		
 		JMenuItem mntmABMCiudad = new JMenuItem("ABM Ciudad");
 		mntmABMCiudad.addActionListener(new ActionListener() {
