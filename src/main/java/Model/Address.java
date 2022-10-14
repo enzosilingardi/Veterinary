@@ -7,7 +7,7 @@ public class Address {
 	protected String address_Name;
 	protected int address_Number;
 	protected int floor_Number;
-	protected int dept_Number;
+	protected String dept_Number;
 	
 	public int getId_Address() {
 		return id_Address;
@@ -39,10 +39,12 @@ public class Address {
 	public void setFloor_Number(int floor_Number) {
 		this.floor_Number = floor_Number;
 	}
-	public int getDept_Number() {
+	
+	
+	public String getDept_Number() {
 		return dept_Number;
 	}
-	public void setDept_Number(int dept_Number) {
+	public void setDept_Number(String dept_Number) {
 		this.dept_Number = dept_Number;
 	}
 	
@@ -51,7 +53,7 @@ public class Address {
 	}
 	
 	public Address(int id_Address, City id_City, String address_Name, int address_Number, int floor_Number,
-			int dept_Number) {
+			String dept_Number) {
 		super();
 		this.id_Address = id_Address;
 		this.id_City = id_City;
@@ -61,7 +63,7 @@ public class Address {
 		this.dept_Number = dept_Number;
 	}
 	
-	public Address(City id_City, String address_Name, int address_Number, int floor_Number, int dept_Number) {
+	public Address(City id_City, String address_Name, int address_Number, int floor_Number, String dept_Number) {
 		super();
 		this.id_City = id_City;
 		this.address_Name = address_Name;

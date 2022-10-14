@@ -44,17 +44,16 @@ public class Tipo_Proveedor extends JFrame {
 		});
 	}
 	
-	public int existeTipo(String titular) {
+	public int existeTipo(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Provider_Type WHERE owner = ? AND cuit = ? ;";
+			String SSQL = "SELECT count(type_Name) FROM provider_Type WHERE type_Name = ?;";
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, titular);
-
+			pst.setString(1, nombre);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
@@ -73,7 +72,6 @@ public class Tipo_Proveedor extends JFrame {
 		
 		
 	}
-	
 	public int tipoEnUso(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;
@@ -84,7 +82,7 @@ public class Tipo_Proveedor extends JFrame {
 			String SSQL = "SELECT count(Provider.id_Provider_Type)\r\n"
 					+ "FROM Provider_Type\r\n"
 					+ "JOIN Provider ON Provider.id_Provider_Type = Provider_Type.id_Provider_Type\r\n"
-					+ "WHERE Provider_Type.type_Name LIKE ? AND Provider_Type.cuit LIKE ? ;";
+					+ "WHERE Provider_Type.type_Name LIKE ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
@@ -141,12 +139,12 @@ public class Tipo_Proveedor extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider_Type (type_Name,owner, cuit) VALUES (?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider_Type (type_Name) VALUES (?)" );
 					
 					
 					
 					if(existeTipo(nombre)!=0) {
-						JOptionPane.showMessageDialog(null, "Artefacto ya existe");
+						JOptionPane.showMessageDialog(null, "Tipo ya existe");
 					}else {
 						ps.setString(1, nombre);
 					}
@@ -165,7 +163,7 @@ public class Tipo_Proveedor extends JFrame {
 				
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -186,7 +184,7 @@ public class Tipo_Proveedor extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider_Type WHERE type_Name = ? AND cuit = ?;" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider_Type WHERE type_Name = ?;" );
 					if(tipoEnUso(nombre) != 0) {
 						JOptionPane.showMessageDialog(null, "Tipo está en uso, por favor elimine todos los registros relacionados");
 					}else {
@@ -204,7 +202,7 @@ public class Tipo_Proveedor extends JFrame {
 		            }
 					
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

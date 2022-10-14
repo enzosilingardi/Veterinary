@@ -216,7 +216,7 @@ public class Direccion extends JFrame {
 				String nombre = txtNombre.getText();
 				Object ciudad = cbCiudad.getSelectedItem();
 				int numero = Integer.parseInt(txtNumero.getText());
-				int piso = Integer.parseInt(txtPiso.getText());
+				Integer piso = Integer.parseInt(txtPiso.getText());
 				String depto = txtDepto.getText();
 				
 				int result = 0;

@@ -107,7 +107,7 @@ public class Quirofano extends JFrame {
 	}
 
 	
-	public int existeInstrumento(int numero) {
+	public int existeQuirofano(int numero) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -211,7 +211,7 @@ public class Quirofano extends JFrame {
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number) VALUES (?)" );
-					if(existeInstrumento(numero) != 0) {
+					if(existeQuirofano(numero) != 0) {
 						JOptionPane.showMessageDialog(null, "Quirofano ya existe");
 					}else {
 						ps.setInt(1, numero);
