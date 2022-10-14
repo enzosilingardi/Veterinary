@@ -36,7 +36,7 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public Main(String perfil) {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 690, 417);
@@ -63,9 +63,12 @@ public class Main extends JFrame {
 		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
 		mnVentas.add(mntmPresupuestos);
 		
+		
+		if (perfil.equals("Admin")) {
 		JMenu mnArchivos = new JMenu("Archivos");
 		mnArchivos.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnArchivos);
+		
 		
 		JMenuItem mntmABMCliente = new JMenuItem("ABM Cliente");
 		mntmABMCliente.addActionListener(new ActionListener() {
@@ -200,7 +203,7 @@ public class Main extends JFrame {
 			}
 		});
 		mnArchivos.add(mntmABMProcedimiento);
-		
+		}
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -232,5 +235,9 @@ public class Main extends JFrame {
 		});
 		btnSucursales.setBounds(466, 11, 104, 81);
 		contentPane.add(btnSucursales);
+	}
+
+	public Main() {
+		// TODO Auto-generated constructor stub
 	}
 }

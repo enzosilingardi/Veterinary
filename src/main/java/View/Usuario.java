@@ -182,7 +182,7 @@ public class Usuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String nombre = txtNombre.getText();
-				Object perfil = cbPerfil.getSelectedItem();
+				String perfil = cbPerfil.getSelectedItem().toString();
 				String nombreU = txtNombreUsuario.getText();
 				String apellido = txtApellido.getText();
 				String contrasenia = txtContrasenia.getText();
@@ -192,16 +192,16 @@ public class Usuario extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Users (id_Profile,name,surname,username,password,email) VALUES (?,?,?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Users (profile,name,surname,username,password,email) VALUES (?,?,?,?,?,?)" );
 					
 					
-					if (((ComboItem) perfil).getValue() == "") {
+					if (perfil == "") {
 						JOptionPane.showMessageDialog(null, "Seleccione un perfil");
 					}else {
 						if(existeUsuario(nombreU)!=0) {
 						JOptionPane.showMessageDialog(null, "Usuario ya existe");
 					}else {
-						ps.setString(1, ((ComboItem) perfil).getValue());
+						ps.setString(1, perfil);
 						ps.setString(2, nombre);
 						ps.setString(3, apellido);
 						ps.setString(4, nombreU);
@@ -286,7 +286,7 @@ public class Usuario extends JFrame {
 		cbPerfil = new JComboBox();
 		cbPerfil.setBounds(189, 141, 163, 22);
 		contentPane.add(cbPerfil);
-		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"Admin", "Manager", "Regular"}));
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(70, 198, 59, 14);

@@ -3,7 +3,7 @@ package Model;
 public class Users {
 
 	protected int id_User;
-	protected Profile id_Profile;
+	protected String profile;
 	protected String name;
 	protected String surname;
 	protected String username;
@@ -16,11 +16,12 @@ public class Users {
 	public void setId_User(int id_User) {
 		this.id_User = id_User;
 	}
-	public Profile getId_Profile() {
-		return id_Profile;
+	
+	public String getProfile() {
+		return profile;
 	}
-	public void setId_Profile(Profile id_Profile) {
-		this.id_Profile = id_Profile;
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 	public String getName() {
 		return name;
@@ -57,11 +58,11 @@ public class Users {
 		super();
 	}
 	
-	public Users(int id_User, Profile id_Profile, String name, String surname, String username, String password,
+	public Users(int id_User, String profile, String name, String surname, String username, String password,
 			String email) {
 		super();
 		this.id_User = id_User;
-		this.id_Profile = id_Profile;
+		this.profile = profile;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
@@ -69,15 +70,16 @@ public class Users {
 		this.email = email;
 	}
 	
-	public Users(Profile id_Profile, String name, String surname, String username, String password, String email) {
+	public Users(String profile, String name, String surname, String username, String password, String email) {
 		super();
-		this.id_Profile = id_Profile;
+		this.profile = profile;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 	}
+	
 	
 	
 	

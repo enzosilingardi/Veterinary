@@ -141,7 +141,7 @@ public class Login extends JFrame {
 				String contrasenia = txtContrasenia.getText();
 				
 					if(existeUsuario(usuario,contrasenia) != 0) {
-						Main main = new Main();
+						Main main = new Main(perfilUsuario(usuario,contrasenia));
 						main.setVisible(true);
 						dispose();
 					}else {
