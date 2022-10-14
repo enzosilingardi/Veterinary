@@ -201,15 +201,6 @@ public class Main extends JFrame {
 		});
 		mnArchivos.add(mntmABMProcedimiento);
 		
-		JMenuItem mntmABMPerfil = new JMenuItem("ABM Perfil");
-		mntmABMPerfil.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Perfil perfil = new Perfil();
-				perfil.setVisible(true);
-			}
-		});
-		mnArchivos.add(mntmABMPerfil);
-		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

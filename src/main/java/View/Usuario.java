@@ -286,7 +286,7 @@ public class Usuario extends JFrame {
 		cbPerfil = new JComboBox();
 		cbPerfil.setBounds(189, 141, 163, 22);
 		contentPane.add(cbPerfil);
-		cbPerfil.setModel(cargarPerfil());
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"Admin", "Manager", "Regular"}));
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(70, 198, 59, 14);
