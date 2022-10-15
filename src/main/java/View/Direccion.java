@@ -152,7 +152,7 @@ public class Direccion extends JFrame {
 	 */
 	public Direccion() {
 		setTitle("Dirección");
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 482, 424);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -216,7 +216,11 @@ public class Direccion extends JFrame {
 				String nombre = txtNombre.getText();
 				Object ciudad = cbCiudad.getSelectedItem();
 				int numero = Integer.parseInt(txtNumero.getText());
+				
+				
 				Integer piso = Integer.parseInt(txtPiso.getText());
+				
+				
 				String depto = txtDepto.getText();
 				
 				int result = 0;
@@ -235,7 +239,9 @@ public class Direccion extends JFrame {
 						ps.setString(1, ((ComboItem) ciudad).getValue());
 						ps.setString(2, nombre);
 						ps.setInt(3,numero);
+						
 						ps.setInt(4,piso);
+						
 						ps.setString(5,depto);
 						
 					}
