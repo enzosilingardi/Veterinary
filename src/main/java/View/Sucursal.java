@@ -244,5 +244,6 @@ public class Sucursal extends JFrame {
 		cbDireccion = new JComboBox();
 		cbDireccion.setBounds(160, 76, 196, 22);
 		contentPane.add(cbDireccion);
+		cbDireccion.setModel(cargarDireccion());
 	}
 }
