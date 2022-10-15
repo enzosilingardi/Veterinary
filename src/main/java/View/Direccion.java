@@ -212,22 +212,31 @@ public class Direccion extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				PreparedStatement ps = null;
 				String nombre = txtNombre.getText();
 				Object ciudad = cbCiudad.getSelectedItem();
 				int numero = Integer.parseInt(txtNumero.getText());
 				
 				
-				Integer piso = Integer.parseInt(txtPiso.getText());
 				
-				
-				String depto = txtDepto.getText();
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Address (id_City, address_Name, address_Number, floor_Number, dept_Number) VALUES (?,?,?,?,?)" );
+					
+					if(txtPiso.getText().isBlank() && txtDepto.getText().isBlank()) {
+						ps = con.prepareStatement("INSERT INTO Address (id_City, address_Name, address_Number) VALUES (?,?,?)" );
+					}else {
+						ps = con.prepareStatement("INSERT INTO Address (id_City, address_Name, address_Number, floor_Number, dept_Number) VALUES (?,?,?,?,?)" );
+						Integer piso = Integer.parseInt(txtPiso.getText());
+						String depto = txtDepto.getText();
+						ps.setInt(4,piso);
+						
+						ps.setString(5,depto);
+					}
+					
+					
 					
 					
 					if (((ComboItem) ciudad).getValue() == "") {
@@ -240,9 +249,7 @@ public class Direccion extends JFrame {
 						ps.setString(2, nombre);
 						ps.setInt(3,numero);
 						
-						ps.setInt(4,piso);
 						
-						ps.setString(5,depto);
 						
 					}
 						
