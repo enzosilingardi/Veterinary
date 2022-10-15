@@ -5,12 +5,21 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+import View.Proveedor.ComboItem;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class Producto extends JFrame {
@@ -20,7 +29,66 @@ public class Producto extends JFrame {
 	private JTextField txtDescripcion;
 	private JTextField txtCosto;
 	private JTextField txtPrecio;
+	private JComboBox cbTipo;
+	private JComboBox cbProveedor;
+	
+	class ComboItem
+	{
+	    private String key;
+	    private String value;
 
+	    public ComboItem(String key, String value)
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	public DefaultComboBoxModel cargarProveedor() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Provider ORDER BY id_Provider";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("provider_Name"),result.getString("id_Provider")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
 	/**
 	 * Launch the application.
 	 */
@@ -35,6 +103,78 @@ public class Producto extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public int existeProducto(String nombre) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Product WHERE product_Name = ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1,nombre);
+
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	public int productoEnUso(String producto) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(Stock.id_Product)\r\n"
+					+ "FROM Product\r\n"
+					+ "JOIN Stock ON Stock.id_Product = Product.id_Product\r\n"
+					+ "WHERE Product.product_Name LIKE ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, producto);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	private void limpiar() {
+		cbProveedor.setSelectedIndex(0);
+		cbTipo.setSelectedIndex(0);
+		txtNombre.setText("");
+		txtCosto.setText("");
+		txtPrecio.setText("");
+		txtDescripcion.setText("");
+		
 	}
 
 	/**
@@ -58,9 +198,10 @@ public class Producto extends JFrame {
 		lblProveedor.setBounds(47, 49, 68, 14);
 		contentPane.add(lblProveedor);
 		
-		JComboBox cbProveedor = new JComboBox();
+		cbProveedor = new JComboBox();
 		cbProveedor.setBounds(160, 45, 187, 22);
 		contentPane.add(cbProveedor);
+		cbProveedor.setModel(cargarProveedor());
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(47, 96, 46, 14);
@@ -75,7 +216,7 @@ public class Producto extends JFrame {
 		lblTipo.setBounds(47, 142, 46, 14);
 		contentPane.add(lblTipo);
 		
-		JComboBox cbTipo = new JComboBox();
+		cbTipo = new JComboBox();
 		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"Alimento", "Medico", "Accesorio"}));
 		cbTipo.setBounds(160, 138, 187, 22);
 		contentPane.add(cbTipo);
@@ -108,10 +249,95 @@ public class Producto extends JFrame {
 		txtPrecio.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Object proveedor = cbProveedor.getSelectedItem();
+				String tipo = cbTipo.getSelectedItem().toString();
+				String nombre = txtNombre.getText();
+				String descripcion = txtDescripcion.getText();
+				float costo = Float.parseFloat(txtCosto.getText());
+				float precio = Float.parseFloat(txtPrecio.getText());
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Product (id_Provider, product_Name, product_Type, description, cost_Price, sale_Price) VALUES (?,?,?,?,?,?)" );
+					
+					
+					if (((ComboItem) proveedor).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione un proveedor");
+					}else {
+						ps.setString(1, ((ComboItem) proveedor).getValue());
+						ps.setString(2, nombre);
+						ps.setString(3, tipo);
+						ps.setString(4, descripcion);
+						ps.setFloat(5,costo);
+						ps.setFloat(6,precio);
+						
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Proveedor guardado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar proveedor");
+		                limpiar();
+		            }
+				
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnAgregar.setBounds(77, 336, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				int result = 0;
+				String nombre = txtNombre.getText();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Product WHERE product_Name = ?" );
+					if(productoEnUso(nombre) != 0) {
+						JOptionPane.showMessageDialog(null, "Producto está en uso, por favor elimine todos los registros relacionados");
+					}else {
+						ps.setString(1, nombre);
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Producto eliminado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");
+		                limpiar();
+		            }
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+			}
+		});
 		btnEliminar.setBounds(246, 336, 89, 23);
 		contentPane.add(btnEliminar);
 		
