@@ -136,37 +136,6 @@ public class Quirofano extends JFrame {
 		
 	}
 	
-	public int quirofanoEnUso(int quirofano) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(Medical_Instrument.id_Operating_Room)\r\n"
-					+ "FROM Operating_Room\r\n"
-					+ "JOIN Medical_Instrument ON Operating_Room.id_Operating_Room = Medical_Instrument.id_Operating_Room\r\n"
-					+ "WHERE Operating_Room.room_Number LIKE ?;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, quirofano);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
 	
 	
 	private void limpiar() {
@@ -217,6 +186,16 @@ public class Quirofano extends JFrame {
 						ps.setInt(1, numero);
 					}
 					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Quirófano agrgado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al agregar quirófano");
+		                limpiar();
+		            }
+					
 					
 				}catch(SQLException E) {
 					E.printStackTrace();
@@ -233,35 +212,6 @@ public class Quirofano extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-
-				int result = 0;
-				int numero = Integer.parseInt(txtNumero.getText());
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Operating_Room WHERE room_Number = ? AND id_Branch = ?;" );
-					if(quirofanoEnUso(numero) != 0) {
-						JOptionPane.showMessageDialog(null, "Quirófano está en uso, por favor elimine todos los registros relacionados");
-					}else {
-						ps.setInt(1, numero);
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano eliminado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar quirofano");
-		                limpiar();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				
 				
 			}
