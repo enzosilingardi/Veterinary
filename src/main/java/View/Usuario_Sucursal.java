@@ -1,32 +1,33 @@
 package View;
 
 import java.awt.EventQueue;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import View.Instrumento_Quirofano.ComboItem;
+import View.Sucursal_Producto.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class Quirofano_Sucursal extends JFrame {
+public class Usuario_Sucursal extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox cbQuirofano;
+	private JComboBox cbUsuario;
 	private JComboBox cbSucursal;
-	
+
+
 	class ComboItem
 	{
 	    private String key;
@@ -55,7 +56,8 @@ public class Quirofano_Sucursal extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarQuirofano() {
+
+	public DefaultComboBoxModel cargarUsuario() {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -65,13 +67,13 @@ public class Quirofano_Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Operating_Room ORDER BY id_Operating_Room";
+			String SSQL = "SELECT * FROM Users ORDER BY id_User";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
+			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("room_Number"),result.getString("id_Operating_Room")));
+				modelo.addElement(new ComboItem(result.getString("username"),result.getString("id_User")));
 				
 			}
 			cn.close();
@@ -115,7 +117,6 @@ public class Quirofano_Sucursal extends JFrame {
 			}
 		return modelo;
     }
-
 	/**
 	 * Launch the application.
 	 */
@@ -123,7 +124,7 @@ public class Quirofano_Sucursal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Quirofano_Sucursal frame = new Quirofano_Sucursal();
+					Usuario_Sucursal frame = new Usuario_Sucursal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -131,17 +132,17 @@ public class Quirofano_Sucursal extends JFrame {
 			}
 		});
 	}
-	
-	public int existeRel(Object quirofano, Object sucursal) {
+
+	public int existeRel(Object usuario, Object sucursal) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Rel_Branch_Operating_R WHERE id_Operating_Room = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Users_Branch WHERE id_User = ? AND id_Branch = ?;";
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,(String) quirofano);
+			pst.setString(1,(String) usuario);
 			pst.setString(2, (String) sucursal);
 			result = pst.executeQuery();
 			
@@ -163,71 +164,69 @@ public class Quirofano_Sucursal extends JFrame {
 	}
 	
 	private void limpiar() {
-		cbQuirofano.setSelectedIndex(0);
+		cbUsuario.setSelectedIndex(0);
 		cbSucursal.setSelectedIndex(0);
 		
 	}
-
 	/**
 	 * Create the frame.
 	 */
-	public Quirofano_Sucursal() {
+	public Usuario_Sucursal() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 389, 300);
+		setBounds(100, 100, 391, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Asociar quirófano con sucursal");
-		lblTitulo.setBounds(113, 11, 212, 14);
+		JLabel lblTitulo = new JLabel("Asociar usuario con sucursal");
+		lblTitulo.setBounds(115, 11, 184, 14);
 		contentPane.add(lblTitulo);
 		
-		JLabel lblQuirofano = new JLabel("Quirófano");
-		lblQuirofano.setBounds(40, 58, 66, 14);
-		contentPane.add(lblQuirofano);
+		JLabel lblUsuario = new JLabel("Usuario");
+		lblUsuario.setBounds(39, 58, 65, 14);
+		contentPane.add(lblUsuario);
 		
-		cbQuirofano = new JComboBox();
-		cbQuirofano.setBounds(125, 54, 170, 22);
-		contentPane.add(cbQuirofano);
-		cbQuirofano.setModel(cargarQuirofano());
+		cbUsuario = new JComboBox();
+		cbUsuario.setBounds(115, 54, 184, 22);
+		contentPane.add(cbUsuario);
+		cbUsuario.setModel(cargarUsuario());
 		
-		JLabel lblSucursal = new JLabel("Sucursal");
-		lblSucursal.setBounds(40, 116, 56, 14);
-		contentPane.add(lblSucursal);
+		JLabel lblNewLabel = new JLabel("Sucursal");
+		lblNewLabel.setBounds(39, 119, 65, 14);
+		contentPane.add(lblNewLabel);
 		
 		cbSucursal = new JComboBox();
-		cbSucursal.setBounds(125, 112, 170, 22);
+		cbSucursal.setBounds(115, 115, 184, 22);
 		contentPane.add(cbSucursal);
 		cbSucursal.setModel(cargarSucursal());
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-
-				Object quirofano = cbQuirofano.getSelectedItem();
+				Object usuario = cbUsuario.getSelectedItem();
 				Object sucursal = cbSucursal.getSelectedItem();
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Branch_Operating_R (id_Branch,id_Operating_Room) VALUES (?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Users_Branch (id_User,id_Branch) VALUES (?,?)" );
 					
 					
-					if (((ComboItem) quirofano).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione un quirófano");
+					if (((ComboItem) usuario).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione un usuario");
 					}else {
 						if(((ComboItem) sucursal).getValue() == ""){
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
-							if(existeRel(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
-								JOptionPane.showMessageDialog(null, "Quirófano ya se encuentra en la sucursal");
+							if(existeRel(((ComboItem) cbUsuario.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+								JOptionPane.showMessageDialog(null, "Usuario ya se encuentra en la sucursal");
 							}else {
-								ps.setString(1, ((ComboItem) sucursal).getValue());
-								ps.setString(2, ((ComboItem) quirofano).getValue());
+								ps.setString(1, ((ComboItem) usuario).getValue());
+								ps.setString(2, ((ComboItem) sucursal).getValue());
+								
 							}
 						}
 						
@@ -237,10 +236,10 @@ public class Quirofano_Sucursal extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano añadido a sucursal");
+		                JOptionPane.showMessageDialog(null, "Usuario colocado");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al añadir quirófano");
+		                JOptionPane.showMessageDialog(null, "Error al colocar usuario");
 		                limpiar();
 		            }
 				
@@ -254,30 +253,29 @@ public class Quirofano_Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(61, 174, 89, 23);
+		btnAgregar.setBounds(62, 174, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				Object quirofano = cbQuirofano.getSelectedItem();
+				Object usuario = cbUsuario.getSelectedItem();
 				Object sucursal = cbSucursal.getSelectedItem();
 				
 				int result = 0;
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Operating_R WHERE id_Branch = ? AND id_Operating_Room = ?;" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Users_Branch WHERE id_Branch = ? AND id_User = ?;" );
 					ps.setString(1, ((ComboItem) sucursal).getValue());
-					ps.setString(2, ((ComboItem) quirofano).getValue());
+					ps.setString(2, ((ComboItem) usuario).getValue());
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano removido de la sucursal");
+		                JOptionPane.showMessageDialog(null, "Usuario removido de la sucursal");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover quirofano");
+		                JOptionPane.showMessageDialog(null, "Error al remover usuario");
 		                limpiar();
 		            }
 					
@@ -287,10 +285,9 @@ public class Quirofano_Sucursal extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 			}
 		});
-		btnEliminar.setBounds(202, 174, 89, 23);
+		btnEliminar.setBounds(203, 174, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -299,7 +296,7 @@ public class Quirofano_Sucursal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(263, 227, 89, 23);
+		btnVolver.setBounds(264, 227, 89, 23);
 		contentPane.add(btnVolver);
 	}
 }
