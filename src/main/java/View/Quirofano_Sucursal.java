@@ -237,10 +237,10 @@ public class Quirofano_Sucursal extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento colocado");
+		                JOptionPane.showMessageDialog(null, "Quirófano añadido a sucursal");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar instrumento");
+		                JOptionPane.showMessageDialog(null, "Error al añadir quirófano");
 		                limpiar();
 		            }
 				

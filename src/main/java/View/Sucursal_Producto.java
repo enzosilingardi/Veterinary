@@ -131,6 +131,42 @@ public class Sucursal_Producto extends JFrame {
 		});
 	}
 
+	
+	public int existeRel(Object producto, Object sucursal) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Rel_Branch_Product WHERE id_Product = ? AND id_Branch = ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1,(String) producto);
+			pst.setString(2, (String) sucursal);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	private void limpiar() {
+		cbProducto.setSelectedIndex(0);
+		cbSucursal.setSelectedIndex(0);
+		
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -166,6 +202,57 @@ public class Sucursal_Producto extends JFrame {
 		cbProducto.setModel(cargarProducto());
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+
+				Object producto = cbProducto.getSelectedItem();
+				Object sucursal = cbSucursal.getSelectedItem();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Branch_Product (id_Branch,id_Product) VALUES (?,?)" );
+					
+					
+					if (((ComboItem) producto).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione un Producto");
+					}else {
+						if(((ComboItem) sucursal).getValue() == ""){
+							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
+						}else {
+							if(existeRel(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+								JOptionPane.showMessageDialog(null, "Producto ya se encuentra en la sucursal");
+							}else {
+								ps.setString(1, ((ComboItem) sucursal).getValue());
+								ps.setString(2, ((ComboItem) producto).getValue());
+							}
+						}
+						
+						
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Producto colocado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al colocar producto");
+		                limpiar();
+		            }
+				
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnAgregar.setBounds(67, 174, 89, 23);
 		contentPane.add(btnAgregar);
 		
@@ -179,6 +266,38 @@ public class Sucursal_Producto extends JFrame {
 		contentPane.add(btnVolver);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Object producto = cbProducto.getSelectedItem();
+				Object sucursal = cbSucursal.getSelectedItem();
+				
+				int result = 0;
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Product WHERE id_Branch = ? AND id_Product = ?;" );
+					ps.setString(1, ((ComboItem) sucursal).getValue());
+					ps.setString(2, ((ComboItem) producto).getValue());
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Producto removido de la sucursal");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al remover producto");
+		                limpiar();
+		            }
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		btnEliminar.setBounds(208, 174, 89, 23);
 		contentPane.add(btnEliminar);
 	}
