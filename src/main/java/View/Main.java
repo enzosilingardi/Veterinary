@@ -49,6 +49,12 @@ public class Main extends JFrame {
 		menuBar.add(mnVentas);
 		
 		JMenuItem mntmProductos = new JMenuItem("Productos");
+		mntmProductos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Productos productos = new Tabla_Productos();
+				productos.setVisible(true);
+			}
+		});
 		mnVentas.add(mntmProductos);
 		
 		JMenuItem mntmProveedores = new JMenuItem("Proveedores");

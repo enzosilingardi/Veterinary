@@ -38,7 +38,7 @@ void mostrarTabla(){
         try {
         	Connection con = Connect.getConexion();
         	PreparedStatement ps = con.prepareStatement("SELECT username, name, surname, profile, email\r\n"
-        												+ "FROM USERS;" );
+        												+ "FROM Users;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
