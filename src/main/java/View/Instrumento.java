@@ -130,7 +130,37 @@ public class Instrumento extends JFrame {
 		
 	}
 	
-	
+	public int instrumentoEnUso(String nombre) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(Rel_Operating_R_Medical_I.id_Medical_Instrument)\r\n"
+					+ "FROM Medical_Instrument\r\n"
+					+ "JOIN Rel_Operating_R_Medical_I ON Rel_Operating_R_Medical_I.id_Medical_Instrument = Medical_Instrument.id_Medical_Instrument\r\n"
+					+ "WHERE Medical_Instrument.instrument_Name LIKE ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, nombre);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
 	
 	private void limpiar() {
 		txtNombre.setText("");
@@ -219,15 +249,27 @@ public class Instrumento extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				int result = 0;
 				String nombre = txtNombre.getText();
 				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE instrument_Name = ?" );
-					ps.setString(1, nombre);
-					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Instrumento borrado");
-					limpiar();
+					if(instrumentoEnUso(nombre) != 0) {
+						JOptionPane.showMessageDialog(null, "Instrumento está en uso, por favor elimine todos los registros relacionados");
+					}else {
+						ps.setString(1, nombre);
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
+		                limpiar();
+		            }
 					
 				}catch(SQLException E) {
 					E.printStackTrace();
