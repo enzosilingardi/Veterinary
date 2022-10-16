@@ -229,12 +229,22 @@ public class Main extends JFrame {
 		JButton btnSucursales = new JButton("Sucursales");
 		btnSucursales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TablaSucursales sucursales = new TablaSucursales();
+				Tabla_Sucursales sucursales = new Tabla_Sucursales();
 				sucursales.setVisible(true);
 			}
 		});
 		btnSucursales.setBounds(466, 11, 104, 81);
 		contentPane.add(btnSucursales);
+		
+		JButton btnUsuarios = new JButton("Usuarios");
+		btnUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Usuarios usuarios = new Tabla_Usuarios();
+				usuarios.setVisible(true);
+			}
+		});
+		btnUsuarios.setBounds(10, 103, 104, 81);
+		contentPane.add(btnUsuarios);
 	}
 
 	public Main() {
