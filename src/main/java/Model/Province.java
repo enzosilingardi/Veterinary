@@ -2,16 +2,17 @@ package Model;
 
 public class Province {
 
-	protected int id_province;
+	protected int id_Province;
 	protected Country id_Country;
 	protected String name;
 	
 	
-	public int getId_province() {
-		return id_province;
+	
+	public int getId_Province() {
+		return id_Province;
 	}
-	public void setId_province(int id_province) {
-		this.id_province = id_province;
+	public void setId_Province(int id_Province) {
+		this.id_Province = id_Province;
 	}
 	public String getName() {
 		return name;
@@ -30,13 +31,14 @@ public class Province {
 		super();
 	}
 	
-	public Province(int id_province, Country id_Country, String name) {
+	
+	
+	public Province(int id_Province, Country id_Country, String name) {
 		super();
-		this.id_province = id_province;
+		this.id_Province = id_Province;
 		this.id_Country = id_Country;
 		this.name = name;
 	}
-	
 	public Province(Country id_Country, String name) {
 		super();
 		this.id_Country = id_Country;

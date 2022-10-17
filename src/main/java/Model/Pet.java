@@ -5,10 +5,10 @@ public class Pet {
 	protected int id_Pet;
 	protected Client id_Client;
 	protected String name;
-	protected String animal_Type;
+	protected Animal id_Animal;
 	protected int age;
 	protected String gender;
-	protected String breed;
+	protected Breed id_Breed;
 	
 	public int getId_Pet() {
 		return id_Pet;
@@ -28,12 +28,7 @@ public class Pet {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getAnimal_Type() {
-		return animal_Type;
-	}
-	public void setAnimal_Type(String animal_Type) {
-		this.animal_Type = animal_Type;
-	}
+	
 	public int getAge() {
 		return age;
 	}
@@ -46,39 +41,45 @@ public class Pet {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getBreed() {
-		return breed;
+	
+	
+	public Animal getId_Animal() {
+		return id_Animal;
 	}
-	public void setBreed(String breed) {
-		this.breed = breed;
+	public void setId_Animal(Animal id_Animal) {
+		this.id_Animal = id_Animal;
+	}
+	public Breed getId_Breed() {
+		return id_Breed;
+	}
+	public void setId_Breed(Breed id_Breed) {
+		this.id_Breed = id_Breed;
 	}
 	
 	public Pet() {
 		super();
 	}
 	
-	public Pet(int id_Pet, Client id_Client, String name, String animal_Type, int age, String gender, String breed) {
+	public Pet(int id_Pet, Client id_Client, String name, Animal id_Animal, int age, String gender, Breed id_Breed) {
 		super();
 		this.id_Pet = id_Pet;
 		this.id_Client = id_Client;
 		this.name = name;
-		this.animal_Type = animal_Type;
+		this.id_Animal = id_Animal;
 		this.age = age;
 		this.gender = gender;
-		this.breed = breed;
+		this.id_Breed = id_Breed;
 	}
 	
-	public Pet(Client id_Client, String name, String animal_Type, int age, String gender, String breed) {
+	public Pet(Client id_Client, String name, Animal id_Animal, int age, String gender, Breed id_Breed) {
 		super();
 		this.id_Client = id_Client;
 		this.name = name;
-		this.animal_Type = animal_Type;
+		this.id_Animal = id_Animal;
 		this.age = age;
 		this.gender = gender;
-		this.breed = breed;
+		this.id_Breed = id_Breed;
 	}
 	
 	
-	
-
 }

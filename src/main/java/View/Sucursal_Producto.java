@@ -20,12 +20,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class Sucursal_Producto extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbProducto;
 	private JComboBox cbSucursal;
+	private JTextField txtCantidad;
 
 	class ComboItem
 	{
@@ -172,7 +174,7 @@ public class Sucursal_Producto extends JFrame {
 	 */
 	public Sucursal_Producto() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 406, 300);
+		setBounds(100, 100, 406, 369);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -208,12 +210,13 @@ public class Sucursal_Producto extends JFrame {
 
 				Object producto = cbProducto.getSelectedItem();
 				Object sucursal = cbSucursal.getSelectedItem();
+				String cantidad = txtCantidad.getText();
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Branch_Product (id_Branch,id_Product) VALUES (?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Branch_Product (id_Branch,id_Product,amount) VALUES (?,?,?)" );
 					
 					
 					if (((ComboItem) producto).getValue() == "") {
@@ -227,6 +230,7 @@ public class Sucursal_Producto extends JFrame {
 							}else {
 								ps.setString(1, ((ComboItem) sucursal).getValue());
 								ps.setString(2, ((ComboItem) producto).getValue());
+								ps.setString(3, cantidad);
 							}
 						}
 						
@@ -253,7 +257,7 @@ public class Sucursal_Producto extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(67, 174, 89, 23);
+		btnAgregar.setBounds(68, 243, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -262,7 +266,7 @@ public class Sucursal_Producto extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(269, 227, 89, 23);
+		btnVolver.setBounds(270, 296, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -298,8 +302,16 @@ public class Sucursal_Producto extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(208, 174, 89, 23);
+		btnEliminar.setBounds(209, 243, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JLabel lblCantidad = new JLabel("Cantidad");
+		lblCantidad.setBounds(51, 179, 60, 14);
+		contentPane.add(lblCantidad);
+		
+		txtCantidad = new JTextField();
+		txtCantidad.setBounds(127, 176, 190, 20);
+		contentPane.add(txtCantidad);
+		txtCantidad.setColumns(10);
 	}
-
 }

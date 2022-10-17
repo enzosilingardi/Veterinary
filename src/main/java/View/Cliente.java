@@ -127,7 +127,7 @@ public class Cliente extends JFrame {
 		}
 	    
 	    public static Boolean validaTelefono (String tele){
-	        Pattern pattern = Pattern.compile("(\\d{2,4})-\\d{6}");
+	        Pattern pattern = Pattern.compile("(\\d{2,3,4,5})-\\d{6}");
 			Matcher matcher = pattern.matcher(tele);
 			return matcher.matches();
 	    }
@@ -227,7 +227,7 @@ public class Cliente extends JFrame {
 		lblFechaNacimiento.setBounds(37, 229, 153, 14);
 		contentPane.add(lblFechaNacimiento);
 		
-		txtFechaNacimiento = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
+		txtFechaNacimiento = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
 		txtFechaNacimiento.setBounds(224, 223, 171, 20);
 		contentPane.add(txtFechaNacimiento);
 		
@@ -280,11 +280,8 @@ public class Cliente extends JFrame {
 						ps.setString(3, nombre);
 						ps.setString(4, apellido);
 						
-						if(validaTelefono(telefono)) {
-							ps.setString(5,telefono);
-						} else {
-							JOptionPane.showMessageDialog(null, "Teléfono no válido");
-						}
+						ps.setString(5,telefono);
+						
 						
 						
 						ps.setDate(6, date);

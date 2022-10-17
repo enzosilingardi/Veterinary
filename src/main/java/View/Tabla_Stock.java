@@ -28,22 +28,25 @@ public class Tabla_Stock extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Producto","Cantidad"});
+	        modelo.setColumnIdentifiers(new Object[] {"Producto","Cantidad","Dirección Sucursal"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[2];
+	        String datos[] = new String[3];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT product_Name, amount\r\n"
-	        			+ "FROM Product\r\n"
-	        			+ "INNER JOIN Stock ON Product.id_Product = Stock.id_Product;" );
+	        	PreparedStatement ps = con.prepareStatement("SELECT Product.product_Name, Rel_Branch_Product.amount, Address.address_Name, Address.address_Number\r\n"
+	        			+ "FROM Rel_Branch_Product\r\n"
+	        			+ "INNER JOIN Product ON Product.id_Product = Rel_Branch_Product.id_Product\r\n"
+	        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Product.id_Branch\r\n"
+	        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
+	                datos[2] = rs.getString(3)+" "+rs.getString(4);
 	                
 	                modelo.addRow(datos);
 
