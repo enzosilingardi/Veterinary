@@ -33,6 +33,8 @@ public class Mascota extends JFrame {
 	private JTextField txtNombre;
 	private JTextField txtEdad;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JComboBox cbAnimal;
+	private JComboBox cbRaza;
 
 	
 	class ComboItem
@@ -142,11 +144,11 @@ public class Mascota extends JFrame {
 	
 	private void limpiar() {
 		txtNombre.setText("");
-		txtTipo.setText("");
+		cbAnimal.setSelectedIndex(0);
 		cbDuenio.setSelectedIndex(0);
 		txtEdad.setText("");
 		buttonGroup.clearSelection();
-		txtRaza.setText("");
+		cbRaza.setSelectedIndex(0);
 		
 	}
 	
@@ -156,7 +158,7 @@ public class Mascota extends JFrame {
 	public Mascota() {
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 411, 459);
+		setBounds(100, 100, 457, 459);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -209,7 +211,8 @@ public class Mascota extends JFrame {
 				PreparedStatement ps = null;
 				String nombre = txtNombre.getText();
 				Object duenio = cbDuenio.getSelectedItem();
-				String tipo = txtTipo.getText();
+				Object animal = cbAnimal.getSelectedItem();
+				Object raza = cbRaza.getSelectedItem();
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
 				if(rdbtnMacho.isSelected()) {
@@ -225,18 +228,10 @@ public class Mascota extends JFrame {
 				try {
 					Connection con = Connect.getConexion();
 					
-					if(txtRaza.getText().isBlank()) {
-						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,animal_Type,age,gender ) VALUES (?,?,?,?,?)" );
-					}else {
+					
 						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,animal_Type,age,gender,breed ) VALUES (?,?,?,?,?,?)" );
 						
-						String raza = txtRaza.getText();
-						ps.setString(6,raza);
-						
-					}
-					
-					
-					
+
 					
 					if (((ComboItem) duenio).getValue() == "") {
 						JOptionPane.showMessageDialog(null, "Seleccione un cliente");
@@ -246,10 +241,10 @@ public class Mascota extends JFrame {
 					}else {
 						ps.setString(1, ((ComboItem) duenio).getValue());
 						ps.setString(2, nombre);
-						ps.setString(3, tipo);
+						ps.setString(3, ((ComboItem) animal).getValue());
 						ps.setInt(4, edad);
 						ps.setString(5, genero);
-						
+						ps.setString(6, ((ComboItem) raza).getValue());
 					}
 						
 					}
@@ -303,12 +298,32 @@ public class Mascota extends JFrame {
 		lblRaza.setBounds(45, 300, 98, 14);
 		contentPane.add(lblRaza);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(175, 150, 141, 22);
-		contentPane.add(comboBox);
+		cbAnimal = new JComboBox();
+		cbAnimal.setBounds(175, 150, 141, 22);
+		contentPane.add(cbAnimal);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(175, 296, 141, 22);
-		contentPane.add(comboBox_1);
+		cbRaza = new JComboBox();
+		cbRaza.setBounds(175, 296, 141, 22);
+		contentPane.add(cbRaza);
+		
+		JButton btnAnimales = new JButton("Animales");
+		btnAnimales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Animal animal = new Animal();
+				animal.setVisible(true);
+			}
+		});
+		btnAnimales.setBounds(326, 150, 89, 23);
+		contentPane.add(btnAnimales);
+		
+		JButton btnRazas = new JButton("Razas");
+		btnRazas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Raza raza = new Raza();
+				raza.setVisible(true);
+			}
+		});
+		btnRazas.setBounds(326, 296, 89, 23);
+		contentPane.add(btnRazas);
 	}
 }
