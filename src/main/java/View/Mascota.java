@@ -93,6 +93,68 @@ public class Mascota extends JFrame {
 			}
 		return modelo;
     }
+	
+	public DefaultComboBoxModel cargarAnimal() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));   
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
+	public DefaultComboBoxModel cargarRaza(Object animal) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT Breed.type\r\n"
+					+ "FROM Breed\r\n"
+					+ "INNER JOIN Rel_Animal_Breed ON Rel_Animal_Breed.id_Breed = Breed.id_Breed\r\n"
+					+ "WHERE Rel_Animal_Breed.id_Animal = ?";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1, (String) animal);
+			result = pst.executeQuery();
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));    
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -294,17 +356,24 @@ public class Mascota extends JFrame {
 		contentPane.add(cbDuenio);
 		cbDuenio.setModel(cargarCliente());
 		
-		JLabel lblRaza = new JLabel("Raza (Opcional)");
+		JLabel lblRaza = new JLabel("Raza ");
 		lblRaza.setBounds(45, 300, 98, 14);
 		contentPane.add(lblRaza);
 		
 		cbAnimal = new JComboBox();
+		cbAnimal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cbRaza.setModel(cargarRaza(((ComboItem) cbDuenio.getSelectedItem()).getValue()));
+			}
+		});
 		cbAnimal.setBounds(175, 150, 141, 22);
 		contentPane.add(cbAnimal);
+		cbAnimal.setModel(cargarAnimal());
 		
 		cbRaza = new JComboBox();
 		cbRaza.setBounds(175, 296, 141, 22);
 		contentPane.add(cbRaza);
+		cbRaza.setModel(cargarRaza(((ComboItem) cbDuenio.getSelectedItem()).getValue()));
 		
 		JButton btnAnimales = new JButton("Animales");
 		btnAnimales.addActionListener(new ActionListener() {

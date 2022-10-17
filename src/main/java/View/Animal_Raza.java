@@ -232,10 +232,10 @@ public class Animal_Raza extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento colocado");
+		                JOptionPane.showMessageDialog(null, "Raza asociada");
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar instrumento");
+		                JOptionPane.showMessageDialog(null, "Error al asociar raza");
 		                limpiar();
 		            }
 				
