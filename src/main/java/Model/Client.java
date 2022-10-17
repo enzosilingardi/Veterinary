@@ -2,7 +2,7 @@ package Model;
 
 public class Client {
 
-	protected int Id_Client;
+	protected int id_Client;
 	protected Address id_Address;
 	protected String dni;
 	protected String name;
@@ -12,11 +12,12 @@ public class Client {
 	protected String gender;
 	protected String email;
 	
+	
 	public int getId_Client() {
-		return Id_Client;
+		return id_Client;
 	}
 	public void setId_Client(int id_Client) {
-		Id_Client = id_Client;
+		this.id_Client = id_Client;
 	}
 	public Address getId_Address() {
 		return id_Address;
@@ -71,10 +72,12 @@ public class Client {
 		super();
 	}
 	
+	
+	
 	public Client(int id_Client, Address id_Address, String dni, String name, String surname, String phone_Number,
 			String birthdate, String gender, String email) {
 		super();
-		Id_Client = id_Client;
+		this.id_Client = id_Client;
 		this.id_Address = id_Address;
 		this.dni = dni;
 		this.name = name;
@@ -84,7 +87,6 @@ public class Client {
 		this.gender = gender;
 		this.email = email;
 	}
-	
 	public Client(Address id_Address, String dni, String name, String surname, String phone_Number, String birthdate,
 			String gender, String email) {
 		super();

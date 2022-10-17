@@ -5,6 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.JTextComponent;
+
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
 import View.Direccion.ComboItem;
@@ -17,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +36,7 @@ public class Cliente extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtDni;
-	private JTextField txtFechaNacimiento;
+	private JDateChooser txtFechaNacimiento;
 	private JTextField txtTelefono;
 	private JComboBox cbDireccion;
 	private JComboBox cbGenero;
@@ -84,7 +89,7 @@ public class Cliente extends JFrame {
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_City")));
+				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Address")));
 				
 			}
 			cn.close();
@@ -176,7 +181,6 @@ public class Cliente extends JFrame {
 		cbDireccion.setSelectedIndex(0);
 		txtDni.setText("");
 		txtTelefono.setText("");
-		txtFechaNacimiento.setText("");
 		cbGenero.setSelectedIndex(0);
 		
 	}
@@ -223,10 +227,9 @@ public class Cliente extends JFrame {
 		lblFechaNacimiento.setBounds(37, 229, 153, 14);
 		contentPane.add(lblFechaNacimiento);
 		
-		txtFechaNacimiento = new JTextField();
+		txtFechaNacimiento = new JDateChooser("dd/MM/yyyy", "##/##/####", '_');
 		txtFechaNacimiento.setBounds(224, 223, 171, 20);
 		contentPane.add(txtFechaNacimiento);
-		txtFechaNacimiento.setColumns(10);
 		
 		JLabel lblGenero = new JLabel("Genero");
 		lblGenero.setBounds(37, 278, 153, 14);
@@ -250,46 +253,47 @@ public class Cliente extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
+				String apellido = txtApellido.getText();
 				Object direccion = cbDireccion.getSelectedItem();
 				String dni = txtDni.getText();
-				String fecha = txtFechaNacimiento.getText();
 				String telefono = txtTelefono.getText();
 				String genero = cbGenero.getSelectedItem().toString();
 				String email = txtEmail.getText();
+				String fecha = ((JTextField) txtFechaNacimiento.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Client (dni, name, id_Address, phone_Number , birthdate, gender, email) VALUES (?,?,?,?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Client (id_Address, dni, name,surname,  phone_Number , birthdate, gender, email) VALUES (?,?,?,?,?,?,?,?)" );
 					
 					
 					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una ciudad");
+						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
 					}else {
 						if(existeCliente(nombre,dni)!=0) {
 						JOptionPane.showMessageDialog(null, "Cliente ya existe");
 					}else {
-						ps.setString(1, dni);
-						ps.setString(2, nombre);
-						ps.setString(3, ((ComboItem) direccion).getValue());
+						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(2, dni);
+						ps.setString(3, nombre);
+						ps.setString(4, apellido);
 						
 						if(validaTelefono(telefono)) {
-							ps.setString(4,telefono);
+							ps.setString(5,telefono);
 						} else {
 							JOptionPane.showMessageDialog(null, "Teléfono no válido");
 						}
 						
-						if(validaFecha(fecha)) {
-							ps.setString(5, fecha);
-						} else {
-							JOptionPane.showMessageDialog(null, "Fecha no válida");
-						}
+						
+						ps.setDate(6, date);
+						
 
-						ps.setString(6, genero);
+						ps.setString(7, genero);
 						
 						if(validaEmail(email)) {
-							ps.setString(7,email);
+							ps.setString(8,email);
 						} else {
 							JOptionPane.showMessageDialog(null, "E-Mail no válido");
 						}
@@ -359,5 +363,7 @@ public class Cliente extends JFrame {
 		txtApellido.setBounds(224, 92, 171, 20);
 		contentPane.add(txtApellido);
 		txtApellido.setColumns(10);
+		
+		
 	}
 }
