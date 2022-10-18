@@ -312,7 +312,7 @@ public class Producto extends JFrame {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Product WHERE product_Name = ?" );
 					if(productoEnUso(nombre) != 0) {
-						JOptionPane.showMessageDialog(null, "Producto está en uso, por favor elimine todos los registros relacionados");
+						JOptionPane.showMessageDialog(null, "Error");
 					}else {
 						ps.setString(1, nombre);
 					}
@@ -329,6 +329,7 @@ public class Producto extends JFrame {
 					
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Producto está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
