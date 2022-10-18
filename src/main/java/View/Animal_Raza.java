@@ -239,6 +239,7 @@ public class Animal_Raza extends JFrame {
 		                limpiar();
 		            }
 				
+					con.close();
 					
 				}catch(SQLException E) {
 					E.printStackTrace();
@@ -273,7 +274,7 @@ public class Animal_Raza extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al remover instrumento");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {

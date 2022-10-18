@@ -5,10 +5,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+import View.Instrumento_Quirofano.ComboItem;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
@@ -16,7 +26,68 @@ public class Historial_Medico extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtDescripcion;
+	private JComboBox cbMascota;
 
+	
+	class ComboItem
+	{
+	    private String key;
+	    private String value;
+
+	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	public DefaultComboBoxModel cargarMascota() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN\r\n"
+					+ "FROM Pet\r\n"
+					+ "INNER JOIN Client ON Pet.id_Client = Client.id_Client\r\n"
+					+ "ORDER BY id_Pet";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN"),result.getString("id_Pet")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -33,6 +104,7 @@ public class Historial_Medico extends JFrame {
 		});
 	}
 
+	
 	/**
 	 * Create the frame.
 	 */
@@ -51,7 +123,7 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblMascota = new JLabel("Mascota");
-		lblMascota.setBounds(74, 64, 46, 14);
+		lblMascota.setBounds(74, 64, 77, 14);
 		contentPane.add(lblMascota);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -84,9 +156,10 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 		
-		JComboBox cbMascota = new JComboBox();
+		cbMascota = new JComboBox();
 		cbMascota.setBounds(164, 60, 170, 22);
 		contentPane.add(cbMascota);
+		cbMascota.setModel(cargarMascota());
 	}
 
 }

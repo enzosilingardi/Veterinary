@@ -228,7 +228,7 @@ public class Instrumento_Quirofano extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al remover instrumento");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
@@ -282,7 +282,7 @@ public class Instrumento_Quirofano extends JFrame {
 		                limpiar();
 		            }
 				
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {

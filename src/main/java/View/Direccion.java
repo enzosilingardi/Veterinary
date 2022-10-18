@@ -266,7 +266,7 @@ public class Direccion extends JFrame {
 		                limpiar();
 		            }
 				
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
@@ -280,6 +280,33 @@ public class Direccion extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombre = txtNombre.getText();
+				int numero = Integer.parseInt(txtNumero.getText());
+				Object ciudad = cbCiudad.getSelectedItem();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Address WHERE id_City = ? AND address_Name = ? AND address_Number = ? " );
+
+					ps.setString(1, ((ComboItem) ciudad).getValue());
+					ps.setString(2, nombre);
+					ps.setInt(3,numero);
+					ps.executeUpdate();
+					JOptionPane.showMessageDialog(null, "Sucursal borrada");
+					limpiar();
+					con.close();
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Dirección en uso. Por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnEliminar.setBounds(262, 303, 89, 23);
 		contentPane.add(btnEliminar);
 		

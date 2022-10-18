@@ -193,7 +193,7 @@ public class Sucursal extends JFrame {
 		                limpiar();
 		            }
 				
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
@@ -220,9 +220,11 @@ public class Sucursal extends JFrame {
 					ps.executeUpdate();
 					JOptionPane.showMessageDialog(null, "Sucursal borrada");
 					limpiar();
+					con.close();
 					
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Sucursal en uso. Por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

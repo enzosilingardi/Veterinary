@@ -152,7 +152,7 @@ public class Pais extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al guardar país");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
@@ -190,7 +190,7 @@ public class Pais extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar país");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {

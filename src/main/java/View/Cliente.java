@@ -312,7 +312,7 @@ public class Cliente extends JFrame {
 		                limpiar();
 		            }
 				
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {

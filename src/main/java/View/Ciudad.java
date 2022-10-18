@@ -232,7 +232,7 @@ public class Ciudad extends JFrame {
 		                limpiar();
 		            }
 				
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
@@ -281,7 +281,7 @@ public class Ciudad extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar ciudad");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {

@@ -69,33 +69,7 @@ public class Mascota extends JFrame {
 	    }
 	}
 	
-	class ComboItem2
-	{
-	    private String key;
-	    private int value;
 
-	    public ComboItem2(String key, int value)
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public int getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarCliente() {
 		Connection cn = null;
@@ -166,7 +140,7 @@ public class Mascota extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "SELECT *\r\n"
 					+ "FROM Breed\r\n"
-					+ "INNER JOIN Rel_Animal_Breed ON Rel_Animal_Breed.id_Breed = Breed.id_Breed\r\n"
+					+ "INNER JOIN Rel_Animal_Breed ON Rel_Animal_Breed.id_Breed = Breed.id_Breed\r\n"   //Toma solo las razas que están relacionadas al animal elegido
 					+ "WHERE Rel_Animal_Breed.id_Animal = "+animal;
 			pst = cn.prepareStatement(SSQL);
 			
@@ -355,7 +329,7 @@ public class Mascota extends JFrame {
 		                limpiar();
 		            }
 				
-					
+					con.close();
 				}catch(SQLException E) {
 					JOptionPane.showMessageDialog(null,E);
 				}catch (ClassNotFoundException e1) {
@@ -397,7 +371,7 @@ public class Mascota extends JFrame {
 		cbAnimal = new JComboBox();
 		cbAnimal.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				Object animal = (ComboItem) cbAnimal.getSelectedItem();
+				Object animal = (ComboItem) cbAnimal.getSelectedItem();             // Revisa el estado del primer combobox y según este cambia el model del segundo
 				cbRaza.setModel(cargarRaza(((ComboItem) animal).getValue()));
 				
 				
@@ -410,6 +384,7 @@ public class Mascota extends JFrame {
 		cbRaza = new JComboBox();
 		cbRaza.setBounds(175, 296, 141, 22);
 		contentPane.add(cbRaza);
+		
 		
 		JButton btnAnimales = new JButton("Animales");
 		btnAnimales.addActionListener(new ActionListener() {

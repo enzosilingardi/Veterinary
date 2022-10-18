@@ -150,7 +150,7 @@ public class Animal extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar animal");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
@@ -186,7 +186,7 @@ public class Animal extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Error al guardar animal");
 		                limpiar();
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
 				}catch (ClassNotFoundException e1) {
