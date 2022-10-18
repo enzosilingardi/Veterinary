@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.Breed;
 import View.Instrumento.ComboItem;
 
 import javax.swing.JLabel;
@@ -23,8 +24,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Mascota extends JFrame {
 
@@ -60,6 +64,34 @@ public class Mascota extends JFrame {
 	    }
 
 	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	class ComboItem2
+	{
+	    private String key;
+	    private int value;
+
+	    public ComboItem2(String key, int value)
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public int getValue()
 	    {
 	        return value;
 	    }
@@ -107,14 +139,14 @@ public class Mascota extends JFrame {
 			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			
+			modelo.addElement(new ComboItem("Seleccionar animal",""));
 			while (result.next()) {
 				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));   
 				
 			}
 			cn.close();
 		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
+			e.printStackTrace();
 			}catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -132,12 +164,12 @@ public class Mascota extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT Breed.type\r\n"
+			String SSQL = "SELECT *\r\n"
 					+ "FROM Breed\r\n"
 					+ "INNER JOIN Rel_Animal_Breed ON Rel_Animal_Breed.id_Breed = Breed.id_Breed\r\n"
-					+ "WHERE Rel_Animal_Breed.id_Animal = ?";
+					+ "WHERE Rel_Animal_Breed.id_Animal = "+animal;
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, (String) animal);
+			
 			result = pst.executeQuery();
 			
 			while (result.next()) {
@@ -146,13 +178,15 @@ public class Mascota extends JFrame {
 			}
 			cn.close();
 		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
+			e.printStackTrace();
 			}catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		return modelo;
     }
+	
+	
 	
 	
 	/**
@@ -291,7 +325,7 @@ public class Mascota extends JFrame {
 					Connection con = Connect.getConexion();
 					
 					
-						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,animal_Type,age,gender,breed ) VALUES (?,?,?,?,?,?)" );
+						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed ) VALUES (?,?,?,?,?,?)" );
 						
 
 					
@@ -361,9 +395,12 @@ public class Mascota extends JFrame {
 		contentPane.add(lblRaza);
 		
 		cbAnimal = new JComboBox();
-		cbAnimal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cbRaza.setModel(cargarRaza(((ComboItem) cbDuenio.getSelectedItem()).getValue()));
+		cbAnimal.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				Object animal = (ComboItem) cbAnimal.getSelectedItem();
+				cbRaza.setModel(cargarRaza(((ComboItem) animal).getValue()));
+				
+				
 			}
 		});
 		cbAnimal.setBounds(175, 150, 141, 22);
@@ -373,7 +410,6 @@ public class Mascota extends JFrame {
 		cbRaza = new JComboBox();
 		cbRaza.setBounds(175, 296, 141, 22);
 		contentPane.add(cbRaza);
-		cbRaza.setModel(cargarRaza(((ComboItem) cbDuenio.getSelectedItem()).getValue()));
 		
 		JButton btnAnimales = new JButton("Animales");
 		btnAnimales.addActionListener(new ActionListener() {
