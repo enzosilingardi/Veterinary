@@ -67,7 +67,7 @@ public class Historial_Medico extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN\r\n"
+			String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN, Client.surname as ClientS\r\n"
 					+ "FROM Pet\r\n"
 					+ "INNER JOIN Client ON Pet.id_Client = Client.id_Client\r\n"
 					+ "ORDER BY id_Pet";
@@ -76,7 +76,7 @@ public class Historial_Medico extends JFrame {
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN"),result.getString("id_Pet")));
+				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));
 				
 			}
 			cn.close();
@@ -104,6 +104,43 @@ public class Historial_Medico extends JFrame {
 		});
 	}
 
+	public int existeHistorial(Object mascota) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT count(*) FROM Medical_History WHERE id_Pet = ?;";
+			pst = cn.prepareStatement(SSQL);
+			pst.setString(1,(String) mascota);
+			result = pst.executeQuery();
+			
+			if (result.next()) {
+				return result.getInt(1);
+			}
+			return 1;
+			
+		} catch(SQLException e) {
+			JOptionPane.showMessageDialog(null,e);
+			return 1;
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return 0;
+		
+		
+	}
+	
+	
+	
+	
+	private void limpiar() {
+		txtDescripcion.setText("");
+		cbMascota.setSelectedIndex(0);
+		
+	}
 	
 	/**
 	 * Create the frame.
@@ -127,14 +164,128 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(lblMascota);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String descripcion = txtDescripcion.getText();
+				Object mascota = cbMascota.getSelectedItem();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description) VALUES (?,?)" );
+					
+					
+					if (((ComboItem) mascota).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
+					}else {
+						if(existeHistorial(((ComboItem) cbMascota.getSelectedItem()).getValue())!=0) {
+						JOptionPane.showMessageDialog(null, "Historial ya existe");
+					}else {
+						ps.setString(1, ((ComboItem) mascota).getValue());
+						ps.setString(2, descripcion);
+					}
+						
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                limpiar();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnAgregar.setBounds(43, 202, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String descripcion = txtDescripcion.getText();
+				Object mascota = cbMascota.getSelectedItem();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET description = ? WHERE id_Pet = ?" );
+					
+					
+					if (((ComboItem) mascota).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
+					}else {
+						ps.setString(2, ((ComboItem) mascota).getValue());
+						ps.setString(1, descripcion);
+					}
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Historial modificado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar historial");
+		                limpiar();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnModificar.setBounds(160, 202, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				Object mascota = cbMascota.getSelectedItem();
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_History WHERE id_Pet = ?" );
+					
+					ps.setString(1, ((ComboItem) mascota).getValue());
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Historial eliminado");
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar historial");
+		                limpiar();
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Historial en uso. Por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnEliminar.setBounds(281, 202, 89, 23);
 		contentPane.add(btnEliminar);
 		
@@ -152,12 +303,12 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(lblDescripcion);
 		
 		txtDescripcion = new JTextField();
-		txtDescripcion.setBounds(162, 118, 172, 20);
+		txtDescripcion.setBounds(162, 118, 208, 20);
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 		
 		cbMascota = new JComboBox();
-		cbMascota.setBounds(164, 60, 170, 22);
+		cbMascota.setBounds(164, 60, 206, 22);
 		contentPane.add(cbMascota);
 		cbMascota.setModel(cargarMascota());
 	}

@@ -75,13 +75,15 @@ public class Proveedor extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Address ORDER BY id_Address";
+			String SSQL = "SELECT *\r\n"
+					+ "FROM Address\r\n"
+					+ "INNER JOIN City ON Address.id_City = City.id_City";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Address")));
+				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number")+" - "+result.getString("name"),result.getString("id_Address")));
 				
 			}
 			cn.close();
