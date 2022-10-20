@@ -182,6 +182,7 @@ public class Instrumento_Quirofano extends JFrame {
 		cbQuirofano = new JComboBox();
 		cbQuirofano.setBounds(126, 59, 160, 22);
 		contentPane.add(cbQuirofano);
+		cbQuirofano.setModel(cargarQuirofano());
 		
 		JLabel lblInstrumento = new JLabel("Instrumento");
 		lblInstrumento.setBounds(39, 115, 77, 14);
@@ -190,6 +191,7 @@ public class Instrumento_Quirofano extends JFrame {
 		cbInstrumento = new JComboBox();
 		cbInstrumento.setBounds(126, 111, 160, 22);
 		contentPane.add(cbInstrumento);
+		cbInstrumento.setModel(cargarInstrumento());
 		
 		JLabel lblTitulo = new JLabel("Agregar instrumento a quirófano");
 		lblTitulo.setBounds(111, 11, 193, 14);
