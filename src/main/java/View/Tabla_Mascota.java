@@ -23,21 +23,22 @@ public class Tabla_Mascota extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private JButton btnModificar;
 
 	void mostrarTabla(){
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Nombre","Animal","Edad","Género","Raza","Dueño"});
+	        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[6];
+	        String datos[] = new String[7];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
 	        			+ "FROM Pet\r\n"
 	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Pet\r\n"
 	        			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
@@ -49,12 +50,17 @@ public class Tabla_Mascota extends JFrame {
 	                datos[2] = rs.getString(3);
 	                datos[3] = rs.getString(4);
 	                datos[4] = rs.getString(5);
-	                datos[5] = rs.getString(6)+" "+rs.getString(7);
+	                datos[5] = rs.getString(6);
+	                datos[6] = rs.getString(7)+" "+rs.getString(8);
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -86,7 +92,7 @@ public class Tabla_Mascota extends JFrame {
 	 */
 	public Tabla_Mascota() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 597, 382);
+		setBounds(100, 100, 612, 382);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -94,7 +100,7 @@ public class Tabla_Mascota extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 11, 501, 238);
+		scrollPane.setBounds(40, 11, 516, 238);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -108,6 +114,17 @@ public class Tabla_Mascota extends JFrame {
 		});
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
+		
+		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Modificar_Mascota mm = new Modificar_Mascota();
+				mm.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(40, 287, 89, 23);
+		contentPane.add(btnModificar);
 		
 		mostrarTabla();
 	}
