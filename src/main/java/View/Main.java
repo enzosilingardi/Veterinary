@@ -73,6 +73,15 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmStock);
 		
+		JMenuItem mntmPedidos = new JMenuItem("Pedidos");
+		mntmPedidos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Pedido tp = new Tabla_Pedido();
+				tp.setVisible(true);
+			}
+		});
+		mnVentas.add(mntmPedidos);
+		
 		JMenuItem mntmFacturacion = new JMenuItem("Facturacion");
 		mnVentas.add(mntmFacturacion);
 		
