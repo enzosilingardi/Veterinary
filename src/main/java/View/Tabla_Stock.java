@@ -18,6 +18,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import View.Historial_Medico.ComboItem;
+
+import javax.swing.JTextField;
 
 public class Tabla_Stock extends JFrame {
 
@@ -28,16 +31,17 @@ public class Tabla_Stock extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Producto","Cantidad","Dirección Sucursal"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Cantidad","Dirección Sucursal"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[3];
+	        
+	        String datos[] = new String[4];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Product.product_Name, Rel_Branch_Product.amount, Address.address_Name, Address.address_Number\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Rel_Branch_Product.id_BP, Product.product_Name, Rel_Branch_Product.amount, Address.address_Name, Address.address_Number\r\n"
 	        			+ "FROM Rel_Branch_Product\r\n"
 	        			+ "INNER JOIN Product ON Product.id_Product = Rel_Branch_Product.id_Product\r\n"
 	        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Product.id_Branch\r\n"
@@ -46,12 +50,19 @@ public class Tabla_Stock extends JFrame {
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3)+" "+rs.getString(4);
+	                datos[2] = rs.getString(3);
+	                datos[3] = rs.getString(4)+" "+rs.getString(5);
 	                
 	                modelo.addRow(datos);
 
 	            }
+	            
 	            table.setModel(modelo);
+	            
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -105,7 +116,43 @@ public class Tabla_Stock extends JFrame {
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				int cantidad = Integer.parseInt(table.getValueAt(fila,2).toString());
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Rel_Branch_Product SET amount = '"+ cantidad +"' WHERE id_BP = '"+id +"'");
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Stock modificado");
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar stock");
+		                mostrarTabla();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		btnModificar.setBounds(40, 288, 89, 23);
+		contentPane.add(btnModificar);
+		
 		mostrarTabla();
+		
 	}
-
 }
