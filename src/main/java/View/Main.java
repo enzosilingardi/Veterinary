@@ -273,6 +273,15 @@ public class Main extends JFrame {
 		});
 		btnUsuarios.setBounds(10, 103, 104, 81);
 		contentPane.add(btnUsuarios);
+		
+		JButton btnQuirofanos = new JButton("Quirófanos");
+		btnQuirofanos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Quirofano tq = new Tabla_Quirofano();
+			}
+		});
+		btnQuirofanos.setBounds(124, 103, 104, 81);
+		contentPane.add(btnQuirofanos);
 	}
 
 	public Main() {

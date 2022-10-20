@@ -112,8 +112,18 @@ public class Tabla_Quirofano extends JFrame {
 				qs.setVisible(true);
 			}
 		});
-		btnRel.setBounds(40, 278, 161, 23);
+		btnRel.setBounds(40, 309, 161, 23);
 		contentPane.add(btnRel);
+		
+		JButton btnInstrumentos = new JButton("Instrumentos");
+		btnInstrumentos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Instrumento ti = new Tabla_Instrumento();
+				ti.setVisible(true);
+			}
+		});
+		btnInstrumentos.setBounds(40, 277, 161, 23);
+		contentPane.add(btnInstrumentos);
 		
 		mostrarTabla();
 	}
