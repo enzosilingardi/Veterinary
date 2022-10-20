@@ -58,9 +58,19 @@ public class Main extends JFrame {
 		mnVentas.add(mntmProductos);
 		
 		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+		mntmProveedores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Proveedor tp = new Tabla_Proveedor(); 
+			}
+		});
 		mnVentas.add(mntmProveedores);
 		
 		JMenuItem mntmStock = new JMenuItem("Stock");
+		mntmStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Stock ts = new Tabla_Stock();
+			}
+		});
 		mnVentas.add(mntmStock);
 		
 		JMenuItem mntmFacturacion = new JMenuItem("Facturacion");
@@ -217,6 +227,12 @@ public class Main extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnClientes = new JButton("Clientes");
+		btnClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Clientes tc = new Tabla_Clientes();
+				tc.setVisible(true);
+			}
+		});
 		btnClientes.setBounds(10, 11, 104, 81);
 		contentPane.add(btnClientes);
 		
@@ -229,6 +245,12 @@ public class Main extends JFrame {
 		contentPane.add(btnHistoriales);
 		
 		JButton btnVeterinarios = new JButton("Veterinarios");
+		btnVeterinarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Veterinario tv = new Tabla_Veterinario();
+				tv.setVisible(true);
+			}
+		});
 		btnVeterinarios.setBounds(352, 11, 104, 81);
 		contentPane.add(btnVeterinarios);
 		

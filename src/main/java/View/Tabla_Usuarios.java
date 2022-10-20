@@ -24,7 +24,7 @@ public class Tabla_Usuarios extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 
-void mostrarTabla(){
+	void mostrarTabla(){
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -103,6 +103,16 @@ void mostrarTabla(){
 		});
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JButton btnRel = new JButton("Añadir a sucursal");
+		btnRel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Usuario_Sucursal us = new Usuario_Sucursal();
+				us.setVisible(true);
+			}
+		});
+		btnRel.setBounds(40, 284, 161, 23);
+		contentPane.add(btnRel);
 		
 		mostrarTabla();
 	}

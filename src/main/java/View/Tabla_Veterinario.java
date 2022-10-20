@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 
-public class Tabla_Productos extends JFrame {
+public class Tabla_Veterinario extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -28,26 +28,24 @@ public class Tabla_Productos extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Producto","Tipo","Descripción","Precio de Venta","Precio proveedor","Proveedor"});
+	        modelo.setColumnIdentifiers(new Object[] {"Nombre","Apellido","Matrícula","Dirección"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[6];
+	        String datos[] = new String[4];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT product_Name, product_Type, description, cost_Price, sale_Price, provider_Name\r\n"
-	        			+ "FROM Product\r\n"
-	        			+ "INNER JOIN Provider ON Product.id_Provider = Provider.id_Provider;" );
+	        	PreparedStatement ps = con.prepareStatement("SELECT name, surname, medical_License, Address.address_Name, Address.address_Number\r\n"
+	        			+ "FROM Veterinarian\r\n"
+	        			+ "INNER JOIN Address ON Address.id_Address = Veterinarian.id_Address;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
 	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5);
-	                datos[5] = rs.getString(6);
+	                datos[3] = rs.getString(4)+" "+rs.getString(5);
 	                
 	                modelo.addRow(datos);
 
@@ -70,7 +68,7 @@ public class Tabla_Productos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Tabla_Productos frame = new Tabla_Productos();
+					Tabla_Veterinario frame = new Tabla_Veterinario();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -82,9 +80,9 @@ public class Tabla_Productos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Productos() {
+	public Tabla_Veterinario() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 750, 424);
+		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -92,7 +90,7 @@ public class Tabla_Productos extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 11, 679, 305);
+		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -104,19 +102,20 @@ public class Tabla_Productos extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(618, 351, 89, 23);
+		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnRel = new JButton("Añadir a sucursal");
 		btnRel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sucursal_Producto sp = new Sucursal_Producto();
-				sp.setVisible(true);
+				Veterinario_Sucursal vs = new Veterinario_Sucursal();
+				vs.setVisible(true);
 			}
 		});
-		btnRel.setBounds(28, 337, 161, 23);
+		btnRel.setBounds(40, 277, 161, 23);
 		contentPane.add(btnRel);
 		
 		mostrarTabla();
 	}
+
 }

@@ -302,11 +302,9 @@ public class Proveedor extends JFrame {
 								ps.setString(3, nombrePro);
 								ps.setString(4, nombre);
 								ps.setString(5, apellido);
-								if(validaTelefono(telefono)) {
-									ps.setString(6, telefono); 
-								} else {
-									JOptionPane.showMessageDialog(null, "Teléfono no válido");
-								}
+								
+								ps.setString(6, telefono); 
+								
 								
 								
 								if(validaEmail(email)) {
