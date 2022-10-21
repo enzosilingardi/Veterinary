@@ -38,7 +38,7 @@ public class Tabla_Turnos extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Procedure,Medical_History.id_Medical_History, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar,proced_Time,8)\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Procedure,Medical_History.id_Medical_History, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
 	        			+ "FROM Medical_Procedure\r\n"
 	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
 	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
@@ -186,7 +186,7 @@ public class Tabla_Turnos extends JFrame {
 				}
 			}
 		});
-		btnHistorial.setBounds(40, 280, 155, 23);
+		btnHistorial.setBounds(40, 260, 155, 23);
 		contentPane.add(btnHistorial);
 		
 		mostrarTabla();
