@@ -118,7 +118,9 @@ public class Tabla_Mascota extends JFrame {
 		btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Modificar_Mascota mm = new Modificar_Mascota();
+				int fila = table.getSelectedRow();
+				
+				Modificar_Mascota mm = new Modificar_Mascota(table.getValueAt(fila,0).toString());
 				mm.setVisible(true);
 				dispose();
 			}
