@@ -32,8 +32,7 @@ public class Procedimiento_Medico extends JFrame {
 	private JComboBox cbTipo;
 	private JComboBox cbMascota;
 	private JDateChooser txtFecha;
-	private JDateChooser txtInicio;
-	private JDateChooser txtFin;
+	private JDateChooser txtHora;
 	
 
 	class ComboItem
@@ -140,16 +139,17 @@ public class Procedimiento_Medico extends JFrame {
 		});
 	}
 
-	public int existeFecha(Date date) {
+	public int existeTurno(Date date, Time time) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? ;";
+			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? And proced_Time = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setDate(1,date);
+			pst.setTime(2, time);
 			
 			result = pst.executeQuery();
 			
@@ -170,45 +170,7 @@ public class Procedimiento_Medico extends JFrame {
 		
 		
 	}
-	
-	public boolean existeTurno(Date date,Time start, Time end) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT CONVERT(varchar,proced_Start,8), CONVERT(varchar,proced_End,8) FROM Medical_Procedure WHERE proced_Date = ? ;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setDate(1,date);
-			
-			result = pst.executeQuery();
-			
-			while (result.next()) {
-				if(start.after(result.getTime(1)) && start.before(result.getTime(2))){
-					return true;
-				}else {
-					if(end.after(result.getTime(1)) && end.before(result.getTime(2))){
-						return true;
-					} else {
-						return false;
-					}
-				}
-			}
-			
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return rootPaneCheckingEnabled;
-		
-		
-		
-	}
+
 	
 	private void limpiar() {
 		cbTipo.setSelectedIndex(0);
@@ -248,16 +210,14 @@ public class Procedimiento_Medico extends JFrame {
 				Object mascota = cbMascota.getSelectedItem();
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
-				String inicio = ((JTextField) txtInicio.getDateEditor().getUiComponent()).getText();
-				String fin = ((JTextField) txtFin.getDateEditor().getUiComponent()).getText();
-				Time start = Time.valueOf(inicio);
-				Time end = Time.valueOf(fin);
+				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
+				Time start = Time.valueOf(hora);
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Start, proced_End) VALUES (?,?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Time) VALUES (?,?,?,?)" );
 					
 					
 					if (((ComboItem) tipo).getValue() == "") {
@@ -268,22 +228,19 @@ public class Procedimiento_Medico extends JFrame {
 					}else {
 						ps.setString(1, ((ComboItem) tipo).getValue());
 						ps.setString(2, ((ComboItem) mascota).getValue());
+						ps.setDate(3, date);
 						
-						if(existeFecha(date)!=0) {
-							if(existeTurno(date,start,end)) {
-								
-								JOptionPane.showMessageDialog(null, "Turno ocupado");
-							}else {
-								ps.setDate(3, date);
-								ps.setTime(4, start);
-								ps.setTime(5, end);
-							}
+						if(existeTurno(date,start) != 0) {
+							JOptionPane.showMessageDialog(null, "Turno ya existe");
+						}else {
+							ps.setTime(4, start);
+						}
+						
+						
+							
 						}
 						
 					}
-						
-					}
-					
 					
 					result = ps.executeUpdate();
 					
@@ -305,12 +262,8 @@ public class Procedimiento_Medico extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(86, 244, 89, 23);
+		btnAgregar.setBounds(155, 240, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(225, 244, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.setBounds(286, 292, 89, 23);
@@ -339,20 +292,14 @@ public class Procedimiento_Medico extends JFrame {
 		txtFecha.setBounds(155, 131, 187, 20);
 		contentPane.add(txtFecha);
 		
-		JLabel lblHora = new JLabel("Hora inicio y fin");
+		JLabel lblHora = new JLabel("Hora");
 		lblHora.setBounds(53, 179, 92, 14);
 		contentPane.add(lblHora);
 		
-		txtInicio = new JDateChooser("HH:mm:ss", "##:##:##", '_');
-		txtInicio.getCalendarButton().setEnabled(false);
-		txtInicio.getCalendarButton().setVisible(false);
-		txtInicio.setBounds(155, 176, 89, 20);
-		contentPane.add(txtInicio);
-		
-		txtFin = new JDateChooser("HH:mm:ss", "##:##:##", '_');
-		txtFin.getCalendarButton().setEnabled(false);
-		txtFin.getCalendarButton().setVisible(false);
-		txtFin.setBounds(254, 176, 86, 20);
-		contentPane.add(txtFin);
+		txtHora = new JDateChooser("HH:mm:ss", "##:##:##", '_');
+		txtHora.getCalendarButton().setEnabled(false);
+		txtHora.getCalendarButton().setVisible(false);
+		txtHora.setBounds(155, 176, 99, 20);
+		contentPane.add(txtHora);
 	}
 }
