@@ -28,16 +28,16 @@ public class Tabla_Clientes extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Nombre","Apellido","Teléfono","Género","DNI","Fecha de nacimiento","E-Mail","Dirección"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Teléfono","Género","DNI","Fecha de nacimiento","E-Mail","Dirección"});
        
         table.setModel(modelo);
         
         
-        String datos[] = new String[8];
+        String datos[] = new String[9];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("Select name, surname, phone_Number, gender, dni, CONVERT(varchar(10),birthdate,103), email, address_Name, address_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, phone_Number, gender, dni, CONVERT(varchar(10),birthdate,103), email, address_Name, address_Number\r\n"
         			+ "FROM Client\r\n"
         			+ "INNER JOIN Address ON Client.id_Address = Address.id_Address;" );
             ResultSet rs = ps.executeQuery();
@@ -49,12 +49,17 @@ public class Tabla_Clientes extends JFrame {
                 datos[4] = rs.getString(5);
                 datos[5] = rs.getString(6);
                 datos[6] = rs.getString(7);
-                datos[7] = rs.getString(8)+" "+rs.getString(9);
+                datos[7] = rs.getString(8);
+                datos[8] = rs.getString(9)+" "+rs.getString(10);
                 
                 modelo.addRow(datos);
 
             }
             table.setModel(modelo);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -107,6 +112,19 @@ public class Tabla_Clientes extends JFrame {
 		});
 		btnVolver.setBounds(618, 351, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Cliente mc = new Modificar_Cliente(table.getValueAt(fila,0).toString());
+				mc.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(28, 330, 89, 23);
+		contentPane.add(btnModificar);
 		
 		mostrarTabla();
 	}
