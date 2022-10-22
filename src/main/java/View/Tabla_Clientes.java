@@ -126,6 +126,42 @@ public class Tabla_Clientes extends JFrame {
 		btnModificar.setBounds(28, 330, 89, 23);
 		contentPane.add(btnModificar);
 		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Client WHERE id_Client = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Cliente eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar país");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Cliente está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(127, 330, 89, 23);
+		contentPane.add(btnEliminar);
+		
 		mostrarTabla();
 	}
 
