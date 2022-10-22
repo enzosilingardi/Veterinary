@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Ciudad.ComboItem;
@@ -20,12 +21,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Instrumento_Quirofano extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbQuirofano;
 	private JComboBox cbInstrumento;
+	private JTable table;
 
 	class ComboItem
 	{
@@ -112,6 +116,46 @@ public class Instrumento_Quirofano extends JFrame {
 			}
 		return modelo;
     }
+	
+
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"Quirófano","Sucursal"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT room_Number, instrument_Name\r\n"
+        			+ "FROM Rel_Operating_R_Medical_I\r\n"
+        			+ "INNER JOIN Operating_Room ON Operating_Room.id_Operating_Room = Rel_Operating_R_Medical_I.id_Operating_Room\r\n"
+        			+ "INNER JOIN Medical_Instrument ON Medical_Instrument.id_Medical_Instrument = Rel_Operating_R_Medical_I.id_Medical_Instrument;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -168,7 +212,7 @@ public class Instrumento_Quirofano extends JFrame {
 	 */
 	public Instrumento_Quirofano() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 383, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -176,20 +220,20 @@ public class Instrumento_Quirofano extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblQuirofano = new JLabel("Quirófano");
-		lblQuirofano.setBounds(39, 63, 77, 14);
+		lblQuirofano.setBounds(467, 58, 77, 14);
 		contentPane.add(lblQuirofano);
 		
 		cbQuirofano = new JComboBox();
-		cbQuirofano.setBounds(126, 59, 160, 22);
+		cbQuirofano.setBounds(554, 54, 160, 22);
 		contentPane.add(cbQuirofano);
 		cbQuirofano.setModel(cargarQuirofano());
 		
 		JLabel lblInstrumento = new JLabel("Instrumento");
-		lblInstrumento.setBounds(39, 115, 77, 14);
+		lblInstrumento.setBounds(467, 110, 77, 14);
 		contentPane.add(lblInstrumento);
 		
 		cbInstrumento = new JComboBox();
-		cbInstrumento.setBounds(126, 111, 160, 22);
+		cbInstrumento.setBounds(554, 106, 160, 22);
 		contentPane.add(cbInstrumento);
 		cbInstrumento.setModel(cargarInstrumento());
 		
@@ -205,7 +249,7 @@ public class Instrumento_Quirofano extends JFrame {
 				
 			}
 		});
-		btnVolver.setBounds(268, 227, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -226,6 +270,7 @@ public class Instrumento_Quirofano extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento removido del quirófano");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al remover instrumento");
 		                limpiar();
@@ -240,7 +285,7 @@ public class Instrumento_Quirofano extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(207, 174, 89, 23);
+		btnEliminar.setBounds(635, 169, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -279,6 +324,7 @@ public class Instrumento_Quirofano extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento colocado");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al colocar instrumento");
 		                limpiar();
@@ -294,7 +340,16 @@ public class Instrumento_Quirofano extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(66, 174, 89, 23);
+		btnAgregar.setBounds(494, 169, 89, 23);
 		contentPane.add(btnAgregar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(43, 55, 356, 356);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 }

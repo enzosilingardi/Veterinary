@@ -296,6 +296,8 @@ public class Quirofano_Sucursal extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Quirofano tq = new Tabla_Quirofano();
+				tq.setVisible(true);
 				dispose();
 			}
 		});

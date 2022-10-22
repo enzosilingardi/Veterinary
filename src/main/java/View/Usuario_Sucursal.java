@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Sucursal_Producto.ComboItem;
@@ -20,12 +21,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Usuario_Sucursal extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbUsuario;
 	private JComboBox cbSucursal;
+	private JTable table;
 
 
 	class ComboItem
@@ -117,6 +121,46 @@ public class Usuario_Sucursal extends JFrame {
 			}
 		return modelo;
     }
+	
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"Usuario","Sucursal"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT username, address_Name, address_Number\r\n"
+        			+ "FROM Rel_Users_Branch\r\n"
+        			+ "INNER JOIN Users ON Users.id_User = Rel_Users_Branch.id_User\r\n"
+        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Users_Branch.id_Branch\r\n"
+        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2)+" "+rs.getString(3);
+                
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -173,7 +217,7 @@ public class Usuario_Sucursal extends JFrame {
 	 */
 	public Usuario_Sucursal() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 391, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -185,20 +229,20 @@ public class Usuario_Sucursal extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setBounds(39, 58, 65, 14);
+		lblUsuario.setBounds(464, 58, 65, 14);
 		contentPane.add(lblUsuario);
 		
 		cbUsuario = new JComboBox();
-		cbUsuario.setBounds(115, 54, 184, 22);
+		cbUsuario.setBounds(540, 54, 184, 22);
 		contentPane.add(cbUsuario);
 		cbUsuario.setModel(cargarUsuario());
 		
 		JLabel lblNewLabel = new JLabel("Sucursal");
-		lblNewLabel.setBounds(39, 119, 65, 14);
+		lblNewLabel.setBounds(464, 119, 65, 14);
 		contentPane.add(lblNewLabel);
 		
 		cbSucursal = new JComboBox();
-		cbSucursal.setBounds(115, 115, 184, 22);
+		cbSucursal.setBounds(540, 115, 184, 22);
 		contentPane.add(cbSucursal);
 		cbSucursal.setModel(cargarSucursal());
 		
@@ -238,6 +282,7 @@ public class Usuario_Sucursal extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario colocado");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al colocar usuario");
 		                limpiar();
@@ -253,7 +298,7 @@ public class Usuario_Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(62, 174, 89, 23);
+		btnAgregar.setBounds(487, 174, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -274,6 +319,7 @@ public class Usuario_Sucursal extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario removido de la sucursal");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al remover usuario");
 		                limpiar();
@@ -287,7 +333,7 @@ public class Usuario_Sucursal extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(203, 174, 89, 23);
+		btnEliminar.setBounds(628, 174, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -296,7 +342,16 @@ public class Usuario_Sucursal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(264, 227, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(31, 36, 393, 386);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Usuario_Sucursal.ComboItem;
@@ -20,12 +21,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Veterinario_Sucursal extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbVeterinario;
 	private JComboBox cbSucursal;
+	private JTable table;
 
 	class ComboItem
 	{
@@ -116,6 +120,46 @@ public class Veterinario_Sucursal extends JFrame {
 			}
 		return modelo;
     }
+
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"Usuario","Sucursal"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT name, surname, address_Name, address_Number\r\n"
+        			+ "FROM Rel_Veterinarian_Branch\r\n"
+        			+ "INNER JOIN Veterinarian ON Veterinarian.id_Veterinarian = Rel_Veterinarian_Branch.id_Veterinarian\r\n"
+        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Veterinarian_Branch.id_Branch\r\n"
+        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1)+" "+rs.getString(2);
+                datos[1] = rs.getString(3)+" "+rs.getString(4);
+                
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -173,7 +217,7 @@ public class Veterinario_Sucursal extends JFrame {
 	 */
 	public Veterinario_Sucursal() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 383, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -185,20 +229,20 @@ public class Veterinario_Sucursal extends JFrame {
 		contentPane.add(lblTítulo);
 		
 		JLabel lblVeterinarian = new JLabel("Veterinarian");
-		lblVeterinarian.setBounds(42, 68, 86, 14);
+		lblVeterinarian.setBounds(456, 67, 86, 14);
 		contentPane.add(lblVeterinarian);
 		
 		cbVeterinario = new JComboBox();
-		cbVeterinario.setBounds(138, 64, 172, 22);
+		cbVeterinario.setBounds(552, 63, 172, 22);
 		contentPane.add(cbVeterinario);
 		cbVeterinario.setModel(cargarVeterinario());
 		
 		JLabel lblSucursal = new JLabel("Sucursal");
-		lblSucursal.setBounds(42, 123, 86, 14);
+		lblSucursal.setBounds(456, 122, 86, 14);
 		contentPane.add(lblSucursal);
 		
 		cbSucursal = new JComboBox();
-		cbSucursal.setBounds(138, 119, 172, 22);
+		cbSucursal.setBounds(552, 118, 172, 22);
 		contentPane.add(cbSucursal);
 		cbSucursal.setModel(cargarSucursal());
 		
@@ -238,6 +282,7 @@ public class Veterinario_Sucursal extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario colocado");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al colocar veterinario");
 		                limpiar();
@@ -252,7 +297,7 @@ public class Veterinario_Sucursal extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(53, 174, 89, 23);
+		btnAgregar.setBounds(467, 173, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -274,6 +319,7 @@ public class Veterinario_Sucursal extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario removido de la sucursal");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al remover veterinario");
 		                limpiar();
@@ -287,7 +333,7 @@ public class Veterinario_Sucursal extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(194, 174, 89, 23);
+		btnEliminar.setBounds(608, 173, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -296,7 +342,16 @@ public class Veterinario_Sucursal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(255, 227, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(26, 48, 371, 372);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 }
