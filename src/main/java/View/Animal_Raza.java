@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Instrumento_Quirofano.ComboItem;
@@ -20,12 +21,15 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Animal_Raza extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbAnimal;
 	private JComboBox cbRaza;
+	private JTable table;
 	
 	class ComboItem
 	{
@@ -113,6 +117,46 @@ public class Animal_Raza extends JFrame {
 		return modelo;
     }
 
+
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"Animal","Raza"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT Animal.type, Breed.type\r\n"
+        			+ "FROM Rel_Animal_Breed\r\n"
+        			+ "INNER JOIN Animal ON Animal.id_Animal = Rel_Animal_Breed.id_Animal\r\n"
+        			+ "INNER JOIN Breed ON Breed.id_Breed = Rel_Animal_Breed.id_Breed;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
+	
 	/**
 	 * Launch the application.
 	 */
@@ -170,7 +214,7 @@ public class Animal_Raza extends JFrame {
 	 */
 	public Animal_Raza() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 388, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -182,20 +226,20 @@ public class Animal_Raza extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblAnimal = new JLabel("Animal");
-		lblAnimal.setBounds(43, 58, 60, 14);
+		lblAnimal.setBounds(467, 60, 60, 14);
 		contentPane.add(lblAnimal);
 		
 		cbAnimal = new JComboBox();
-		cbAnimal.setBounds(113, 54, 168, 22);
+		cbAnimal.setBounds(537, 56, 168, 22);
 		contentPane.add(cbAnimal);
 		cbAnimal.setModel(cargarAnimal());
 		
 		JLabel lblRaza = new JLabel("Raza");
-		lblRaza.setBounds(43, 114, 46, 14);
+		lblRaza.setBounds(467, 116, 46, 14);
 		contentPane.add(lblRaza);
 		
 		cbRaza = new JComboBox();
-		cbRaza.setBounds(113, 110, 168, 22);
+		cbRaza.setBounds(537, 112, 168, 22);
 		contentPane.add(cbRaza);
 		cbRaza.setModel(cargarRaza());
 		
@@ -234,6 +278,7 @@ public class Animal_Raza extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza asociada");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al asociar raza");
 		                limpiar();
@@ -249,7 +294,7 @@ public class Animal_Raza extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(51, 174, 89, 23);
+		btnAgregar.setBounds(475, 176, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -270,6 +315,7 @@ public class Animal_Raza extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza removida del animal");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al remover instrumento");
 		                limpiar();
@@ -283,7 +329,7 @@ public class Animal_Raza extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(192, 174, 89, 23);
+		btnEliminar.setBounds(616, 176, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -292,8 +338,17 @@ public class Animal_Raza extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(253, 227, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(36, 47, 363, 373);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 
 }
