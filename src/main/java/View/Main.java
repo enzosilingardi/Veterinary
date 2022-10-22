@@ -61,6 +61,7 @@ public class Main extends JFrame {
 		mntmProveedores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Proveedor tp = new Tabla_Proveedor(); 
+				tp.setVisible(true);
 			}
 		});
 		mnVentas.add(mntmProveedores);
@@ -69,6 +70,7 @@ public class Main extends JFrame {
 		mntmStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Stock ts = new Tabla_Stock();
+				ts.setVisible(true);
 			}
 		});
 		mnVentas.add(mntmStock);
@@ -246,10 +248,22 @@ public class Main extends JFrame {
 		contentPane.add(btnClientes);
 		
 		JButton btnTurnos = new JButton("Turnos");
+		btnTurnos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Turnos tt = new Tabla_Turnos();
+				tt.setVisible(true);
+			}
+		});
 		btnTurnos.setBounds(124, 11, 104, 81);
 		contentPane.add(btnTurnos);
 		
 		JButton btnHistoriales = new JButton("Historiales");
+		btnHistoriales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Historial th = new Tabla_Historial();
+				th.setVisible(true);
+			}
+		});
 		btnHistoriales.setBounds(238, 11, 104, 81);
 		contentPane.add(btnHistoriales);
 		
@@ -287,6 +301,7 @@ public class Main extends JFrame {
 		btnQuirofanos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Quirofano tq = new Tabla_Quirofano();
+				tq.setVisible(true);
 			}
 		});
 		btnQuirofanos.setBounds(124, 103, 104, 81);

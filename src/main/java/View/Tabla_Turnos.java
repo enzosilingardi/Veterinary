@@ -124,7 +124,7 @@ public class Tabla_Turnos extends JFrame {
 	 */
 	public Tabla_Turnos() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 612, 382);
+		setBounds(100, 100, 612, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -144,7 +144,7 @@ public class Tabla_Turnos extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(497, 327, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnHistorial = new JButton("Agregar a historial");
@@ -189,7 +189,26 @@ public class Tabla_Turnos extends JFrame {
 		btnHistorial.setBounds(40, 260, 155, 23);
 		contentPane.add(btnHistorial);
 		
+		JButton btnVeterinario = new JButton("Asociar veterinario");
+		btnVeterinario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Veterinario pv = new Procedimiento_Veterinario();
+				pv.setVisible(true);
+			}
+		});
+		btnVeterinario.setBounds(40, 289, 155, 23);
+		contentPane.add(btnVeterinario);
+		
+		JButton btnSucursal = new JButton("Asociar sucursal");
+		btnSucursal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Sucursal ps = new Procedimiento_Sucursal();
+				ps.setVisible(true);
+			}
+		});
+		btnSucursal.setBounds(40, 323, 155, 23);
+		contentPane.add(btnSucursal);
+		
 		mostrarTabla();
 	}
-
 }
