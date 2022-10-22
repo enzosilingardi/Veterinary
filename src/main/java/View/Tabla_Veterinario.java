@@ -28,16 +28,16 @@ public class Tabla_Veterinario extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Nombre","Apellido","Matrícula","Dirección"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Matrícula","Dirección"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[4];
+	        String datos[] = new String[5];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT name, surname, medical_License, Address.address_Name, Address.address_Number\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Veterinarian, name, surname, medical_License, Address.address_Name, Address.address_Number\r\n"
 	        			+ "FROM Veterinarian\r\n"
 	        			+ "INNER JOIN Address ON Address.id_Address = Veterinarian.id_Address;" );
 	            ResultSet rs = ps.executeQuery();
@@ -45,12 +45,17 @@ public class Tabla_Veterinario extends JFrame {
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
 	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4)+" "+rs.getString(5);
+	                datos[3] = rs.getString(4);
+	                datos[4] = rs.getString(5)+" "+rs.getString(6);
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -112,8 +117,57 @@ public class Tabla_Veterinario extends JFrame {
 				vs.setVisible(true);
 			}
 		});
-		btnRel.setBounds(40, 277, 161, 23);
+		btnRel.setBounds(40, 309, 188, 23);
 		contentPane.add(btnRel);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Veterinario mv = new Modificar_Veterinario(table.getValueAt(fila,0).toString());
+				mv.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(40, 271, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Veterinarian WHERE id_Veterinarian = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Veterinario eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Veterinario está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(139, 271, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}

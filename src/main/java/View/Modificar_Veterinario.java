@@ -7,11 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import View.Sucursal.ComboItem;
+import View.Veterinario.ComboItem;
 
+import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,15 +21,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
 
-public class Veterinario extends JFrame {
+public class Modificar_Veterinario extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtMatricula;
-	private JTextField txtNombre;
 	private JTextField txtApellido;
-	private JComboBox cbDireccion;
+	private JTextField txtNombre;
+private JComboBox cbDireccion;
+private JTextField txtId;
 	
 	class ComboItem
 	{
@@ -88,7 +89,7 @@ public class Veterinario extends JFrame {
 			}
 		return modelo;
     }
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -96,7 +97,7 @@ public class Veterinario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Veterinario frame = new Veterinario();
+					Modificar_Veterinario frame = new Modificar_Veterinario();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -104,76 +105,99 @@ public class Veterinario extends JFrame {
 			}
 		});
 	}
-	
-	public int existeVeterinario(String nombre, String apellido) {
+
+	private void cargarCampos(String veterinario) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
+		int id = Integer.parseInt(veterinario);
+		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Veterinarian WHERE name = ? AND surname = ?;";
+			String SSQL = "SELECT name, surname, medical_License\r\n"
+					+ "FROM Veterinarian WHERE id_Veterinarian = ?";
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,nombre);
-			pst.setString(2,apellido);
-
+			pst.setInt(1, id);
+			
+			
 			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);
+			while (result.next()){
+			txtNombre.setText(result.getString(1));
+			txtApellido.setText(result.getString(2));
+			txtMatricula.setText(result.getString(3));
 			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	}
-	
-	private void limpiar() {
-		cbDireccion.setSelectedIndex(0);
-		txtNombre.setText("");
-		txtApellido.setText("");
-		txtMatricula.setText("");
-		
-	}
-	
 	/**
 	 * Create the frame.
 	 */
-	public Veterinario() {
-		setTitle("Veterinario");
+	public Modificar_Veterinario(String veterinario) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 418, 397);
+		setBounds(100, 100, 418, 366);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Veterinarios");
-		lblTitulo.setBounds(185, 11, 86, 14);
-		contentPane.add(lblTitulo);
+		txtMatricula = new JTextField();
+		txtMatricula.setColumns(10);
+		txtMatricula.setBounds(170, 187, 163, 20);
+		contentPane.add(txtMatricula);
 		
 		JLabel lblMatricula = new JLabel("Matrícula");
-		lblMatricula.setBounds(56, 213, 57, 14);
+		lblMatricula.setBounds(51, 190, 57, 14);
 		contentPane.add(lblMatricula);
 		
-		txtMatricula = new JTextField();
-		txtMatricula.setBounds(175, 210, 163, 20);
-		contentPane.add(txtMatricula);
-		txtMatricula.setColumns(10);
+		JLabel lblDireccion = new JLabel("Direccion");
+		lblDireccion.setBounds(51, 140, 66, 14);
+		contentPane.add(lblDireccion);
 		
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.addActionListener(new ActionListener() {
+		cbDireccion = new JComboBox();
+		cbDireccion.setBounds(170, 136, 163, 22);
+		contentPane.add(cbDireccion);
+		cbDireccion.setModel(cargarDireccion());
+		
+		txtApellido = new JTextField();
+		txtApellido.setColumns(10);
+		txtApellido.setBounds(170, 87, 163, 20);
+		contentPane.add(txtApellido);
+		
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setBounds(51, 90, 59, 14);
+		contentPane.add(lblApellido);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(51, 39, 59, 14);
+		contentPane.add(lblNombre);
+		
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(170, 36, 163, 20);
+		contentPane.add(txtNombre);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Tabla_Veterinario tv = new Tabla_Veterinario();
+				tv.setVisible(true);
+				dispose();
+			}
+		});
+		btnVolver.setBounds(228, 261, 89, 23);
+		contentPane.add(btnVolver);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(txtId.getText());
 				Object direccion = cbDireccion.getSelectedItem();
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
@@ -183,31 +207,31 @@ public class Veterinario extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Veterinarian (id_Address,name,surname,medical_License) VALUES (?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("UPDATE Veterinarian SET id_Address = ?, name = ? ,surname = ? ,medical_License = ?  WHERE id_Veterinarian = ?" );
 					
 					
 					if (((ComboItem) direccion).getValue() == "") {
 						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
 					}else {
-						if(existeVeterinario(nombre,apellido)!=0) {
-						JOptionPane.showMessageDialog(null, "Veterinario ya existe");
-					}else {
 						ps.setString(1, ((ComboItem) direccion).getValue());
 						ps.setString(2,nombre);
 						ps.setString(3,apellido);
 						ps.setString(4,matricula);
+						ps.setInt(5, id);
 					}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario guardado");
-		                limpiar();
+		                Tabla_Veterinario tv = new Tabla_Veterinario();
+						tv.setVisible(true);
+						dispose();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar veterinario");
-		                limpiar();
+		                
 		            }
 				
 					
@@ -217,47 +241,24 @@ public class Veterinario extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 			}
 		});
-		btnAgregar.setBounds(148, 270, 89, 23);
-		contentPane.add(btnAgregar);
+		btnModificar.setBounds(61, 261, 89, 23);
+		contentPane.add(btnModificar);
 		
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnVolver.setBounds(282, 317, 89, 23);
-		contentPane.add(btnVolver);
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(51, 8, 37, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
 		
-		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(56, 62, 59, 14);
-		contentPane.add(lblNombre);
+		cargarCampos(veterinario);
+		txtId.setText(veterinario);
 		
-		txtNombre = new JTextField();
-		txtNombre.setColumns(10);
-		txtNombre.setBounds(175, 59, 163, 20);
-		contentPane.add(txtNombre);
-		
-		txtApellido = new JTextField();
-		txtApellido.setColumns(10);
-		txtApellido.setBounds(175, 110, 163, 20);
-		contentPane.add(txtApellido);
-		
-		JLabel lblApellido = new JLabel("Apellido");
-		lblApellido.setBounds(56, 113, 59, 14);
-		contentPane.add(lblApellido);
-		
-		JLabel lblDireccion = new JLabel("Direccion");
-		lblDireccion.setBounds(56, 163, 66, 14);
-		contentPane.add(lblDireccion);
-		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(175, 159, 163, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
 	}
 
+	public Modificar_Veterinario() {
+		// TODO Auto-generated constructor stub
+	}
 }
