@@ -213,6 +213,7 @@ public class Sucursal_Producto extends JFrame {
 				
 				int result = 0;
 				
+				
 				try {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Branch_Product (id_Branch,id_Product,amount) VALUES (?,?,?)" );
@@ -231,7 +232,21 @@ public class Sucursal_Producto extends JFrame {
 								ps.setString(2, ((ComboItem) producto).getValue());
 								
 								
-								ps.setInt(3, cantidad);
+								
+								if(cantidad >250000) {
+									JOptionPane.showMessageDialog(null, "Número excede el límite (250000)",null,JOptionPane.ERROR_MESSAGE);
+									
+									
+								}else if(cantidad<0){
+									JOptionPane.showMessageDialog(null, "No se permiten números negativos",null,JOptionPane.ERROR_MESSAGE);
+									
+							
+								}else {
+									
+									ps.setInt(3, cantidad);
+							
+								}
+								
 							}
 						}
 						
