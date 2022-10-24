@@ -1,4 +1,4 @@
-package View;
+package Main;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -18,7 +18,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import View.Historial_Medico.ComboItem;
 
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -162,13 +161,13 @@ public class Tabla_Stock extends JFrame {
 					Connection con = Connect.getConexion();
 					PreparedStatement ps = con.prepareStatement("UPDATE Rel_Branch_Product SET amount = ? WHERE id_BP = ?");
 					
-						
+					
 						if(cantidad >250000) {
-							JOptionPane.showMessageDialog(null, "Número excede el límite (250000)",null,JOptionPane.ERROR_MESSAGE);
+							
 							mostrarTabla();
 							
 						}else if(cantidad<0){
-							JOptionPane.showMessageDialog(null, "No se permiten números negativos",null,JOptionPane.ERROR_MESSAGE);
+							
 							mostrarTabla();
 					
 						}else {
@@ -209,4 +208,6 @@ public class Tabla_Stock extends JFrame {
 		mostrarTabla();
 		
 	}
+		
+		
 }
