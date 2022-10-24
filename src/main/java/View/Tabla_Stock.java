@@ -116,7 +116,7 @@ public class Tabla_Stock extends JFrame {
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar cantidad");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -149,7 +149,7 @@ public class Tabla_Stock extends JFrame {
 				
 			}
 		});
-		btnModificar.setBounds(40, 288, 89, 23);
+		btnModificar.setBounds(40, 288, 143, 23);
 		contentPane.add(btnModificar);
 		
 		mostrarTabla();

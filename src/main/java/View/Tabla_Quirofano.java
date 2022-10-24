@@ -28,30 +28,36 @@ public class Tabla_Quirofano extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Quirófano","Sucursal"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Sucursal"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[2];
+	        String datos[] = new String[3];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Address.address_Name, Address.address_Number, Operating_Room.room_Number\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Operating_Room.id_Operating_Room, Address.address_Name, Address.address_Number, Operating_Room.room_Number\r\n"
 	        			+ "FROM Operating_Room\r\n"
 	        			+ "INNER JOIN Rel_Branch_Operating_R ON Rel_Branch_Operating_R.id_Operating_Room = Operating_Room.id_Operating_Room\r\n"
 	        			+ "INNER JOIN Branch ON Rel_Branch_Operating_R.id_Branch = Branch.id_Branch\r\n"
 	        			+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
-	            	datos[0] = rs.getString(3);
-	                datos[1] = rs.getString(1)+" "+rs.getString(2);
+	            	datos[0] = rs.getString(1);
+	            	datos[1] = rs.getString(4);
+	                datos[2] = rs.getString(2)+" "+rs.getString(3);
 	                
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -110,6 +116,7 @@ public class Tabla_Quirofano extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Quirofano_Sucursal qs = new Quirofano_Sucursal();
 				qs.setVisible(true);
+				dispose();
 			}
 		});
 		btnRel.setBounds(40, 309, 161, 23);
@@ -125,6 +132,55 @@ public class Tabla_Quirofano extends JFrame {
 		});
 		btnInstrumentos.setBounds(40, 277, 161, 23);
 		contentPane.add(btnInstrumentos);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Quirofano mq = new Modificar_Quirofano(table.getValueAt(fila,0).toString());
+				mq.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(211, 277, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Operating_Room WHERE id_Operating_Room = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Quirofano eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar quirofano");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Quirofano está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(211, 309, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}
