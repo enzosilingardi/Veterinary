@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import View.Stock.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -210,7 +209,7 @@ public class Sucursal_Producto extends JFrame {
 
 				Object producto = cbProducto.getSelectedItem();
 				Object sucursal = cbSucursal.getSelectedItem();
-				String cantidad = txtCantidad.getText();
+				int cantidad = Integer.parseInt(txtCantidad.getText());
 				
 				int result = 0;
 				
@@ -230,7 +229,9 @@ public class Sucursal_Producto extends JFrame {
 							}else {
 								ps.setString(1, ((ComboItem) sucursal).getValue());
 								ps.setString(2, ((ComboItem) producto).getValue());
-								ps.setString(3, cantidad);
+								
+								
+								ps.setInt(3, cantidad);
 							}
 						}
 						

@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import View.Stock.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
