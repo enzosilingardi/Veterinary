@@ -28,25 +28,30 @@ public class Tabla_Instrumento extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Instrumento","Descripción"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Instrumento","Descripción"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[2];
+	        String datos[] = new String[3];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT instrument_Name, instrument_Description From Medical_Instrument;" );
+	        	PreparedStatement ps = con.prepareStatement("SELECT * From Medical_Instrument;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
+	                datos[2] = rs.getString(3);
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -107,10 +112,84 @@ public class Tabla_Instrumento extends JFrame {
 				iq.setVisible(true);
 			}
 		});
-		btnRel.setBounds(40, 284, 142, 23);
+		btnRel.setBounds(40, 309, 188, 23);
 		contentPane.add(btnRel);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String nombre = table.getValueAt(fila,1).toString();
+				String descripcion = table.getValueAt(fila,2).toString();
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Instrument SET instrument_Name = ?, instrument_Description = ? WHERE id_Medical_Instrument = ?");
+					ps.setString(1, nombre);
+					ps.setString(2, descripcion);
+					ps.setInt(3, id);
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Instrumento modificado");
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar instrumento");
+		                mostrarTabla();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(40, 270, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE id_Medical_Instrument = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Instrumento está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(139, 270, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}
-
 }
