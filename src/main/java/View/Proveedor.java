@@ -340,46 +340,8 @@ public class Proveedor extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(80, 381, 89, 23);
+		btnAgregar.setBounds(180, 380, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				int result = 0;
-				String nombrePro = txtNombrePro.getText();
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider WHERE provider_Name = ?" );
-					if(proveedorEnUso(nombrePro) != 0) {
-						JOptionPane.showMessageDialog(null, "Proveedor está en uso, por favor elimine todos los registros relacionados");
-					}else {
-						ps.setString(1, nombrePro);
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor eliminado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar proveedor");
-		                limpiar();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		btnEliminar.setBounds(244, 381, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {

@@ -28,33 +28,39 @@ public class Tabla_Proveedor extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Nombre","Tipo","Dirección","Titular","Teléfono","E-Mail","CUIT"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Tipo","Dirección","Titular","Teléfono","E-Mail","CUIT"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[7];
+	        String datos[] = new String[8];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT provider_Name, Provider_Type.type_Name ,Address.address_Name,Address.address_Number , name, surname, phone_Number, email, cuit\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Provider.id_Provider, provider_Name, Provider_Type.type_Name ,Address.address_Name,Address.address_Number , name, surname, phone_Number, email, cuit\r\n"
 	        			+ "FROM Provider\r\n"
 	        			+ "INNER JOIN Provider_Type ON Provider_Type.id_Provider_Type = Provider.id_Provider_Type\r\n"
 	        			+ "INNER JOIN Address ON Address.id_Address = Provider.id_Address;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
-	                datos[0] = rs.getString(1);
+	            	datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3)+" "+rs.getString(4);
-	                datos[3] = rs.getString(5)+" "+rs.getString(6);
-	                datos[4] = rs.getString(7);
+	                datos[2] = rs.getString(3);
+	                datos[3] = rs.getString(4)+" "+rs.getString(5);
+	                datos[4] = rs.getString(6)+" "+rs.getString(7);
 	                datos[5] = rs.getString(8);
 	                datos[6] = rs.getString(9);
+	                datos[7] = rs.getString(10);
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -107,6 +113,46 @@ public class Tabla_Proveedor extends JFrame {
 		});
 		btnVolver.setBounds(635, 309, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBounds(40, 283, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider WHERE id_Provider = ?" );
+					
+					ps.setInt(1, id);
+					
+				
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Proveedor eliminado");
+		                
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar proveedor");
+		               
+		            }
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Proveedor está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(139, 283, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}
