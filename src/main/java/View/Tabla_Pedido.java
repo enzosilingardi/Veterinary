@@ -28,16 +28,16 @@ public class Tabla_Pedido extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Producto","Sucursal","Cantidad"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Sucursal","Cantidad"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[3];
+	        String datos[] = new String[4];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Product.product_Name, Address.address_Name, Address.address_Number, Orders.quantity\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Orders.id_Order, Product.product_Name, Address.address_Name, Address.address_Number, Orders.quantity\r\n"
 	        			+ "FROM Orders\r\n"
 	        			+ "INNER JOIN Product ON Product.id_Product = Orders.id_Product\r\n"
 	        			+ "INNER JOIN Branch ON Branch.id_Branch = Orders.id_Branch\r\n"
@@ -45,13 +45,18 @@ public class Tabla_Pedido extends JFrame {
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
-	                datos[1] = rs.getString(2)+" "+rs.getString(3);
-	                datos[2] = rs.getString(4);
+	                datos[1] = rs.getString(2);
+	                datos[2] = rs.getString(3)+" "+rs.getString(4);
+	                datos[3] = rs.getString(5);
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -111,10 +116,60 @@ public class Tabla_Pedido extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Pedidos pedido = new Pedidos();
 				pedido.setVisible(true);
+				dispose();
 			}
 		});
-		btnRel.setBounds(40, 284, 142, 23);
+		btnRel.setBounds(40, 309, 188, 23);
 		contentPane.add(btnRel);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Pedido mp = new Modificar_Pedido(table.getValueAt(fila,0).toString());
+				mp.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(40, 260, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Orders WHERE id_Order = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Pedido eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Pedido está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(139, 260, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}

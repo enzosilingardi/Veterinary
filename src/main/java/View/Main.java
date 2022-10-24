@@ -90,8 +90,8 @@ public class Main extends JFrame {
 		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
 		mnVentas.add(mntmPresupuestos);
 		
-		
 		if (perfil.equals("Admin")) {
+		
 		JMenu mnArchivos = new JMenu("Archivos");
 		mnArchivos.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnArchivos);
@@ -130,15 +130,6 @@ public class Main extends JFrame {
 				producto.setVisible(true);			}
 		});
 		mnArchivos.add(mntmABMProducto);
-		
-		JMenuItem mntmABMPedido = new JMenuItem("ABM Pedido");
-		mntmABMPedido.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Pedidos pedido = new Pedidos();
-				pedido.setVisible(true);
-			}
-		});
-		mnArchivos.add(mntmABMPedido);
 		mnArchivos.add(mntmABMProveedor);
 		
 		JMenuItem mntmABMTipoProveedor = new JMenuItem("ABM Tipo Proveedor");
