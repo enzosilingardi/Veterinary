@@ -146,7 +146,7 @@ public class Sucursal extends JFrame {
 	public Sucursal() {
 		setTitle("Sucursal");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 323);
+		setBounds(100, 100, 414, 264);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -154,11 +154,11 @@ public class Sucursal extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblTitulo = new JLabel("Sucursales");
-		lblTitulo.setBounds(187, 11, 86, 14);
+		lblTitulo.setBounds(159, 11, 86, 14);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblDireccion = new JLabel("Direccion");
-		lblDireccion.setBounds(71, 80, 67, 14);
+		lblDireccion.setBounds(36, 76, 67, 14);
 		contentPane.add(lblDireccion);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -205,7 +205,7 @@ public class Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(57, 167, 89, 23);
+		btnAgregar.setBounds(53, 126, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -233,20 +233,22 @@ public class Sucursal extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(266, 167, 89, 23);
+		btnEliminar.setBounds(237, 126, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Sucursales ts = new Tabla_Sucursales();
+				ts.setVisible(true);
 				dispose();
 			}
 		});
-		btnVolver.setBounds(304, 215, 89, 23);
+		btnVolver.setBounds(274, 179, 89, 23);
 		contentPane.add(btnVolver);
 		
 		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(160, 76, 196, 22);
+		cbDireccion.setBounds(125, 72, 196, 22);
 		contentPane.add(cbDireccion);
 		cbDireccion.setModel(cargarDireccion());
 	}

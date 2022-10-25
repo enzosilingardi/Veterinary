@@ -24,6 +24,8 @@ public class Tabla_Sucursales extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private JButton btnModificar;
+	private JButton btnABM;
 
 	
 	
@@ -31,16 +33,16 @@ public class Tabla_Sucursales extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Pais","Provincia","Ciudad","Calle","Número"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Pais","Provincia","Ciudad","Calle","Número"});
        
         table.setModel(modelo);
         
         
-        String datos[] = new String[5];
+        String datos[] = new String[6];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT Country.name, Province.name, City.name, Address.address_Name, Address.address_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT Branch.id_Branch, Country.name, Province.name, City.name, Address.address_Name, Address.address_Number\r\n"
         			+ "FROM Country\r\n"
         			+ "INNER JOIN Province ON Province.id_Country = Country.id_Country\r\n"
         			+ "INNER JOIN City ON City.id_Province = Province.id_Province\r\n"
@@ -53,11 +55,17 @@ public class Tabla_Sucursales extends JFrame {
                 datos[2] = rs.getString(3);
                 datos[3] = rs.getString(4);
                 datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
                 
                 modelo.addRow(datos);
 
             }
             table.setModel(modelo);
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -110,6 +118,30 @@ public class Tabla_Sucursales extends JFrame {
 		});
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
+		
+		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Sucursal ms = new Modificar_Sucursal(table.getValueAt(fila,0).toString());
+				ms.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(40, 260, 140, 23);
+		contentPane.add(btnModificar);
+		
+		btnABM = new JButton("AB Sucursales");
+		btnABM.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sucursal sucursal = new Sucursal();
+				sucursal.setVisible(true);
+				dispose();
+			}
+		});
+		btnABM.setBounds(40, 294, 140, 23);
+		contentPane.add(btnABM);
 		
 		mostrarTabla();
 	}
