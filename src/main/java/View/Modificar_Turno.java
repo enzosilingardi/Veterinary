@@ -1,6 +1,12 @@
 package View;
 
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,30 +15,27 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
-import View.Historial_Medico.ComboItem;
+import View.Procedimiento_Medico.ComboItem;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
 import java.awt.event.ActionEvent;
 
-public class Procedimiento_Medico extends JFrame {
+public class Modificar_Turno extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbTipo;
 	private JComboBox cbMascota;
 	private JDateChooser txtFecha;
 	private JDateChooser txtHora;
+	private JButton btnModificar;
+	private JButton btnVolver;
+	private JTextField txtId;
 	
 
 	class ComboItem
@@ -123,6 +126,7 @@ public class Procedimiento_Medico extends JFrame {
 			}
 		return modelo;
     }
+
 	/**
 	 * Launch the application.
 	 */
@@ -130,7 +134,7 @@ public class Procedimiento_Medico extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Procedimiento_Medico frame = new Procedimiento_Medico();
+					Modificar_Turno frame = new Modificar_Turno();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -139,73 +143,87 @@ public class Procedimiento_Medico extends JFrame {
 		});
 	}
 
-	public int existeTurno(Date date, Time time) {
+	private void cargarCampos(String turno) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
+		int id = Integer.parseInt(turno);
+		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? And proced_Time = ?;";
+			String SSQL = "SELECT id_Pet, id_Procedure_Type, proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";
 			pst = cn.prepareStatement(SSQL);
-			pst.setDate(1,date);
-			pst.setTime(2, time);
+			pst.setInt(1, id);
+			
 			
 			result = pst.executeQuery();
-			
-			if (result.next()) {
-				
-				return result.getInt(1);
+			while (result.next()){
+			cbMascota.setSelectedIndex(result.getInt(1));
+			cbTipo.setSelectedIndex(result.getInt(2));
+			txtFecha.setDate(result.getDate(3));
+			txtHora.setDate(result.getTime(4));
 			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
-
-	
-	private void limpiar() {
-		cbTipo.setSelectedIndex(0);
-		cbMascota.setSelectedIndex(0);
-		
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	}
 	/**
 	 * Create the frame.
 	 */
-	public Procedimiento_Medico() {
-		setTitle("Procedimientos");
+	public Modificar_Turno(String turno) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 417, 365);
+		setBounds(100, 100, 382, 332);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Procedimientos");
-		lblTitulo.setBounds(155, 11, 99, 14);
-		contentPane.add(lblTitulo);
+		cbTipo = new JComboBox();
+		cbTipo.setBounds(137, 38, 187, 22);
+		contentPane.add(cbTipo);
+		cbTipo.setModel(cargarTipo());
 		
-		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(53, 53, 46, 14);
-		contentPane.add(lblTipo);
+		cbMascota = new JComboBox();
+		cbMascota.setBounds(137, 77, 187, 22);
+		contentPane.add(cbMascota);
+		cbMascota.setModel(cargarMascota());
 		
 		JLabel lblMascota = new JLabel("Mascota");
-		lblMascota.setBounds(53, 92, 77, 14);
+		lblMascota.setBounds(35, 81, 77, 14);
 		contentPane.add(lblMascota);
 		
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.addActionListener(new ActionListener() {
+		JLabel lblTipo = new JLabel("Tipo");
+		lblTipo.setBounds(35, 42, 46, 14);
+		contentPane.add(lblTipo);
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(35, 123, 46, 14);
+		contentPane.add(lblFecha);
+		
+		JLabel lblHora = new JLabel("Hora");
+		lblHora.setBounds(35, 168, 92, 14);
+		contentPane.add(lblHora);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(137, 117, 187, 20);
+		contentPane.add(txtFecha);
+		
+		txtHora = new JDateChooser("HH:mm:ss", "##:##:##", '_');
+		txtHora.getCalendarButton().setEnabled(false);
+		txtHora.getCalendarButton().setVisible(false);
+		txtHora.setBounds(137, 162, 99, 20);
+		contentPane.add(txtHora);
+		
+		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				int id = Integer.parseInt(txtId.getText());
 				Object tipo = cbTipo.getSelectedItem();
 				Object mascota = cbMascota.getSelectedItem();
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
@@ -217,7 +235,7 @@ public class Procedimiento_Medico extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Time) VALUES (?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
 					
 					
 					if (((ComboItem) tipo).getValue() == "") {
@@ -229,12 +247,8 @@ public class Procedimiento_Medico extends JFrame {
 						ps.setString(1, ((ComboItem) tipo).getValue());
 						ps.setString(2, ((ComboItem) mascota).getValue());
 						ps.setDate(3, date);
-						
-						if(existeTurno(date,start) != 0) {
-							JOptionPane.showMessageDialog(null, "Turno ya existe");
-						}else {
-							ps.setTime(4, start);
-						}
+						ps.setTime(4, start);
+						ps.setInt(5, id);
 						
 						
 							
@@ -245,11 +259,13 @@ public class Procedimiento_Medico extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno guardado");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Turno modificado");
+		                Tabla_Turnos tt = new Tabla_Turnos();
+						tt.setVisible(true);
+						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar turno");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al modificar turno");
+		                
 		            }
 				
 					con.close();
@@ -259,49 +275,36 @@ public class Procedimiento_Medico extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 			}
 		});
-		btnAgregar.setBounds(155, 240, 89, 23);
-		contentPane.add(btnAgregar);
+		btnModificar.setBounds(57, 230, 89, 23);
+		contentPane.add(btnModificar);
 		
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBounds(286, 292, 89, 23);
+		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
 				tt.setVisible(true);
 				dispose();
+			
 			}
 		});
+		btnVolver.setBounds(211, 230, 89, 23);
 		contentPane.add(btnVolver);
 		
-		cbTipo = new JComboBox();
-		cbTipo.setBounds(155, 49, 187, 22);
-		contentPane.add(cbTipo);
-		cbTipo.setModel(cargarTipo());
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(10, 11, 69, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
 		
-		cbMascota = new JComboBox();
-		cbMascota.setBounds(155, 88, 187, 22);
-		contentPane.add(cbMascota);
-		cbMascota.setModel(cargarMascota());
-		
-		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setBounds(53, 134, 46, 14);
-		contentPane.add(lblFecha);
-		
-		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
-		txtFecha.setBounds(155, 131, 187, 20);
-		contentPane.add(txtFecha);
-		
-		JLabel lblHora = new JLabel("Hora");
-		lblHora.setBounds(53, 179, 92, 14);
-		contentPane.add(lblHora);
-		
-		txtHora = new JDateChooser("HH:mm:ss", "##:##:##", '_');
-		txtHora.getCalendarButton().setEnabled(false);
-		txtHora.getCalendarButton().setVisible(false);
-		txtHora.setBounds(155, 176, 99, 20);
-		contentPane.add(txtHora);
+		txtId.setText(turno);
+		cargarCampos(turno);
 	}
+
+	public Modificar_Turno() {
+		// TODO Auto-generated constructor stub
+	}
+
 }

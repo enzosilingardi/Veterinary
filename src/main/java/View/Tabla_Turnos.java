@@ -186,7 +186,7 @@ public class Tabla_Turnos extends JFrame {
 				}
 			}
 		});
-		btnHistorial.setBounds(40, 260, 155, 23);
+		btnHistorial.setBounds(205, 323, 155, 23);
 		contentPane.add(btnHistorial);
 		
 		JButton btnVeterinario = new JButton("Asociar veterinario");
@@ -208,6 +208,34 @@ public class Tabla_Turnos extends JFrame {
 		});
 		btnSucursal.setBounds(40, 323, 155, 23);
 		contentPane.add(btnSucursal);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());
+				mt.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(205, 255, 155, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(370, 255, 155, 23);
+		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar turno");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Medico pm = new Procedimiento_Medico();
+				pm.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 255, 155, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 	}
