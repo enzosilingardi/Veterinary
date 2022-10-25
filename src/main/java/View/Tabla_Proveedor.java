@@ -115,6 +115,15 @@ public class Tabla_Proveedor extends JFrame {
 		contentPane.add(btnVolver);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Proveedor mp = new Modificar_Proveedor(table.getValueAt(fila,0).toString());
+				mp.setVisible(true);
+				dispose();
+			}
+		});
 		btnModificar.setBounds(40, 283, 89, 23);
 		contentPane.add(btnModificar);
 		

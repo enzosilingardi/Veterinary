@@ -1,14 +1,28 @@
 package View;
 
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+import View.Proveedor.ComboItem;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Modificar_Proveedor extends JFrame {
 
@@ -20,6 +34,97 @@ public class Modificar_Proveedor extends JFrame {
 	private JTextField txtApellido;
 	private JTextField txtCuit;
 	private JTextField txtId;
+	private JComboBox cbTipo;
+	private JComboBox cbDireccion;
+
+	
+	class ComboItem
+	{
+	    private String key;
+	    private String value;
+
+	    public ComboItem(String key, String value)
+	    {
+	        this.key = key;
+	        this.value = value;
+	    }
+
+	    @Override
+	    public String toString()
+	    {
+	        return key;
+	    }
+
+	    public String getKey()
+	    {
+	        return key;
+	    }
+
+	    public String getValue()
+	    {
+	        return value;
+	    }
+	}
+	
+	public DefaultComboBoxModel cargarDireccion() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT *\r\n"
+					+ "FROM Address\r\n"
+					+ "INNER JOIN City ON Address.id_City = City.id_City";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number")+" - "+result.getString("name"),result.getString("id_Address")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
+	public DefaultComboBoxModel cargarTipo() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
 
 	/**
 	 * Launch the application.
@@ -37,10 +142,47 @@ public class Modificar_Proveedor extends JFrame {
 		});
 	}
 
+	private void cargarCampos(String proveedor) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		int id = Integer.parseInt(proveedor);
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT provider_Name, name, surname, phone_Number, email, cuit FROM Provider WHERE id_Provider = ?";
+			pst = cn.prepareStatement(SSQL);
+			pst.setInt(1, id);
+			
+			
+			result = pst.executeQuery();
+			while (result.next()){
+			txtNombrePro.setText(result.getString(1));
+			txtNombre.setText(result.getString(2));
+			txtApellido.setText(result.getString(3));
+			txtTelefono.setText(result.getString(4));
+			txtEmail.setText(result.getString(5));
+			txtCuit.setText(result.getString(6));
+			}
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
+	
+	public static Boolean validaEmail (String email) {
+		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Proveedor() {
+	public Modificar_Proveedor(String proveedor) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 460);
 		contentPane = new JPanel();
@@ -75,13 +217,15 @@ public class Modificar_Proveedor extends JFrame {
 		txtTelefono.setBounds(177, 243, 182, 20);
 		contentPane.add(txtTelefono);
 		
-		JComboBox cbTipo = new JComboBox();
+		cbTipo = new JComboBox();
 		cbTipo.setBounds(177, 66, 182, 22);
 		contentPane.add(cbTipo);
+		cbTipo.setModel(cargarTipo());
 		
-		JComboBox cbDireccion = new JComboBox();
+		cbDireccion = new JComboBox();
 		cbDireccion.setBounds(177, 198, 182, 22);
 		contentPane.add(cbDireccion);
+		cbDireccion.setModel(cargarDireccion());
 		
 		JLabel lblEmail = new JLabel("E-mail");
 		lblEmail.setBounds(54, 285, 46, 14);
@@ -120,10 +264,89 @@ public class Modificar_Proveedor extends JFrame {
 		contentPane.add(txtCuit);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Proveedor tp = new Tabla_Proveedor();
+				tp.setVisible(true);
+				dispose();
+			}
+		});
 		btnVolver.setBounds(265, 387, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object direccion = cbDireccion.getSelectedItem();
+				Object tipo = cbTipo.getSelectedItem();
+				String nombre = txtNombre.getText();
+				String telefono = txtTelefono.getText();
+				String email = txtEmail.getText();
+				String nombrePro = txtNombrePro.getText();
+				String apellido = txtApellido.getText();
+				String cuit = txtCuit.getText();
+				int id = Integer.parseInt(txtId.getText());
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Provider SET id_Provider_Type = ?, id_Address = ?, provider_Name = ?, name = ?, surname = ?, phone_Number = ?, email = ?, cuit = ? WHERE id_Provider = ?" );
+					
+					
+					if (((ComboItem) direccion).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
+					}else {
+						if (((ComboItem) tipo).getValue() == "") {
+							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
+						}else {
+							
+								ps.setString(1, ((ComboItem) tipo).getValue());
+								ps.setString(2, ((ComboItem) direccion).getValue());
+								ps.setString(3, nombrePro);
+								ps.setString(4, nombre);
+								ps.setString(5, apellido);
+								
+								ps.setString(6, telefono); 
+								
+								
+								
+								if(validaEmail(email)) {
+									ps.setString(7,email);
+								} else {
+									JOptionPane.showMessageDialog(null, "E-Mail no válido");
+								}
+								
+								ps.setString(8, cuit);
+								
+								ps.setInt(9, id);
+							}
+						}
+						
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Proveedor modificado");
+		                Tabla_Proveedor tp = new Tabla_Proveedor();
+						tp.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar proveedor");
+		                
+		            }
+				
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnModificar.setBounds(67, 387, 89, 23);
 		contentPane.add(btnModificar);
 		
@@ -133,6 +356,13 @@ public class Modificar_Proveedor extends JFrame {
 		contentPane.add(txtId);
 		txtId.setColumns(10);
 		txtId.setVisible(false);
+		
+		cargarCampos(proveedor);
+		txtId.setText(proveedor);
+	}
+
+	public Modificar_Proveedor() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

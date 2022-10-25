@@ -224,6 +224,8 @@ public class Modificar_Mascota extends JFrame {
 			while (result.next()){
 			txtNombre.setText(result.getString(1));
 			txtEdad.setText(result.getString(2));
+			
+			
 			}
 			cn.close();
 		}catch(SQLException e) {
