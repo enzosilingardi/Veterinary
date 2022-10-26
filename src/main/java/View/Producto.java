@@ -273,8 +273,17 @@ public class Producto extends JFrame {
 						ps.setString(2, nombre);
 						ps.setString(3, tipo);
 						ps.setString(4, descripcion);
-						ps.setFloat(5,costo);
-						ps.setFloat(6,precio);
+						if (costo < 0) {
+							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
+						} else {
+							ps.setFloat(5,costo);
+						}
+						
+						if (precio < 0) {
+							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
+						} else {
+							ps.setFloat(6,precio);
+						}
 						
 					}
 					
@@ -298,53 +307,15 @@ public class Producto extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(77, 336, 89, 23);
+		btnAgregar.setBounds(156, 336, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				int result = 0;
-				String nombre = txtNombre.getText();
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Product WHERE product_Name = ?" );
-					if(productoEnUso(nombre) != 0) {
-						JOptionPane.showMessageDialog(null, "Error");
-					}else {
-						ps.setString(1, nombre);
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto eliminado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");
-		                limpiar();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Producto está en uso, por favor elimine todos los registros relacionados");
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-				
-			}
-		});
-		btnEliminar.setBounds(246, 336, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				Tabla_Productos tp = new Tabla_Productos();
+				tp.setVisible(true);
 				dispose();
 			}
 		});

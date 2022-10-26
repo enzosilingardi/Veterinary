@@ -279,6 +279,8 @@ public class Sucursal_Producto extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Stock ts = new Tabla_Stock();
+				ts.setVisible(true);
 				dispose();
 			}
 		});

@@ -28,16 +28,16 @@ public class Tabla_Productos extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"Producto","Tipo","Descripción","Precio de Venta","Precio proveedor","Proveedor"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Tipo","Descripción","Precio de Venta","Precio proveedor","Proveedor"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[6];
+	        String datos[] = new String[7];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT product_Name, product_Type, description, cost_Price, sale_Price, provider_Name\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Product,product_Name, product_Type, description, cost_Price, sale_Price, provider_Name\r\n"
 	        			+ "FROM Product\r\n"
 	        			+ "INNER JOIN Provider ON Product.id_Provider = Provider.id_Provider;" );
 	            ResultSet rs = ps.executeQuery();
@@ -48,11 +48,17 @@ public class Tabla_Productos extends JFrame {
 	                datos[3] = rs.getString(4);
 	                datos[4] = rs.getString(5);
 	                datos[5] = rs.getString(6);
+	                datos[6] = rs.getString(7);
 	                
 	                modelo.addRow(datos);
 
 	            }
 	            table.setModel(modelo);
+
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -84,7 +90,7 @@ public class Tabla_Productos extends JFrame {
 	 */
 	public Tabla_Productos() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 750, 424);
+		setBounds(100, 100, 750, 440);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -107,15 +113,65 @@ public class Tabla_Productos extends JFrame {
 		btnVolver.setBounds(618, 351, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnRel = new JButton("Añadir a sucursal");
-		btnRel.addActionListener(new ActionListener() {
+		JButton btnAgregar = new JButton("Añadir");
+		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sucursal_Producto sp = new Sucursal_Producto();
-				sp.setVisible(true);
+				Producto producto = new Producto();
+				producto.setVisible(true);
+				dispose();
 			}
 		});
-		btnRel.setBounds(28, 337, 161, 23);
-		contentPane.add(btnRel);
+		btnAgregar.setBounds(28, 333, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Producto mp = new Modificar_Producto(table.getValueAt(fila,0).toString());
+				mp.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(127, 333, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Product WHERE id_Product = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Producto eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Producto está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(226, 333, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}

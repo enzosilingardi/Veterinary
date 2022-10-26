@@ -203,8 +203,19 @@ public class Tabla_Stock extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(40, 288, 143, 23);
+		btnModificar.setBounds(40, 309, 143, 23);
 		contentPane.add(btnModificar);
+		
+		JButton btnAgregar = new JButton("Agregar a stock");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sucursal_Producto sp = new Sucursal_Producto();
+				sp.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 275, 143, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 		
