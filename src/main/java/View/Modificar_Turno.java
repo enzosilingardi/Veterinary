@@ -152,17 +152,15 @@ public class Modificar_Turno extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT id_Pet, id_Procedure_Type, proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";
+			String SSQL = "SELECT proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
 			
 			result = pst.executeQuery();
 			while (result.next()){
-			cbMascota.setSelectedIndex(result.getInt(1));
-			cbTipo.setSelectedIndex(result.getInt(2));
-			txtFecha.setDate(result.getDate(3));
-			txtHora.setDate(result.getTime(4));
+			txtFecha.setDate(result.getDate(1));
+			txtHora.setDate(result.getTime(2));
 			}
 			cn.close();
 		}catch(SQLException e) {
