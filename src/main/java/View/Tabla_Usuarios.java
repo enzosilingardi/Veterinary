@@ -28,16 +28,16 @@ public class Tabla_Usuarios extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Usuario","Nombre","Apellido","Perfil","E-Mail"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Usuario","Nombre","Apellido","Perfil","E-Mail"});
        
         table.setModel(modelo);
         
         
-        String datos[] = new String[5];
+        String datos[] = new String[6];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT username, name, surname, profile, email\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_User, username, name, surname, profile, email\r\n"
         												+ "FROM Users;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
@@ -46,11 +46,16 @@ public class Tabla_Usuarios extends JFrame {
                 datos[2] = rs.getString(3);
                 datos[3] = rs.getString(4);
                 datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
                 
                 modelo.addRow(datos);
 
             }
             table.setModel(modelo);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -111,8 +116,20 @@ public class Tabla_Usuarios extends JFrame {
 				us.setVisible(true);
 			}
 		});
-		btnRel.setBounds(40, 284, 161, 23);
+		btnRel.setBounds(41, 309, 161, 23);
 		contentPane.add(btnRel);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBounds(40, 272, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBounds(139, 272, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBounds(238, 272, 89, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}

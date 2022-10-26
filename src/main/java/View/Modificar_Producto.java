@@ -115,7 +115,7 @@ public class Modificar_Producto extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT product_Name, description, cost_Price, sale_Price\r\n"
+			String SSQL = "SELECT product_Type, product_Name, description, cost_Price, sale_Price\r\n"
 					+ "FROM Product WHERE id_Product = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
@@ -123,10 +123,11 @@ public class Modificar_Producto extends JFrame {
 			
 			result = pst.executeQuery();
 			while (result.next()){
-			txtNombre.setText(result.getString(1));
-			txtDescripcion.setText(result.getString(2));
-			txtCosto.setText(result.getString(3));
-			txtPrecio.setText(result.getString(4));
+			cbTipo.setSelectedItem(result.getString(1));	
+			txtNombre.setText(result.getString(2));
+			txtDescripcion.setText(result.getString(3));
+			txtCosto.setText(result.getString(4));
+			txtPrecio.setText(result.getString(5));
 			}
 			cn.close();
 		}catch(SQLException e) {
@@ -140,7 +141,7 @@ public class Modificar_Producto extends JFrame {
 	 * Create the frame.
 	 */
 	public Modificar_Producto(String producto) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
