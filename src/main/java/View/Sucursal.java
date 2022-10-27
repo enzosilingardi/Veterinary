@@ -205,36 +205,8 @@ public class Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(53, 126, 89, 23);
+		btnAgregar.setBounds(141, 132, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				Object direccion = cbDireccion.getSelectedItem();
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Address = ? " );
-
-					ps.setString(1, ((ComboItem) direccion).getValue());
-					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Sucursal borrada");
-					limpiar();
-					con.close();
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Sucursal en uso. Por favor elimine todos los registros relacionados");
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnEliminar.setBounds(237, 126, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {

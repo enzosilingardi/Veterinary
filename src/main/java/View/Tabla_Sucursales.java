@@ -25,7 +25,8 @@ public class Tabla_Sucursales extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JButton btnModificar;
-	private JButton btnABM;
+	private JButton btnAgregar;
+	private JButton btnEliminar;
 
 	
 	
@@ -129,19 +130,55 @@ public class Tabla_Sucursales extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(40, 260, 140, 23);
+		btnModificar.setBounds(139, 275, 89, 23);
 		contentPane.add(btnModificar);
 		
-		btnABM = new JButton("AB Sucursales");
-		btnABM.addActionListener(new ActionListener() {
+		btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Sucursal sucursal = new Sucursal();
 				sucursal.setVisible(true);
 				dispose();
 			}
 		});
-		btnABM.setBounds(40, 294, 140, 23);
-		contentPane.add(btnABM);
+		btnAgregar.setBounds(40, 275, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(238, 275, 91, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}
