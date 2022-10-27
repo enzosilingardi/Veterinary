@@ -91,7 +91,8 @@ public class Tabla_Stock extends JFrame {
 				try {
 					Tabla_Stock frame = new Tabla_Stock();
 					frame.setVisible(true);
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -216,6 +217,42 @@ public class Tabla_Stock extends JFrame {
 		});
 		btnAgregar.setBounds(40, 275, 143, 23);
 		contentPane.add(btnAgregar);
+		
+		JButton btnEliminar = new JButton("Eliminar de stock");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Product WHERE id_BP = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Producto eliminado de stock");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Stock está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(193, 275, 143, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 		

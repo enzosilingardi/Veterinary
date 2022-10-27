@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class Sucursal_Producto extends JFrame {
 
@@ -125,6 +126,8 @@ public class Sucursal_Producto extends JFrame {
 				try {
 					Sucursal_Producto frame = new Sucursal_Producto();
 					frame.setVisible(true);
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -213,6 +216,25 @@ public class Sucursal_Producto extends JFrame {
 				
 				int result = 0;
 				
+				boolean flagError = false;
+				String cantidadAux = txtCantidad.getText();
+				
+				for(int i=0; i < cantidadAux.length(); i++ ) {
+					
+					if (Character.isLetter(cantidadAux.charAt(i))){
+						
+						flagError = true;
+						break;
+					}
+					
+					
+				}
+				
+				if (flagError) {
+					
+					JOptionPane.showMessageDialog(null, "Solo se permiten números",null,JOptionPane.ERROR_MESSAGE);
+					
+				}else {
 				
 				try {
 					Connection con = Connect.getConexion();
@@ -270,10 +292,10 @@ public class Sucursal_Producto extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+				}
 			}
 		});
-		btnAgregar.setBounds(68, 243, 89, 23);
+		btnAgregar.setBounds(142, 241, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -286,42 +308,6 @@ public class Sucursal_Producto extends JFrame {
 		});
 		btnVolver.setBounds(270, 296, 89, 23);
 		contentPane.add(btnVolver);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				Object producto = cbProducto.getSelectedItem();
-				Object sucursal = cbSucursal.getSelectedItem();
-				
-				int result = 0;
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Product WHERE id_Branch = ? AND id_Product = ?;" );
-					ps.setString(1, ((ComboItem) sucursal).getValue());
-					ps.setString(2, ((ComboItem) producto).getValue());
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto removido de la sucursal");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover producto");
-		                limpiar();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		btnEliminar.setBounds(209, 243, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JLabel lblCantidad = new JLabel("Cantidad");
 		lblCantidad.setBounds(51, 179, 60, 14);
