@@ -334,6 +334,8 @@ public class Cliente extends JFrame {
 		btnVolver.setBounds(296, 502, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Clientes tc = new Tabla_Clientes();
+				tc.setVisible(true);
 				dispose();
 			}
 		});

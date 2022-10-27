@@ -123,7 +123,7 @@ public class Tabla_Clientes extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(28, 330, 89, 23);
+		btnModificar.setBounds(124, 330, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -159,8 +159,19 @@ public class Tabla_Clientes extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(127, 330, 89, 23);
+		btnEliminar.setBounds(223, 330, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Cliente cliente = new Cliente();
+				cliente.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(28, 330, 91, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 	}

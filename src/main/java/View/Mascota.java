@@ -240,7 +240,7 @@ public class Mascota extends JFrame {
 		contentPane.add(lblNombre);
 		
 		JLabel lblNewLabel = new JLabel("Mascotas");
-		lblNewLabel.setBounds(165, 11, 89, 14);
+		lblNewLabel.setBounds(186, 11, 89, 14);
 		contentPane.add(lblNewLabel);
 		
 		txtNombre = new JTextField();
@@ -339,16 +339,14 @@ public class Mascota extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(54, 338, 89, 23);
+		btnAgregar.setBounds(165, 350, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(245, 338, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Mascota tm = new Tabla_Mascota();
+				tm.setVisible(true);
 				dispose();
 			}
 		});

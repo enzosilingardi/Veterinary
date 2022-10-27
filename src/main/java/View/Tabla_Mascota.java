@@ -24,6 +24,8 @@ public class Tabla_Mascota extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JButton btnModificar;
+	private JButton btnAgregar;
+	private JButton btnEliminar;
 
 	void mostrarTabla(){
 	        
@@ -125,8 +127,55 @@ public class Tabla_Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(40, 287, 89, 23);
+		btnModificar.setBounds(139, 277, 89, 23);
 		contentPane.add(btnModificar);
+		
+		btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Mascota mascota = new Mascota();
+				mascota.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 277, 91, 23);
+		contentPane.add(btnAgregar);
+		
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Pet WHERE id_Pet = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Mascota eliminada");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar mascota");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Mascota está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(238, 277, 91, 23);
+		contentPane.add(btnEliminar);
 		
 		mostrarTabla();
 	}
