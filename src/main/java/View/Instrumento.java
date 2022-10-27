@@ -242,50 +242,14 @@ public class Instrumento extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(59, 171, 89, 23);
+		btnAgregar.setBounds(164, 171, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				int result = 0;
-				String nombre = txtNombre.getText();
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE instrument_Name = ?" );
-					if(instrumentoEnUso(nombre) != 0) {
-						JOptionPane.showMessageDialog(null, "Instrumento está en uso, por favor elimine todos los registros relacionados");
-					}else {
-						ps.setString(1, nombre);
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
-		                limpiar();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		btnEliminar.setBounds(237, 171, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Instrumento ti = new Tabla_Instrumento();
+				ti.setVisible(true);
 				dispose();
 			}
 		});

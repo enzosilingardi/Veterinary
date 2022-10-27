@@ -151,7 +151,7 @@ public class Tabla_Instrumento extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(40, 270, 89, 23);
+		btnModificar.setBounds(141, 270, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -187,8 +187,19 @@ public class Tabla_Instrumento extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(139, 270, 89, 23);
+		btnEliminar.setBounds(240, 270, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Instrumento instrumento = new Instrumento();
+				instrumento.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 270, 91, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 	}

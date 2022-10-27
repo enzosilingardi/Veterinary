@@ -226,42 +226,6 @@ public class Pedidos extends JFrame {
 		btnVolver.setBounds(270, 268, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				int result = 0;
-				Object producto = cbProducto.getSelectedItem();
-				Object sucursal = cbSucursal.getSelectedItem();
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Orders WHERE id_Product = ? AND id_Branch = ?" );
-					ps.setString(1, ((ComboItem) producto).getValue());
-					ps.setString(2, ((ComboItem) sucursal).getValue());
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Pedido eliminado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");
-		                limpiar();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		btnEliminar.setBounds(199, 220, 89, 23);
-		contentPane.add(btnEliminar);
-		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -319,7 +283,7 @@ public class Pedidos extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(58, 220, 89, 23);
+		btnAgregar.setBounds(135, 223, 89, 23);
 		contentPane.add(btnAgregar);
 	}
 }
