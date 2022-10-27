@@ -143,7 +143,7 @@ public class Tabla_Quirofano extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(211, 277, 89, 23);
+		btnModificar.setBounds(211, 309, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -179,8 +179,19 @@ public class Tabla_Quirofano extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(211, 309, 89, 23);
+		btnEliminar.setBounds(312, 277, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Quirofano quirofano = new Quirofano();
+				quirofano.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(211, 277, 91, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 	}

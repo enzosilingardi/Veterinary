@@ -27,7 +27,6 @@ public class Quirofano extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNumero;
 	private JButton btnAgregar;
-	private JButton btnEliminar;
 	private JButton btnVolver;
 	
 	class ComboItem
@@ -205,23 +204,14 @@ public class Quirofano extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(64, 142, 89, 23);
+		btnAgregar.setBounds(168, 142, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				
-			}
-		});
-		btnEliminar.setBounds(244, 142, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Quirofano tq = new Tabla_Quirofano();
+				tq.setVisible(true);
 				dispose();
 			}
 		});

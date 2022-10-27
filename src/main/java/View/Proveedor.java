@@ -346,6 +346,8 @@ public class Proveedor extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Proveedor tp = new Tabla_Proveedor();
+				tp.setVisible(true);
 				dispose();
 			}
 		});

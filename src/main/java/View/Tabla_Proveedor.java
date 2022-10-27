@@ -124,7 +124,7 @@ public class Tabla_Proveedor extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(40, 283, 89, 23);
+		btnModificar.setBounds(141, 283, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -160,8 +160,19 @@ public class Tabla_Proveedor extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(139, 283, 89, 23);
+		btnEliminar.setBounds(240, 283, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Proveedor proveedor = new Proveedor();
+				proveedor.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 283, 91, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 	}
