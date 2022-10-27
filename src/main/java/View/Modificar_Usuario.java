@@ -5,11 +5,23 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Control.Connect;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.awt.event.ActionEvent;
 
 public class Modificar_Usuario extends JFrame {
 
@@ -20,6 +32,7 @@ public class Modificar_Usuario extends JFrame {
 	private JTextField txtApellido;
 	private JTextField txtEmail;
 	private JTextField txtId;
+	private JComboBox cbPerfil;
 
 	/**
 	 * Launch the application.
@@ -37,10 +50,48 @@ public class Modificar_Usuario extends JFrame {
 		});
 	}
 
+	public static Boolean validaEmail (String email) {
+		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
+	
+	private void cargarCampos(String usuario) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		int id = Integer.parseInt(usuario);
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT profile, name, surname, username, password, email\r\n"
+					+ "FROM Users WHERE id_User = ?";
+			pst = cn.prepareStatement(SSQL);
+			pst.setInt(1, id);
+			
+			
+			result = pst.executeQuery();
+			while (result.next()){
+			cbPerfil.setSelectedItem(result.getString(1));	
+			txtNombre.setText(result.getString(2));
+			txtApellido.setText(result.getString(3));
+			txtNombreUsuario.setText(result.getString(4));
+			txtContrasenia.setText(result.getString(5));
+			txtEmail.setText(result.getString(6));
+			}
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Usuario() {
+	public Modificar_Usuario(String usuario) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 423);
 		contentPane = new JPanel();
@@ -71,7 +122,7 @@ public class Modificar_Usuario extends JFrame {
 		lblPerfil.setBounds(66, 121, 46, 14);
 		contentPane.add(lblPerfil);
 		
-		JComboBox cbPerfil = new JComboBox();
+		cbPerfil = new JComboBox();
 		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
 		cbPerfil.setBounds(185, 117, 163, 22);
 		contentPane.add(cbPerfil);
@@ -104,10 +155,84 @@ public class Modificar_Usuario extends JFrame {
 		contentPane.add(txtEmail);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(txtId.getText());
+				String nombre = txtNombre.getText();
+				String perfil = cbPerfil.getSelectedItem().toString();
+				String nombreU = txtNombreUsuario.getText();
+				String apellido = txtApellido.getText();
+				String contrasenia = txtContrasenia.getText();
+				String email = txtEmail.getText();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Users SET profile = ?, name = ?, surname = ?, username = ?, password = ?, email = ? WHERE id_User = ?" );
+					
+					
+					if (perfil == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione un perfil");
+					}else {
+					
+						ps.setString(1, perfil);
+						ps.setString(2, nombre);
+						ps.setString(3, apellido);
+						ps.setString(4, nombreU);
+						
+						if(contrasenia.length()<8) {
+							JOptionPane.showMessageDialog(null, "La contraseña debe tener por lo menos 8 caracteres");
+						}else {
+							ps.setString(5, contrasenia);
+						}
+						
+						
+						if(validaEmail(email)) {
+							ps.setString(6,email);
+						} else {
+							JOptionPane.showMessageDialog(null, "E-Mail no válido");
+						}
+						
+						ps.setInt(7, id);
+						
+					}
+						
+					
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Usuario modificado");
+		                Tabla_Usuarios tu = new Tabla_Usuarios();
+						tu.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar usuario");
+		               
+		            }
+				
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnModificar.setBounds(87, 336, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Usuarios tu = new Tabla_Usuarios();
+				tu.setVisible(true);
+				dispose();
+			}
+		});
 		btnVolver.setBounds(254, 336, 89, 23);
 		contentPane.add(btnVolver);
 		
@@ -118,6 +243,12 @@ public class Modificar_Usuario extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
+		cargarCampos(usuario);
+		txtId.setText(usuario);
+	}
+
+	public Modificar_Usuario() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

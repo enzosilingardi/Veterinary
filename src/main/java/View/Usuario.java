@@ -246,16 +246,14 @@ public class Usuario extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(74, 362, 89, 23);
+		btnAgregar.setBounds(168, 361, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(264, 362, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Usuarios tu = new Tabla_Usuarios();
+				tu.setVisible(true);
 				dispose();
 			}
 		});
