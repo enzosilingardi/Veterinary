@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Sucursal_Producto extends JFrame {
 
@@ -169,7 +171,7 @@ public class Sucursal_Producto extends JFrame {
 	private void limpiar() {
 		cbProducto.setSelectedIndex(0);
 		cbSucursal.setSelectedIndex(0);
-		
+		txtCantidad.setText("");
 	}
 	/**
 	 * Create the frame.
@@ -216,25 +218,7 @@ public class Sucursal_Producto extends JFrame {
 				
 				int result = 0;
 				
-				boolean flagError = false;
-				String cantidadAux = txtCantidad.getText();
 				
-				for(int i=0; i < cantidadAux.length(); i++ ) {
-					
-					if (Character.isLetter(cantidadAux.charAt(i))){
-						
-						flagError = true;
-						break;
-					}
-					
-					
-				}
-				
-				if (flagError) {
-					
-					JOptionPane.showMessageDialog(null, "Solo se permiten números",null,JOptionPane.ERROR_MESSAGE);
-					
-				}else {
 				
 				try {
 					Connection con = Connect.getConexion();
@@ -292,7 +276,7 @@ public class Sucursal_Producto extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				}
+				
 			}
 		});
 		btnAgregar.setBounds(142, 241, 89, 23);
@@ -314,6 +298,15 @@ public class Sucursal_Producto extends JFrame {
 		contentPane.add(lblCantidad);
 		
 		txtCantidad = new JTextField();
+		txtCantidad.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (Character.isLetter(c)) {
+					e.consume();
+				}
+			}
+		});
 		txtCantidad.setBounds(127, 176, 190, 20);
 		contentPane.add(txtCantidad);
 		txtCantidad.setColumns(10);
