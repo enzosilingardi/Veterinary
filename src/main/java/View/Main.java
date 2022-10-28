@@ -62,7 +62,7 @@ public class Main extends JFrame {
 		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
 		mntmProveedores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Proveedor tp = new Tabla_Proveedor(); 
+				Tabla_Proveedor tp = new Tabla_Proveedor(perfil); 
 				tp.setVisible(true);
 			}
 		});
@@ -71,7 +71,7 @@ public class Main extends JFrame {
 		JMenuItem mntmStock = new JMenuItem("Stock");
 		mntmStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Stock ts = new Tabla_Stock();
+				Tabla_Stock ts = new Tabla_Stock(perfil);
 				ts.setVisible(true);
 			}
 		});
