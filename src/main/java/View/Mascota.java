@@ -29,6 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Mascota extends JFrame {
 
@@ -257,6 +259,15 @@ public class Mascota extends JFrame {
 		contentPane.add(lblEdad);
 		
 		txtEdad = new JTextField();
+		txtEdad.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (Character.isLetter(c)) {
+					e.consume();
+				}
+			}
+		});
 		txtEdad.setBounds(175, 202, 141, 20);
 		contentPane.add(txtEdad);
 		txtEdad.setColumns(10);

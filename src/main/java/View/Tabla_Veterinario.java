@@ -130,7 +130,7 @@ public class Tabla_Veterinario extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(40, 271, 89, 23);
+		btnModificar.setBounds(139, 270, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -166,10 +166,20 @@ public class Tabla_Veterinario extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(139, 271, 89, 23);
+		btnEliminar.setBounds(238, 270, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Veterinario veterinario = new Veterinario();
+				veterinario.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 270, 89, 23);
+		contentPane.add(btnAgregar);
 		
 		mostrarTabla();
 	}
-
 }
