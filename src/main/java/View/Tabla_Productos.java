@@ -88,7 +88,7 @@ public class Tabla_Productos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Productos() {
+	public Tabla_Productos(String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 440);
 		contentPane = new JPanel();
@@ -112,6 +112,8 @@ public class Tabla_Productos extends JFrame {
 		});
 		btnVolver.setBounds(618, 351, 89, 23);
 		contentPane.add(btnVolver);
+		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
 		JButton btnAgregar = new JButton("Añadir");
 		btnAgregar.addActionListener(new ActionListener() {
@@ -172,7 +174,12 @@ public class Tabla_Productos extends JFrame {
 		});
 		btnEliminar.setBounds(226, 333, 89, 23);
 		contentPane.add(btnEliminar);
-		
+		}
 		mostrarTabla();
+	}
+
+
+	public Tabla_Productos() {
+		// TODO Auto-generated constructor stub
 	}
 }

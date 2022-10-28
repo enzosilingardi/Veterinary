@@ -36,7 +36,7 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main(String perfil) {
+	public Main(final String perfil) {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 690, 417);
@@ -48,10 +48,12 @@ public class Main extends JFrame {
 		mnVentas.setHorizontalAlignment(SwingConstants.CENTER);
 		menuBar.add(mnVentas);
 		
+		
+		
 		JMenuItem mntmProductos = new JMenuItem("Productos");
 		mntmProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Productos productos = new Tabla_Productos();
+				Tabla_Productos productos = new Tabla_Productos(perfil);
 				productos.setVisible(true);
 			}
 		});
