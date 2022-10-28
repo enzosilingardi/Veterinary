@@ -297,6 +297,16 @@ public class Main extends JFrame {
 		});
 		btnQuirofanos.setBounds(124, 103, 104, 81);
 		contentPane.add(btnQuirofanos);
+		
+		JButton btnMascotas = new JButton("Mascotas");
+		btnMascotas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Mascota tm = new Tabla_Mascota();
+				tm.setVisible(true);
+			}
+		});
+		btnMascotas.setBounds(238, 103, 104, 81);
+		contentPane.add(btnMascotas);
 	}
 
 	public Main() {
