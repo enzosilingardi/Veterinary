@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 
@@ -15,12 +16,54 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Pais extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
+	private JTable table;
 
+
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","País"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Country;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -108,7 +151,7 @@ public class Pais extends JFrame {
 	public Pais() {
 		setTitle("Pais");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -120,12 +163,12 @@ public class Pais extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(58, 79, 46, 14);
+		lblNombre.setBounds(489, 79, 46, 14);
 		contentPane.add(lblNombre);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(147, 76, 179, 20);
+		txtNombre.setBounds(545, 76, 179, 20);
 		contentPane.add(txtNombre);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -148,6 +191,7 @@ public class Pais extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "País guardado");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar país");
 		                limpiar();
@@ -162,7 +206,7 @@ public class Pais extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(74, 148, 89, 23);
+		btnAgregar.setBounds(536, 128, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -170,29 +214,29 @@ public class Pais extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				int result = 0;
-				String nombre = txtNombre.getText();
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Country WHERE name = ?" );
-					if(paisEnUso(nombre) != 0) {
-						JOptionPane.showMessageDialog(null, "País está en uso, por favor elimine todos los registros relacionados");
-					}else {
-						ps.setString(1, nombre);
-					}
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Country WHERE id_Country = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "País eliminado");
-		                limpiar();
+		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar país");
-		                limpiar();
+		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "País está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -200,7 +244,7 @@ public class Pais extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(215, 148, 89, 23);
+		btnEliminar.setBounds(635, 128, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -209,8 +253,53 @@ public class Pais extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(299, 196, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(43, 55, 356, 356);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				
+				int fila = table.getSelectedRow();
+				String tipo = table.getValueAt(fila,1).toString();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Country SET name = ? WHERE id_Country = ?" );  //Crea el statement
+					
+					ps.setString(1, tipo);
+					ps.setInt(2, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "País modificado");
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar país");
+		                mostrarTabla();
+		            }
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(586, 172, 89, 23);
+		contentPane.add(btnModificar);
+		
+		mostrarTabla();
 	}
-
 }

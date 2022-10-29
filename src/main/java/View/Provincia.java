@@ -4,7 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Provincia.ComboItem;
@@ -25,6 +28,7 @@ public class Provincia extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JComboBox cbPaises;
+	private JTable table;
 
 	
 	class ComboItem
@@ -176,6 +180,47 @@ public class Provincia extends JFrame {
 		
 	}
 	
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Provincia","País"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[3];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT id_Province, Province.name, Country.name\r\n"
+        			+ "FROM Province\r\n"
+        			+ "INNER JOIN Country ON Country.id_Country = Province.id_Country;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -206,7 +251,7 @@ public class Provincia extends JFrame {
 	public Provincia() {
 		setTitle("Provincia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -218,12 +263,12 @@ public class Provincia extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(84, 61, 46, 14);
+		lblNombre.setBounds(489, 60, 46, 14);
 		contentPane.add(lblNombre);
 		
 		txtNombre = new JTextField();
 		txtNombre.setColumns(10);
-		txtNombre.setBounds(173, 58, 179, 20);
+		txtNombre.setBounds(545, 57, 179, 20);
 		contentPane.add(txtNombre);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -257,6 +302,7 @@ public class Provincia extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Provincia guardada");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar provincia");
 		                limpiar();
@@ -271,48 +317,45 @@ public class Provincia extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(82, 166, 89, 23);
+		btnAgregar.setBounds(518, 165, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				int result = 0;
-				String nombre = txtNombre.getText();
-				Object pais = cbPaises.getSelectedItem();
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE name = ? AND id_Country = ?;" );
-					if(provinciaEnUso(nombre) != 0) {
-						JOptionPane.showMessageDialog(null, "Provincia está en uso, por favor elimine todos los registros relacionados");
-					}else {
-						ps.setString(1, nombre);
-						ps.setString(2, ((ComboItem) pais).getValue());;
-					}
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Province WHERE id_Province = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Provincia eliminada");
-		                limpiar();
+		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar provincia");
-		                limpiar();
+		                
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Provincia está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
-				
 			}
 		});
-		btnEliminar.setBounds(239, 166, 89, 23);
+		btnEliminar.setBounds(634, 165, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -321,18 +364,39 @@ public class Provincia extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(316, 210, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JLabel lblPais = new JLabel("País");
-		lblPais.setBounds(84, 114, 46, 14);
+		lblPais.setBounds(489, 113, 46, 14);
 		contentPane.add(lblPais);
 		
 		cbPaises = new JComboBox();
-		cbPaises.setBounds(173, 110, 179, 22);
+		cbPaises.setBounds(545, 109, 179, 22);
 		contentPane.add(cbPaises);
 		
 		cbPaises.setModel(cargarPaises());
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(43, 55, 356, 356);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Provincia mp = new Modificar_Provincia(table.getValueAt(fila,0).toString());
+				mp.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(580, 212, 89, 23);
+		contentPane.add(btnModificar);
+		mostrarTabla();
 		
 	}
 

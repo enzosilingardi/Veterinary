@@ -126,17 +126,17 @@ public class Usuario_Sucursal extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Usuario","Sucursal"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Usuario","Sucursal"});
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[3];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT username, address_Name, address_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_UB, username, address_Name, address_Number\r\n"
         			+ "FROM Rel_Users_Branch\r\n"
         			+ "INNER JOIN Users ON Users.id_User = Rel_Users_Branch.id_User\r\n"
         			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Users_Branch.id_Branch\r\n"
@@ -144,7 +144,8 @@ public class Usuario_Sucursal extends JFrame {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2)+" "+rs.getString(3);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3)+" "+rs.getString(4);
                 
                 
                 modelo.addRow(datos);
@@ -152,7 +153,12 @@ public class Usuario_Sucursal extends JFrame {
             }
             
             table.setModel(modelo);
-            
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+    		
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -304,29 +310,30 @@ public class Usuario_Sucursal extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object usuario = cbUsuario.getSelectedItem();
-				Object sucursal = cbSucursal.getSelectedItem();
-				
 				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Users_Branch WHERE id_Branch = ? AND id_User = ?;" );
-					ps.setString(1, ((ComboItem) sucursal).getValue());
-					ps.setString(2, ((ComboItem) usuario).getValue());
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Users_Branch WHERE id_UB = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario removido de la sucursal");
-		                limpiar();
-		                mostrarTabla();
+		                JOptionPane.showMessageDialog(null, "Usuario eliminado de sucursal");
+		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover usuario");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
+		                
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

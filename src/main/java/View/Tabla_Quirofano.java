@@ -127,7 +127,7 @@ public class Tabla_Quirofano extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Instrumento ti = new Tabla_Instrumento();
 				ti.setVisible(true);
-				dispose();
+				
 			}
 		});
 		btnInstrumentos.setBounds(40, 277, 161, 23);
