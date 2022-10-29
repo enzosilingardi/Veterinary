@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Provincia.ComboItem;
@@ -21,12 +22,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Ciudad extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JComboBox cbProvincias;
+	private JTable table;
 	
 	class ComboItem
 	{
@@ -86,6 +90,47 @@ public class Ciudad extends JFrame {
     }
 		
 
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Ciudad","Provincia"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[3];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT id_City, City.name, Province.name\r\n"
+        			+ "FROM City\r\n"
+        			+ "INNER JOIN Province ON Province.id_Province = City.id_Province;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -176,7 +221,7 @@ public class Ciudad extends JFrame {
 	public Ciudad() {
 		setTitle("Ciudad");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -188,11 +233,11 @@ public class Ciudad extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(73, 56, 46, 14);
+		lblNombre.setBounds(456, 57, 46, 14);
 		contentPane.add(lblNombre);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(162, 53, 179, 20);
+		txtNombre.setBounds(545, 54, 179, 20);
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
 		
@@ -227,6 +272,7 @@ public class Ciudad extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Ciudad guardada");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar ciudad");
 		                limpiar();
@@ -242,7 +288,7 @@ public class Ciudad extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(88, 158, 89, 23);
+		btnAgregar.setBounds(471, 159, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -251,58 +297,64 @@ public class Ciudad extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(313, 206, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				int result = 0;
-				String nombre = txtNombre.getText();
-				Object provincia = cbProvincias.getSelectedItem();
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM City WHERE name = ? AND id_Province = ?;" );
-					if(ciudadEnUso(nombre) != 0) {
-						JOptionPane.showMessageDialog(null, "Ciudad está en uso, por favor elimine todos los registros relacionados");
-					}else {
-						ps.setString(1, nombre);
-						ps.setString(2, ((ComboItem) provincia).getValue());;
-					}
+					PreparedStatement ps = con.prepareStatement("DELETE FROM City WHERE id_City = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Ciudad eliminada");
-		                limpiar();
+		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar ciudad");
-		                limpiar();
+		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Ciudad está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
-				
 			}
 		});
-		btnEliminar.setBounds(229, 158, 89, 23);
+		btnEliminar.setBounds(612, 159, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JLabel lblProvincia = new JLabel("Provincia");
-		lblProvincia.setBounds(73, 104, 46, 14);
+		lblProvincia.setBounds(456, 105, 79, 14);
 		contentPane.add(lblProvincia);
 		
 		cbProvincias = new JComboBox();
-		cbProvincias.setBounds(162, 100, 179, 22);
+		cbProvincias.setBounds(545, 101, 179, 22);
 		contentPane.add(cbProvincias);
 		
 		cbProvincias.setModel(cargarProvincia());
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(43, 55, 356, 356);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 }
