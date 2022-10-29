@@ -128,25 +128,26 @@ public class Procedimiento_Veterinario extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Veterinario","Procedimiento"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Veterinario","Procedimiento"});
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[3];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT name, surname, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_VMP ,name, surname, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
         			+ "FROM Rel_Veterinarian_Medical_P\r\n"
         			+ "INNER JOIN Medical_Procedure ON Medical_Procedure.id_Procedure = Rel_Veterinarian_Medical_P.id_Procedure\r\n"
         			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
         			+ "INNER JOIN Veterinarian ON Veterinarian.id_Veterinarian = Rel_Veterinarian_Medical_P.id_Veterinarian;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                datos[0] = rs.getString(1)+" "+rs.getString(2);
-                datos[1] = rs.getString(3)+" - "+rs.getString(4)+" "+rs.getString(5);
+            	datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2)+" "+rs.getString(3);
+                datos[2] = rs.getString(4)+" - "+rs.getString(5)+" "+rs.getString(6);
                 
                 
                 modelo.addRow(datos);
@@ -154,7 +155,11 @@ public class Procedimiento_Veterinario extends JFrame {
             }
             
             table.setModel(modelo);
-            
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -305,29 +310,30 @@ public class Procedimiento_Veterinario extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object proced = cbProcedimiento.getSelectedItem();
-				Object veterinario = cbVeterinario.getSelectedItem();
-				
 				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Veterinarian_Medical_P WHERE id_Veterinarian = ? AND id_Procedure = ?;" );
-					ps.setString(1, ((ComboItem) veterinario).getValue());
-					ps.setString(2, ((ComboItem) proced).getValue());
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Veterinarian_Medical_P WHERE id_VMP = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Veterinario removido del procedimiento");
-		                limpiar();
-		                mostrarTabla();
+		                JOptionPane.showMessageDialog(null, "Veterinario eliminado de Procedimiento");
+		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover veterinario");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");
+		                
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

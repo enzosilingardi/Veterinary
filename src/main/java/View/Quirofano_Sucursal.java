@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import View.Instrumento_Quirofano.ComboItem;
@@ -20,12 +21,15 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Quirofano_Sucursal extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbQuirofano;
 	private JComboBox cbSucursal;
+	private JTable table;
 	
 	class ComboItem
 	{
@@ -162,6 +166,50 @@ public class Quirofano_Sucursal extends JFrame {
 		
 	}
 	
+void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Sucursal"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[3];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT id_BOR, address_Name, address_Number, room_Number\r\n"
+        			+ "FROM Rel_Branch_Operating_R\r\n"
+        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Operating_R.id_Branch\r\n"
+        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address\r\n"
+        			+ "INNER JOIN Operating_Room ON Operating_Room.id_Operating_Room = Rel_Branch_Operating_R.id_Operating_Room;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2)+" "+rs.getString(3);
+                datos[2] = rs.getString(4);
+                
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
+	
 	private void limpiar() {
 		cbQuirofano.setSelectedIndex(0);
 		cbSucursal.setSelectedIndex(0);
@@ -173,7 +221,7 @@ public class Quirofano_Sucursal extends JFrame {
 	 */
 	public Quirofano_Sucursal() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 389, 300);
+		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -185,20 +233,20 @@ public class Quirofano_Sucursal extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		JLabel lblQuirofano = new JLabel("Quirófano");
-		lblQuirofano.setBounds(40, 58, 66, 14);
+		lblQuirofano.setBounds(469, 64, 66, 14);
 		contentPane.add(lblQuirofano);
 		
 		cbQuirofano = new JComboBox();
-		cbQuirofano.setBounds(125, 54, 170, 22);
+		cbQuirofano.setBounds(554, 60, 170, 22);
 		contentPane.add(cbQuirofano);
 		cbQuirofano.setModel(cargarQuirofano());
 		
 		JLabel lblSucursal = new JLabel("Sucursal");
-		lblSucursal.setBounds(40, 116, 56, 14);
+		lblSucursal.setBounds(469, 122, 56, 14);
 		contentPane.add(lblSucursal);
 		
 		cbSucursal = new JComboBox();
-		cbSucursal.setBounds(125, 112, 170, 22);
+		cbSucursal.setBounds(554, 118, 170, 22);
 		contentPane.add(cbSucursal);
 		cbSucursal.setModel(cargarSucursal());
 		
@@ -239,6 +287,7 @@ public class Quirofano_Sucursal extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Quirófano añadido a sucursal");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al añadir quirófano");
 		                limpiar();
@@ -254,43 +303,46 @@ public class Quirofano_Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(61, 174, 89, 23);
+		btnAgregar.setBounds(490, 180, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Object quirofano = cbQuirofano.getSelectedItem();
-				Object sucursal = cbSucursal.getSelectedItem();
-				
 				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Operating_R WHERE id_Branch = ? AND id_Operating_Room = ?;" );
-					ps.setString(1, ((ComboItem) sucursal).getValue());
-					ps.setString(2, ((ComboItem) quirofano).getValue());
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Operating_R WHERE id_BOR = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano removido de la sucursal");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Quirofano eliminado de sucursal");
+		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover quirofano");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al eliminar quirofano");
+		                
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
+				
 			}
 		});
-		btnEliminar.setBounds(202, 174, 89, 23);
+		btnEliminar.setBounds(631, 180, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -301,7 +353,16 @@ public class Quirofano_Sucursal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(263, 227, 89, 23);
+		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(36, 47, 363, 373);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 }

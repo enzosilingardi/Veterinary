@@ -128,17 +128,17 @@ public class Procedimiento_Sucursal extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Sucursal","Procedimiento"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Sucursal","Procedimiento"});
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[3];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT Address.address_Name, Address.address_Number, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_BMP, Address.address_Name, Address.address_Number, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
         			+ "FROM Rel_Branch_Medical_P\r\n"
         			+ "INNER JOIN Medical_Procedure ON Medical_Procedure.id_Procedure = Rel_Branch_Medical_P.id_Procedure\r\n"
         			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
@@ -146,8 +146,9 @@ public class Procedimiento_Sucursal extends JFrame {
         			+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                datos[0] = rs.getString(1)+" "+rs.getString(2);
-                datos[1] = rs.getString(3)+" - "+rs.getString(4)+" "+rs.getString(5);
+            	datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2)+" "+rs.getString(3);
+                datos[2] = rs.getString(4)+" - "+rs.getString(5)+" "+rs.getString(6);
                 
                 
                 modelo.addRow(datos);
@@ -155,7 +156,11 @@ public class Procedimiento_Sucursal extends JFrame {
             }
             
             table.setModel(modelo);
-            
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -306,29 +311,30 @@ public class Procedimiento_Sucursal extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object proced = cbProcedimiento.getSelectedItem();
-				Object sucursal = cbSucursal.getSelectedItem();
-				
 				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Medical_P WHERE id_Branch = ? AND id_Procedure = ?;" );
-					ps.setString(1, ((ComboItem) sucursal).getValue());
-					ps.setString(2, ((ComboItem) proced).getValue());
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Branch_Medical_P WHERE id_BMP = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Procedimiento removido de la sucursal");
-		                limpiar();
-		                mostrarTabla();
+		                JOptionPane.showMessageDialog(null, "Procedimiento eliminado de sucursal");
+		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover procedimiento");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al eliminar procedimiento");
+		                
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
