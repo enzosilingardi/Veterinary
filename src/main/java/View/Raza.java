@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 
@@ -18,12 +19,57 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Raza extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtTipo;
+	private JTable table;
 
+	
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Raza"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Breed;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+    		
+    		
+    		
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -110,24 +156,21 @@ public class Raza extends JFrame {
 	 * Create the frame.
 	 */
 	public Raza() {
+		setTitle("Razas");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 411, 300);
+		setBounds(100, 100, 581, 394);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Raza");
-		lblTitulo.setBounds(154, 11, 66, 14);
-		contentPane.add(lblTitulo);
-		
 		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(41, 54, 46, 14);
+		lblTipo.setBounds(320, 57, 46, 14);
 		contentPane.add(lblTipo);
 		
 		txtTipo = new JTextField();
-		txtTipo.setBounds(97, 51, 186, 20);
+		txtTipo.setBounds(369, 54, 186, 20);
 		contentPane.add(txtTipo);
 		txtTipo.setColumns(10);
 		
@@ -137,43 +180,43 @@ public class Raza extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(282, 214, 89, 23);
+		btnVolver.setBounds(466, 321, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
-				String tipo = txtTipo.getText();
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Breed WHERE type = ?" );           //Crea el statement
-					if(razaEnUso(tipo) != 0) {
-						JOptionPane.showMessageDialog(null, "Raza está en uso, por favor elimine todos los registros relacionados"); //Revisa si el registro está en uso
-					}else {
-						ps.setString(1, tipo);
-					}
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Breed WHERE id_Breed = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza eliminada");
-		                limpiar();
+		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar raza");
-		                limpiar();
+		                
 		            }
-					
+					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Raza está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
-		btnEliminar.setBounds(214, 166, 89, 23);
+		btnEliminar.setBounds(466, 91, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -196,9 +239,11 @@ public class Raza extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza guardada");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar raza");
 		                limpiar();
+		                mostrarTabla();
 		            }
 					
 				}catch(SQLException E) {
@@ -209,7 +254,7 @@ public class Raza extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(40, 166, 89, 23);
+		btnAgregar.setBounds(369, 91, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnRel = new JButton("Asociar con animal");
@@ -219,8 +264,53 @@ public class Raza extends JFrame {
 				ar.setVisible(true);
 			}
 		});
-		btnRel.setBounds(122, 108, 121, 23);
+		btnRel.setBounds(411, 241, 121, 23);
 		contentPane.add(btnRel);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 11, 266, 333);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				
+				int fila = table.getSelectedRow();
+				String tipo = table.getValueAt(fila,1).toString();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Breed SET type = ? WHERE id_Breed = ?" );  //Crea el statement
+					
+					ps.setString(1, tipo);
+					ps.setInt(2, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Raza modificada");
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar raza");
+		                mostrarTabla();
+		            }
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(421, 136, 89, 23);
+		contentPane.add(btnModificar);
+		
+		mostrarTabla();
 	}
-
 }

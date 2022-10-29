@@ -122,17 +122,17 @@ public class Instrumento_Quirofano extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Quirófano","Sucursal"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Instrumento"});
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[3];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT room_Number, instrument_Name\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_ORMI, room_Number, instrument_Name\r\n"
         			+ "FROM Rel_Operating_R_Medical_I\r\n"
         			+ "INNER JOIN Operating_Room ON Operating_Room.id_Operating_Room = Rel_Operating_R_Medical_I.id_Operating_Room\r\n"
         			+ "INNER JOIN Medical_Instrument ON Medical_Instrument.id_Medical_Instrument = Rel_Operating_R_Medical_I.id_Medical_Instrument;" );
@@ -140,14 +140,18 @@ public class Instrumento_Quirofano extends JFrame {
             while (rs.next()){
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
-                
+                datos[2] = rs.getString(3);
                 
                 modelo.addRow(datos);
 
             }
             
             table.setModel(modelo);
-            
+
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -255,29 +259,30 @@ public class Instrumento_Quirofano extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object quirofano = cbQuirofano.getSelectedItem();
-				Object instrumento = cbInstrumento.getSelectedItem();
-				
 				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Operating_R_Medical_I WHERE id_Operating_Room = ? AND id_Medical_Instrument = ?;" );
-					ps.setString(1, ((ComboItem) quirofano).getValue());
-					ps.setString(2, ((ComboItem) instrumento).getValue());
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Operating_R_Medical_I WHERE id_ORMI = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento removido del quirófano");
-		                limpiar();
-		                mostrarTabla();
+		                JOptionPane.showMessageDialog(null, "Instrumento eliminado de quirofano");
+		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover instrumento");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
+		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

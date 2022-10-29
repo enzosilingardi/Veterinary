@@ -122,17 +122,17 @@ public class Animal_Raza extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"Animal","Raza"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Animal","Raza"});
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[3];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT Animal.type, Breed.type\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_AB, Animal.type, Breed.type\r\n"
         			+ "FROM Rel_Animal_Breed\r\n"
         			+ "INNER JOIN Animal ON Animal.id_Animal = Rel_Animal_Breed.id_Animal\r\n"
         			+ "INNER JOIN Breed ON Breed.id_Breed = Rel_Animal_Breed.id_Breed;" );
@@ -140,6 +140,7 @@ public class Animal_Raza extends JFrame {
             while (rs.next()){
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
                 
                 
                 modelo.addRow(datos);
@@ -147,7 +148,10 @@ public class Animal_Raza extends JFrame {
             }
             
             table.setModel(modelo);
-            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
         } catch(SQLException E) {
 			JOptionPane.showMessageDialog(null,E);
 		}catch (ClassNotFoundException e1) {
@@ -300,29 +304,30 @@ public class Animal_Raza extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object animal = cbAnimal.getSelectedItem();
-				Object raza = cbRaza.getSelectedItem();
-				
 				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Animal_Breed WHERE id_Animal = ? AND id_Breed = ?;" );
-					ps.setString(1, ((ComboItem) animal).getValue());
-					ps.setString(2, ((ComboItem) raza).getValue());
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Animal_Breed WHERE id_AB = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Raza removida del animal");
-		                limpiar();
-		                mostrarTabla();
+		                JOptionPane.showMessageDialog(null, "Raza eliminada de animal");
+		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al remover instrumento");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al eliminar raza");
+		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

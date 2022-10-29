@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 
@@ -18,12 +19,56 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class Animal extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtTipo;
+	private JTable table;
 
+	void mostrarTabla(){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Animal"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[2];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Animal;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+    		
+    		
+    		
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -110,7 +155,7 @@ public class Animal extends JFrame {
 	 */
 	public Animal() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 426, 266);
+		setBounds(100, 100, 581, 394);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -123,43 +168,43 @@ public class Animal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(291, 170, 89, 23);
+		btnVolver.setBounds(466, 321, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
-				String tipo = txtTipo.getText();
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Animal WHERE type = ?" );           //Crea el statement
-					if(animalEnUso(tipo) != 0) {
-						JOptionPane.showMessageDialog(null, "Animal está en uso, por favor elimine todos los registros relacionados"); //Revisa si el registro está en uso
-					}else {
-						ps.setString(1, tipo);
-					}
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Animal WHERE id_Animal = ?" );
+					
+					ps.setInt(1, id);
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Animal eliminado");
-		                limpiar();
+		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar animal");
-		                limpiar();
+		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Animal está en uso, por favor elimine todos los registros relacionados");
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
-		btnEliminar.setBounds(223, 122, 89, 23);
+		btnEliminar.setBounds(447, 99, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -182,9 +227,11 @@ public class Animal extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Animal guardado");
 		                limpiar();
+		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar animal");
 		                limpiar();
+		                mostrarTabla();
 		            }
 					con.close();
 				}catch(SQLException E) {
@@ -195,20 +242,62 @@ public class Animal extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(49, 122, 89, 23);
+		btnAgregar.setBounds(348, 99, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		txtTipo = new JTextField();
 		txtTipo.setColumns(10);
-		txtTipo.setBounds(110, 51, 186, 20);
+		txtTipo.setBounds(369, 54, 186, 20);
 		contentPane.add(txtTipo);
 		
 		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(54, 54, 46, 14);
+		lblTipo.setBounds(321, 57, 46, 14);
 		contentPane.add(lblTipo);
 		
-		JLabel lblTitulo = new JLabel("Animal");
-		lblTitulo.setBounds(167, 11, 66, 14);
-		contentPane.add(lblTitulo);
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				
+				int fila = table.getSelectedRow();
+				String tipo = table.getValueAt(fila,1).toString();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Animal SET type = ? WHERE id_Animal = ?" );  //Crea el statement
+					
+					ps.setString(1, tipo);
+					ps.setInt(2, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Animal modificado");
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar animal");
+		                mostrarTabla();
+		            }
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(403, 146, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(25, 11, 266, 333);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		mostrarTabla();
 	}
 }
