@@ -355,6 +355,19 @@ public class Ciudad extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Ciudad mc = new Modificar_Ciudad(table.getValueAt(fila,0).toString());
+				mc.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(545, 210, 89, 23);
+		contentPane.add(btnModificar);
+		
 		mostrarTabla();
 	}
 }

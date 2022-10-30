@@ -19,6 +19,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Modificar_Ciudad extends JFrame {
 
@@ -102,11 +104,41 @@ public class Modificar_Ciudad extends JFrame {
 			}
 		});
 	}
+	
 
+	private void cargarCampos(String ciudad) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		int id = Integer.parseInt(ciudad);
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT name FROM City WHERE id_City = ?";
+			pst = cn.prepareStatement(SSQL);
+			pst.setInt(1, id);
+			
+			
+			result = pst.executeQuery();
+			while (result.next()){
+			txtNombre.setText(result.getString(1));
+			
+			
+			}
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Ciudad() {
+	public Modificar_Ciudad(String ciudad) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 384, 232);
 		contentPane = new JPanel();
@@ -140,14 +172,76 @@ public class Modificar_Ciudad extends JFrame {
 		txtId.setColumns(10);
 		
 		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(txtId.getText());
+				String nombre = txtNombre.getText();
+				Object provincia = cbProvincias.getSelectedItem();
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE City SET name = ?, id_Province = ? WHERE id_City = ?" );
+					
+					
+					if (((ComboItem) provincia).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una provincia");
+					}else {
+						
+						ps.setString(1, nombre);
+						ps.setString(2, ((ComboItem) provincia).getValue());
+						ps.setInt(3, id);
+					}
+						
+					
+					
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Ciudad modificada");
+		                Ciudad ciudad = new Ciudad();
+						ciudad.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar ciudad");
+		               
+		            }
+				
+					
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnModificar.setBounds(63, 135, 89, 23);
 		contentPane.add(btnModificar);
 		
 		btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ciudad ciudad = new Ciudad();
+				ciudad.setVisible(true);
+				dispose();
+			}
+		});
 		btnVolver.setBounds(215, 135, 89, 23);
 		contentPane.add(btnVolver);
+		
 		txtId.setVisible(false);
 		
+		cargarCampos(ciudad);
+		txtId.setText(ciudad);
+		
+	}
+
+
+	public Modificar_Ciudad() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

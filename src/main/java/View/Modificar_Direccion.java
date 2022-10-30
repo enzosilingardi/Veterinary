@@ -1,13 +1,17 @@
 package View;
 
 import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import View.Sucursal.ComboItem;
+import View.Direccion.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,19 +20,16 @@ import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class Direccion extends JFrame {
+public class Modificar_Direccion extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtNumero;
 	private JTextField txtPiso;
 	private JTextField txtDepto;
+	private JTextField txtId;
 	private JComboBox cbCiudad;
 	
 	
@@ -89,38 +90,7 @@ public class Direccion extends JFrame {
 		return modelo;
     }
 	
-	public int existeDireccion(Object ciudad, String nombre, int numero) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Address WHERE id_City = ? AND address_Name = ? AND address_Number = ?  ;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,(String) ciudad);
-			pst.setString(2,nombre);
-			pst.setInt(3,numero);
-			
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -128,7 +98,7 @@ public class Direccion extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Direccion frame = new Direccion();
+					Modificar_Direccion frame = new Modificar_Direccion();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -136,87 +106,104 @@ public class Direccion extends JFrame {
 			}
 		});
 	}
-
 	
-	
-	private void limpiar() {
-		txtNombre.setText("");
-		cbCiudad.setSelectedIndex(0);
-		txtNumero.setText("");
-		txtPiso.setText("");
-		txtDepto.setText("");
+	private void cargarCampos(String direccion) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
 		
+		int id = Integer.parseInt(direccion);
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT address_Name, address_Number, floor_Number, dept_Number\r\n"
+					+ "FROM Address WHERE id_Address = ?";
+			pst = cn.prepareStatement(SSQL);
+			pst.setInt(1, id);
+			
+			
+			result = pst.executeQuery();
+			while (result.next()){
+			txtNombre.setText(result.getString(1));
+			txtNumero.setText(result.getString(2));
+			txtPiso.setText(result.getString(3));
+			txtDepto.setText(result.getString(4));
+			
+			}
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	}
+	
 	/**
 	 * Create the frame.
 	 */
-	public Direccion() {
-		setTitle("Dirección");
+	public Modificar_Direccion(String direccion) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 482, 424);
+		setBounds(100, 100, 482, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitulo = new JLabel("Dirección");
-		lblTitulo.setBounds(207, 11, 43, 14);
-		contentPane.add(lblTitulo);
-		
 		JLabel lblNombre = new JLabel("Nombre");
-		lblNombre.setBounds(46, 100, 46, 14);
+		lblNombre.setBounds(59, 88, 46, 14);
 		contentPane.add(lblNombre);
 		
 		JLabel lblNumero = new JLabel("Número");
-		lblNumero.setBounds(46, 152, 46, 14);
+		lblNumero.setBounds(59, 140, 46, 14);
 		contentPane.add(lblNumero);
 		
 		JLabel lblPiso = new JLabel("Piso (Opcional)");
-		lblPiso.setBounds(46, 203, 89, 14);
+		lblPiso.setBounds(59, 191, 89, 14);
 		contentPane.add(lblPiso);
 		
 		JLabel lblDepto = new JLabel("Departamento (Opcional)");
-		lblDepto.setBounds(46, 252, 139, 14);
+		lblDepto.setBounds(59, 240, 139, 14);
 		contentPane.add(lblDepto);
 		
 		JLabel lblCiudad = new JLabel("Ciudad");
-		lblCiudad.setBounds(46, 53, 46, 14);
+		lblCiudad.setBounds(59, 41, 46, 14);
 		contentPane.add(lblCiudad);
 		
 		cbCiudad = new JComboBox();
-		cbCiudad.setBounds(228, 49, 162, 22);
+		cbCiudad.setBounds(241, 37, 162, 22);
 		contentPane.add(cbCiudad);
 		cbCiudad.setModel(cargarCiudad());
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(228, 97, 162, 20);
-		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
+		txtNombre.setBounds(241, 85, 162, 20);
+		contentPane.add(txtNombre);
 		
 		txtNumero = new JTextField();
-		txtNumero.setBounds(228, 149, 162, 20);
-		contentPane.add(txtNumero);
 		txtNumero.setColumns(10);
+		txtNumero.setBounds(241, 137, 162, 20);
+		contentPane.add(txtNumero);
 		
 		txtPiso = new JTextField();
-		txtPiso.setBounds(228, 200, 162, 20);
-		contentPane.add(txtPiso);
 		txtPiso.setColumns(10);
+		txtPiso.setBounds(241, 188, 162, 20);
+		contentPane.add(txtPiso);
 		
 		txtDepto = new JTextField();
-		txtDepto.setBounds(228, 249, 162, 20);
-		contentPane.add(txtDepto);
 		txtDepto.setColumns(10);
+		txtDepto.setBounds(241, 237, 162, 20);
+		contentPane.add(txtDepto);
 		
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.addActionListener(new ActionListener() {
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement ps = null;
 				String nombre = txtNombre.getText();
 				Object ciudad = cbCiudad.getSelectedItem();
 				int numero = Integer.parseInt(txtNumero.getText());
-				
+				int id = Integer.parseInt(txtId.getText());
 				
 				
 				
@@ -226,14 +213,16 @@ public class Direccion extends JFrame {
 					Connection con = Connect.getConexion();
 					
 					if(txtPiso.getText().isBlank() && txtDepto.getText().isBlank()) {
-						ps = con.prepareStatement("INSERT INTO Address (id_City, address_Name, address_Number) VALUES (?,?,?)" );
+						ps = con.prepareStatement("UPDATE Address SET id_City = ?, address_Name = ?, address_Number = ? WHERE id_Address = ?" );
+						ps.setInt(4, id);
 					}else {
-						ps = con.prepareStatement("INSERT INTO Address (id_City, address_Name, address_Number, floor_Number, dept_Number) VALUES (?,?,?,?,?)" );
+						ps = con.prepareStatement("UPDATE Address SET id_City = ?, address_Name = ?, address_Number = ?, floor_Number = ?, dept_Number = ? WHERE id_Address = ?" );
 						Integer piso = Integer.parseInt(txtPiso.getText());
 						String depto = txtDepto.getText();
 						ps.setInt(4,piso);
 						
 						ps.setString(5,depto);
+						ps.setInt(6, id);
 					}
 					
 					
@@ -242,9 +231,7 @@ public class Direccion extends JFrame {
 					if (((ComboItem) ciudad).getValue() == "") {
 						JOptionPane.showMessageDialog(null, "Seleccione una ciudad");
 					}else {
-						if(existeDireccion(((ComboItem) cbCiudad.getSelectedItem()).getValue(),nombre,numero)!=0) {
-						JOptionPane.showMessageDialog(null, "Direccion ya existe");
-					}else {
+						
 						ps.setString(1, ((ComboItem) ciudad).getValue());
 						ps.setString(2, nombre);
 						ps.setInt(3,numero);
@@ -253,17 +240,19 @@ public class Direccion extends JFrame {
 						
 					}
 						
-					}
+					
 					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Direccion guardada");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Direccion modificada");
+		                Tabla_Direccion td = new Tabla_Direccion();
+						td.setVisible(true);
+						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar direccion");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al modificar direccion");
+		                
 		            }
 				
 					con.close();
@@ -276,8 +265,8 @@ public class Direccion extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(177, 301, 89, 23);
-		contentPane.add(btnAgregar);
+		btnModificar.setBounds(102, 296, 89, 23);
+		contentPane.add(btnModificar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -287,7 +276,21 @@ public class Direccion extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(330, 351, 89, 23);
+		btnVolver.setBounds(261, 296, 89, 23);
 		contentPane.add(btnVolver);
+		
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(10, 11, 17, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
+		
+		cargarCampos(direccion);
+		txtId.setText(direccion);
+	}
+
+	public Modificar_Direccion() {
+		// TODO Auto-generated constructor stub
 	}
 }
