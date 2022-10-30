@@ -122,7 +122,162 @@ public class Tabla_Turnos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public Tabla_Turnos(String perfil) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 612, 400);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(40, 11, 516, 238);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVolver.setBounds(497, 327, 89, 23);
+		contentPane.add(btnVolver);
+		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
+		JButton btnHistorial = new JButton("Agregar a historial");
+		btnHistorial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				int historial = Integer.parseInt(table.getValueAt(fila,1).toString());
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Medical_H_Medical_P (id_Medical_History,id_Procedure) VALUES (?,?)" );
+					
+					if(existeRel(historial,id)!=0) {
+						JOptionPane.showMessageDialog(null, "Procedimiento ya se encuentra en el historial");
+					}else {
+						ps.setInt(1, historial);
+						ps.setInt(2, id);
+					}
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Procedimiento colocado");
+		                
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al colocar Procedimiento");
+		                
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnHistorial.setBounds(205, 323, 155, 23);
+		contentPane.add(btnHistorial);
+		
+		JButton btnVeterinario = new JButton("Asociar veterinario");
+		btnVeterinario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Veterinario pv = new Procedimiento_Veterinario();
+				pv.setVisible(true);
+			}
+		});
+		btnVeterinario.setBounds(40, 289, 155, 23);
+		contentPane.add(btnVeterinario);
+		
+		JButton btnSucursal = new JButton("Asociar sucursal");
+		btnSucursal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Sucursal ps = new Procedimiento_Sucursal();
+				ps.setVisible(true);
+			}
+		});
+		btnSucursal.setBounds(40, 323, 155, 23);
+		contentPane.add(btnSucursal);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());
+				mt.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(205, 255, 155, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Procedure WHERE id_Procedure = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Turno eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar turno");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(370, 255, 155, 23);
+		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar turno");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Medico pm = new Procedimiento_Medico();
+				pm.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 255, 155, 23);
+		contentPane.add(btnAgregar);
+		
+		}
+		
+		mostrarTabla();
+	}
+
 	public Tabla_Turnos() {
+		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 400);
 		contentPane = new JPanel();

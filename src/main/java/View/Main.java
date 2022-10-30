@@ -80,7 +80,7 @@ public class Main extends JFrame {
 		JMenuItem mntmPedidos = new JMenuItem("Pedidos");
 		mntmPedidos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Pedido tp = new Tabla_Pedido();
+				Tabla_Pedido tp = new Tabla_Pedido(perfil);
 				tp.setVisible(true);
 			}
 		});
@@ -101,7 +101,7 @@ public class Main extends JFrame {
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Clientes tc = new Tabla_Clientes();
+				Tabla_Clientes tc = new Tabla_Clientes(perfil);
 				tc.setVisible(true);
 			}
 		});
@@ -111,7 +111,7 @@ public class Main extends JFrame {
 		JButton btnTurnos = new JButton("Turnos");
 		btnTurnos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Turnos tt = new Tabla_Turnos();
+				Tabla_Turnos tt = new Tabla_Turnos(perfil);
 				tt.setVisible(true);
 			}
 		});
@@ -121,7 +121,7 @@ public class Main extends JFrame {
 		JButton btnHistoriales = new JButton("Historiales");
 		btnHistoriales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Historial th = new Tabla_Historial();
+				Tabla_Historial th = new Tabla_Historial(perfil);
 				th.setVisible(true);
 			}
 		});
@@ -131,7 +131,7 @@ public class Main extends JFrame {
 		JButton btnVeterinarios = new JButton("Veterinarios");
 		btnVeterinarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Veterinario tv = new Tabla_Veterinario();
+				Tabla_Veterinario tv = new Tabla_Veterinario(perfil);
 				tv.setVisible(true);
 			}
 		});
@@ -141,7 +141,7 @@ public class Main extends JFrame {
 		JButton btnSucursales = new JButton("Sucursales");
 		btnSucursales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Sucursales sucursales = new Tabla_Sucursales();
+				Tabla_Sucursales sucursales = new Tabla_Sucursales(perfil);
 				sucursales.setVisible(true);
 			}
 		});
@@ -151,7 +151,7 @@ public class Main extends JFrame {
 		JButton btnUsuarios = new JButton("Usuarios");
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Usuarios usuarios = new Tabla_Usuarios();
+				Tabla_Usuarios usuarios = new Tabla_Usuarios(perfil);
 				usuarios.setVisible(true);
 			}
 		});
@@ -161,7 +161,7 @@ public class Main extends JFrame {
 		JButton btnQuirofanos = new JButton("Quirófanos");
 		btnQuirofanos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Quirofano tq = new Tabla_Quirofano();
+				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
 				tq.setVisible(true);
 			}
 		});

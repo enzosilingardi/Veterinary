@@ -91,7 +91,87 @@ public class Tabla_Historial extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public Tabla_Historial(String perfil) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 800, 424);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(28, 11, 729, 305);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVolver.setBounds(668, 351, 89, 23);
+		contentPane.add(btnVolver);
+		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
+		JButton btnHistoriales = new JButton("ABM Historiales");
+		btnHistoriales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Historial_Medico hm = new Historial_Medico();
+				hm.setVisible(true);
+				dispose();
+			}
+		});
+		btnHistoriales.setBounds(203, 327, 127, 23);
+		contentPane.add(btnHistoriales);
+		
+		JButton btnEliminar = new JButton("Eliminar del historial");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Medical_H_Medical_P WHERE id_MHMP = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Eliminado del historial");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar del historial");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Historial está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(28, 327, 165, 23);
+		contentPane.add(btnEliminar);
+		
+		}
+		
+		mostrarTabla();
+	}
+
 	public Tabla_Historial() {
+		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 424);
 		contentPane = new JPanel();

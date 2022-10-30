@@ -70,7 +70,7 @@ public class Modificar_Quirofano extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Quirofano(String quirofano) {
+	public Modificar_Quirofano(String quirofano, final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 262);
 		contentPane = new JPanel();
@@ -91,7 +91,7 @@ public class Modificar_Quirofano extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Quirofano tq = new Tabla_Quirofano();
+				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
 				tq.setVisible(true);
 				dispose();
 			}

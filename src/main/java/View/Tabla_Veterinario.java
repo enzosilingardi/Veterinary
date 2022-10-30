@@ -85,7 +85,111 @@ public class Tabla_Veterinario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public Tabla_Veterinario(String perfil) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 597, 382);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(40, 11, 501, 238);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVolver.setBounds(467, 309, 89, 23);
+		contentPane.add(btnVolver);
+		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
+		JButton btnRel = new JButton("Añadir a sucursal");
+		btnRel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Veterinario_Sucursal vs = new Veterinario_Sucursal();
+				vs.setVisible(true);
+			}
+		});
+		btnRel.setBounds(40, 309, 188, 23);
+		contentPane.add(btnRel);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Veterinario mv = new Modificar_Veterinario(table.getValueAt(fila,0).toString());
+				mv.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(139, 270, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Veterinarian WHERE id_Veterinarian = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Veterinario eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Veterinario está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(238, 270, 89, 23);
+		contentPane.add(btnEliminar);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Veterinario veterinario = new Veterinario();
+				veterinario.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 270, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		}
+		
+		mostrarTabla();
+	}
+
+
 	public Tabla_Veterinario() {
+		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();

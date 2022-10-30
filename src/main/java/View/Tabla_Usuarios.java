@@ -84,7 +84,112 @@ public class Tabla_Usuarios extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public Tabla_Usuarios(String perfil) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 597, 382);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(40, 11, 501, 238);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVolver.setBounds(467, 309, 89, 23);
+		contentPane.add(btnVolver);
+
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+			
+		JButton btnRel = new JButton("Añadir a sucursal");
+		btnRel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Usuario_Sucursal us = new Usuario_Sucursal();
+				us.setVisible(true);
+			}
+		});
+		btnRel.setBounds(41, 309, 161, 23);
+		contentPane.add(btnRel);
+		}
+		
+
+		if (perfil.equals("Admin")) {
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Usuario usuario = new Usuario();
+				usuario.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 272, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Usuario mu = new Modificar_Usuario(table.getValueAt(fila,0).toString());
+				mu.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(139, 272, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int result = 0;
+				int fila = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Users WHERE id_User = ?" );
+					
+						ps.setInt(1, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Usuario eliminado");
+		               mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
+		                
+		            }
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Usuario está en uso, por favor elimine todos los registros relacionados");
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEliminar.setBounds(238, 272, 89, 23);
+		contentPane.add(btnEliminar);
+		}
+		mostrarTabla();
+	}
+
 	public Tabla_Usuarios() {
+		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();

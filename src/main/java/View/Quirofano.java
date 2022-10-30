@@ -145,7 +145,7 @@ public class Quirofano extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Quirofano() {
+	public Quirofano(final String perfil) {
 		setTitle("Quirófano");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 273);
@@ -210,12 +210,19 @@ public class Quirofano extends JFrame {
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Quirofano tq = new Tabla_Quirofano();
+				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
 				tq.setVisible(true);
 				dispose();
 			}
 		});
 		btnVolver.setBounds(289, 190, 89, 23);
 		contentPane.add(btnVolver);
+	}
+
+
+
+
+	public Quirofano() {
+		// TODO Auto-generated constructor stub
 	}
 }

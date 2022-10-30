@@ -219,7 +219,7 @@ void mostrarTabla(){
 	/**
 	 * Create the frame.
 	 */
-	public Quirofano_Sucursal() {
+	public Quirofano_Sucursal(final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
@@ -348,7 +348,7 @@ void mostrarTabla(){
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Quirofano tq = new Tabla_Quirofano();
+				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
 				tq.setVisible(true);
 				dispose();
 			}
@@ -364,5 +364,9 @@ void mostrarTabla(){
 		scrollPane.setViewportView(table);
 		
 		mostrarTabla();
+	}
+
+	public Quirofano_Sucursal() {
+		// TODO Auto-generated constructor stub
 	}
 }

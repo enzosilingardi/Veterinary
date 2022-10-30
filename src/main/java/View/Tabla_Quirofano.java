@@ -86,7 +86,7 @@ public class Tabla_Quirofano extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Quirofano() {
+	public Tabla_Quirofano(final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
@@ -111,10 +111,12 @@ public class Tabla_Quirofano extends JFrame {
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
 		JButton btnRel = new JButton("Añadir a sucursal");
 		btnRel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Quirofano_Sucursal qs = new Quirofano_Sucursal();
+				Quirofano_Sucursal qs = new Quirofano_Sucursal(perfil);
 				qs.setVisible(true);
 				dispose();
 			}
@@ -122,10 +124,12 @@ public class Tabla_Quirofano extends JFrame {
 		btnRel.setBounds(40, 309, 161, 23);
 		contentPane.add(btnRel);
 		
+		}
+		
 		JButton btnInstrumentos = new JButton("Instrumentos");
 		btnInstrumentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Instrumento ti = new Tabla_Instrumento();
+				Tabla_Instrumento ti = new Tabla_Instrumento(perfil);
 				ti.setVisible(true);
 				
 			}
@@ -133,12 +137,14 @@ public class Tabla_Quirofano extends JFrame {
 		btnInstrumentos.setBounds(40, 277, 161, 23);
 		contentPane.add(btnInstrumentos);
 		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Quirofano mq = new Modificar_Quirofano(table.getValueAt(fila,0).toString());
+				Modificar_Quirofano mq = new Modificar_Quirofano(table.getValueAt(fila,0).toString(),perfil);
 				mq.setVisible(true);
 				dispose();
 			}
@@ -185,7 +191,7 @@ public class Tabla_Quirofano extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Quirofano quirofano = new Quirofano();
+				Quirofano quirofano = new Quirofano(perfil);
 				quirofano.setVisible(true);
 				dispose();
 			}
@@ -193,7 +199,14 @@ public class Tabla_Quirofano extends JFrame {
 		btnAgregar.setBounds(211, 277, 91, 23);
 		contentPane.add(btnAgregar);
 		
+		}
+		
 		mostrarTabla();
+	}
+
+	public Tabla_Quirofano() {
+		// TODO Auto-generated constructor stub
+		
 	}
 
 }
