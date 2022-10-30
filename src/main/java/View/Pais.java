@@ -250,6 +250,8 @@ public class Pais extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Provincia provincia = new Provincia();
+				provincia.setVisible(true);
 				dispose();
 			}
 		});

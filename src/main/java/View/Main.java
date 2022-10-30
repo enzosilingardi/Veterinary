@@ -177,6 +177,16 @@ public class Main extends JFrame {
 		});
 		btnMascotas.setBounds(238, 103, 104, 81);
 		contentPane.add(btnMascotas);
+		
+		JButton btnDirecciones = new JButton("Direcciones");
+		btnDirecciones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Direccion td = new Tabla_Direccion();
+				td.setVisible(true);
+			}
+		});
+		btnDirecciones.setBounds(352, 103, 104, 81);
+		contentPane.add(btnDirecciones);
 	}
 
 	public Main() {

@@ -361,6 +361,8 @@ public class Provincia extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Ciudad ciudad = new Ciudad();
+				ciudad.setVisible(true);
 				dispose();
 			}
 		});
@@ -396,6 +398,17 @@ public class Provincia extends JFrame {
 		});
 		btnModificar.setBounds(580, 212, 89, 23);
 		contentPane.add(btnModificar);
+		
+		JButton btnPais = new JButton("Paises");
+		btnPais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Pais pais = new Pais();
+				pais.setVisible(true);
+				dispose();
+			}
+		});
+		btnPais.setBounds(635, 364, 89, 23);
+		contentPane.add(btnPais);
 		mostrarTabla();
 		
 	}

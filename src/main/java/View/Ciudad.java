@@ -294,6 +294,8 @@ public class Ciudad extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Tabla_Direccion td = new Tabla_Direccion();
+				td.setVisible(true);
 				dispose();
 			}
 		});
@@ -367,6 +369,17 @@ public class Ciudad extends JFrame {
 		});
 		btnModificar.setBounds(545, 210, 89, 23);
 		contentPane.add(btnModificar);
+		
+		JButton btnProvincia = new JButton("Provincias");
+		btnProvincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Provincia provincia = new Provincia();
+				provincia.setVisible(true);
+				dispose();
+			}
+		});
+		btnProvincia.setBounds(635, 367, 89, 23);
+		contentPane.add(btnProvincia);
 		
 		mostrarTabla();
 	}
