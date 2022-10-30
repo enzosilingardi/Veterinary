@@ -171,7 +171,7 @@ public class Main extends JFrame {
 		JButton btnMascotas = new JButton("Mascotas");
 		btnMascotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Mascota tm = new Tabla_Mascota();
+				Tabla_Mascota tm = new Tabla_Mascota(perfil);
 				tm.setVisible(true);
 			}
 		});
@@ -181,7 +181,7 @@ public class Main extends JFrame {
 		JButton btnDirecciones = new JButton("Direcciones");
 		btnDirecciones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Direccion td = new Tabla_Direccion();
+				Tabla_Direccion td = new Tabla_Direccion(perfil);
 				td.setVisible(true);
 			}
 		});

@@ -218,7 +218,7 @@ public class Ciudad extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Ciudad() {
+	public Ciudad(final String perfil) {
 		setTitle("Ciudad");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 491);
@@ -240,6 +240,8 @@ public class Ciudad extends JFrame {
 		txtNombre.setBounds(545, 54, 179, 20);
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
+		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
@@ -291,16 +293,20 @@ public class Ciudad extends JFrame {
 		btnAgregar.setBounds(471, 159, 89, 23);
 		contentPane.add(btnAgregar);
 		
+		}
+		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Direccion td = new Tabla_Direccion();
+				Tabla_Direccion td = new Tabla_Direccion(perfil);
 				td.setVisible(true);
 				dispose();
 			}
 		});
 		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
+		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
@@ -339,10 +345,14 @@ public class Ciudad extends JFrame {
 		});
 		btnEliminar.setBounds(612, 159, 89, 23);
 		contentPane.add(btnEliminar);
+	
+		}
 		
 		JLabel lblProvincia = new JLabel("Provincia");
 		lblProvincia.setBounds(456, 105, 79, 14);
 		contentPane.add(lblProvincia);
+	
+		
 		
 		cbProvincias = new JComboBox();
 		cbProvincias.setBounds(545, 101, 179, 22);
@@ -357,23 +367,26 @@ public class Ciudad extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Ciudad mc = new Modificar_Ciudad(table.getValueAt(fila,0).toString());
+				Modificar_Ciudad mc = new Modificar_Ciudad(table.getValueAt(fila,0).toString(),perfil);
 				mc.setVisible(true);
 				dispose();
 			}
 		});
 		btnModificar.setBounds(545, 210, 89, 23);
 		contentPane.add(btnModificar);
+		}
 		
 		JButton btnProvincia = new JButton("Provincias");
 		btnProvincia.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Provincia provincia = new Provincia();
+				Provincia provincia = new Provincia(perfil);
 				provincia.setVisible(true);
 				dispose();
 			}
@@ -382,5 +395,10 @@ public class Ciudad extends JFrame {
 		contentPane.add(btnProvincia);
 		
 		mostrarTabla();
+	}
+
+
+	public Ciudad() {
+		// TODO Auto-generated constructor stub
 	}
 }

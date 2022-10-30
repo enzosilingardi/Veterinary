@@ -92,7 +92,7 @@ public class Tabla_Mascota extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Mascota() {
+	public Tabla_Mascota(String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 382);
 		contentPane = new JPanel();
@@ -116,6 +116,9 @@ public class Tabla_Mascota extends JFrame {
 		});
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
+		
+
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
 		btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
@@ -176,8 +179,13 @@ public class Tabla_Mascota extends JFrame {
 		});
 		btnEliminar.setBounds(238, 277, 91, 23);
 		contentPane.add(btnEliminar);
-		
+		}
 		mostrarTabla();
+	}
+
+
+	public Tabla_Mascota() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

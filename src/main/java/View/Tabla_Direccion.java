@@ -90,7 +90,7 @@ public class Tabla_Direccion extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Direccion() {
+	public Tabla_Direccion(final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
@@ -116,10 +116,12 @@ public class Tabla_Direccion extends JFrame {
 		btnVolver.setBounds(482, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
 		btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Direccion direccion = new Direccion();
+				Direccion direccion = new Direccion(perfil);
 				direccion.setVisible(true);
 				dispose();
 			}
@@ -132,7 +134,7 @@ public class Tabla_Direccion extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Direccion md = new Modificar_Direccion(table.getValueAt(fila,0).toString());
+				Modificar_Direccion md = new Modificar_Direccion(table.getValueAt(fila,0).toString(),perfil);
 				md.setVisible(true);
 				dispose();
 			}
@@ -176,10 +178,12 @@ public class Tabla_Direccion extends JFrame {
 		btnEliminar.setBounds(238, 260, 91, 23);
 		contentPane.add(btnEliminar);
 		
+		}
+		
 		btnCiudad = new JButton("Ciudades");
 		btnCiudad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ciudad ciudad = new Ciudad();
+				Ciudad ciudad = new Ciudad(perfil);
 				ciudad.setVisible(true);
 				dispose();
 			}
@@ -190,6 +194,9 @@ public class Tabla_Direccion extends JFrame {
 		mostrarTabla();
 		
 		
+	}
+	public Tabla_Direccion() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

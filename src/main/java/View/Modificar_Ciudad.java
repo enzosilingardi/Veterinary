@@ -138,7 +138,7 @@ public class Modificar_Ciudad extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Ciudad(String ciudad) {
+	public Modificar_Ciudad(String ciudad, final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 384, 232);
 		contentPane = new JPanel();
@@ -201,7 +201,7 @@ public class Modificar_Ciudad extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Ciudad modificada");
-		                Ciudad ciudad = new Ciudad();
+		                Ciudad ciudad = new Ciudad(perfil);
 						ciudad.setVisible(true);
 						dispose();
 		            } else {
@@ -224,7 +224,7 @@ public class Modificar_Ciudad extends JFrame {
 		btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ciudad ciudad = new Ciudad();
+				Ciudad ciudad = new Ciudad(perfil);
 				ciudad.setVisible(true);
 				dispose();
 			}

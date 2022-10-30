@@ -142,7 +142,7 @@ public class Modificar_Direccion extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Direccion(String direccion) {
+	public Modificar_Direccion(String direccion, final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 482, 400);
 		contentPane = new JPanel();
@@ -247,7 +247,7 @@ public class Modificar_Direccion extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Direccion modificada");
-		                Tabla_Direccion td = new Tabla_Direccion();
+		                Tabla_Direccion td = new Tabla_Direccion(perfil);
 						td.setVisible(true);
 						dispose();
 		            } else {
@@ -271,7 +271,7 @@ public class Modificar_Direccion extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Direccion td = new Tabla_Direccion();
+				Tabla_Direccion td = new Tabla_Direccion(perfil);
 				td.setVisible(true);
 				dispose();
 			}

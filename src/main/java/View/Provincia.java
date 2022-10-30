@@ -248,7 +248,7 @@ public class Provincia extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Provincia() {
+	public Provincia(final String perfil) {
 		setTitle("Provincia");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 491);
@@ -270,6 +270,9 @@ public class Provincia extends JFrame {
 		txtNombre.setColumns(10);
 		txtNombre.setBounds(545, 57, 179, 20);
 		contentPane.add(txtNombre);
+		
+
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
@@ -358,10 +361,12 @@ public class Provincia extends JFrame {
 		btnEliminar.setBounds(634, 165, 89, 23);
 		contentPane.add(btnEliminar);
 		
+		}
+		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ciudad ciudad = new Ciudad();
+				Ciudad ciudad = new Ciudad(perfil);
 				ciudad.setVisible(true);
 				dispose();
 			}
@@ -386,12 +391,15 @@ public class Provincia extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
+
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Provincia mp = new Modificar_Provincia(table.getValueAt(fila,0).toString());
+				Modificar_Provincia mp = new Modificar_Provincia(table.getValueAt(fila,0).toString(),perfil);
 				mp.setVisible(true);
 				dispose();
 			}
@@ -399,10 +407,12 @@ public class Provincia extends JFrame {
 		btnModificar.setBounds(580, 212, 89, 23);
 		contentPane.add(btnModificar);
 		
+		}
+		
 		JButton btnPais = new JButton("Paises");
 		btnPais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Pais pais = new Pais();
+				Pais pais = new Pais(perfil);
 				pais.setVisible(true);
 				dispose();
 			}
@@ -412,5 +422,10 @@ public class Provincia extends JFrame {
 		mostrarTabla();
 		
 	}
+
+	public Provincia() {
+		// TODO Auto-generated constructor stub
+	}
+
 
 }

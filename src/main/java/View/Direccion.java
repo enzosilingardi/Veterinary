@@ -150,7 +150,7 @@ public class Direccion extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Direccion() {
+	public Direccion(final String perfil) {
 		setTitle("Dirección");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 482, 424);
@@ -282,12 +282,16 @@ public class Direccion extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Direccion td = new Tabla_Direccion();
+				Tabla_Direccion td = new Tabla_Direccion(perfil);
 				td.setVisible(true);
 				dispose();
 			}
 		});
 		btnVolver.setBounds(330, 351, 89, 23);
 		contentPane.add(btnVolver);
+	}
+
+	public Direccion() {
+		// TODO Auto-generated constructor stub
 	}
 }

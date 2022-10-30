@@ -148,7 +148,7 @@ public class Pais extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Pais() {
+	public Pais(final String perfil) {
 		setTitle("Pais");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 491);
@@ -250,7 +250,7 @@ public class Pais extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Provincia provincia = new Provincia();
+				Provincia provincia = new Provincia(perfil);
 				provincia.setVisible(true);
 				dispose();
 			}
@@ -303,5 +303,8 @@ public class Pais extends JFrame {
 		contentPane.add(btnModificar);
 		
 		mostrarTabla();
+	}
+	public Pais() {
+		// TODO Auto-generated constructor stub
 	}
 }

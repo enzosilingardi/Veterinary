@@ -133,7 +133,7 @@ public class Modificar_Provincia extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Provincia(String provincia) {
+	public Modificar_Provincia(String provincia,final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 371, 257);
 		contentPane = new JPanel();
@@ -190,7 +190,7 @@ public class Modificar_Provincia extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Provincia modificada");
-		                Provincia provincia = new Provincia();
+		                Provincia provincia = new Provincia(perfil);
 						provincia.setVisible(true);
 						dispose();
 		            } else {
@@ -213,7 +213,7 @@ public class Modificar_Provincia extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Provincia provincia = new Provincia();
+				Provincia provincia = new Provincia(perfil);
 				provincia.setVisible(true);
 				dispose();
 			}
