@@ -28,26 +28,28 @@ public class Tabla_Pedido extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Sucursal","Cantidad"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Proveedor","Sucursal","Cantidad"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[4];
+	        String datos[] = new String[5];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Orders.id_Order, Product.product_Name, Address.address_Name, Address.address_Number, Orders.quantity\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Orders.id_Order, Product.product_Name, Provider.provider_Name, Address.address_Name, Address.address_Number, Orders.quantity\r\n"
 	        			+ "FROM Orders\r\n"
 	        			+ "INNER JOIN Product ON Product.id_Product = Orders.id_Product\r\n"
+	        			+ "INNER JOIN Provider ON Provider.id_Provider = Product.id_Provider\r\n"
 	        			+ "INNER JOIN Branch ON Branch.id_Branch = Orders.id_Branch\r\n"
 	        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3)+" "+rs.getString(4);
-	                datos[3] = rs.getString(5);
+	                datos[2] = rs.getString(3);
+	                datos[3] = rs.getString(4)+" "+rs.getString(5);
+	                datos[4] = rs.getString(6);
 	                
 	                modelo.addRow(datos);
 
