@@ -131,7 +131,7 @@ public class Modificar_Cliente extends JFrame {
 			
 			try {
 				cn = (Connection) Connect.getConexion();
-				String SSQL = "SELECT dni, name, surname, phone_Number, email  FROM Client WHERE id_Client = ?";
+				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate  FROM Client WHERE id_Client = ?";
 				pst = cn.prepareStatement(SSQL);
 				pst.setInt(1, id);
 				
@@ -143,6 +143,7 @@ public class Modificar_Cliente extends JFrame {
 				txtApellido.setText(result.getString(3));
 				txtTelefono.setText(result.getString(4));
 				txtEmail.setText(result.getString(5));
+				txtFechaNacimiento.setDate(result.getDate(6));
 				}
 				cn.close();
 			}catch(SQLException e) {
