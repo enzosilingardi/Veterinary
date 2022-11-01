@@ -89,7 +89,7 @@ public class Tabla_Proveedor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Proveedor(String perfil) {
+	public Tabla_Proveedor(final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 382);
 		contentPane = new JPanel();
@@ -175,6 +175,18 @@ public class Tabla_Proveedor extends JFrame {
 		});
 		btnAgregar.setBounds(40, 283, 91, 23);
 		contentPane.add(btnAgregar);
+		
+		JButton btnTipos = new JButton("Tipos");
+		btnTipos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tipo_Proveedor tp = new Tipo_Proveedor(perfil);
+				tp.setVisible(true);
+				dispose();
+			}
+		});
+		btnTipos.setBounds(40, 309, 89, 23);
+		contentPane.add(btnTipos);
+		
 		}
 		mostrarTabla();
 	}
@@ -215,7 +227,7 @@ public class Tabla_Proveedor extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(141, 283, 89, 23);
+		btnModificar.setBounds(141, 268, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -251,7 +263,7 @@ public class Tabla_Proveedor extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(240, 283, 89, 23);
+		btnEliminar.setBounds(242, 268, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -262,8 +274,10 @@ public class Tabla_Proveedor extends JFrame {
 				dispose();
 			}
 		});
-		btnAgregar.setBounds(40, 283, 91, 23);
+		btnAgregar.setBounds(40, 268, 91, 23);
 		contentPane.add(btnAgregar);
+		
+		
 		
 		mostrarTabla();
 	}
