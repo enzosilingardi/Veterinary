@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import Control.Connect;
 import Model.ControlFiles;
 
@@ -16,10 +18,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import java.sql.*;
+import javax.swing.JTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Prueba extends JFrame {
 
 	private JPanel contentPane;
+	private JTextField txtPrueba;
+	private TextAutoCompleter ac;
 
 	/**
 	 * Launch the application.
@@ -37,6 +44,25 @@ public class Prueba extends JFrame {
 		});
 	}
 
+	
+	private void cargarAuto() {
+		try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT name FROM Client;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                
+            	ac.addItem(rs.getString(1));
+
+            }
+            
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -57,5 +83,17 @@ public class Prueba extends JFrame {
 		});
 		btnNewButton.setBounds(158, 124, 89, 23);
 		contentPane.add(btnNewButton);
+		
+		txtPrueba = new JTextField();
+		txtPrueba.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				cargarAuto();
+			}
+		});
+		ac = new TextAutoCompleter(txtPrueba);
+		txtPrueba.setBounds(62, 37, 86, 20);
+		contentPane.add(txtPrueba);
+		txtPrueba.setColumns(10);
 	}
 }
