@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -51,30 +52,7 @@ public class Prueba extends JFrame {
 		JButton btnNewButton = new JButton("New button");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String bases = "";
-				Statement stm = null;
-				Connection cn = null;
-				try{
-					cn = (Connection) Connect.getConexion();
-					stm = cn.createStatement();
-					String consulta = "SELECT name FROM master.dbo.sysdatabases";
-					ResultSet resultado = stm.executeQuery(consulta);
-					
-					while (resultado.next()) {
-						bases += resultado.getString(1) + "\n";
-					}
-					
-					JOptionPane.showMessageDialog(null, bases);
-					
-				} catch (SQLException ex) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null,ex.toString());
-					
-					
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				ControlFiles.addContent("Hola");
 			}
 		});
 		btnNewButton.setBounds(158, 124, 89, 23);

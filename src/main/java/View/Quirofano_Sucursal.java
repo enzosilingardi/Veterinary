@@ -170,7 +170,7 @@ void mostrarTabla(){
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Sucursal"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Sucursal","Quirófano"});
        
         table.setModel(modelo);
         

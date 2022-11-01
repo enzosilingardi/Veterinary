@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class Instrumento_Quirofano extends JFrame {
 
@@ -30,6 +31,7 @@ public class Instrumento_Quirofano extends JFrame {
 	private JComboBox cbQuirofano;
 	private JComboBox cbInstrumento;
 	private JTable table;
+	private JTextField txtCantidad;
 
 	class ComboItem
 	{
@@ -122,17 +124,17 @@ public class Instrumento_Quirofano extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Instrumento"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Instrumento","Cantidad"});
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[3];
+        String datos[] = new String[4];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT id_ORMI, room_Number, instrument_Name\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_ORMI, room_Number, instrument_Name, quantity\r\n"
         			+ "FROM Rel_Operating_R_Medical_I\r\n"
         			+ "INNER JOIN Operating_Room ON Operating_Room.id_Operating_Room = Rel_Operating_R_Medical_I.id_Operating_Room\r\n"
         			+ "INNER JOIN Medical_Instrument ON Medical_Instrument.id_Medical_Instrument = Rel_Operating_R_Medical_I.id_Medical_Instrument;" );
@@ -141,6 +143,7 @@ public class Instrumento_Quirofano extends JFrame {
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
                 
                 modelo.addRow(datos);
 
@@ -290,7 +293,7 @@ public class Instrumento_Quirofano extends JFrame {
 				
 			}
 		});
-		btnEliminar.setBounds(635, 169, 89, 23);
+		btnEliminar.setBounds(625, 210, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -299,12 +302,13 @@ public class Instrumento_Quirofano extends JFrame {
 				
 				Object quirofano = cbQuirofano.getSelectedItem();
 				Object instrumento = cbInstrumento.getSelectedItem();
+				int cantidad = Integer.parseInt(txtCantidad.getText());
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Operating_R_Medical_I (id_Operating_Room,id_Medical_Instrument) VALUES (?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Operating_R_Medical_I (id_Operating_Room,id_Medical_Instrument,quantity) VALUES (?,?,?)" );
 					
 					
 					if (((ComboItem) quirofano).getValue() == "") {
@@ -318,6 +322,7 @@ public class Instrumento_Quirofano extends JFrame {
 							}else {
 								ps.setString(1, ((ComboItem) quirofano).getValue());
 								ps.setString(2, ((ComboItem) instrumento).getValue());
+								ps.setInt(3, cantidad);
 							}
 						}
 						
@@ -345,7 +350,7 @@ public class Instrumento_Quirofano extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(494, 169, 89, 23);
+		btnAgregar.setBounds(496, 210, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -354,6 +359,90 @@ public class Instrumento_Quirofano extends JFrame {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		
+		txtCantidad = new JTextField();
+		txtCantidad.setBounds(554, 160, 160, 20);
+		contentPane.add(txtCantidad);
+		txtCantidad.setColumns(10);
+		
+		JLabel lblCantidad = new JLabel("Cantidad");
+		lblCantidad.setBounds(467, 163, 46, 14);
+		contentPane.add(lblCantidad);
+		
+		JButton btnNewButton = new JButton("Modificar cantidad");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				boolean flagError = false;
+				String cantidadAux = table.getValueAt(fila,3).toString();
+				
+				for(int i=0; i < cantidadAux.length(); i++ ) {
+					
+					if (Character.isLetter(cantidadAux.charAt(i))){
+						
+						flagError = true;
+						break;
+					}
+					
+					
+				}
+				
+				if (flagError) {
+					
+					JOptionPane.showMessageDialog(null, "Solo se permiten números",null,JOptionPane.ERROR_MESSAGE);
+					
+				}else {
+				
+				
+				int cantidad = Integer.parseInt(table.getValueAt(fila,3).toString());
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Rel_Operating_R_Medical_I SET quantity = ? WHERE id_ORMI = ?");
+					
+						
+						if(cantidad<0){
+							JOptionPane.showMessageDialog(null, "No se permiten números negativos",null,JOptionPane.ERROR_MESSAGE);
+							mostrarTabla();
+					
+						}else {
+							
+							ps.setInt(1,cantidad);
+					
+						}
+						
+					
+					
+					
+					ps.setInt(2, id);
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Cantidad modificada");
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar cantidad");
+		                mostrarTabla();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					
+				}
+				}
+			}
+		});
+		btnNewButton.setBounds(533, 262, 151, 23);
+		contentPane.add(btnNewButton);
 		
 		mostrarTabla();
 	}
