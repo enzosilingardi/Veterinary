@@ -369,8 +369,8 @@ public class Instrumento_Quirofano extends JFrame {
 		lblCantidad.setBounds(467, 163, 46, 14);
 		contentPane.add(lblCantidad);
 		
-		JButton btnNewButton = new JButton("Modificar cantidad");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnModificar = new JButton("Modificar cantidad");
+		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
@@ -441,8 +441,89 @@ public class Instrumento_Quirofano extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(533, 262, 151, 23);
-		contentPane.add(btnNewButton);
+		btnModificar.setBounds(533, 278, 151, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnAgregarT = new JButton("Agregar a todos");
+		btnAgregarT.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Object instrumento = cbInstrumento.getSelectedItem();
+				int cantidad = Integer.parseInt(txtCantidad.getText());
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					
+					PreparedStatement pre = con.prepareStatement("SELECT id_Operating_Room FROM Operating_Room" );
+					
+					
+					
+					
+					if(((ComboItem) instrumento).getValue() == ""){
+						
+						JOptionPane.showMessageDialog(null, "Seleccione un instrumento");
+						
+					}else {
+						
+						
+							
+						ResultSet rs = pre.executeQuery();
+						
+						while (rs.next()){
+							
+							PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Operating_R_Medical_I (id_Operating_Room,id_Medical_Instrument,quantity) VALUES (?,?,?)" );
+							
+							if(existeRel(rs.getString(1),((ComboItem) cbInstrumento.getSelectedItem()).getValue())!=0) {
+								
+								
+							}else {
+							
+							ps.setString(1, rs.getString(1));
+							
+							ps.setString(2, ((ComboItem) instrumento).getValue());
+							
+							ps.setInt(3, cantidad);
+							
+							result = ps.executeUpdate();
+							
+							}
+			            }
+						
+						
+						
+					}
+						
+				
+						
+						
+					
+					
+					
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Instrumento colocado en todos los quirófanos");
+		                limpiar();
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al colocar instrumento");
+		                limpiar();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+			}
+		});
+		btnAgregarT.setBounds(533, 244, 151, 23);
+		contentPane.add(btnAgregarT);
 		
 		mostrarTabla();
 	}
