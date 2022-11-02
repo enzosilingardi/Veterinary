@@ -149,47 +149,6 @@ public class Tabla_Turnos extends JFrame {
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
-		JButton btnHistorial = new JButton("Agregar a historial");
-		btnHistorial.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				int historial = Integer.parseInt(table.getValueAt(fila,1).toString());
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Medical_H_Medical_P (id_Medical_History,id_Procedure) VALUES (?,?)" );
-					
-					if(existeRel(historial,id)!=0) {
-						JOptionPane.showMessageDialog(null, "Procedimiento ya se encuentra en el historial");
-					}else {
-						ps.setInt(1, historial);
-						ps.setInt(2, id);
-					}
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Procedimiento colocado");
-		                
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar Procedimiento");
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnHistorial.setBounds(205, 323, 155, 23);
-		contentPane.add(btnHistorial);
 		
 		JButton btnVeterinario = new JButton("Asociar veterinario");
 		btnVeterinario.addActionListener(new ActionListener() {
@@ -301,48 +260,6 @@ public class Tabla_Turnos extends JFrame {
 		});
 		btnVolver.setBounds(497, 327, 89, 23);
 		contentPane.add(btnVolver);
-		
-		JButton btnHistorial = new JButton("Agregar a historial");
-		btnHistorial.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				int historial = Integer.parseInt(table.getValueAt(fila,1).toString());
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Medical_H_Medical_P (id_Medical_History,id_Procedure) VALUES (?,?)" );
-					
-					if(existeRel(historial,id)!=0) {
-						JOptionPane.showMessageDialog(null, "Procedimiento ya se encuentra en el historial");
-					}else {
-						ps.setInt(1, historial);
-						ps.setInt(2, id);
-					}
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Procedimiento colocado");
-		                
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar Procedimiento");
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnHistorial.setBounds(205, 323, 155, 23);
-		contentPane.add(btnHistorial);
 		
 		JButton btnVeterinario = new JButton("Asociar veterinario");
 		btnVeterinario.addActionListener(new ActionListener() {

@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import Control.Connect;
 import View.Instrumento_Quirofano.ComboItem;
 
@@ -27,6 +29,7 @@ public class Historial_Medico extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtDescripcion;
 	private JComboBox cbMascota;
+	private JDateChooser txtFecha;
 
 	
 	class ComboItem
@@ -148,7 +151,7 @@ public class Historial_Medico extends JFrame {
 	public Historial_Medico() {
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 346);
+		setBounds(100, 100, 450, 384);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -179,14 +182,12 @@ public class Historial_Medico extends JFrame {
 					if (((ComboItem) mascota).getValue() == "") {
 						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
 					}else {
-						if(existeHistorial(((ComboItem) cbMascota.getSelectedItem()).getValue())!=0) {
-						JOptionPane.showMessageDialog(null, "Historial ya existe");
-					}else {
+					
 						ps.setString(1, ((ComboItem) mascota).getValue());
 						ps.setString(2, descripcion);
 					}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
@@ -207,87 +208,8 @@ public class Historial_Medico extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(43, 202, 89, 23);
+		btnAgregar.setBounds(164, 259, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String descripcion = txtDescripcion.getText();
-				Object mascota = cbMascota.getSelectedItem();
-				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET description = ? WHERE id_Pet = ?" );
-					
-					
-					if (((ComboItem) mascota).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
-					}else {
-						ps.setString(2, ((ComboItem) mascota).getValue());
-						ps.setString(1, descripcion);
-					}
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial modificado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar historial");
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnModificar.setBounds(160, 202, 89, 23);
-		contentPane.add(btnModificar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result = 0;
-				Object mascota = cbMascota.getSelectedItem();
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_History WHERE id_Pet = ?" );
-					
-					ps.setString(1, ((ComboItem) mascota).getValue());
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial eliminado");
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar historial");
-		                limpiar();
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Historial en uso. Por favor elimine todos los registros relacionados");
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnEliminar.setBounds(281, 202, 89, 23);
-		contentPane.add(btnEliminar);
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
@@ -297,7 +219,7 @@ public class Historial_Medico extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(312, 250, 89, 23);
+		btnVolver.setBounds(335, 311, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JLabel lblDescripcion = new JLabel("Descripcion");
@@ -313,6 +235,13 @@ public class Historial_Medico extends JFrame {
 		cbMascota.setBounds(164, 60, 206, 22);
 		contentPane.add(cbMascota);
 		cbMascota.setModel(cargarMascota());
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(74, 191, 53, 14);
+		contentPane.add(lblFecha);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(164, 188, 206, 20);
+		contentPane.add(txtFecha);
 	}
-
 }
