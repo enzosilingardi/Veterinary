@@ -5,6 +5,7 @@ public class Medical_History {
 	protected int id_Medical_History;
 	protected Pet id_Pet;
 	protected String description;
+	protected String date;
 	
 	public int getId_Medical_History() {
 		return id_Medical_History;
@@ -26,22 +27,33 @@ public class Medical_History {
 		this.description = description;
 	}
 	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
 	public Medical_History() {
 		super();
 	}
 	
-	public Medical_History(int id_Medical_History, Pet id_Pet, String description) {
+	public Medical_History(int id_Medical_History, Pet id_Pet, String description, String date) {
 		super();
 		this.id_Medical_History = id_Medical_History;
 		this.id_Pet = id_Pet;
 		this.description = description;
+		this.date = date;
 	}
 	
-	public Medical_History(Pet id_Pet, String description) {
+	public Medical_History(Pet id_Pet, String description, String date) {
 		super();
 		this.id_Pet = id_Pet;
 		this.description = description;
+		this.date = date;
 	}
+	
+	
 	
 	
 	
