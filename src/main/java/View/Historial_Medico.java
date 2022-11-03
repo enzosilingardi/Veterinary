@@ -18,6 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -171,12 +172,14 @@ public class Historial_Medico extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String descripcion = txtDescripcion.getText();
 				Object mascota = cbMascota.getSelectedItem();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description) VALUES (?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
 					
 					
 					if (((ComboItem) mascota).getValue() == "") {
@@ -185,6 +188,7 @@ public class Historial_Medico extends JFrame {
 					
 						ps.setString(1, ((ComboItem) mascota).getValue());
 						ps.setString(2, descripcion);
+						ps.setDate(3, date);
 					}
 						
 					

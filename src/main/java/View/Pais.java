@@ -113,37 +113,7 @@ public class Pais extends JFrame {
 		
 	}
 	
-	public int paisEnUso(String pais) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(Province.id_Country)\r\n"
-					+ "FROM Country\r\n"
-					+ "JOIN Province ON Country.id_Country = Province.id_Country\r\n"
-					+ "WHERE Country.name LIKE ?;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, pais);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+	
 	
 	/**
 	 * Create the frame.

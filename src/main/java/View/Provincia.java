@@ -88,33 +88,7 @@ public class Provincia extends JFrame {
 		return modelo;
     }
 	
-	public void consultarPaises(JComboBox paises) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Country ORDER BY id_Country";
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			paises.addItem(new ComboItem("",""));
-			
-			while (result.next()) {
-				paises.addItem(new ComboItem(result.getString("name"),result.getString("id_Country")));
-				
-			}
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-		}
-		
+	
 
 	
 
@@ -148,37 +122,7 @@ public class Provincia extends JFrame {
 		
 	}
 	
-	public int provinciaEnUso(String provincia) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(City.id_Province)\r\n"
-					+ "FROM Province\r\n"
-					+ "JOIN City ON Province.id_Province = City.id_Province\r\n"
-					+ "WHERE Province.name LIKE ?;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, provincia);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+	
 	
 	void mostrarTabla(){
         

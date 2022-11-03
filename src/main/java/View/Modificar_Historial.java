@@ -2,6 +2,7 @@ package View;
 
 import java.awt.EventQueue;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +30,7 @@ public class Modificar_Historial extends JFrame {
 	private JTextField txtDescripcion;
 	private JComboBox cbMascota;
 	private JDateChooser txtFecha;
+	private JTextField txtId;
 	
 	class ComboItem
 	{
@@ -105,11 +107,41 @@ public class Modificar_Historial extends JFrame {
 			}
 		});
 	}
+	
+	private void cargarCampos(String historial) {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		int id = Integer.parseInt(historial);
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT description, date\r\n"
+					+ "FROM Medical_History\r\n"
+					+ "WHERE id_Medical_History = ?";
+			pst = cn.prepareStatement(SSQL);
+			pst.setInt(1, id);
+			
+			
+			result = pst.executeQuery();
+			while (result.next()){
+			txtDescripcion.setText(result.getString(1));
+			txtFecha.setDate(result.getDate(2));
+			}
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Historial() {
+	public Modificar_Historial(String historial) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -147,7 +179,50 @@ public class Modificar_Historial extends JFrame {
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(txtId.getText());
+				String descripcion = txtDescripcion.getText();
+				Object mascota = cbMascota.getSelectedItem();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
+					
+					
+					if (((ComboItem) mascota).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
+					}else {
+					
+						ps.setString(1, ((ComboItem) mascota).getValue());
+						ps.setString(2, descripcion);
+						ps.setDate(3, date);
+						ps.setInt(4, id);
+					}
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                Tabla_Historial th = new Tabla_Historial();
+						th.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnModificar.setBounds(99, 209, 89, 23);
@@ -163,5 +238,20 @@ public class Modificar_Historial extends JFrame {
 		});
 		btnVolver.setBounds(239, 209, 89, 23);
 		contentPane.add(btnVolver);
+		
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(10, 11, 21, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
+		txtId.setText(historial);
+		
+		cargarCampos(historial);
+		
+	}
+
+	public Modificar_Historial() {
+		// TODO Auto-generated constructor stub
 	}
 }

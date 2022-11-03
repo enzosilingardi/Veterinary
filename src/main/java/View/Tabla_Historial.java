@@ -28,30 +28,28 @@ public class Tabla_Historial extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora","Descripción"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha"});
 	       
 	        table.setModel(modelo);
 	        
 	        
 	        
-	        String datos[] = new String[6];
+	        String datos[] = new String[5];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_MHMP, name, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt, description\r\n"
-	        			+ "FROM Rel_Medical_H_Medical_P\r\n"
-	        			+ "INNER JOIN Medical_Procedure ON Medical_Procedure.id_Procedure = Rel_Medical_H_Medical_P.id_Procedure\r\n"
-	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
-	        			+ "INNER JOIN Medical_History ON Rel_Medical_H_Medical_P.id_Medical_History = Medical_History.id_Medical_History\r\n"
-	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_History.id_Pet;" );
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Medical_History, Pet.name,  Client.name, Client.surname, description, CONVERT(varchar(10),date,103)\r\n"
+	        			+ "FROM Medical_History\r\n"
+	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_History.id_Pet\r\n"
+	        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client\r\n"
+	        			+ "ORDER BY Pet.name;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5);
-	                datos[5] = rs.getString(6);
+	                datos[2] = rs.getString(3)+" "+rs.getString(4);
+	                datos[3] = rs.getString(5);
+	                datos[4] = rs.getString(6);
 	                
 	                modelo.addRow(datos);
 
@@ -118,7 +116,7 @@ public class Tabla_Historial extends JFrame {
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
-		JButton btnHistoriales = new JButton("ABM Historiales");
+		JButton btnHistoriales = new JButton("Agregar");
 		btnHistoriales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Historial_Medico hm = new Historial_Medico();
@@ -126,10 +124,10 @@ public class Tabla_Historial extends JFrame {
 				dispose();
 			}
 		});
-		btnHistoriales.setBounds(203, 327, 127, 23);
+		btnHistoriales.setBounds(28, 337, 89, 23);
 		contentPane.add(btnHistoriales);
 		
-		JButton btnEliminar = new JButton("Eliminar del historial");
+		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -138,7 +136,7 @@ public class Tabla_Historial extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Medical_H_Medical_P WHERE id_MHMP = ?" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_History WHERE id_Medical_History = ?" );
 					
 						ps.setInt(1, id);
 					
@@ -162,8 +160,21 @@ public class Tabla_Historial extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(28, 327, 165, 23);
+		btnEliminar.setBounds(226, 337, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Historial mh = new Modificar_Historial(table.getValueAt(fila,0).toString());
+				mh.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(127, 337, 89, 23);
+		contentPane.add(btnModificar);
 		
 		}
 		
@@ -196,7 +207,7 @@ public class Tabla_Historial extends JFrame {
 		btnVolver.setBounds(668, 351, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnHistoriales = new JButton("ABM Historiales");
+		JButton btnHistoriales = new JButton("Agregar");
 		btnHistoriales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Historial_Medico hm = new Historial_Medico();
@@ -204,10 +215,10 @@ public class Tabla_Historial extends JFrame {
 				dispose();
 			}
 		});
-		btnHistoriales.setBounds(203, 327, 127, 23);
+		btnHistoriales.setBounds(28, 337, 89, 23);
 		contentPane.add(btnHistoriales);
 		
-		JButton btnEliminar = new JButton("Eliminar del historial");
+		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -216,7 +227,7 @@ public class Tabla_Historial extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Medical_H_Medical_P WHERE id_MHMP = ?" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_History WHERE id_Medical_History = ?" );
 					
 						ps.setInt(1, id);
 					
@@ -240,8 +251,21 @@ public class Tabla_Historial extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(28, 327, 165, 23);
+		btnEliminar.setBounds(226, 337, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				
+				Modificar_Historial mh = new Modificar_Historial(table.getValueAt(fila,0).toString());
+				mh.setVisible(true);
+				dispose();
+			}
+		});
+		btnModificar.setBounds(127, 337, 89, 23);
+		contentPane.add(btnModificar);
 		
 		mostrarTabla();
 	}
