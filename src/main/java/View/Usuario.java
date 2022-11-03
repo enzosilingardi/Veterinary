@@ -64,34 +64,7 @@ public class Usuario extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarPerfil() {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-		
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Profile ORDER BY id_Profile";
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("profile_Name"),result.getString("id_Profile")));
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		return modelo;
-    }
+	
 	
 	public static Boolean validaEmail (String email) {
 		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");

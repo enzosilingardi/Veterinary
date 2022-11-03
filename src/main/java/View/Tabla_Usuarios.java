@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,11 +19,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import javax.swing.JComboBox;
 
 public class Tabla_Usuarios extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private JComboBox cbPerfil;
 
 	void mostrarTabla(){
         
@@ -39,6 +42,50 @@ public class Tabla_Usuarios extends JFrame {
         	Connection con = Connect.getConexion();
         	PreparedStatement ps = con.prepareStatement("SELECT id_User, username, name, surname, profile, email\r\n"
         												+ "FROM Users;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
+                
+                modelo.addRow(datos);
+
+            }
+            table.setModel(modelo);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
+	
+	void mostrarTablaPerfil(String perfil){
+        
+        String per = perfil;
+		
+		DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Usuario","Nombre","Apellido","Perfil","E-Mail"});
+       
+        table.setModel(modelo);
+        
+        
+        String datos[] = new String[6];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT id_User, username, name, surname, profile, email\r\n"
+        												+ "FROM Users WHERE profile = ?;" );
+        	ps.setString(1, per);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
@@ -86,7 +133,7 @@ public class Tabla_Usuarios extends JFrame {
 	 */
 	public Tabla_Usuarios(String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 597, 382);
+		setBounds(100, 100, 678, 429);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -94,7 +141,7 @@ public class Tabla_Usuarios extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 11, 501, 238);
+		scrollPane.setBounds(40, 11, 583, 238);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -106,7 +153,7 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(563, 356, 89, 23);
 		contentPane.add(btnVolver);
 
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
@@ -118,7 +165,7 @@ public class Tabla_Usuarios extends JFrame {
 				us.setVisible(true);
 			}
 		});
-		btnRel.setBounds(41, 309, 161, 23);
+		btnRel.setBounds(41, 356, 161, 23);
 		contentPane.add(btnRel);
 		}
 		
@@ -133,7 +180,7 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnAgregar.setBounds(40, 272, 89, 23);
+		btnAgregar.setBounds(40, 319, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
@@ -146,7 +193,7 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(139, 272, 89, 23);
+		btnModificar.setBounds(139, 319, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -182,16 +229,39 @@ public class Tabla_Usuarios extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(238, 272, 89, 23);
+		btnEliminar.setBounds(238, 319, 89, 23);
 		contentPane.add(btnEliminar);
 		}
+		
+		cbPerfil = new JComboBox();
+		cbPerfil.setBounds(380, 272, 116, 22);
+		contentPane.add(cbPerfil);
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
+		
+		JButton btnMostrar = new JButton("Mostrar");
+		btnMostrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String per = cbPerfil.getSelectedItem().toString();
+				
+				if (per.equals("")) {
+					mostrarTabla();
+				} else {
+					mostrarTablaPerfil(per);
+				}
+				
+				
+			}
+		});
+		btnMostrar.setBounds(506, 272, 117, 23);
+		contentPane.add(btnMostrar);
+		
 		mostrarTabla();
 	}
 
 	public Tabla_Usuarios() {
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 597, 382);
+		setBounds(100, 100, 678, 429);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -199,7 +269,7 @@ public class Tabla_Usuarios extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 11, 501, 238);
+		scrollPane.setBounds(40, 11, 583, 238);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -211,7 +281,7 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(563, 356, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnRel = new JButton("Añadir a sucursal");
@@ -221,7 +291,7 @@ public class Tabla_Usuarios extends JFrame {
 				us.setVisible(true);
 			}
 		});
-		btnRel.setBounds(41, 309, 161, 23);
+		btnRel.setBounds(41, 356, 161, 23);
 		contentPane.add(btnRel);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -232,7 +302,7 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnAgregar.setBounds(40, 272, 89, 23);
+		btnAgregar.setBounds(40, 319, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
@@ -245,7 +315,7 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(139, 272, 89, 23);
+		btnModificar.setBounds(139, 319, 89, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
@@ -281,10 +351,31 @@ public class Tabla_Usuarios extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(238, 272, 89, 23);
+		btnEliminar.setBounds(238, 319, 89, 23);
 		contentPane.add(btnEliminar);
+		
+		cbPerfil = new JComboBox();
+		cbPerfil.setBounds(380, 272, 116, 22);
+		contentPane.add(cbPerfil);
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
+		
+		JButton btnMostrar = new JButton("Mostrar");
+		btnMostrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String per = cbPerfil.getSelectedItem().toString();
+				
+				if (per.equals("")) {
+					mostrarTabla();
+				} else {
+					mostrarTablaPerfil(per);
+				}
+				
+				
+			}
+		});
+		btnMostrar.setBounds(506, 272, 117, 23);
+		contentPane.add(btnMostrar);
 		
 		mostrarTabla();
 	}
-
 }
