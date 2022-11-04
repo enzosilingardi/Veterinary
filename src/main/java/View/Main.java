@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,12 +12,31 @@ import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Main extends JFrame {
 
 	private JPanel contentPane;
 
+	
+	
+	public Icon setIcono(String url, JButton boton) {
+		
+		ImageIcon icon = new ImageIcon(getClass().getResource(url));
+		
+		int ancho = boton.getWidth();
+		
+		int alto = boton.getHeight();
+		
+		ImageIcon icono = new ImageIcon(icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));
+		
+		return icono;
+		
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -149,13 +169,14 @@ public class Main extends JFrame {
 		contentPane.add(btnSucursales);
 		
 		JButton btnUsuarios = new JButton("Usuarios");
+		btnUsuarios.setIcon(new ImageIcon(Main.class.getResource("/Imagenes/IconoUsuario.png")));
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Usuarios usuarios = new Tabla_Usuarios(perfil);
 				usuarios.setVisible(true);
 			}
 		});
-		btnUsuarios.setBounds(10, 103, 104, 81);
+		btnUsuarios.setBounds(10, 231, 205, 114);
 		contentPane.add(btnUsuarios);
 		
 		JButton btnQuirofanos = new JButton("Quirófanos");
