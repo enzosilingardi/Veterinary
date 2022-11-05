@@ -71,14 +71,13 @@ public class Veterinario_Sucursal extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
-					+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address\r\n"
-					+ "ORDER BY Branch.id_Address";
+					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
 				
 			}
 			cn.close();
@@ -135,16 +134,15 @@ public class Veterinario_Sucursal extends JFrame {
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT id_VB, name, surname, address_Name, address_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_VB, name, surname, address\r\n"
         			+ "FROM Rel_Veterinarian_Branch\r\n"
         			+ "INNER JOIN Veterinarian ON Veterinarian.id_Veterinarian = Rel_Veterinarian_Branch.id_Veterinarian\r\n"
-        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Veterinarian_Branch.id_Branch\r\n"
-        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
+        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Veterinarian_Branch.id_Branch;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
             	datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2)+" "+rs.getString(3);
-                datos[2] = rs.getString(4)+" "+rs.getString(5);
+                datos[2] = rs.getString(4);
                 
                 
                 modelo.addRow(datos);

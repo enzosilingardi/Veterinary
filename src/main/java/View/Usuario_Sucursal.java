@@ -102,14 +102,13 @@ public class Usuario_Sucursal extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
-					+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address\r\n"
 					+ "ORDER BY Branch.id_Address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
 				
 			}
 			cn.close();
@@ -136,16 +135,15 @@ public class Usuario_Sucursal extends JFrame {
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT id_UB, username, address_Name, address_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_UB, username, address\r\n"
         			+ "FROM Rel_Users_Branch\r\n"
         			+ "INNER JOIN Users ON Users.id_User = Rel_Users_Branch.id_User\r\n"
-        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Users_Branch.id_Branch\r\n"
-        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
+        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Users_Branch.id_Branch;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3)+" "+rs.getString(4);
+                datos[2] = rs.getString(3);
                 
                 
                 modelo.addRow(datos);

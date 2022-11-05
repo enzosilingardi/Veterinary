@@ -50,17 +50,16 @@ public class Tabla_Stock extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Rel_Branch_Product.id_BP, Product.product_Name, Rel_Branch_Product.amount, Address.address_Name, Address.address_Number\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Rel_Branch_Product.id_BP, Product.product_Name, Rel_Branch_Product.amount, Branch.address\r\n"
 	        			+ "FROM Rel_Branch_Product\r\n"
 	        			+ "INNER JOIN Product ON Product.id_Product = Rel_Branch_Product.id_Product\r\n"
-	        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Product.id_Branch\r\n"
-	        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address;" );
+	        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Product.id_Branch;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
 	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4)+" "+rs.getString(5);
+	                datos[3] = rs.getString(4);
 	                
 	                modelo.addRow(datos);
 

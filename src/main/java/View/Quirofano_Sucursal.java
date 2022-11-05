@@ -100,14 +100,13 @@ public class Quirofano_Sucursal extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
-					+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address\r\n"
-					+ "ORDER BY Branch.id_Address";
+					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
 				
 			}
 			cn.close();
@@ -180,16 +179,15 @@ void mostrarTabla(){
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT id_BOR, address_Name, address_Number, room_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_BOR, address, room_Number\r\n"
         			+ "FROM Rel_Branch_Operating_R\r\n"
         			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Operating_R.id_Branch\r\n"
-        			+ "INNER JOIN Address ON Address.id_Address = Branch.id_Address\r\n"
         			+ "INNER JOIN Operating_Room ON Operating_Room.id_Operating_Room = Rel_Branch_Operating_R.id_Operating_Room;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2)+" "+rs.getString(3);
-                datos[2] = rs.getString(4);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
                 
                 
                 modelo.addRow(datos);

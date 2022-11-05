@@ -98,14 +98,13 @@ public class Pedidos extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
-					+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address\r\n"
 					+ "ORDER BY Branch.id_Address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
 				
 			}
 			cn.close();

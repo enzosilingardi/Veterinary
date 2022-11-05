@@ -71,14 +71,13 @@ public class Procedimiento_Sucursal extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
-					+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address\r\n"
-					+ "ORDER BY Branch.id_Address";
+					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
 				
 			}
 			cn.close();
@@ -138,17 +137,16 @@ public class Procedimiento_Sucursal extends JFrame {
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT id_BMP, Address.address_Name, Address.address_Number, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_BMP, address, proced_Name,CONVERT(varchar(10),proced_Date,103) AS pd ,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
         			+ "FROM Rel_Branch_Medical_P\r\n"
         			+ "INNER JOIN Medical_Procedure ON Medical_Procedure.id_Procedure = Rel_Branch_Medical_P.id_Procedure\r\n"
         			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
-        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Medical_P.id_Branch\r\n"
-        			+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address;" );
+        			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Branch_Medical_P.id_Branch;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
             	datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2)+" "+rs.getString(3);
-                datos[2] = rs.getString(4)+" - "+rs.getString(5)+" "+rs.getString(6);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3)+" - "+rs.getString(4)+" "+rs.getString(5);
                 
                 
                 modelo.addRow(datos);
