@@ -38,10 +38,11 @@ public class Cliente extends JFrame {
 	private JTextField txtDni;
 	private JDateChooser txtFechaNacimiento;
 	private JTextField txtTelefono;
-	private JComboBox cbDireccion;
 	private JComboBox cbGenero;
 	private JTextField txtEmail;
 	private JTextField txtApellido;
+	private JTextField txtDireccion;
+	private JTextField txtTelefonoOp;
 	
 	
 	
@@ -128,23 +129,6 @@ public class Cliente extends JFrame {
 			return matcher.matches();
 		}
 	    
-	    public static Boolean validaTelefono (String tele){
-	        Pattern pattern = Pattern.compile("(\\d{2,3,4,5})-\\d{6}");
-			Matcher matcher = pattern.matcher(tele);
-			return matcher.matches();
-	    }
-	    
-	    public static Boolean validaFecha (String fecha){
-	       try {
-	            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-	            formatoFecha.setLenient(false);
-	            formatoFecha.parse(fecha);
-	        } catch (ParseException e) {
-	            return false;
-	        }
-	        return true;
-	    
-	    }
 
 	public int existeCliente(String nombre, String dni) {
 		Connection cn = null;
@@ -183,7 +167,7 @@ public class Cliente extends JFrame {
 	
 	private void limpiar() {
 		txtNombre.setText("");
-		cbDireccion.setSelectedIndex(0);
+		txtDireccion.setText("");
 		txtDni.setText("");
 		txtTelefono.setText("");
 		cbGenero.setSelectedIndex(0);
@@ -257,9 +241,10 @@ public class Cliente extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PreparedStatement ps = null;
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				String dni = txtDni.getText();
 				String telefono = txtTelefono.getText();
 				String genero = cbGenero.getSelectedItem().toString();
@@ -271,16 +256,20 @@ public class Cliente extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Client (id_Address, dni, name,surname,  phone_Number , birthdate, gender, email) VALUES (?,?,?,?,?,?,?,?)" );
+					
+					if (txtTelefonoOp.getText().isBlank()) {
+						ps = con.prepareStatement("INSERT INTO Client (address, dni, name,surname,  phone_Number , birthdate, gender, email) VALUES (?,?,?,?,?,?,?,?)" );
+					} else {
+						ps = con.prepareStatement("INSERT INTO Client (address, dni, name,surname,  phone_Number , birthdate, gender, email, phone_Optional) VALUES (?,?,?,?,?,?,?,?,?)" );
+						String telefonoOp = txtTelefonoOp.getText();
+						ps.setString(9,telefonoOp);
+					}
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
 						if(existeCliente(nombre,dni)!=0) {
 						JOptionPane.showMessageDialog(null, "Cliente ya existe");
 					}else {
-						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(1, direccion);
 						ps.setString(2, dni);
 						ps.setString(3, nombre);
 						ps.setString(4, apellido);
@@ -304,7 +293,7 @@ public class Cliente extends JFrame {
 						
 					}
 						
-					}
+					
 					
 					
 					result = ps.executeUpdate();
@@ -327,7 +316,7 @@ public class Cliente extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(169, 454, 89, 23);
+		btnAgregar.setBounds(169, 473, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -341,17 +330,12 @@ public class Cliente extends JFrame {
 		});
 		contentPane.add(btnVolver);
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(224, 133, 171, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
-		
 		JLabel lblEmail = new JLabel("E-Mail");
-		lblEmail.setBounds(37, 386, 46, 14);
+		lblEmail.setBounds(37, 417, 46, 14);
 		contentPane.add(lblEmail);
 		
 		txtEmail = new JTextField();
-		txtEmail.setBounds(224, 383, 171, 20);
+		txtEmail.setBounds(224, 414, 171, 20);
 		contentPane.add(txtEmail);
 		txtEmail.setColumns(10);
 		
@@ -363,6 +347,20 @@ public class Cliente extends JFrame {
 		txtApellido.setBounds(224, 92, 171, 20);
 		contentPane.add(txtApellido);
 		txtApellido.setColumns(10);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(224, 134, 171, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
+		
+		JLabel lblTelefonoOp = new JLabel("Telefono Secundario (Opcional)");
+		lblTelefonoOp.setBounds(37, 373, 171, 14);
+		contentPane.add(lblTelefonoOp);
+		
+		txtTelefonoOp = new JTextField();
+		txtTelefonoOp.setBounds(224, 370, 171, 20);
+		contentPane.add(txtTelefonoOp);
+		txtTelefonoOp.setColumns(10);
 		
 		
 	}

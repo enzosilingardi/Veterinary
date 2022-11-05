@@ -33,11 +33,13 @@ public class Modificar_Cliente extends JFrame {
 	private JTextField txtDni;
 	private JDateChooser txtFechaNacimiento;
 	private JTextField txtTelefono;
-	private JComboBox cbDireccion;
 	private JComboBox cbGenero;
 	private JTextField txtEmail;
 	private JTextField txtApellido;
 	private JTextField txtId;
+	private JTextField txtDireccion;
+	private JLabel lblTelefonoOp;
+	private JTextField txtTelefonoOp;
 	
 	
 	
@@ -131,7 +133,7 @@ public class Modificar_Cliente extends JFrame {
 			
 			try {
 				cn = (Connection) Connect.getConexion();
-				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate  FROM Client WHERE id_Client = ?";
+				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate, address, phone_Optional  FROM Client WHERE id_Client = ?";
 				pst = cn.prepareStatement(SSQL);
 				pst.setInt(1, id);
 				
@@ -144,6 +146,8 @@ public class Modificar_Cliente extends JFrame {
 				txtTelefono.setText(result.getString(4));
 				txtEmail.setText(result.getString(5));
 				txtFechaNacimiento.setDate(result.getDate(6));
+				txtDireccion.setText(result.getString(7));
+				txtTelefonoOp.setText(result.getString(8));
 				}
 				cn.close();
 			}catch(SQLException e) {
@@ -159,7 +163,7 @@ public class Modificar_Cliente extends JFrame {
 	public Modificar_Cliente(String cliente) {
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 459, 500);
+		setBounds(100, 100, 459, 520);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -215,7 +219,7 @@ public class Modificar_Cliente extends JFrame {
 		txtTelefono.setColumns(10);
 		
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBounds(255, 416, 89, 23);
+		btnVolver.setBounds(254, 447, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Clientes tc = new Tabla_Clientes();
@@ -225,17 +229,12 @@ public class Modificar_Cliente extends JFrame {
 		});
 		contentPane.add(btnVolver);
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(226, 114, 171, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
-		
 		JLabel lblEmail = new JLabel("E-Mail");
-		lblEmail.setBounds(39, 367, 46, 14);
+		lblEmail.setBounds(39, 396, 46, 14);
 		contentPane.add(lblEmail);
 		
 		txtEmail = new JTextField();
-		txtEmail.setBounds(226, 364, 171, 20);
+		txtEmail.setBounds(226, 393, 171, 20);
 		contentPane.add(txtEmail);
 		txtEmail.setColumns(10);
 		
@@ -251,10 +250,11 @@ public class Modificar_Cliente extends JFrame {
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				PreparedStatement ps = null;
 				int id = Integer.parseInt(txtId.getText());
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				String dni = txtDni.getText();
 				String telefono = txtTelefono.getText();
 				String genero = cbGenero.getSelectedItem().toString();
@@ -266,14 +266,21 @@ public class Modificar_Cliente extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Client SET id_Address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? WHERE id_Client = ?" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
+					if (txtTelefonoOp.getText().isBlank()) {
+						ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? WHERE id_Client = ?" );
+						ps.setInt(9, id);
+					} else {
+						ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? , phone_Optional = ? WHERE id_Client = ?" );
+						String telefonoOp = txtTelefonoOp.getText();
 						
-						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(9,telefonoOp);
+						ps.setInt(10, id);
+					}
+					
+						
+						ps.setString(1, direccion);
 						ps.setString(2, dni);
 						ps.setString(3, nombre);
 						ps.setString(4, apellido);
@@ -291,13 +298,8 @@ public class Modificar_Cliente extends JFrame {
 							JOptionPane.showMessageDialog(null, "E-Mail no válido");
 						}
 						
-						ps.setInt(9, id);
 						
-						
-					}
-						
-					
-					
+
 					
 					result = ps.executeUpdate();
 					
@@ -321,7 +323,7 @@ public class Modificar_Cliente extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(76, 416, 89, 23);
+		btnModificar.setBounds(76, 447, 89, 23);
 		contentPane.add(btnModificar);
 		
 		txtId = new JTextField();
@@ -333,6 +335,20 @@ public class Modificar_Cliente extends JFrame {
 		
 		cargarCampos(cliente);
 		txtId.setText(cliente);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(226, 115, 171, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
+		
+		lblTelefonoOp = new JLabel("Telefono Secundario (Opcional)");
+		lblTelefonoOp.setBounds(39, 356, 177, 14);
+		contentPane.add(lblTelefonoOp);
+		
+		txtTelefonoOp = new JTextField();
+		txtTelefonoOp.setBounds(226, 353, 171, 20);
+		contentPane.add(txtTelefonoOp);
+		txtTelefonoOp.setColumns(10);
 	}
 
 	public Modificar_Cliente() {

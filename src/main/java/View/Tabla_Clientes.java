@@ -28,16 +28,16 @@ public class Tabla_Clientes extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Teléfono","Género","DNI","Fecha de nacimiento","E-Mail","Dirección"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Teléfono","Telefono secundario","Género","DNI","Fecha de nacimiento","E-Mail","Dirección"});
        
         table.setModel(modelo);
         
         
-        String datos[] = new String[9];
+        String datos[] = new String[10];
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, phone_Number, gender, dni, CONVERT(varchar(10),birthdate,103), email, address_Name, address_Number\r\n"
+        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, phone_Number, phone_Optional, gender, dni, CONVERT(varchar(10),birthdate,103), email, address\r\n"
         			+ "FROM Client\r\n"
         			+ "INNER JOIN Address ON Client.id_Address = Address.id_Address;" );
             ResultSet rs = ps.executeQuery();
@@ -50,7 +50,8 @@ public class Tabla_Clientes extends JFrame {
                 datos[5] = rs.getString(6);
                 datos[6] = rs.getString(7);
                 datos[7] = rs.getString(8);
-                datos[8] = rs.getString(9)+" "+rs.getString(10);
+                datos[8] = rs.getString(9);
+                datos[9] = rs.getString(10);
                 
                 modelo.addRow(datos);
 
