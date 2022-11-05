@@ -208,6 +208,16 @@ public class Main extends JFrame {
 		});
 		btnDirecciones.setBounds(352, 103, 104, 81);
 		contentPane.add(btnDirecciones);
+		
+		JButton btnInstrumentos = new JButton("Instrumentos");
+		btnInstrumentos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Instrumento ti = new Tabla_Instrumento(perfil);
+				ti.setVisible(true);
+			}
+		});
+		btnInstrumentos.setBounds(466, 103, 104, 81);
+		contentPane.add(btnInstrumentos);
 	}
 
 	public Main() {

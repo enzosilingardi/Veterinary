@@ -125,17 +125,7 @@ public class Tabla_Quirofano extends JFrame {
 		contentPane.add(btnRel);
 		
 		}
-		
-		JButton btnInstrumentos = new JButton("Instrumentos");
-		btnInstrumentos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Tabla_Instrumento ti = new Tabla_Instrumento(perfil);
-				ti.setVisible(true);
-				
-			}
-		});
-		btnInstrumentos.setBounds(40, 277, 161, 23);
-		contentPane.add(btnInstrumentos);
+	
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		

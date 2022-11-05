@@ -236,14 +236,14 @@ public class Tabla_Usuarios extends JFrame {
 		cbPerfil = new JComboBox();
 		cbPerfil.setBounds(380, 272, 116, 22);
 		contentPane.add(cbPerfil);
-		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Admin", "Manager", "Regular"}));
 		
 		JButton btnMostrar = new JButton("Mostrar");
 		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String per = cbPerfil.getSelectedItem().toString();
 				
-				if (per.equals("")) {
+				if (per.equals("Todos")) {
 					mostrarTabla();
 				} else {
 					mostrarTablaPerfil(per);
