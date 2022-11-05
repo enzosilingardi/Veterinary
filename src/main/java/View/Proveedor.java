@@ -34,7 +34,7 @@ public class Proveedor extends JFrame {
 	private JTextField txtApellido;
 	private JTextField txtCuit;
 	private JComboBox cbTipo;
-	private JComboBox cbDireccion;
+	private JTextField txtDireccion;
 
 	
 	class ComboItem
@@ -140,17 +140,16 @@ public class Proveedor extends JFrame {
 		});
 	}
 	
-	public int existeProveedor(String nombre,Object direccion) {
+	public int existeProveedor(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Provider WHERE provider_Name = ? AND id_Address = ?;";
+			String SSQL = "SELECT count(*) FROM Provider WHERE provider_Name = ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
-			pst.setString(2,(String) direccion);
 
 			result = pst.executeQuery();
 			
@@ -176,12 +175,7 @@ public class Proveedor extends JFrame {
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
-	public static Boolean validaTelefono (String tele){
-        Pattern pattern = Pattern.compile("(\\d{2,4})-\\d{6}");
-		Matcher matcher = pattern.matcher(tele);
-		return matcher.matches();
-    }
-	
+
 	public int proveedorEnUso(String proveedor) {
 		Connection cn = null;
 		PreparedStatement pst = null;
@@ -215,7 +209,7 @@ public class Proveedor extends JFrame {
 	}
 	
 	private void limpiar() {
-		cbDireccion.setSelectedIndex(0);
+		txtDireccion.setText("");
 		cbTipo.setSelectedIndex(0);
 		txtNombre.setText("");
 		txtTelefono.setText("");
@@ -272,7 +266,7 @@ public class Proveedor extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				Object tipo = cbTipo.getSelectedItem();
 				String nombre = txtNombre.getText();
 				String telefono = txtTelefono.getText();
@@ -285,20 +279,18 @@ public class Proveedor extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider (id_Provider_Type, id_Address, provider_Name, name, surname, phone_Number, email, cuit) VALUES (?,?,?,?,?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider (id_Provider_Type, address, provider_Name, name, surname, phone_Number, email, cuit) VALUES (?,?,?,?,?,?,?,?)" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
+				
 						if (((ComboItem) tipo).getValue() == "") {
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
-							if(existeProveedor(nombre,((ComboItem) cbDireccion.getSelectedItem()).getValue())!=0) {
-								JOptionPane.showMessageDialog(null, "Sucursal ya existe");
+							if(existeProveedor(nombrePro)!=0) {
+								JOptionPane.showMessageDialog(null, "Proveedor ya existe");
 							}else {
 								ps.setString(1, ((ComboItem) tipo).getValue());
-								ps.setString(2, ((ComboItem) direccion).getValue());
+								ps.setString(2, direccion);
 								ps.setString(3, nombrePro);
 								ps.setString(4, nombre);
 								ps.setString(5, apellido);
@@ -317,8 +309,6 @@ public class Proveedor extends JFrame {
 							}
 						}
 						
-						
-					}
 					
 					result = ps.executeUpdate();
 					
@@ -359,11 +349,6 @@ public class Proveedor extends JFrame {
 		contentPane.add(cbTipo);
 		cbTipo.setModel(cargarTipo());
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(185, 209, 182, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
-		
 		JLabel lblEmail = new JLabel("E-mail");
 		lblEmail.setBounds(62, 296, 46, 14);
 		contentPane.add(lblEmail);
@@ -399,5 +384,10 @@ public class Proveedor extends JFrame {
 		txtCuit.setBounds(185, 337, 182, 20);
 		contentPane.add(txtCuit);
 		txtCuit.setColumns(10);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(185, 210, 182, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
 	}
 }

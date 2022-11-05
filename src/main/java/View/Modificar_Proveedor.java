@@ -35,7 +35,7 @@ public class Modificar_Proveedor extends JFrame {
 	private JTextField txtCuit;
 	private JTextField txtId;
 	private JComboBox cbTipo;
-	private JComboBox cbDireccion;
+	private JTextField txtDireccion;
 
 	
 	class ComboItem
@@ -222,11 +222,6 @@ public class Modificar_Proveedor extends JFrame {
 		contentPane.add(cbTipo);
 		cbTipo.setModel(cargarTipo());
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(177, 198, 182, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
-		
 		JLabel lblEmail = new JLabel("E-mail");
 		lblEmail.setBounds(54, 285, 46, 14);
 		contentPane.add(lblEmail);
@@ -277,7 +272,7 @@ public class Modificar_Proveedor extends JFrame {
 		JButton btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				Object tipo = cbTipo.getSelectedItem();
 				String nombre = txtNombre.getText();
 				String telefono = txtTelefono.getText();
@@ -291,18 +286,16 @@ public class Modificar_Proveedor extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Provider SET id_Provider_Type = ?, id_Address = ?, provider_Name = ?, name = ?, surname = ?, phone_Number = ?, email = ?, cuit = ? WHERE id_Provider = ?" );
+					PreparedStatement ps = con.prepareStatement("UPDATE Provider SET id_Provider_Type = ?, address = ?, provider_Name = ?, name = ?, surname = ?, phone_Number = ?, email = ?, cuit = ? WHERE id_Provider = ?" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
+					
 						if (((ComboItem) tipo).getValue() == "") {
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
 							
 								ps.setString(1, ((ComboItem) tipo).getValue());
-								ps.setString(2, ((ComboItem) direccion).getValue());
+								ps.setString(2, direccion);
 								ps.setString(3, nombrePro);
 								ps.setString(4, nombre);
 								ps.setString(5, apellido);
@@ -321,7 +314,7 @@ public class Modificar_Proveedor extends JFrame {
 								
 								ps.setInt(9, id);
 							}
-						}
+						
 						
 						
 					
@@ -359,6 +352,11 @@ public class Modificar_Proveedor extends JFrame {
 		
 		cargarCampos(proveedor);
 		txtId.setText(proveedor);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(177, 199, 182, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
 	}
 
 	public Modificar_Proveedor() {
