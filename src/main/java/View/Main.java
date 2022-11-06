@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.Color;
 
 public class Main extends JFrame {
 
@@ -59,7 +60,7 @@ public class Main extends JFrame {
 	public Main(final String perfil) {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 690, 417);
+		setBounds(100, 100, 690, 555);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -113,12 +114,14 @@ public class Main extends JFrame {
 		mnVentas.add(mntmPresupuestos);
 		
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 0, 128));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JButton btnClientes = new JButton("Clientes");
+		btnClientes.setBackground(new Color(240, 240, 240));
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Clientes tc = new Tabla_Clientes(perfil);
@@ -176,7 +179,7 @@ public class Main extends JFrame {
 				usuarios.setVisible(true);
 			}
 		});
-		btnUsuarios.setBounds(10, 231, 205, 114);
+		btnUsuarios.setBounds(461, 371, 205, 114);
 		contentPane.add(btnUsuarios);
 		
 		JButton btnQuirofanos = new JButton("Quirófanos");
