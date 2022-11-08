@@ -59,21 +59,16 @@ public class Main extends JFrame {
 		});
 	}
 	
-	private void pintarImagen(JLabel lbl,String ruta){
-		this.imagen = new ImageIcon(ruta);
-		this.icono = new ImageIcon(this.imagen.getImage().getScaledInstance(
-				lbl.getWidth(), 
-				lbl.getHeight(), 
-				Image.SCALE_DEFAULT
-				)
-		);
-		this.repaint();
+	private void setScaleImage(JLabel lblFoto, String rutaFoto) {
+		ImageIcon foto = new ImageIcon(rutaFoto);
+		Icon icono = new ImageIcon(foto.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), 1));
+		lblFoto.setIcon(icono);
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public Main(final String perfil) {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -160,12 +155,13 @@ public class Main extends JFrame {
 		JButton btnUsuarios = new JButton("Usuarios");
 		btnUsuarios.setBounds(0, 490, 180, 23);
 		panel.add(btnUsuarios);
-		btnUsuarios.setIcon(new ImageIcon(Main.class.getResource("/Imagenes/IconoUsuario.png")));
 		
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblLogo.setBounds(10, 11, 160, 160);
 		panel.add(lblLogo);
+		
+		setScaleImage(lblLogo,"src/main/java/images/VetCareSoftLogo.png");
 		
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -245,7 +241,7 @@ public class Main extends JFrame {
 			}
 		});
 		
-		this.pintarImagen(lblLogo,"/images/VetCareSoftLogo.png");
+		
 	}
 
 	public Main() {
