@@ -37,16 +37,15 @@ public class Tabla_Veterinario extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Veterinarian, name, surname, medical_License, Address.address_Name, Address.address_Number\r\n"
-	        			+ "FROM Veterinarian\r\n"
-	        			+ "INNER JOIN Address ON Address.id_Address = Veterinarian.id_Address;" );
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Veterinarian, name, surname, medical_License, address\r\n"
+	        			+ "FROM Veterinarian;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
 	                datos[2] = rs.getString(3);
 	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5)+" "+rs.getString(6);
+	                datos[4] = rs.getString(5);
 	                
 	                modelo.addRow(datos);
 

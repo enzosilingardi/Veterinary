@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -189,6 +190,7 @@ public class Animal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Animal eliminado");
+		                ControlFiles.addContent("Se ha eliminado un tipo de animal");
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar animal");
@@ -226,6 +228,7 @@ public class Animal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Animal guardado");
+		                ControlFiles.addContent("Se ha añadido el tipo de animal "+tipo);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -274,6 +277,7 @@ public class Animal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Animal modificado");
+		                ControlFiles.addContent("Se ha modificado un tipo de animal a "+tipo);
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar animal");

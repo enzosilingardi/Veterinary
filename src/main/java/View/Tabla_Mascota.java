@@ -42,7 +42,7 @@ public class Tabla_Mascota extends JFrame {
 	        	Connection con = Connect.getConexion();
 	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
 	        			+ "FROM Pet\r\n"
-	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Pet\r\n"
+	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
 	        			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
 	        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client;" );
 	            ResultSet rs = ps.executeQuery();

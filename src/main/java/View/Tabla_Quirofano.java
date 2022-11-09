@@ -37,16 +37,15 @@ public class Tabla_Quirofano extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Operating_Room.id_Operating_Room, Address.address_Name, Address.address_Number, Operating_Room.room_Number\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Operating_Room.id_Operating_Room, address, Operating_Room.room_Number\r\n"
 	        			+ "FROM Operating_Room\r\n"
 	        			+ "INNER JOIN Rel_Branch_Operating_R ON Rel_Branch_Operating_R.id_Operating_Room = Operating_Room.id_Operating_Room\r\n"
-	        			+ "INNER JOIN Branch ON Rel_Branch_Operating_R.id_Branch = Branch.id_Branch\r\n"
-	        			+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address;" );
+	        			+ "INNER JOIN Branch ON Rel_Branch_Operating_R.id_Branch = Branch.id_Branch;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	            	datos[0] = rs.getString(1);
-	            	datos[1] = rs.getString(4);
-	                datos[2] = rs.getString(2)+" "+rs.getString(3);
+	            	datos[1] = rs.getString(3);
+	                datos[2] = rs.getString(2);
 	                
 	                
 	                modelo.addRow(datos);

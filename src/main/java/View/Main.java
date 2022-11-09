@@ -9,9 +9,17 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Icon;
@@ -21,27 +29,69 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Font;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
+import com.toedter.calendar.JDateChooser;
+
+import Control.Connect;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class Main extends JFrame {
 
 	private JPanel contentPane;
 	private ImageIcon imagen;
 	private Icon icono;
+	private JTable table;
+	private JDateChooser txtFecha;
 	
-	
-	public Icon setIcono(String url, JButton boton) {
+
+	void mostrarTabla(String fecha){
+			Date date = Date.valueOf(fecha);
 		
-		ImageIcon icon = new ImageIcon(getClass().getResource(url));
-		
-		int ancho = boton.getWidth();
-		
-		int alto = boton.getHeight();
-		
-		ImageIcon icono = new ImageIcon(icon.getImage().getScaledInstance(ancho, alto, Image.SCALE_DEFAULT));
-		
-		return icono;
-		
-	}
+	        DefaultTableModel modelo = new DefaultTableModel();
+	        
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});
+	       
+	        table.setModel(modelo);
+	        
+	        
+	        String datos[] = new String[5];
+	       
+	        try {
+	        	Connection con = Connect.getConexion();
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
+	        			+ "FROM Medical_Procedure\r\n"
+	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
+	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
+	        			+ "WHERE proced_Date = "+ date );
+	            ResultSet rs = ps.executeQuery();
+	            while (rs.next()){
+	                datos[0] = rs.getString(1);
+	                datos[1] = rs.getString(2);
+	                datos[2] = rs.getString(3);
+	                datos[3] = rs.getString(4);
+	                datos[4] = rs.getString(5);
+	                
+	                modelo.addRow(datos);
+	                
+
+	            }
+	            table.setModel(modelo);
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
+	        } catch(SQLException E) {
+				JOptionPane.showMessageDialog(null,E);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        
+	    }
 	
 	/**
 	 * Launch the application.
@@ -68,7 +118,7 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public Main(final String perfil) {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -259,6 +309,30 @@ public class Main extends JFrame {
 		panel_1.setBackground(new Color(145, 226, 247));
 		panel_1.setBounds(207, 22, 579, 88);
 		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(55, 31, 151, 20);
+		panel_1.add(txtFecha);
+		
+		JButton btnMostrar = new JButton("Mostrar turnos");
+		btnMostrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				
+				mostrarTabla(fecha);
+			}
+		});
+		btnMostrar.setBorder(null);
+		btnMostrar.setBounds(216, 31, 123, 23);
+		panel_1.add(btnMostrar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(207, 110, 579, 453);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
 		
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -278,6 +352,8 @@ public class Main extends JFrame {
 				tm.setVisible(true);
 			}
 		});
+		
+		
 		
 		
 	}

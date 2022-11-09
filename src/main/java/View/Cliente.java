@@ -171,6 +171,8 @@ public class Cliente extends JFrame {
 		txtDni.setText("");
 		txtTelefono.setText("");
 		cbGenero.setSelectedIndex(0);
+		txtEmail.setText("");
+		txtDireccion.setText("");
 		
 	}
 	/**

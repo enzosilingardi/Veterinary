@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Instrumento_Quirofano.ComboItem;
 
 import javax.swing.JLabel;
@@ -282,6 +283,7 @@ public class Animal_Raza extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza asociada");
 		                limpiar();
+		                ControlFiles.addContent("Se ha asociado la raza "+raza+" al animal "+animal);
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al asociar raza");
@@ -319,6 +321,7 @@ public class Animal_Raza extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza eliminada de animal");
+		                ControlFiles.addContent("Se ha eliminado una relación entre una raza y un tipo de animal");
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar raza");

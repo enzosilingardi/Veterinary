@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -109,6 +111,12 @@ public class Login extends JFrame {
 		
 	}
 
+	
+	private void setScaleImage(JLabel lblFoto, String rutaFoto) {
+		ImageIcon foto = new ImageIcon(rutaFoto);
+		Icon icono = new ImageIcon(foto.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), 1));
+		lblFoto.setIcon(icono);
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -130,7 +138,7 @@ public class Login extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 460, 244);
+		setBounds(100, 100, 520, 280);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -140,22 +148,22 @@ public class Login extends JFrame {
 		
 		JLabel lblTitulo = new JLabel("Ingresar usuario y contraseña");
 		lblTitulo.setFont(new Font("Roboto", Font.BOLD, 14));
-		lblTitulo.setBounds(229, 11, 207, 14);
+		lblTitulo.setBounds(250, 11, 254, 14);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setFont(new Font("Roboto", Font.BOLD, 14));
-		lblUsuario.setBounds(257, 55, 76, 14);
+		lblUsuario.setBounds(291, 55, 76, 14);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
 		lblContrasenia.setFont(new Font("Roboto", Font.BOLD, 14));
-		lblContrasenia.setBounds(257, 106, 76, 14);
+		lblContrasenia.setBounds(291, 126, 98, 14);
 		contentPane.add(lblContrasenia);
 		
 		txtUsuario = new JTextField();
 		txtUsuario.setFont(new Font("Roboto", Font.BOLD, 14));
-		txtUsuario.setBounds(257, 69, 134, 20);
+		txtUsuario.setBounds(291, 80, 134, 20);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
@@ -182,7 +190,7 @@ public class Login extends JFrame {
 				
 			}
 		});
-		btnIngresar.setBounds(217, 161, 89, 23);
+		btnIngresar.setBounds(244, 196, 89, 23);
 		contentPane.add(btnIngresar);
 		
 		JButton btnCerrar = new JButton("Cerrar");
@@ -195,7 +203,7 @@ public class Login extends JFrame {
 				dispose();
 			}
 		});
-		btnCerrar.setBounds(347, 161, 89, 23);
+		btnCerrar.setBounds(394, 196, 89, 23);
 		contentPane.add(btnCerrar);
 		
 		txtContrasenia = new JPasswordField();
@@ -207,17 +215,20 @@ public class Login extends JFrame {
 		            e.consume(); 
 			}
 		});
-		txtContrasenia.setBounds(257, 120, 134, 20);
+		txtContrasenia.setBounds(291, 151, 134, 20);
 		contentPane.add(txtContrasenia);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(86, 211, 243));
-		panel.setBounds(0, 0, 207, 207);
+		panel.setBounds(0, 0, 234, 241);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 0, 207, 207);
-		panel.add(lblNewLabel);
+		JLabel lblLogo = new JLabel("");
+		lblLogo.setBounds(0, 0, 234, 241);
+		panel.add(lblLogo);
+		
+
+		setScaleImage(lblLogo,"src/main/java/images/vet.png");
 	}
 }

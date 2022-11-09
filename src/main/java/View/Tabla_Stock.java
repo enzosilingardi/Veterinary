@@ -105,21 +105,7 @@ public class Tabla_Stock extends JFrame {
 	 * Create the frame.
 	 */
 	public Tabla_Stock(String perfil) {
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (ClassNotFoundException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (InstantiationException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (IllegalAccessException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();

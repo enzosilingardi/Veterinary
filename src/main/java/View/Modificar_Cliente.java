@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Cliente.ComboItem;
 
 public class Modificar_Cliente extends JFrame {
@@ -37,9 +38,9 @@ public class Modificar_Cliente extends JFrame {
 	private JTextField txtEmail;
 	private JTextField txtApellido;
 	private JTextField txtId;
-	private JTextField txtDireccion;
 	private JLabel lblTelefonoOp;
 	private JTextField txtTelefonoOp;
+	private JTextField txtDir;
 	
 	
 	
@@ -133,7 +134,7 @@ public class Modificar_Cliente extends JFrame {
 			
 			try {
 				cn = (Connection) Connect.getConexion();
-				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate, address, phone_Optional  FROM Client WHERE id_Client = ?";
+				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate FROM Client WHERE id_Client = ?";
 				pst = cn.prepareStatement(SSQL);
 				pst.setInt(1, id);
 				
@@ -146,8 +147,6 @@ public class Modificar_Cliente extends JFrame {
 				txtTelefono.setText(result.getString(4));
 				txtEmail.setText(result.getString(5));
 				txtFechaNacimiento.setDate(result.getDate(6));
-				txtDireccion.setText(result.getString(7));
-				txtTelefonoOp.setText(result.getString(8));
 				}
 				cn.close();
 			}catch(SQLException e) {
@@ -254,7 +253,7 @@ public class Modificar_Cliente extends JFrame {
 				int id = Integer.parseInt(txtId.getText());
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
-				String direccion = txtDireccion.getText();
+				String direccion = txtDir.getText();
 				String dni = txtDni.getText();
 				String telefono = txtTelefono.getText();
 				String genero = cbGenero.getSelectedItem().toString();
@@ -305,6 +304,7 @@ public class Modificar_Cliente extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Cliente modificado");
+		                ControlFiles.addContent("Se ha modificado un cliente con el nombre "+nombre+" "+apellido);
 		                Tabla_Clientes tc = new Tabla_Clientes();
 		                tc.setVisible(true);
 		                dispose();
@@ -317,6 +317,7 @@ public class Modificar_Cliente extends JFrame {
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
+					
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -336,11 +337,6 @@ public class Modificar_Cliente extends JFrame {
 		cargarCampos(cliente);
 		txtId.setText(cliente);
 		
-		txtDireccion = new JTextField();
-		txtDireccion.setBounds(226, 115, 171, 20);
-		contentPane.add(txtDireccion);
-		txtDireccion.setColumns(10);
-		
 		lblTelefonoOp = new JLabel("Telefono Secundario (Opcional)");
 		lblTelefonoOp.setBounds(39, 356, 177, 14);
 		contentPane.add(lblTelefonoOp);
@@ -349,6 +345,11 @@ public class Modificar_Cliente extends JFrame {
 		txtTelefonoOp.setBounds(226, 353, 171, 20);
 		contentPane.add(txtTelefonoOp);
 		txtTelefonoOp.setColumns(10);
+		
+		txtDir = new JTextField();
+		txtDir.setBounds(226, 115, 171, 20);
+		contentPane.add(txtDir);
+		txtDir.setColumns(10);
 	}
 
 	public Modificar_Cliente() {

@@ -38,8 +38,7 @@ public class Tabla_Clientes extends JFrame {
         try {
         	Connection con = Connect.getConexion();
         	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, phone_Number, phone_Optional, gender, dni, CONVERT(varchar(10),birthdate,103), email, address\r\n"
-        			+ "FROM Client\r\n"
-        			+ "INNER JOIN Address ON Client.id_Address = Address.id_Address;" );
+        			+ "FROM Client;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
