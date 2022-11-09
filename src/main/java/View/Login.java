@@ -24,6 +24,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FlowLayout;
 
 public class Login extends JFrame {
 
@@ -127,31 +130,40 @@ public class Login extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 400, 277);
+		setBounds(100, 100, 460, 244);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblTitulo = new JLabel("Ingresar usuario y contraseña");
-		lblTitulo.setBounds(106, 11, 200, 14);
+		lblTitulo.setFont(new Font("Roboto", Font.BOLD, 14));
+		lblTitulo.setBounds(229, 11, 207, 14);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setBounds(62, 71, 46, 14);
+		lblUsuario.setFont(new Font("Roboto", Font.BOLD, 14));
+		lblUsuario.setBounds(257, 55, 76, 14);
 		contentPane.add(lblUsuario);
 		
 		JLabel lblContrasenia = new JLabel("Contraseña");
-		lblContrasenia.setBounds(62, 122, 76, 14);
+		lblContrasenia.setFont(new Font("Roboto", Font.BOLD, 14));
+		lblContrasenia.setBounds(257, 106, 76, 14);
 		contentPane.add(lblContrasenia);
 		
 		txtUsuario = new JTextField();
-		txtUsuario.setBounds(156, 68, 134, 20);
+		txtUsuario.setFont(new Font("Roboto", Font.BOLD, 14));
+		txtUsuario.setBounds(257, 69, 134, 20);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
 		JButton btnIngresar = new JButton("Ingresar");
+		btnIngresar.setForeground(new Color(255, 255, 255));
+		btnIngresar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnIngresar.setBackground(new Color(86, 211, 243));
+		btnIngresar.setBorder(null);
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -170,19 +182,24 @@ public class Login extends JFrame {
 				
 			}
 		});
-		btnIngresar.setBounds(49, 184, 89, 23);
+		btnIngresar.setBounds(217, 161, 89, 23);
 		contentPane.add(btnIngresar);
 		
 		JButton btnCerrar = new JButton("Cerrar");
+		btnCerrar.setForeground(new Color(255, 255, 255));
+		btnCerrar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnCerrar.setBackground(new Color(86, 211, 243));
+		btnCerrar.setBorder(null);
 		btnCerrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnCerrar.setBounds(246, 184, 89, 23);
+		btnCerrar.setBounds(347, 161, 89, 23);
 		contentPane.add(btnCerrar);
 		
 		txtContrasenia = new JPasswordField();
+		txtContrasenia.setFont(new Font("Roboto", Font.BOLD, 14));
 		txtContrasenia.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -190,7 +207,17 @@ public class Login extends JFrame {
 		            e.consume(); 
 			}
 		});
-		txtContrasenia.setBounds(156, 119, 134, 20);
+		txtContrasenia.setBounds(257, 120, 134, 20);
 		contentPane.add(txtContrasenia);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(86, 211, 243));
+		panel.setBounds(0, 0, 207, 207);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setBounds(0, 0, 207, 207);
+		panel.add(lblNewLabel);
 	}
 }

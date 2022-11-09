@@ -68,7 +68,7 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main(final String perfil) {
+	public Main() {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -81,13 +81,17 @@ public class Main extends JFrame {
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 22, 180, 541);
-		panel.setBackground(new Color(64, 224, 208));
+		panel.setBounds(0, 22, 207, 541);
+		panel.setBackground(new Color(86, 211, 243));
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JButton btnInstrumentos = new JButton("Instrumentos");
-		btnInstrumentos.setBounds(0, 456, 180, 23);
+		btnInstrumentos.setForeground(new Color(255, 255, 255));
+		btnInstrumentos.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnInstrumentos.setBackground(new Color(86, 211, 243));
+		btnInstrumentos.setBorder(null);
+		btnInstrumentos.setBounds(0, 456, 207, 23);
 		panel.add(btnInstrumentos);
 		btnInstrumentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +101,11 @@ public class Main extends JFrame {
 		});
 		
 		JButton btnSucursales = new JButton("Sucursales");
-		btnSucursales.setBounds(0, 388, 180, 23);
+		btnSucursales.setForeground(new Color(255, 255, 255));
+		btnSucursales.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnSucursales.setBackground(new Color(86, 211, 243));
+		btnSucursales.setBorder(null);
+		btnSucursales.setBounds(0, 388, 207, 23);
 		panel.add(btnSucursales);
 		btnSucursales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -107,7 +115,11 @@ public class Main extends JFrame {
 		});
 		
 		JButton btnVeterinarios = new JButton("Veterinarios");
-		btnVeterinarios.setBounds(0, 354, 180, 23);
+		btnVeterinarios.setForeground(new Color(255, 255, 255));
+		btnVeterinarios.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVeterinarios.setBackground(new Color(86, 211, 243));
+		btnVeterinarios.setBorder(null);
+		btnVeterinarios.setBounds(0, 354, 207, 23);
 		panel.add(btnVeterinarios);
 		btnVeterinarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,11 +129,19 @@ public class Main extends JFrame {
 		});
 		
 		JButton btnMascotas = new JButton("Mascotas");
-		btnMascotas.setBounds(0, 286, 180, 23);
+		btnMascotas.setForeground(new Color(255, 255, 255));
+		btnMascotas.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnMascotas.setBackground(new Color(86, 211, 243));
+		btnMascotas.setBorder(null);
+		btnMascotas.setBounds(0, 286, 207, 23);
 		panel.add(btnMascotas);
 		
 		JButton btnQuirofanos = new JButton("Quirófanos");
-		btnQuirofanos.setBounds(0, 422, 180, 23);
+		btnQuirofanos.setForeground(new Color(255, 255, 255));
+		btnQuirofanos.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnQuirofanos.setBackground(new Color(86, 211, 243));
+		btnQuirofanos.setBorder(null);
+		btnQuirofanos.setBounds(0, 422, 207, 23);
 		panel.add(btnQuirofanos);
 		btnQuirofanos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -131,37 +151,50 @@ public class Main extends JFrame {
 		});
 		
 		JButton btnHistoriales = new JButton("Historiales");
-		btnHistoriales.setBounds(0, 320, 180, 23);
+		btnHistoriales.setForeground(new Color(255, 255, 255));
+		btnHistoriales.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnHistoriales.setBackground(new Color(86, 211, 243));
+		btnHistoriales.setBorder(null);
+		btnHistoriales.setBounds(0, 320, 207, 23);
 		panel.add(btnHistoriales);
 		
 		JButton btnTurnos = new JButton("Turnos");
-		btnTurnos.setFont(new Font("Roboto", Font.PLAIN, 11));
-		btnTurnos.setForeground(new Color(0, 0, 0));
-		btnTurnos.setBackground(new Color(255, 255, 255));
-		btnTurnos.setBounds(0, 218, 180, 23);
+		btnTurnos.setBorder(null);
+		btnTurnos.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnTurnos.setForeground(new Color(255, 255, 255));
+		btnTurnos.setBackground(new Color(86, 211, 243));
+		btnTurnos.setBounds(0, 218, 207, 23);
 		panel.add(btnTurnos);
 		btnTurnos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos(perfil);
 				tt.setVisible(true);
+				
 			}
 		});
 		
 		JButton btnClientes = new JButton("Clientes");
-		btnClientes.setBounds(0, 252, 180, 23);
+		btnClientes.setForeground(new Color(255, 255, 255));
+		btnClientes.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnClientes.setBorder(null);
+		btnClientes.setBounds(0, 252, 207, 23);
 		panel.add(btnClientes);
-		btnClientes.setBackground(new Color(240, 240, 240));
+		btnClientes.setBackground(new Color(86, 211, 243));
 		
 		JButton btnUsuarios = new JButton("Usuarios");
-		btnUsuarios.setBounds(0, 490, 180, 23);
+		btnUsuarios.setForeground(new Color(255, 255, 255));
+		btnUsuarios.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnUsuarios.setBackground(new Color(86, 211, 243));
+		btnUsuarios.setBorder(null);
+		btnUsuarios.setBounds(0, 490, 207, 23);
 		panel.add(btnUsuarios);
 		
 		JLabel lblLogo = new JLabel("");
-		lblLogo.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblLogo.setBounds(10, 11, 160, 160);
+		lblLogo.setBorder(null);
+		lblLogo.setBounds(0, 0, 207, 207);
 		panel.add(lblLogo);
 		
-		setScaleImage(lblLogo,"src/main/java/images/VetCareSoftLogo.png");
+		setScaleImage(lblLogo,"src/main/java/images/vet.png");
 		
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -221,6 +254,11 @@ public class Main extends JFrame {
 		
 		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
 		mnVentas.add(mntmPresupuestos);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(145, 226, 247));
+		panel_1.setBounds(207, 22, 579, 88);
+		contentPane.add(panel_1);
 		
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
