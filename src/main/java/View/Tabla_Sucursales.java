@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Sucursal.ComboItem;
 
 import javax.swing.JScrollPane;
@@ -183,6 +184,7 @@ public class Tabla_Sucursales extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -228,6 +230,7 @@ public class Tabla_Sucursales extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+		                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -265,6 +268,7 @@ public class Tabla_Sucursales extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
+		                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");
@@ -329,9 +333,42 @@ public class Tabla_Sucursales extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Sucursal ms = new Modificar_Sucursal(table.getValueAt(fila,0).toString());
-				ms.setVisible(true);
-				dispose();
+				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				
+				String direccion = table.getValueAt(fila,1).toString();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
+					
+					
+					ps.setString(1, direccion);
+					
+					ps.setInt(2, id);
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
+		                limpiar();
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");
+		                limpiar();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		btnModificar.setBounds(508, 106, 89, 23);
@@ -340,9 +377,43 @@ public class Tabla_Sucursales extends JFrame {
 		btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sucursal sucursal = new Sucursal();
-				sucursal.setVisible(true);
-				dispose();
+				String direccion = txtDireccion.getText();
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
+					
+					
+					
+					if(existeSucursal(direccion)!=0) {
+						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
+					}else {
+						ps.setString(1, direccion);
+					}
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+		                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
+		                limpiar();
+		                mostrarTabla();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
+		                limpiar();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnAgregar.setBounds(392, 106, 89, 23);
@@ -366,6 +437,7 @@ public class Tabla_Sucursales extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
+		                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");

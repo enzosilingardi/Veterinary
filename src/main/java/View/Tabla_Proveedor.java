@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Proveedor extends JFrame {
 
@@ -146,6 +147,7 @@ public class Tabla_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Proveedor eliminado");
+		                ControlFiles.addContent("Se ha eliminado el proveedor "+table.getValueAt(fila,1).toString());
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar proveedor");
@@ -247,6 +249,7 @@ public class Tabla_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Proveedor eliminado");
+		                ControlFiles.addContent("Se ha eliminado el proveedor "+table.getValueAt(fila,1).toString());
 		                
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar proveedor");

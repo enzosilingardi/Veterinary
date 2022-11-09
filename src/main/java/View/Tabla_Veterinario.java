@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Veterinario extends JFrame {
 
@@ -152,6 +153,7 @@ public class Tabla_Veterinario extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario eliminado");
+		                ControlFiles.addContent("Se ha eliminado el veterinario "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");
@@ -254,6 +256,7 @@ public class Tabla_Veterinario extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario eliminado");
+		                ControlFiles.addContent("Se ha eliminado el veterinario "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");

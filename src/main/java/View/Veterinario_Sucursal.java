@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Usuario_Sucursal.ComboItem;
 
 import javax.swing.JLabel;
@@ -284,6 +285,7 @@ public class Veterinario_Sucursal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario colocado");
+		                ControlFiles.addContent("Se ha colocado el veterinario "+veterinario+" en la sucursal "+sucursal);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -321,6 +323,7 @@ public class Veterinario_Sucursal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario eliminado de sucursal");
+		                ControlFiles.addContent("Se ha eliminado el veterinario "+table.getValueAt(fila,1).toString()+" de la sucursal "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");

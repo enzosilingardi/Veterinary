@@ -215,6 +215,8 @@ public class Tipo_Procedimiento extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Procedimiento_Medico pm = new Procedimiento_Medico();
+				pm.setVisible(true);
 				dispose();
 			}
 		});

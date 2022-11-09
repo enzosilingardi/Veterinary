@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Sucursal_Producto.ComboItem;
 
 import javax.swing.JLabel;
@@ -285,6 +286,7 @@ public class Usuario_Sucursal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario colocado");
+		                ControlFiles.addContent("Se ha colocado el usuario "+usuario+" en la sucursal "+sucursal);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -323,6 +325,7 @@ public class Usuario_Sucursal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario eliminado de sucursal");
+		                ControlFiles.addContent("Se ha eliminado el usuario "+table.getValueAt(fila,1).toString()+" de la sucursal "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");

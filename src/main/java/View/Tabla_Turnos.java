@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Instrumento_Quirofano.ComboItem;
 
 public class Tabla_Turnos extends JFrame {
@@ -195,6 +196,7 @@ public class Tabla_Turnos extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Turno eliminado");
+		                ControlFiles.addContent("Se ha eliminado el turno para la fecha "+table.getValueAt(fila,3).toString()+" y hora "+table.getValueAt(fila,4).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar turno");
@@ -306,6 +308,7 @@ public class Tabla_Turnos extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Turno eliminado");
+		                ControlFiles.addContent("Se ha eliminado el turno para la fecha "+table.getValueAt(fila,3).toString()+" y hora "+table.getValueAt(fila,4).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar turno");

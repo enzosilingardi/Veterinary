@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Ciudad.ComboItem;
 
 import javax.swing.JLabel;
@@ -203,6 +204,7 @@ public class Usuario extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario guardado");
+		                ControlFiles.addContent("Se ha agregado el usuario "+nombreU);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar usuario");

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Sucursal.ComboItem;
 
 import javax.swing.JLabel;
@@ -204,6 +205,7 @@ public class Veterinario extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario guardado");
+		                ControlFiles.addContent("Se ha agregado el veterinario "+nombre+" "+apellido);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar veterinario");

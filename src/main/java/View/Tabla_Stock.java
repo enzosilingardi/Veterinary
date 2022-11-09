@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Historial_Medico.ComboItem;
 
 import javax.swing.JTextField;
@@ -191,6 +192,7 @@ public class Tabla_Stock extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Stock modificado");
+		                ControlFiles.addContent("Se ha modificado el stock de "+table.getValueAt(fila,1).toString()+" en la sucursal "+table.getValueAt(fila,3).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar stock");
@@ -240,6 +242,7 @@ public class Tabla_Stock extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Producto eliminado de stock");
+		                ControlFiles.addContent("Se ha eliminado el stock de "+table.getValueAt(fila,1).toString()+" en la sucursal "+table.getValueAt(fila,3).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");
@@ -347,6 +350,7 @@ public class Tabla_Stock extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Stock modificado");
+		                ControlFiles.addContent("Se ha modificado el stock de "+table.getValueAt(fila,1).toString()+" en la sucursal "+table.getValueAt(fila,3).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar stock");
@@ -396,6 +400,7 @@ public class Tabla_Stock extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Producto eliminado de stock");
+		                ControlFiles.addContent("Se ha eliminado el stock de "+table.getValueAt(fila,1).toString()+" en la sucursal "+table.getValueAt(fila,3).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");

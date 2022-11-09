@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Instrumento.ComboItem;
 
 import javax.swing.JLabel;
@@ -198,6 +199,7 @@ public class Tipo_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Tipo guardado");
+		                ControlFiles.addContent("Se ha añadido el tipo de proveedor "+nombre);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -237,6 +239,7 @@ public class Tipo_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Tipo eliminado");
+		                ControlFiles.addContent("Se ha eliminado el tipo de proveedor "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar tipo");
@@ -301,10 +304,11 @@ public class Tipo_Proveedor extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Animal modificado");
+		                JOptionPane.showMessageDialog(null, "Proveedor modificado");
+		                ControlFiles.addContent("Se ha modificado el tipo de proveedor "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar animal");
+		                JOptionPane.showMessageDialog(null, "Error al modificar proveedor");
 		                mostrarTabla();
 		            }
 					

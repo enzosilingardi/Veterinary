@@ -184,7 +184,7 @@ public class Procedimiento_Medico extends JFrame {
 	public Procedimiento_Medico() {
 		setTitle("Procedimientos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 417, 365);
+		setBounds(100, 100, 481, 365);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -268,7 +268,7 @@ public class Procedimiento_Medico extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBounds(286, 292, 89, 23);
+		btnVolver.setBounds(366, 292, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
@@ -305,5 +305,16 @@ public class Procedimiento_Medico extends JFrame {
 		txtHora.getCalendarButton().setVisible(false);
 		txtHora.setBounds(155, 176, 99, 20);
 		contentPane.add(txtHora);
+		
+		JButton btnTipos = new JButton("Tipos");
+		btnTipos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tipo_Procedimiento tp = new Tipo_Procedimiento();
+				tp.setVisible(true);
+				dispose();
+			}
+		});
+		btnTipos.setBounds(355, 49, 89, 23);
+		contentPane.add(btnTipos);
 	}
 }

@@ -19,6 +19,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
+
 import javax.swing.JComboBox;
 
 public class Tabla_Usuarios extends JFrame {
@@ -214,6 +216,7 @@ public class Tabla_Usuarios extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario eliminado");
+		                ControlFiles.addContent("Se ha eliminado el usuario "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
@@ -336,6 +339,7 @@ public class Tabla_Usuarios extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Usuario eliminado");
+		                ControlFiles.addContent("Se ha eliminado el usuario "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
