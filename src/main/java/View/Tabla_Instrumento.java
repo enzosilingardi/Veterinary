@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Instrumento extends JFrame {
 
@@ -138,6 +139,7 @@ public class Tabla_Instrumento extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento modificado");
+		                ControlFiles.addContent("Se ha modificado el instrumento "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar instrumento");
@@ -174,6 +176,7 @@ public class Tabla_Instrumento extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
+		                ControlFiles.addContent("Se ha eliminado el instrumento "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
@@ -265,6 +268,7 @@ public class Tabla_Instrumento extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento modificado");
+		                ControlFiles.addContent("Se ha modificado el instrumento "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar instrumento");
@@ -301,6 +305,7 @@ public class Tabla_Instrumento extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
+		                ControlFiles.addContent("Se ha eliminado el instrumento "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");

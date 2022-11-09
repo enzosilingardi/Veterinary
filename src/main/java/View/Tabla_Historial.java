@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Historial extends JFrame {
 
@@ -145,6 +146,7 @@ public class Tabla_Historial extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Eliminado del historial");
+		                ControlFiles.addContent("Se ha eliminado un historial de la mascota"+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar del historial");
@@ -236,6 +238,7 @@ public class Tabla_Historial extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Eliminado del historial");
+		                ControlFiles.addContent("Se ha eliminado un historial de la mascota"+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar del historial");

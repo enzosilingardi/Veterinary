@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Direccion.ComboItem;
 
 import javax.swing.JLabel;
@@ -189,6 +190,7 @@ public class Quirofano extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Quirófano agrgado");
+		                ControlFiles.addContent("Se ha agregado el quirófano "+txtNumero.getText());
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al agregar quirófano");

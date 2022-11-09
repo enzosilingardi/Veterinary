@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Veterinario_Sucursal.ComboItem;
 
 public class Procedimiento_Veterinario extends JFrame {
@@ -288,6 +289,8 @@ public class Procedimiento_Veterinario extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario colocado");
+
+		                ControlFiles.addContent("Se ha asociado el veterinario "+veterinario+" al procedimiento "+proced);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -325,6 +328,7 @@ public class Procedimiento_Veterinario extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario eliminado de Procedimiento");
+		                ControlFiles.addContent("Se ha eliminado el veterinario "+table.getValueAt(fila,1).toString()+" del procedimiento "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");

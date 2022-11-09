@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Productos extends JFrame {
 
@@ -157,6 +158,7 @@ public class Tabla_Productos extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Producto eliminado");
+		                ControlFiles.addContent("Se ha eliminado el producto "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");
@@ -248,6 +250,7 @@ public class Tabla_Productos extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Producto eliminado");
+		                ControlFiles.addContent("Se ha eliminado el producto "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar producto");

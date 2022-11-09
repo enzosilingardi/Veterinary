@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Ciudad.ComboItem;
 
 import javax.swing.JLabel;
@@ -25,7 +26,7 @@ import javax.swing.JComboBox;
 public class Sucursal extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox cbDireccion;
+	private JTextField txtDireccion;
 
 
 	class ComboItem
@@ -105,7 +106,7 @@ public class Sucursal extends JFrame {
 		});
 	}
 
-	public int existeSucursal(Object direccion) {
+	public int existeSucursal(String direccion) {
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -114,7 +115,7 @@ public class Sucursal extends JFrame {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "SELECT count(*) FROM Branch WHERE id_Address = ? ;";
 			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,(String) direccion);
+			pst.setString(1, direccion);
 
 			result = pst.executeQuery();
 			
@@ -137,7 +138,7 @@ public class Sucursal extends JFrame {
 	
 	
 	private void limpiar() {
-		cbDireccion.setSelectedIndex(0);
+		txtDireccion.setText("");;
 		
 	}
 	/**
@@ -146,7 +147,7 @@ public class Sucursal extends JFrame {
 	public Sucursal() {
 		setTitle("Sucursal");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 414, 264);
+		setBounds(100, 100, 382, 231);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -154,7 +155,7 @@ public class Sucursal extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblTitulo = new JLabel("Sucursales");
-		lblTitulo.setBounds(159, 11, 86, 14);
+		lblTitulo.setBounds(144, 11, 86, 14);
 		contentPane.add(lblTitulo);
 		
 		JLabel lblDireccion = new JLabel("Direccion");
@@ -165,7 +166,7 @@ public class Sucursal extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				
 				int result = 0;
 				
@@ -174,21 +175,20 @@ public class Sucursal extends JFrame {
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (id_Address) VALUES (?)" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
-						if(existeSucursal(((ComboItem) cbDireccion.getSelectedItem()).getValue())!=0) {
+					
+						if(existeSucursal(direccion)!=0) {
 						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
 					}else {
-						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(1, direccion);
 					}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+		                ControlFiles.addContent("Se ha agregado la sucursal "+direccion);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
@@ -205,7 +205,7 @@ public class Sucursal extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(141, 132, 89, 23);
+		btnAgregar.setBounds(141, 117, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -216,12 +216,12 @@ public class Sucursal extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(274, 179, 89, 23);
+		btnVolver.setBounds(246, 158, 89, 23);
 		contentPane.add(btnVolver);
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(125, 72, 196, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(113, 73, 186, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
 	}
 }

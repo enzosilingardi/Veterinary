@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -201,6 +202,7 @@ public class Raza extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza eliminada");
+		                ControlFiles.addContent("Se ha eliminado la raza "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar raza");
@@ -238,6 +240,7 @@ public class Raza extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza guardada");
+		                ControlFiles.addContent("Se ha agregado la raza "+tipo);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -294,6 +297,7 @@ public class Raza extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Raza modificada");
+		                ControlFiles.addContent("Se ha modificado la raza "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar raza");

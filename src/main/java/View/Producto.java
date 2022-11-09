@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Proveedor.ComboItem;
 
 import javax.swing.JLabel;
@@ -290,10 +291,11 @@ public class Producto extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor guardado");
+		                JOptionPane.showMessageDialog(null, "Producto guardado");
+		                ControlFiles.addContent("Se a añadido un producto de nombre "+nombre);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar proveedor");
+		                JOptionPane.showMessageDialog(null, "Error al guardar producto");
 		                limpiar();
 		            }
 				

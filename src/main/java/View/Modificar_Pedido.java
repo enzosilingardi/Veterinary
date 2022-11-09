@@ -259,7 +259,7 @@ public class Modificar_Pedido extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Pedido modificado");
-		                ControlFiles.addContent("Se ha modificado un pedido de "+((ComboItem) producto).getValue());
+		                ControlFiles.addContent("Se ha modificado un pedido de "+producto);
 		                Tabla_Pedido tp = new Tabla_Pedido();
 						tp.setVisible(true);
 						dispose();

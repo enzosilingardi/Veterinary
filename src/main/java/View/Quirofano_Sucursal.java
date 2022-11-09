@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Instrumento_Quirofano.ComboItem;
 
 import javax.swing.JLabel;
@@ -284,6 +285,7 @@ void mostrarTabla(){
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Quirófano añadido a sucursal");
+		                ControlFiles.addContent("Se ha asociado el quirófano "+quirofano+" a la sucursal "+sucursal);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -323,6 +325,7 @@ void mostrarTabla(){
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Quirofano eliminado de sucursal");
+		                ControlFiles.addContent("Se ha eliminado el quirofano "+table.getValueAt(fila,2).toString()+" de la sucursal "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar quirofano");

@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Clientes extends JFrame {
 
@@ -146,6 +147,7 @@ public class Tabla_Clientes extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Cliente eliminado");
+		                ControlFiles.addContent("Se ha eliminado el cliente "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar país");
@@ -237,6 +239,7 @@ public class Tabla_Clientes extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Cliente eliminado");
+		                ControlFiles.addContent("Se ha eliminado el cliente "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar país");

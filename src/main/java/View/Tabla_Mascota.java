@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Mascota extends JFrame {
 
@@ -162,6 +163,7 @@ public class Tabla_Mascota extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Mascota eliminada");
+		                ControlFiles.addContent("Se ha eliminado la mascota "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar mascota");
@@ -254,6 +256,7 @@ public class Tabla_Mascota extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Mascota eliminada");
+		                ControlFiles.addContent("Se ha eliminado la mascota "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar mascota");

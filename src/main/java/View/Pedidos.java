@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -266,6 +267,7 @@ public class Pedidos extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Pedido guardado");
+		                ControlFiles.addContent("Se ha creado un pedido de "+producto+" para la sucursal "+sucursal);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar pedido");

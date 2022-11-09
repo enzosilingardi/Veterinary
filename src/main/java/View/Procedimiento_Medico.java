@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Historial_Medico.ComboItem;
 
 import javax.swing.JLabel;
@@ -246,6 +247,7 @@ public class Procedimiento_Medico extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Turno guardado");
+		                ControlFiles.addContent("Se ha añadido un turno para la fecha "+date+" y hora "+start);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar turno");

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -262,6 +263,7 @@ public class Sucursal_Producto extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Producto colocado");
+		                ControlFiles.addContent("Se ha asociado el producto "+producto+" con la sucursal "+sucursal);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al colocar producto");

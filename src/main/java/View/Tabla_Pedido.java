@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 public class Tabla_Pedido extends JFrame {
 
@@ -156,6 +157,7 @@ public class Tabla_Pedido extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Pedido eliminado");
+		                ControlFiles.addContent("Se ha eliminado un pedido de "+table.getValueAt(fila,1).toString()+" para la sucursal "+table.getValueAt(fila,3).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");
@@ -246,6 +248,7 @@ public class Tabla_Pedido extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Pedido eliminado");
+		                ControlFiles.addContent("Se ha eliminado un pedido de "+table.getValueAt(fila,1).toString()+" para la sucursal "+table.getValueAt(fila,3).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");
