@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Procedimiento_Medico.ComboItem;
 
 import javax.swing.DefaultComboBoxModel;
@@ -258,6 +259,7 @@ public class Modificar_Turno extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Turno modificado");
+		                ControlFiles.addContent("Se ha modificado el turno para la fecha "+date+" y hora "+start);
 		                Tabla_Turnos tt = new Tabla_Turnos();
 						tt.setVisible(true);
 						dispose();

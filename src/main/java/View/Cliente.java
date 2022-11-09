@@ -11,6 +11,7 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Direccion.ComboItem;
 
 import javax.swing.JLabel;
@@ -302,6 +303,7 @@ public class Cliente extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Cliente guardado");
+		                ControlFiles.addContent("Se ha añadido un cliente de nombre "+nombre+" "+apellido);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");

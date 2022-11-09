@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Ciudad.ComboItem;
 
 import javax.swing.JLabel;
@@ -277,6 +278,7 @@ public class Instrumento_Quirofano extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento eliminado de quirofano");
+		                ControlFiles.addContent("Se ha removido el instrumento "+table.getValueAt(fila,2).toString() +" del quirófano "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
@@ -333,6 +335,7 @@ public class Instrumento_Quirofano extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento colocado");
+		                ControlFiles.addContent("Se ha asociado el instrumento "+instrumento+" al quirofano "+quirofano);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -424,6 +427,7 @@ public class Instrumento_Quirofano extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Cantidad modificada");
+		                ControlFiles.addContent("Se ha modificado la cantidad del instrumento "+table.getValueAt(fila,3).toString()+" en el quirófano "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar cantidad");

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Pedidos.ComboItem;
 
 import javax.swing.JLabel;
@@ -258,6 +259,7 @@ public class Modificar_Pedido extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Pedido modificado");
+		                ControlFiles.addContent("Se ha modificado un pedido de "+((ComboItem) producto).getValue());
 		                Tabla_Pedido tp = new Tabla_Pedido();
 						tp.setVisible(true);
 						dispose();

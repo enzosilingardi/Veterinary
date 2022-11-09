@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Historial_Medico.ComboItem;
 
 import javax.swing.DefaultComboBoxModel;
@@ -208,6 +209,7 @@ public class Modificar_Historial extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
 		                Tabla_Historial th = new Tabla_Historial();
 						th.setVisible(true);
 						dispose();

@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Proveedor.ComboItem;
 
 import javax.swing.JLabel;
@@ -323,6 +324,7 @@ public class Modificar_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Proveedor modificado");
+		                ControlFiles.addContent("Se ha modificado el proveedor "+nombre);
 		                Tabla_Proveedor tp = new Tabla_Proveedor();
 						tp.setVisible(true);
 						dispose();

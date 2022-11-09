@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -120,6 +121,7 @@ public class Modificar_Quirofano extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Quirófano modificado");
+		                ControlFiles.addContent("Se ha modificado el quirófano "+numero);
 		                Tabla_Quirofano tq = new Tabla_Quirofano();
 						tq.setVisible(true);
 						dispose();

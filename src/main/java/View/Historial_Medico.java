@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Instrumento_Quirofano.ComboItem;
 
 import javax.swing.JLabel;
@@ -197,6 +198,7 @@ public class Historial_Medico extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                ControlFiles.addContent("Se ha añadido un historial para la mascota "+mascota);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar historial");

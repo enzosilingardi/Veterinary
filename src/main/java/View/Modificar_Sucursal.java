@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Sucursal.ComboItem;
 
 import javax.swing.JLabel;
@@ -26,7 +27,7 @@ public class Modificar_Sucursal extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtId;
-	private JComboBox cbDireccion;
+	private JTextField txtDireccion;
 
 	class ComboItem
 	{
@@ -120,11 +121,6 @@ public class Modificar_Sucursal extends JFrame {
 		lblDireccion.setBounds(10, 77, 67, 14);
 		contentPane.add(lblDireccion);
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(99, 73, 196, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
-		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -140,23 +136,20 @@ public class Modificar_Sucursal extends JFrame {
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				
 				int result = 0;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET id_Address = ? WHERE id_Branch = ?" );
+					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
 						
-						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(1, direccion);
 						ps.setInt(2, id);
 						
-					}
+					
 						
 					
 					
@@ -164,6 +157,7 @@ public class Modificar_Sucursal extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 		                Tabla_Sucursales ts = new Tabla_Sucursales();
 						ts.setVisible(true);
 						dispose();
@@ -180,7 +174,7 @@ public class Modificar_Sucursal extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(29, 130, 89, 23);
+		btnModificar.setBounds(57, 130, 89, 23);
 		contentPane.add(btnModificar);
 		
 		txtId = new JTextField();
@@ -195,6 +189,11 @@ public class Modificar_Sucursal extends JFrame {
 		contentPane.add(lblTitulo);
 		
 		txtId.setText(sucursal);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(87, 74, 193, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
 	}
 
 

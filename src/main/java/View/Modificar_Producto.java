@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Producto.ComboItem;
 
 import javax.swing.JLabel;
@@ -260,6 +261,7 @@ public class Modificar_Producto extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Producto modificado");
+		                ControlFiles.addContent("Se ha modificado el producto "+nombre);
 		                Tabla_Productos tp = new Tabla_Productos();
 						tp.setVisible(true);
 						dispose();

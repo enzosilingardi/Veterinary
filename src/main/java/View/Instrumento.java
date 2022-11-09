@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Quirofano.ComboItem;
 
 import javax.swing.JLabel;
@@ -227,6 +228,7 @@ public class Instrumento extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Instrumento guardado");
+		                ControlFiles.addContent("Se ha añadido un instrumento de nombre "+nombre);
 		                limpiar();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al guardar instrumento");

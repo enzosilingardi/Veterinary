@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Mascota.ComboItem;
 
 import javax.swing.JLabel;
@@ -372,6 +373,7 @@ public class Modificar_Mascota extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Mascota modificada");
+		                ControlFiles.addContent("Se ha modificado la mascota "+nombre);
 		                Tabla_Mascota tm = new Tabla_Mascota();
 						tm.setVisible(true);
 						dispose();

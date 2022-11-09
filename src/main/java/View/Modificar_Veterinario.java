@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ControlFiles;
 import View.Veterinario.ComboItem;
 
 import javax.swing.JTextField;
@@ -28,8 +29,8 @@ public class Modificar_Veterinario extends JFrame {
 	private JTextField txtMatricula;
 	private JTextField txtApellido;
 	private JTextField txtNombre;
-private JComboBox cbDireccion;
 private JTextField txtId;
+private JTextField txtDireccion;
 	
 	class ComboItem
 	{
@@ -160,11 +161,6 @@ private JTextField txtId;
 		lblDireccion.setBounds(51, 140, 66, 14);
 		contentPane.add(lblDireccion);
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(170, 136, 163, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
-		
 		txtApellido = new JTextField();
 		txtApellido.setColumns(10);
 		txtApellido.setBounds(170, 87, 163, 20);
@@ -198,7 +194,7 @@ private JTextField txtId;
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
 				String matricula = txtMatricula.getText();
@@ -207,18 +203,15 @@ private JTextField txtId;
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Veterinarian SET id_Address = ?, name = ? ,surname = ? ,medical_License = ?  WHERE id_Veterinarian = ?" );
+					PreparedStatement ps = con.prepareStatement("UPDATE Veterinarian SET address = ?, name = ? ,surname = ? ,medical_License = ?  WHERE id_Veterinarian = ?" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
-						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(1, direccion);
 						ps.setString(2,nombre);
 						ps.setString(3,apellido);
 						ps.setString(4,matricula);
 						ps.setInt(5, id);
-					}
+					
 						
 					
 					
@@ -226,6 +219,7 @@ private JTextField txtId;
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Veterinario guardado");
+		                ControlFiles.addContent("Se ha modificado el veterinario "+nombre+" "+apellido);
 		                Tabla_Veterinario tv = new Tabla_Veterinario();
 						tv.setVisible(true);
 						dispose();
@@ -255,6 +249,11 @@ private JTextField txtId;
 		
 		cargarCampos(veterinario);
 		txtId.setText(veterinario);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(170, 137, 173, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
 		
 	}
 
