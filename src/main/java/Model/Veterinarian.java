@@ -3,7 +3,7 @@ package Model;
 public class Veterinarian {
 
 	protected int id_Veterinarian;
-	protected Address id_Address;
+	protected String address;
 	protected String name;
 	protected String surname;
 	protected String medical_License;
@@ -14,11 +14,12 @@ public class Veterinarian {
 	public void setId_Veterinarian(int id_Veterinarian) {
 		this.id_Veterinarian = id_Veterinarian;
 	}
-	public Address getId_Address() {
-		return id_Address;
+	
+	public String getAddress() {
+		return address;
 	}
-	public void setId_Address(Address id_Address) {
-		this.id_Address = id_Address;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getName() {
 		return name;
@@ -43,18 +44,18 @@ public class Veterinarian {
 		super();
 	}
 	
-	public Veterinarian(int id_Veterinarian, Address id_Address, String name, String surname, String medical_License) {
+	public Veterinarian(int id_Veterinarian, String address, String name, String surname, String medical_License) {
 		super();
 		this.id_Veterinarian = id_Veterinarian;
-		this.id_Address = id_Address;
+		this.address = address;
 		this.name = name;
 		this.surname = surname;
 		this.medical_License = medical_License;
 	}
 	
-	public Veterinarian(Address id_Address, String name, String surname, String medical_License) {
+	public Veterinarian(String address, String name, String surname, String medical_License) {
 		super();
-		this.id_Address = id_Address;
+		this.address = address;
 		this.name = name;
 		this.surname = surname;
 		this.medical_License = medical_License;

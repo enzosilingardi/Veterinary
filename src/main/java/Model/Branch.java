@@ -3,7 +3,7 @@ package Model;
 public class Branch {
 
 	protected int id_Branch;
-	protected Address id_Address;
+	protected String address;
 	
 	
 	public int getId_Branch() {
@@ -14,26 +14,26 @@ public class Branch {
 	}
 	
 	
-	public Address getId_Address() {
-		return id_Address;
+	public String getAddress() {
+		return address;
 	}
-	public void setId_Address(Address id_Address) {
-		this.id_Address = id_Address;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 	public Branch() {
 		super();
 	}
 	
-	public Branch(int id_Branch, Address id_Address) {
+	public Branch(int id_Branch, String address) {
 		super();
 		this.id_Branch = id_Branch;
-		this.id_Address = id_Address;
+		this.address = address;
 	}
 	
-	public Branch(Address id_Address) {
+	public Branch(String address) {
 		super();
-		this.id_Address = id_Address;
+		this.address = address;
 	}
 	
 	
