@@ -45,11 +45,10 @@ public class Main extends JFrame {
 	private ImageIcon imagen;
 	private Icon icono;
 	private JTable table;
-	private JDateChooser txtFecha;
 	
 
-	void mostrarTabla(String fecha){
-			Date date = Date.valueOf(fecha);
+	void mostrarTabla(){
+			
 		
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
@@ -62,11 +61,11 @@ public class Main extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT TOP 10 id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
 	        			+ "FROM Medical_Procedure\r\n"
 	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
 	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
-	        			+ "WHERE proced_Date = "+ date );
+	        			+ "ORDER BY proced_Date DESC" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
 	                datos[0] = rs.getString(1);
@@ -311,22 +310,6 @@ public class Main extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
-		txtFecha.setBounds(55, 31, 151, 20);
-		panel_1.add(txtFecha);
-		
-		JButton btnMostrar = new JButton("Mostrar turnos");
-		btnMostrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
-				
-				mostrarTabla(fecha);
-			}
-		});
-		btnMostrar.setBorder(null);
-		btnMostrar.setBounds(216, 31, 123, 23);
-		panel_1.add(btnMostrar);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(207, 110, 579, 453);
 		contentPane.add(scrollPane);
@@ -354,7 +337,7 @@ public class Main extends JFrame {
 		});
 		
 		
-		
+		mostrarTabla();
 		
 	}
 
