@@ -3,7 +3,7 @@ package Model;
 public class Client {
 
 	protected int id_Client;
-	protected Address id_Address;
+	protected String address;
 	protected String dni;
 	protected String name;
 	protected String surname;
@@ -19,11 +19,12 @@ public class Client {
 	public void setId_Client(int id_Client) {
 		this.id_Client = id_Client;
 	}
-	public Address getId_Address() {
-		return id_Address;
+	
+	public String getAddress() {
+		return address;
 	}
-	public void setId_Address(Address id_Address) {
-		this.id_Address = id_Address;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getDni() {
 		return dni;
@@ -72,13 +73,11 @@ public class Client {
 		super();
 	}
 	
-	
-	
-	public Client(int id_Client, Address id_Address, String dni, String name, String surname, String phone_Number,
+	public Client(int id_Client, String address, String dni, String name, String surname, String phone_Number,
 			String birthdate, String gender, String email) {
 		super();
 		this.id_Client = id_Client;
-		this.id_Address = id_Address;
+		this.address = address;
 		this.dni = dni;
 		this.name = name;
 		this.surname = surname;
@@ -87,10 +86,11 @@ public class Client {
 		this.gender = gender;
 		this.email = email;
 	}
-	public Client(Address id_Address, String dni, String name, String surname, String phone_Number, String birthdate,
+	
+	public Client(String address, String dni, String name, String surname, String phone_Number, String birthdate,
 			String gender, String email) {
 		super();
-		this.id_Address = id_Address;
+		this.address = address;
 		this.dni = dni;
 		this.name = name;
 		this.surname = surname;
@@ -99,6 +99,8 @@ public class Client {
 		this.gender = gender;
 		this.email = email;
 	}
+	
+	
 	
 	
 	

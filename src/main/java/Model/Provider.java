@@ -4,7 +4,7 @@ public class Provider {
 
 	protected int id_Provider;
 	protected Provider_Type id_Provider_Type;
-	protected Address id_Address;
+	protected String address;
 	protected String provider_Name;
 	protected String name;
 	protected String surname;
@@ -24,11 +24,12 @@ public class Provider {
 	public void setId_Provider_Type(Provider_Type id_Provider_Type) {
 		this.id_Provider_Type = id_Provider_Type;
 	}
-	public Address getId_Address() {
-		return id_Address;
+	
+	public String getAddress() {
+		return address;
 	}
-	public void setId_Address(Address id_Address) {
-		this.id_Address = id_Address;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	public String getProvider_Name() {
 		return provider_Name;
@@ -71,12 +72,12 @@ public class Provider {
 		super();
 	}
 	
-	public Provider(int id_Provider, Provider_Type id_Provider_Type, Address id_Address, String provider_Name,
-			String name, String surname, String phone_Number, String email, String cuit) {
+	public Provider(int id_Provider, Provider_Type id_Provider_Type, String address, String provider_Name, String name,
+			String surname, String phone_Number, String email, String cuit) {
 		super();
 		this.id_Provider = id_Provider;
 		this.id_Provider_Type = id_Provider_Type;
-		this.id_Address = id_Address;
+		this.address = address;
 		this.provider_Name = provider_Name;
 		this.name = name;
 		this.surname = surname;
@@ -85,11 +86,11 @@ public class Provider {
 		this.cuit = cuit;
 	}
 	
-	public Provider(Provider_Type id_Provider_Type, Address id_Address, String provider_Name, String name,
-			String surname, String phone_Number, String email, String cuit) {
+	public Provider(Provider_Type id_Provider_Type, String address, String provider_Name, String name, String surname,
+			String phone_Number, String email, String cuit) {
 		super();
 		this.id_Provider_Type = id_Provider_Type;
-		this.id_Address = id_Address;
+		this.address = address;
 		this.provider_Name = provider_Name;
 		this.name = name;
 		this.surname = surname;
@@ -97,6 +98,7 @@ public class Provider {
 		this.email = email;
 		this.cuit = cuit;
 	}
+	
 	
 	
 	

@@ -119,38 +119,7 @@ public class Tipo_Proveedor extends JFrame {
 		
 		
 	}
-	public int tipoEnUso(String nombre) {
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(Provider.id_Provider_Type)\r\n"
-					+ "FROM Provider_Type\r\n"
-					+ "JOIN Provider ON Provider.id_Provider_Type = Provider_Type.id_Provider_Type\r\n"
-					+ "WHERE Provider_Type.type_Name LIKE ? ;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, nombre);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
-	
+
 	
 	
 	private void limpiar() {
@@ -304,11 +273,11 @@ public class Tipo_Proveedor extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor modificado");
+		                JOptionPane.showMessageDialog(null, "Tipo modificado");
 		                ControlFiles.addContent("Se ha modificado el tipo de proveedor "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar proveedor");
+		                JOptionPane.showMessageDialog(null, "Error al modificar tipo");
 		                mostrarTabla();
 		            }
 					
