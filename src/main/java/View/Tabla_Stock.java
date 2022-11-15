@@ -27,6 +27,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Tabla_Stock extends JFrame {
 
@@ -270,12 +272,15 @@ public class Tabla_Stock extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
+		contentPane.setForeground(new Color(255, 255, 255));
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
 		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
@@ -283,15 +288,23 @@ public class Tabla_Stock extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setForeground(new Color(255, 255, 255));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnModificar = new JButton("Modificar cantidad");
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnModificar.setBorder(null);
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setForeground(new Color(255, 255, 255));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -372,6 +385,10 @@ public class Tabla_Stock extends JFrame {
 		contentPane.add(btnModificar);
 		
 		JButton btnAgregar = new JButton("Agregar a stock");
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnAgregar.setBorder(null);
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setForeground(new Color(255, 255, 255));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Sucursal_Producto sp = new Sucursal_Producto();
@@ -383,6 +400,10 @@ public class Tabla_Stock extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnEliminar = new JButton("Eliminar de stock");
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setForeground(new Color(255, 255, 255));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;

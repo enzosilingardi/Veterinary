@@ -230,5 +230,15 @@ public class Login extends JFrame {
 		
 
 		setScaleImage(lblLogo,"src/main/java/images/vet.png");
+		
+		JLabel lblUserIcon = new JLabel("");
+		lblUserIcon.setBounds(260, 78, 26, 26);
+		contentPane.add(lblUserIcon);
+		setScaleImage(lblUserIcon,"src/main/java/images/user.png");
+		
+		JLabel lblPasswordIcon = new JLabel("");
+		lblPasswordIcon.setBounds(258, 145, 32, 32);
+		contentPane.add(lblPasswordIcon);
+		setScaleImage(lblPasswordIcon,"src/main/java/images/pass.png");
 	}
 }

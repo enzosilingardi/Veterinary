@@ -20,6 +20,8 @@ import javax.swing.table.DefaultTableModel;
 import Control.Connect;
 import Model.ControlFiles;
 import View.Instrumento_Quirofano.ComboItem;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Tabla_Turnos extends JFrame {
 
@@ -234,14 +236,17 @@ public class Tabla_Turnos extends JFrame {
 	public Tabla_Turnos() {
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 612, 400);
+		setBounds(100, 100, 612, 380);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(40, 11, 516, 238);
 		contentPane.add(scrollPane);
 		
@@ -249,35 +254,51 @@ public class Tabla_Turnos extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setBorder(null);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(497, 327, 89, 23);
+		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnVeterinario = new JButton("Asociar veterinario");
+		btnVeterinario.setForeground(new Color(255, 255, 255));
+		btnVeterinario.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVeterinario.setBackground(new Color(86, 211, 243));
+		btnVeterinario.setBorder(null);
 		btnVeterinario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Procedimiento_Veterinario pv = new Procedimiento_Veterinario();
 				pv.setVisible(true);
 			}
 		});
-		btnVeterinario.setBounds(40, 289, 155, 23);
+		btnVeterinario.setBounds(202, 309, 150, 23);
 		contentPane.add(btnVeterinario);
 		
 		JButton btnSucursal = new JButton("Asociar sucursal");
+		btnSucursal.setForeground(new Color(255, 255, 255));
+		btnSucursal.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnSucursal.setBackground(new Color(86, 211, 243));
+		btnSucursal.setBorder(null);
 		btnSucursal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Procedimiento_Sucursal ps = new Procedimiento_Sucursal();
 				ps.setVisible(true);
 			}
 		});
-		btnSucursal.setBounds(40, 323, 155, 23);
+		btnSucursal.setBounds(40, 309, 150, 23);
 		contentPane.add(btnSucursal);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setBorder(null);
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -287,10 +308,14 @@ public class Tabla_Turnos extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(205, 255, 155, 23);
+		btnModificar.setBounds(146, 260, 100, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setBorder(null);
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -324,10 +349,14 @@ public class Tabla_Turnos extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(370, 255, 155, 23);
+		btnEliminar.setBounds(252, 260, 100, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar turno");
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Procedimiento_Medico pm = new Procedimiento_Medico();
@@ -335,7 +364,7 @@ public class Tabla_Turnos extends JFrame {
 				dispose();
 			}
 		});
-		btnAgregar.setBounds(40, 255, 155, 23);
+		btnAgregar.setBounds(40, 260, 100, 23);
 		contentPane.add(btnAgregar);
 		
 		mostrarTabla();

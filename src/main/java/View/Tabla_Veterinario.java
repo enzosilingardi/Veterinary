@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import Model.ControlFiles;
+import java.awt.Font;
+import java.awt.Color;
 
 public class Tabla_Veterinario extends JFrame {
 
@@ -194,12 +196,15 @@ public class Tabla_Veterinario extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
@@ -207,25 +212,37 @@ public class Tabla_Veterinario extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnRel = new JButton("Añadir a sucursal");
+		btnRel.setForeground(new Color(255, 255, 255));
+		btnRel.setBorder(null);
+		btnRel.setBackground(new Color(86, 211, 243));
+		btnRel.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnRel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Veterinario_Sucursal vs = new Veterinario_Sucursal();
 				vs.setVisible(true);
 			}
 		});
-		btnRel.setBounds(40, 309, 188, 23);
+		btnRel.setBounds(40, 309, 150, 23);
 		contentPane.add(btnRel);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setBorder(null);
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -235,10 +252,14 @@ public class Tabla_Veterinario extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(139, 270, 89, 23);
+		btnModificar.setBounds(137, 260, 91, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -272,10 +293,14 @@ public class Tabla_Veterinario extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(238, 270, 89, 23);
+		btnEliminar.setBounds(233, 260, 91, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setBorder(null);
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Veterinario veterinario = new Veterinario();
@@ -283,7 +308,7 @@ public class Tabla_Veterinario extends JFrame {
 				dispose();
 			}
 		});
-		btnAgregar.setBounds(40, 270, 89, 23);
+		btnAgregar.setBounds(40, 260, 91, 23);
 		contentPane.add(btnAgregar);
 		
 		mostrarTabla();

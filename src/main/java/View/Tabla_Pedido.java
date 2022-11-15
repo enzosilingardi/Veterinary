@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import Model.ControlFiles;
+import java.awt.Font;
+import java.awt.Color;
 
 public class Tabla_Pedido extends JFrame {
 
@@ -185,12 +187,15 @@ public class Tabla_Pedido extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(255, 255, 255));
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
 		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
@@ -198,15 +203,23 @@ public class Tabla_Pedido extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnRel = new JButton("Realizar pedido");
+		btnRel.setForeground(new Color(255, 255, 255));
+		btnRel.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnRel.setBorder(null);
+		btnRel.setBackground(new Color(86, 211, 243));
 		btnRel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Pedidos pedido = new Pedidos();
@@ -214,10 +227,14 @@ public class Tabla_Pedido extends JFrame {
 				dispose();
 			}
 		});
-		btnRel.setBounds(40, 309, 188, 23);
+		btnRel.setBounds(40, 309, 109, 23);
 		contentPane.add(btnRel);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnModificar.setBorder(null);
+		btnModificar.setBackground(new Color(86, 211, 243));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -227,10 +244,14 @@ public class Tabla_Pedido extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(40, 260, 89, 23);
+		btnModificar.setBounds(40, 260, 91, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(new Color(86, 211, 243));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -264,7 +285,7 @@ public class Tabla_Pedido extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(139, 260, 89, 23);
+		btnEliminar.setBounds(139, 260, 91, 23);
 		contentPane.add(btnEliminar);
 		
 		mostrarTabla();

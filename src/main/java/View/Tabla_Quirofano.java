@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import Model.ControlFiles;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Tabla_Quirofano extends JFrame {
 
@@ -90,12 +92,14 @@ public class Tabla_Quirofano extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
 		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
@@ -103,12 +107,16 @@ public class Tabla_Quirofano extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(452, 311, 89, 23);
 		contentPane.add(btnVolver);
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {

@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Tabla_Sucursales extends JFrame {
 
@@ -304,14 +306,17 @@ public class Tabla_Sucursales extends JFrame {
 		// TODO Auto-generated constructor stub
 		setTitle("Sucursales");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 623, 382);
+		setBounds(100, 100, 623, 364);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(40, 11, 302, 300);
 		contentPane.add(scrollPane);
 		
@@ -319,16 +324,24 @@ public class Tabla_Sucursales extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(508, 309, 89, 23);
+		btnVolver.setBounds(484, 288, 89, 23);
 		contentPane.add(btnVolver);
 		
 		
 		btnModificar = new JButton("Modificar");
+		btnModificar.setBorder(null);
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -371,10 +384,14 @@ public class Tabla_Sucursales extends JFrame {
 				
 			}
 		});
-		btnModificar.setBounds(508, 106, 89, 23);
+		btnModificar.setBounds(484, 83, 89, 23);
 		contentPane.add(btnModificar);
 		
 		btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(null);
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String direccion = txtDireccion.getText();
@@ -416,10 +433,14 @@ public class Tabla_Sucursales extends JFrame {
 				}
 			}
 		});
-		btnAgregar.setBounds(392, 106, 89, 23);
+		btnAgregar.setBounds(385, 83, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -453,16 +474,17 @@ public class Tabla_Sucursales extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(454, 155, 91, 23);
+		btnEliminar.setBounds(435, 122, 91, 23);
 		contentPane.add(btnEliminar);
 		
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(470, 44, 127, 20);
+		txtDireccion.setBounds(446, 44, 127, 20);
 		contentPane.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
 		JLabel lblDireccion = new JLabel("Dirección");
-		lblDireccion.setBounds(392, 47, 76, 14);
+		lblDireccion.setFont(new Font("Roboto", Font.PLAIN, 12));
+		lblDireccion.setBounds(385, 47, 59, 14);
 		contentPane.add(lblDireccion);
 		
 		mostrarTabla();

@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import Model.ControlFiles;
+import java.awt.Font;
+import java.awt.Color;
 
 public class Tabla_Historial extends JFrame {
 
@@ -188,12 +190,14 @@ public class Tabla_Historial extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 424);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(28, 11, 729, 305);
 		contentPane.add(scrollPane);
 		
@@ -201,6 +205,10 @@ public class Tabla_Historial extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setBorder(null);
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -210,6 +218,10 @@ public class Tabla_Historial extends JFrame {
 		contentPane.add(btnVolver);
 		
 		JButton btnHistoriales = new JButton("Agregar");
+		btnHistoriales.setBackground(new Color(86, 211, 243));
+		btnHistoriales.setBorder(null);
+		btnHistoriales.setForeground(new Color(255, 255, 255));
+		btnHistoriales.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnHistoriales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Historial_Medico hm = new Historial_Medico();
@@ -217,10 +229,14 @@ public class Tabla_Historial extends JFrame {
 				dispose();
 			}
 		});
-		btnHistoriales.setBounds(28, 337, 89, 23);
+		btnHistoriales.setBounds(28, 337, 91, 23);
 		contentPane.add(btnHistoriales);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setBorder(null);
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -254,10 +270,14 @@ public class Tabla_Historial extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(226, 337, 89, 23);
+		btnEliminar.setBounds(226, 337, 91, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setBorder(null);
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -267,7 +287,7 @@ public class Tabla_Historial extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(127, 337, 89, 23);
+		btnModificar.setBounds(127, 337, 91, 23);
 		contentPane.add(btnModificar);
 		
 		mostrarTabla();

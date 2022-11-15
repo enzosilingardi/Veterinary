@@ -22,6 +22,8 @@ import Control.Connect;
 import Model.ControlFiles;
 
 import javax.swing.JComboBox;
+import java.awt.Color;
+import java.awt.Font;
 
 public class Tabla_Usuarios extends JFrame {
 
@@ -264,14 +266,16 @@ public class Tabla_Usuarios extends JFrame {
 	public Tabla_Usuarios() {
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 678, 429);
+		setBounds(100, 100, 678, 398);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
 		scrollPane.setBounds(40, 11, 583, 238);
 		contentPane.add(scrollPane);
 		
@@ -279,25 +283,37 @@ public class Tabla_Usuarios extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setBorder(null);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(563, 356, 89, 23);
+		btnVolver.setBounds(534, 327, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnRel = new JButton("Añadir a sucursal");
+		btnRel.setForeground(new Color(255, 255, 255));
+		btnRel.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnRel.setBackground(new Color(86, 211, 243));
+		btnRel.setBorder(null);
 		btnRel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Usuario_Sucursal us = new Usuario_Sucursal();
 				us.setVisible(true);
 			}
 		});
-		btnRel.setBounds(41, 356, 161, 23);
+		btnRel.setBounds(40, 327, 150, 23);
 		contentPane.add(btnRel);
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Usuario usuario = new Usuario();
@@ -305,10 +321,14 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnAgregar.setBounds(40, 319, 89, 23);
+		btnAgregar.setBounds(40, 272, 91, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setBorder(null);
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -318,10 +338,14 @@ public class Tabla_Usuarios extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(139, 319, 89, 23);
+		btnModificar.setBounds(139, 272, 91, 23);
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setBorder(null);
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -355,15 +379,23 @@ public class Tabla_Usuarios extends JFrame {
 				}
 			}
 		});
-		btnEliminar.setBounds(238, 319, 89, 23);
+		btnEliminar.setBounds(238, 272, 91, 23);
 		contentPane.add(btnEliminar);
 		
 		cbPerfil = new JComboBox();
+		cbPerfil.setForeground(new Color(255, 255, 255));
+		cbPerfil.setFont(new Font("Roboto", Font.BOLD, 14));
+		cbPerfil.setBackground(new Color(86, 211, 243));
+		cbPerfil.setBorder(null);
 		cbPerfil.setBounds(380, 272, 116, 22);
 		contentPane.add(cbPerfil);
 		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
 		
 		JButton btnMostrar = new JButton("Mostrar");
+		btnMostrar.setForeground(new Color(255, 255, 255));
+		btnMostrar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnMostrar.setBackground(new Color(86, 211, 243));
+		btnMostrar.setBorder(null);
 		btnMostrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String per = cbPerfil.getSelectedItem().toString();

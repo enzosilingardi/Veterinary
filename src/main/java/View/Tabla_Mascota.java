@@ -19,6 +19,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import Model.ControlFiles;
+import java.awt.Font;
+import java.awt.Color;
 
 public class Tabla_Mascota extends JFrame {
 
@@ -191,12 +193,14 @@ public class Tabla_Mascota extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 382);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(40, 11, 516, 238);
 		contentPane.add(scrollPane);
 		
@@ -204,6 +208,10 @@ public class Tabla_Mascota extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -215,6 +223,10 @@ public class Tabla_Mascota extends JFrame {
 
 		
 		btnModificar = new JButton("Modificar");
+		btnModificar.setBorder(null);
+		btnModificar.setBackground(new Color(86, 211, 243));
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -224,10 +236,14 @@ public class Tabla_Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnModificar.setBounds(139, 277, 89, 23);
+		btnModificar.setBounds(139, 277, 91, 23);
 		contentPane.add(btnModificar);
 		
 		btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(null);
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Mascota mascota = new Mascota();
@@ -239,6 +255,10 @@ public class Tabla_Mascota extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(new Color(86, 211, 243));
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
