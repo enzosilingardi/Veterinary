@@ -94,12 +94,15 @@ public class Tabla_Pedido extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(255, 255, 255));
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
 		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
@@ -107,76 +110,92 @@ public class Tabla_Pedido extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
-		JButton btnRel = new JButton("Realizar pedido");
-		btnRel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Pedidos pedido = new Pedidos();
-				pedido.setVisible(true);
-				dispose();
-			}
-		});
-		btnRel.setBounds(40, 309, 188, 23);
-		contentPane.add(btnRel);
-		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				
-				Modificar_Pedido mp = new Modificar_Pedido(table.getValueAt(fila,0).toString());
-				mp.setVisible(true);
-				dispose();
-			}
-		});
-		btnModificar.setBounds(40, 260, 89, 23);
-		contentPane.add(btnModificar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result = 0;
-				int fila = table.getSelectedRow();
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Orders WHERE id_Order = ?" );
-					
-						ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Pedido eliminado");
-		                ControlFiles.addContent("Se ha eliminado un pedido de "+table.getValueAt(fila,1).toString()+" para la sucursal "+table.getValueAt(fila,3).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Pedido está en uso, por favor elimine todos los registros relacionados");
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			JButton btnRel = new JButton("Realizar pedido");
+			btnRel.setForeground(new Color(255, 255, 255));
+			btnRel.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnRel.setBorder(null);
+			btnRel.setBackground(new Color(86, 211, 243));
+			btnRel.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Pedidos pedido = new Pedidos();
+					pedido.setVisible(true);
+					dispose();
 				}
-			}
-		});
-		btnEliminar.setBounds(139, 260, 89, 23);
-		contentPane.add(btnEliminar);
+			});
+			btnRel.setBounds(40, 309, 109, 23);
+			contentPane.add(btnRel);
+			
+			JButton btnModificar = new JButton("Modificar");
+			btnModificar.setForeground(new Color(255, 255, 255));
+			btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnModificar.setBorder(null);
+			btnModificar.setBackground(new Color(86, 211, 243));
+			btnModificar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int fila = table.getSelectedRow();
+					
+					Modificar_Pedido mp = new Modificar_Pedido(table.getValueAt(fila,0).toString());
+					mp.setVisible(true);
+					dispose();
+				}
+			});
+			btnModificar.setBounds(40, 260, 91, 23);
+			contentPane.add(btnModificar);
+			
+			JButton btnEliminar = new JButton("Eliminar");
+			btnEliminar.setForeground(new Color(255, 255, 255));
+			btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnEliminar.setBorder(null);
+			btnEliminar.setBackground(new Color(86, 211, 243));
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = 0;
+					int fila = table.getSelectedRow();
+					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					
+					try {
+						Connection con = Connect.getConexion();
+						PreparedStatement ps = con.prepareStatement("DELETE FROM Orders WHERE id_Order = ?" );
+						
+							ps.setInt(1, id);
+						
+						
+						result = ps.executeUpdate();
+						
+						if(result > 0){
+			                JOptionPane.showMessageDialog(null, "Pedido eliminado");
+			                ControlFiles.addContent("Se ha eliminado un pedido de "+table.getValueAt(fila,1).toString()+" para la sucursal "+table.getValueAt(fila,3).toString());
+			               mostrarTabla();
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");
+			                
+			            }
+						con.close();
+					}catch(SQLException E) {
+						E.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Pedido está en uso, por favor elimine todos los registros relacionados");
+					}catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnEliminar.setBounds(139, 260, 91, 23);
+			contentPane.add(btnEliminar);
 		}
 		mostrarTabla();
 	}

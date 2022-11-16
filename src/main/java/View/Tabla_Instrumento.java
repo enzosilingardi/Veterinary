@@ -87,12 +87,14 @@ public class Tabla_Instrumento extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(new Color(240, 240, 240));
 		scrollPane.setBounds(40, 11, 501, 238);
 		contentPane.add(scrollPane);
 		
@@ -100,113 +102,133 @@ public class Tabla_Instrumento extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(467, 309, 89, 23);
+		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
-		JButton btnRel = new JButton("Añadir a quirófano");
-		btnRel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Instrumento_Quirofano iq = new Instrumento_Quirofano();
-				iq.setVisible(true);
-			}
-		});
-		btnRel.setBounds(40, 309, 188, 23);
-		contentPane.add(btnRel);
-		
-		JButton btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				String nombre = table.getValueAt(fila,1).toString();
-				String descripcion = table.getValueAt(fila,2).toString();
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Instrument SET instrument_Name = ?, instrument_Description = ? WHERE id_Medical_Instrument = ?");
-					ps.setString(1, nombre);
-					ps.setString(2, descripcion);
-					ps.setInt(3, id);
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento modificado");
-		                ControlFiles.addContent("Se ha modificado el instrumento "+table.getValueAt(fila,1).toString());
-		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar instrumento");
-		                mostrarTabla();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			JButton btnRel = new JButton("Añadir a quirófano");
+			btnRel.setForeground(new Color(255, 255, 255));
+			btnRel.setBorder(null);
+			btnRel.setBackground(new Color(86, 211, 243));
+			btnRel.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnRel.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Instrumento_Quirofano iq = new Instrumento_Quirofano();
+					iq.setVisible(true);
 				}
-			}
-		});
-		btnModificar.setBounds(141, 270, 89, 23);
-		contentPane.add(btnModificar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result = 0;
-				int fila = table.getSelectedRow();
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE id_Medical_Instrument = ?" );
+			});
+			btnRel.setBounds(40, 309, 146, 23);
+			contentPane.add(btnRel);
+			
+			JButton btnModificar = new JButton("Modificar");
+			btnModificar.setForeground(new Color(255, 255, 255));
+			btnModificar.setBorder(null);
+			btnModificar.setBackground(new Color(86, 211, 243));
+			btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnModificar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int fila = table.getSelectedRow();
 					
-						ps.setInt(1, id);
+					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					String nombre = table.getValueAt(fila,1).toString();
+					String descripcion = table.getValueAt(fila,2).toString();
+					int result = 0;
 					
+					try {
+						Connection con = Connect.getConexion();
+						PreparedStatement ps = con.prepareStatement("UPDATE Medical_Instrument SET instrument_Name = ?, instrument_Description = ? WHERE id_Medical_Instrument = ?");
+						ps.setString(1, nombre);
+						ps.setString(2, descripcion);
+						ps.setInt(3, id);
+						
+						result = ps.executeUpdate();
+						
+						if(result > 0){
+			                JOptionPane.showMessageDialog(null, "Instrumento modificado");
+			                ControlFiles.addContent("Se ha modificado el instrumento "+table.getValueAt(fila,1).toString());
+			                mostrarTabla();
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error al modificar instrumento");
+			                mostrarTabla();
+			            }
 					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
-		                ControlFiles.addContent("Se ha eliminado el instrumento "+table.getValueAt(fila,1).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Instrumento está en uso, por favor elimine todos los registros relacionados");
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+						con.close();
+					}catch(SQLException E) {
+						E.printStackTrace();
+					}catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-			}
-		});
-		btnEliminar.setBounds(240, 270, 89, 23);
-		contentPane.add(btnEliminar);
-		
-		JButton btnAgregar = new JButton("Agregar");
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Instrumento instrumento = new Instrumento();
-				instrumento.setVisible(true);
-				dispose();
-			}
-		});
-		btnAgregar.setBounds(40, 270, 91, 23);
-		contentPane.add(btnAgregar);
+			});
+			btnModificar.setBounds(139, 270, 91, 23);
+			contentPane.add(btnModificar);
+			
+			JButton btnEliminar = new JButton("Eliminar");
+			btnEliminar.setForeground(new Color(255, 255, 255));
+			btnEliminar.setBorder(null);
+			btnEliminar.setBackground(new Color(86, 211, 243));
+			btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = 0;
+					int fila = table.getSelectedRow();
+					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					
+					try {
+						Connection con = Connect.getConexion();
+						PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Instrument WHERE id_Medical_Instrument = ?" );
+						
+							ps.setInt(1, id);
+						
+						
+						result = ps.executeUpdate();
+						
+						if(result > 0){
+			                JOptionPane.showMessageDialog(null, "Instrumento eliminado");
+			                ControlFiles.addContent("Se ha eliminado el instrumento "+table.getValueAt(fila,1).toString());
+			               mostrarTabla();
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error al eliminar instrumento");
+			                
+			            }
+						con.close();
+					}catch(SQLException E) {
+						E.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Instrumento está en uso, por favor elimine todos los registros relacionados");
+					}catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnEliminar.setBounds(237, 270, 91, 23);
+			contentPane.add(btnEliminar);
+			
+			JButton btnAgregar = new JButton("Agregar");
+			btnAgregar.setForeground(new Color(255, 255, 255));
+			btnAgregar.setBorder(null);
+			btnAgregar.setBackground(new Color(86, 211, 243));
+			btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnAgregar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Instrumento instrumento = new Instrumento();
+					instrumento.setVisible(true);
+					dispose();
+				}
+			});
+			btnAgregar.setBounds(40, 270, 91, 23);
+			contentPane.add(btnAgregar);
 		
 		}
 		

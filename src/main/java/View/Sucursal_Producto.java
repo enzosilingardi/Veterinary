@@ -128,7 +128,7 @@ public class Sucursal_Producto extends JFrame {
 				try {
 					Sucursal_Producto frame = new Sucursal_Producto();
 					frame.setVisible(true);
-					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+					
 					
 				} catch (Exception e) {
 					e.printStackTrace();

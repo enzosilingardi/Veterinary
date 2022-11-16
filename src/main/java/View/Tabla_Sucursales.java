@@ -136,14 +136,17 @@ public class Tabla_Sucursales extends JFrame {
 	public Tabla_Sucursales(String perfil) {
 		setTitle("Sucursales");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 623, 382);
+		setBounds(100, 100, 623, 364);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Roboto", Font.PLAIN, 12));
+		scrollPane.setBackground(new Color(255, 255, 255));
 		scrollPane.setBounds(40, 11, 302, 300);
 		contentPane.add(scrollPane);
 		
@@ -151,152 +154,171 @@ public class Tabla_Sucursales extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBorder(null);
+		btnVolver.setBackground(new Color(86, 211, 243));
+		btnVolver.setForeground(new Color(255, 255, 255));
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(508, 309, 89, 23);
+		btnVolver.setBounds(484, 288, 89, 23);
 		contentPane.add(btnVolver);
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {
 		
-		btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				
-				String direccion = table.getValueAt(fila,1).toString();
-				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
+
+			btnModificar = new JButton("Modificar");
+			btnModificar.setBorder(null);
+			btnModificar.setBackground(new Color(86, 211, 243));
+			btnModificar.setForeground(new Color(255, 255, 255));
+			btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnModificar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int fila = table.getSelectedRow();
 					
+					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					
-					ps.setString(1, direccion);
+					String direccion = table.getValueAt(fila,1).toString();
 					
-					ps.setInt(2, id);
+					int result = 0;
 					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal modificada");
-		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
-		                limpiar();
-		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		btnModificar.setBounds(508, 106, 89, 23);
-		contentPane.add(btnModificar);
-		
-		btnAgregar = new JButton("Agregar");
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String direccion = txtDireccion.getText();
-				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
-					
-					
-					
-					if(existeSucursal(direccion)!=0) {
-						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
-					}else {
-						ps.setString(1, direccion);
-					}
+					try {
+						Connection con = Connect.getConexion();
+						PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
 						
+						
+						ps.setString(1, direccion);
+						
+						ps.setInt(2, id);
+						
+						
+						result = ps.executeUpdate();
+						
+						if(result > 0){
+			                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+			                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
+			                limpiar();
+			                mostrarTabla();
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");
+			                limpiar();
+			            }
 					
+						con.close();
+					}catch(SQLException E) {
+						E.printStackTrace();
+					}catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal guardada");
-		                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
-		                limpiar();
-		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
-			}
-		});
-		btnAgregar.setBounds(392, 106, 89, 23);
-		contentPane.add(btnAgregar);
-		
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result = 0;
-				int fila = table.getSelectedRow();
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
+			});
+			btnModificar.setBounds(484, 83, 89, 23);
+			contentPane.add(btnModificar);
+			
+			btnAgregar = new JButton("Agregar");
+			btnAgregar.setBorder(null);
+			btnAgregar.setBackground(new Color(86, 211, 243));
+			btnAgregar.setForeground(new Color(255, 255, 255));
+			btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnAgregar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String direccion = txtDireccion.getText();
 					
-						ps.setInt(1, id);
+					int result = 0;
 					
+					try {
+						Connection con = Connect.getConexion();
+						PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
+						
+						
+						
+						if(existeSucursal(direccion)!=0) {
+							JOptionPane.showMessageDialog(null, "Sucursal ya existe");
+						}else {
+							ps.setString(1, direccion);
+						}
+							
+						
+						
+						result = ps.executeUpdate();
+						
+						if(result > 0){
+			                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+			                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
+			                limpiar();
+			                mostrarTabla();
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
+			                limpiar();
+			            }
 					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
-		                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+						con.close();
+					}catch(SQLException E) {
+						E.printStackTrace();
+					}catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-			}
-		});
-		btnEliminar.setBounds(454, 155, 91, 23);
-		contentPane.add(btnEliminar);
+			});
+			btnAgregar.setBounds(385, 83, 89, 23);
+			contentPane.add(btnAgregar);
+			
+			btnEliminar = new JButton("Eliminar");
+			btnEliminar.setBorder(null);
+			btnEliminar.setBackground(new Color(86, 211, 243));
+			btnEliminar.setForeground(new Color(255, 255, 255));
+			btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+			btnEliminar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int result = 0;
+					int fila = table.getSelectedRow();
+					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					
+					try {
+						Connection con = Connect.getConexion();
+						PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
+						
+							ps.setInt(1, id);
+						
+						
+						result = ps.executeUpdate();
+						
+						if(result > 0){
+			                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
+			                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
+			               mostrarTabla();
+			            } else {
+			                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");
+			                
+			            }
+						con.close();
+					}catch(SQLException E) {
+						E.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");
+					}catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
+			btnEliminar.setBounds(435, 122, 91, 23);
+			contentPane.add(btnEliminar);
 		}
 		
+
 		txtDireccion = new JTextField();
-		txtDireccion.setBounds(470, 44, 127, 20);
+		txtDireccion.setBounds(446, 44, 127, 20);
 		contentPane.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
 		JLabel lblDireccion = new JLabel("Dirección");
-		lblDireccion.setBounds(392, 47, 76, 14);
+		lblDireccion.setFont(new Font("Roboto", Font.PLAIN, 12));
+		lblDireccion.setBounds(385, 47, 59, 14);
 		contentPane.add(lblDireccion);
 		
 		mostrarTabla();
