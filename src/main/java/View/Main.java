@@ -299,9 +299,21 @@ public class Main extends JFrame {
 		mnVentas.add(mntmPedidos);
 		
 		JMenuItem mntmFacturacion = new JMenuItem("Facturacion");
+		mntmFacturacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Factura factura = new Factura();
+				factura.setVisible(true);
+			}
+		});
 		mnVentas.add(mntmFacturacion);
 		
 		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
+		mntmPresupuestos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Presupuesto presupuesto = new Presupuesto();
+				presupuesto.setVisible(true);
+			}
+		});
 		mnVentas.add(mntmPresupuestos);
 		
 		JPanel panel_1 = new JPanel();

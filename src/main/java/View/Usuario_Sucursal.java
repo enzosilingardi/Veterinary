@@ -102,8 +102,7 @@ public class Usuario_Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();
 			String SSQL = "Select *\r\n"
-					+ "FROM Branch\r\n"
-					+ "ORDER BY Branch.id_Address";
+					+ "FROM Branch";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));
