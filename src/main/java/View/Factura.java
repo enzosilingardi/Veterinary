@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 
@@ -30,6 +31,9 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Factura extends JFrame {
 
@@ -41,8 +45,14 @@ public class Factura extends JFrame {
 	private JDateChooser txtFecha;
 	private JTextField txtIva;
 	private JTextField txtTotal;
-	private JTextPane txtProductos;
 	private JTextField txtCliente;
+	private JTextField txtCuit;
+	private JTextField txtDom;
+	private JTextField txtDni;
+	private JTextField txtDir;
+	private JComboBox cbCon;
+	private JTable table;
+	private JComboBox cbPro;
 
 	class ComboItem
 	{
@@ -149,7 +159,37 @@ public class Factura extends JFrame {
 			modelo.addElement(new ComboItem("",""));
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("id_Branch"),result.getString("id_Branch")));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return modelo;
+    }
+	
+
+	public DefaultComboBoxModel cargarProducto() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			modelo.addElement(new ComboItem("",""));
+			
+			while (result.next()) {
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));
 				
 			}
 			cn.close();
@@ -179,7 +219,9 @@ public class Factura extends JFrame {
 	}
 
 	public void generar(String nombre) throws FileNotFoundException,DocumentException {
-		if(!(txtNro.getText().isEmpty() || txtProductos.getText().isEmpty() || txtIva.getText().isEmpty() || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") )) {
+		if(!(txtNro.getText().isEmpty() || txtIva.getText().isEmpty() || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") || txtDir.getText().isEmpty() || txtDom.getText().isEmpty() || txtDni.getText().isEmpty() || txtCuit.getText().isEmpty() )) {
+			Object punto = cbPunto.getSelectedItem();
+			
 			FileOutputStream archivo = new FileOutputStream("c:/rsc/Factura "+nombre+".pdf");
 			Document documento = new Document();
 			PdfWriter.getInstance(documento, archivo);
@@ -189,18 +231,38 @@ public class Factura extends JFrame {
 			parrafo.setAlignment(1);
 			documento.add(parrafo);
 			
+			
 			Paragraph parrafoT = new Paragraph(cbTipo.getSelectedItem().toString());
 			parrafoT.setAlignment(1);
 			documento.add(parrafoT);
 			
-			documento.add(new Paragraph("Cliente: "+txtCliente.getText()));
-			documento.add(new Paragraph("Emisor: "+cbEmisor.getSelectedItem().toString()));
+			documento.add(new Paragraph("Punto de Venta: "+((ComboItem) punto).getValue()));
 			documento.add(new Paragraph("Nro de Comprobante: "+txtNro.getText()));
-			documento.add(new Paragraph("IVA: "+txtIva.getText()));
-			documento.add(new Paragraph("Punto de Venta: "+cbPunto.getSelectedItem().toString()));
+			documento.add(new Paragraph("Emisor: "+cbEmisor.getSelectedItem().toString()));
+			documento.add(new Paragraph("CUIT: "+txtCuit.getText()));
+			documento.add(new Paragraph("Direccion Fiscal: "+txtDir.getText()));
 			documento.add(new Paragraph(" "));
-			documento.add(new Paragraph("Productos / Cantidad / Precio Unitario"));
-			documento.add(new Paragraph(txtProductos.getText()));
+			documento.add(new Paragraph(" "));
+			documento.add(new Paragraph("Cliente: "+txtCliente.getText()));
+			documento.add(new Paragraph("DNI: "+txtDni.getText()));
+			documento.add(new Paragraph("Domicilio: "+txtDom.getText()));
+			documento.add(new Paragraph("Condición frente al IVA: "+cbCon.getSelectedItem().toString()));
+			documento.add(new Paragraph("IVA: "+txtIva.getText()));
+			documento.add(new Paragraph(" "));
+			PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
+	          
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                pdfTable.addCell(table.getColumnName(i));
+            }
+      
+            for (int rows = 0; rows < table.getRowCount(); rows++) {
+                for (int cols = 0; cols < table.getColumnCount(); cols++) {
+                    pdfTable.addCell(table.getModel().getValueAt(rows, cols).toString());
+
+                }
+            }
+            documento.add(pdfTable);
+			documento.add(new Paragraph(" "));
 			documento.add(new Paragraph("Precio Total: "+txtTotal.getText()));
 			
 			documento.close();
@@ -218,7 +280,7 @@ public class Factura extends JFrame {
 	 */
 	public Factura() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 655, 496);
+		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -231,15 +293,15 @@ public class Factura extends JFrame {
 		
 		cbTipo = new JComboBox();
 		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C"}));
-		cbTipo.setBounds(158, 7, 114, 22);
+		cbTipo.setBounds(110, 7, 33, 22);
 		contentPane.add(cbTipo);
 		
 		JLabel lblNro = new JLabel("Número de comprobante");
-		lblNro.setBounds(326, 11, 147, 14);
+		lblNro.setBounds(433, 11, 147, 14);
 		contentPane.add(lblNro);
 		
 		txtNro = new JTextField();
-		txtNro.setBounds(483, 8, 107, 20);
+		txtNro.setBounds(590, 8, 107, 20);
 		contentPane.add(txtNro);
 		txtNro.setColumns(10);
 		
@@ -257,45 +319,37 @@ public class Factura extends JFrame {
 		cbEmisor.setModel(cargarUsuario());
 		
 		JLabel lblPunto = new JLabel("Punto de venta");
-		lblPunto.setBounds(10, 112, 114, 14);
+		lblPunto.setBounds(181, 11, 114, 14);
 		contentPane.add(lblPunto);
 		
 		cbPunto = new JComboBox();
-		cbPunto.setBounds(158, 108, 114, 22);
+		cbPunto.setBounds(272, 7, 114, 22);
 		contentPane.add(cbPunto);
 		cbPunto.setModel(cargarSucursal());
 		
 		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setBounds(326, 112, 76, 14);
+		lblFecha.setBounds(330, 153, 76, 14);
 		contentPane.add(lblFecha);
 		
 		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
-		txtFecha.setBounds(435, 109, 107, 20);
+		txtFecha.setBounds(439, 150, 107, 20);
 		contentPane.add(txtFecha);
 		
 		JLabel lblIva = new JLabel("IVA");
-		lblIva.setBounds(10, 168, 46, 14);
+		lblIva.setBounds(302, 206, 46, 14);
 		contentPane.add(lblIva);
 		
 		txtIva = new JTextField();
-		txtIva.setBounds(158, 165, 86, 20);
+		txtIva.setBounds(358, 203, 86, 20);
 		contentPane.add(txtIva);
 		txtIva.setColumns(10);
 		
-		txtProductos = new JTextPane();
-		txtProductos.setBounds(10, 260, 336, 113);
-		contentPane.add(txtProductos);
-		
-		JLabel lblProductos = new JLabel("Productos / Cantidad / Precio Unitario");
-		lblProductos.setBounds(10, 235, 234, 14);
-		contentPane.add(lblProductos);
-		
 		JLabel lblTotal = new JLabel("Precio Total");
-		lblTotal.setBounds(409, 235, 90, 14);
+		lblTotal.setBounds(500, 290, 90, 14);
 		contentPane.add(lblTotal);
 		
 		txtTotal = new JTextField();
-		txtTotal.setBounds(409, 260, 86, 20);
+		txtTotal.setBounds(500, 315, 86, 20);
 		contentPane.add(txtTotal);
 		txtTotal.setColumns(10);
 		
@@ -312,7 +366,7 @@ public class Factura extends JFrame {
 				}
 			}
 		});
-		btnGenerar.setBounds(290, 423, 157, 23);
+		btnGenerar.setBounds(450, 527, 157, 23);
 		contentPane.add(btnGenerar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -321,12 +375,97 @@ public class Factura extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(457, 423, 157, 23);
+		btnVolver.setBounds(617, 527, 157, 23);
 		contentPane.add(btnVolver);
 		
 		txtCliente = new JTextField();
 		txtCliente.setBounds(158, 56, 114, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
+		
+		JLabel lblCuit = new JLabel("CUIT");
+		lblCuit.setBounds(10, 107, 46, 14);
+		contentPane.add(lblCuit);
+		
+		txtCuit = new JTextField();
+		txtCuit.setBounds(159, 102, 86, 20);
+		contentPane.add(txtCuit);
+		txtCuit.setColumns(10);
+		
+		JLabel lblDom = new JLabel("Domicilio Cliente");
+		lblDom.setBounds(326, 103, 107, 14);
+		contentPane.add(lblDom);
+		
+		txtDom = new JTextField();
+		txtDom.setBounds(433, 104, 86, 20);
+		contentPane.add(txtDom);
+		txtDom.setColumns(10);
+		
+		JLabel lblDni = new JLabel("DNI Cliente");
+		lblDni.setBounds(575, 107, 86, 14);
+		contentPane.add(lblDni);
+		
+		txtDni = new JTextField();
+		txtDni.setBounds(660, 104, 97, 20);
+		contentPane.add(txtDni);
+		txtDni.setColumns(10);
+		
+		JLabel lblDir = new JLabel("Dirección Empresa");
+		lblDir.setBounds(10, 153, 114, 14);
+		contentPane.add(lblDir);
+		
+		txtDir = new JTextField();
+		txtDir.setBounds(130, 150, 114, 20);
+		contentPane.add(txtDir);
+		txtDir.setColumns(10);
+		
+		JLabel lblCon = new JLabel("Condición frente al IVA");
+		lblCon.setBounds(10, 206, 157, 14);
+		contentPane.add(lblCon);
+		
+		 cbCon = new JComboBox();
+		cbCon.setModel(new DefaultComboBoxModel(new String[] {"Sujeto Exento", "Responsable Inscripto", "Consumidor Final"}));
+		cbCon.setBounds(158, 202, 107, 22);
+		contentPane.add(cbCon);
+		
+		 cbPro = new JComboBox();
+		cbPro.setBounds(10, 245, 114, 22);
+		contentPane.add(cbPro);
+		cbPro.setModel(cargarProducto());
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				Object valor = cbPro.getSelectedItem();
+				model.addRow(new Object[]{cbPro.getSelectedItem().toString(),"",((ComboItem) valor).getValue()});
+			}
+		});
+		btnAgregar.setBounds(158, 245, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnRemover = new JButton("Remover");
+		btnRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				((DefaultTableModel)table.getModel()).removeRow(fila);
+			}
+		});
+		btnRemover.setBounds(259, 245, 89, 23);
+		contentPane.add(btnRemover);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 289, 410, 223);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Producto", "Cantidad", "Precio Unitario"
+			}
+		));
+		scrollPane.setViewportView(table);
 	}
 }
