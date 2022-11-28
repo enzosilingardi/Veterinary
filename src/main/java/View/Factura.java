@@ -1,6 +1,8 @@
 package View;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -282,6 +284,8 @@ public class Factura extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
+
+		contentPane.setBackground(new Color(145, 226, 247));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -310,11 +314,11 @@ public class Factura extends JFrame {
 		contentPane.add(lblCliente);
 		
 		JLabel lblEmisor = new JLabel("Emisor");
-		lblEmisor.setBounds(326, 59, 46, 14);
+		lblEmisor.setBounds(468, 59, 46, 14);
 		contentPane.add(lblEmisor);
 		
 		cbEmisor = new JComboBox();
-		cbEmisor.setBounds(435, 55, 107, 22);
+		cbEmisor.setBounds(573, 55, 107, 22);
 		contentPane.add(cbEmisor);
 		cbEmisor.setModel(cargarUsuario());
 		
@@ -328,19 +332,19 @@ public class Factura extends JFrame {
 		cbPunto.setModel(cargarSucursal());
 		
 		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setBounds(330, 153, 76, 14);
+		lblFecha.setBounds(468, 205, 76, 14);
 		contentPane.add(lblFecha);
 		
 		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
-		txtFecha.setBounds(439, 150, 107, 20);
+		txtFecha.setBounds(530, 199, 107, 20);
 		contentPane.add(txtFecha);
 		
 		JLabel lblIva = new JLabel("IVA");
-		lblIva.setBounds(302, 206, 46, 14);
+		lblIva.setBounds(10, 194, 46, 14);
 		contentPane.add(lblIva);
 		
 		txtIva = new JTextField();
-		txtIva.setBounds(358, 203, 86, 20);
+		txtIva.setBounds(57, 191, 86, 20);
 		contentPane.add(txtIva);
 		txtIva.setColumns(10);
 		
@@ -354,6 +358,9 @@ public class Factura extends JFrame {
 		txtTotal.setColumns(10);
 		
 		JButton btnGenerar = new JButton("Generar Factura");
+		btnGenerar.setBorder(null);
+
+		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnGenerar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -370,6 +377,8 @@ public class Factura extends JFrame {
 		contentPane.add(btnGenerar);
 		
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBorder(null);
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -379,53 +388,53 @@ public class Factura extends JFrame {
 		contentPane.add(btnVolver);
 		
 		txtCliente = new JTextField();
-		txtCliente.setBounds(158, 56, 114, 20);
+		txtCliente.setBounds(110, 56, 114, 20);
 		contentPane.add(txtCliente);
 		txtCliente.setColumns(10);
 		
 		JLabel lblCuit = new JLabel("CUIT");
-		lblCuit.setBounds(10, 107, 46, 14);
+		lblCuit.setBounds(468, 107, 46, 14);
 		contentPane.add(lblCuit);
 		
 		txtCuit = new JTextField();
-		txtCuit.setBounds(159, 102, 86, 20);
+		txtCuit.setBounds(573, 104, 107, 20);
 		contentPane.add(txtCuit);
 		txtCuit.setColumns(10);
 		
 		JLabel lblDom = new JLabel("Domicilio Cliente");
-		lblDom.setBounds(326, 103, 107, 14);
+		lblDom.setBounds(10, 107, 107, 14);
 		contentPane.add(lblDom);
 		
 		txtDom = new JTextField();
-		txtDom.setBounds(433, 104, 86, 20);
+		txtDom.setBounds(110, 104, 86, 20);
 		contentPane.add(txtDom);
 		txtDom.setColumns(10);
 		
 		JLabel lblDni = new JLabel("DNI Cliente");
-		lblDni.setBounds(575, 107, 86, 14);
+		lblDni.setBounds(206, 107, 86, 14);
 		contentPane.add(lblDni);
 		
 		txtDni = new JTextField();
-		txtDni.setBounds(660, 104, 97, 20);
+		txtDni.setBounds(272, 104, 97, 20);
 		contentPane.add(txtDni);
 		txtDni.setColumns(10);
 		
 		JLabel lblDir = new JLabel("Dirección Empresa");
-		lblDir.setBounds(10, 153, 114, 14);
+		lblDir.setBounds(468, 153, 114, 14);
 		contentPane.add(lblDir);
 		
 		txtDir = new JTextField();
-		txtDir.setBounds(130, 150, 114, 20);
+		txtDir.setBounds(573, 150, 107, 20);
 		contentPane.add(txtDir);
 		txtDir.setColumns(10);
 		
 		JLabel lblCon = new JLabel("Condición frente al IVA");
-		lblCon.setBounds(10, 206, 157, 14);
+		lblCon.setBounds(10, 153, 157, 14);
 		contentPane.add(lblCon);
 		
 		 cbCon = new JComboBox();
 		cbCon.setModel(new DefaultComboBoxModel(new String[] {"Sujeto Exento", "Responsable Inscripto", "Consumidor Final"}));
-		cbCon.setBounds(158, 202, 107, 22);
+		cbCon.setBounds(139, 149, 107, 22);
 		contentPane.add(cbCon);
 		
 		 cbPro = new JComboBox();
@@ -434,6 +443,7 @@ public class Factura extends JFrame {
 		cbPro.setModel(cargarProducto());
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -445,6 +455,7 @@ public class Factura extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();

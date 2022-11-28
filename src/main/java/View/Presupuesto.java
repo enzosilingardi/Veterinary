@@ -1,6 +1,8 @@
 package View;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
@@ -273,11 +275,12 @@ public class Presupuesto extends JFrame {
 	 */
 	public Presupuesto() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		setBounds(100, 100, 753, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		contentPane.setBackground(new Color(145, 226, 247));
 		contentPane.setLayout(null);
 		
 		JLabel lblNro = new JLabel("Número de comprobante");
@@ -294,11 +297,11 @@ public class Presupuesto extends JFrame {
 		contentPane.add(lblCliente);
 		
 		JLabel lblEmisor = new JLabel("Emisor");
-		lblEmisor.setBounds(10, 119, 46, 14);
+		lblEmisor.setBounds(375, 62, 46, 14);
 		contentPane.add(lblEmisor);
 		
 		JComboBox cbEmisor = new JComboBox();
-		cbEmisor.setBounds(66, 115, 107, 22);
+		cbEmisor.setBounds(493, 58, 107, 22);
 		contentPane.add(cbEmisor);
 		
 		JLabel lblPunto = new JLabel("Punto de venta");
@@ -310,11 +313,11 @@ public class Presupuesto extends JFrame {
 		contentPane.add(cbPunto);
 		
 		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setBounds(375, 173, 76, 14);
+		lblFecha.setBounds(375, 176, 76, 14);
 		contentPane.add(lblFecha);
 		
 		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
-		txtFecha.setBounds(484, 170, 107, 20);
+		txtFecha.setBounds(493, 170, 107, 20);
 		contentPane.add(txtFecha);
 		
 		JLabel lblTotal = new JLabel("Precio Total");
@@ -327,11 +330,15 @@ public class Presupuesto extends JFrame {
 		contentPane.add(txtTotal);
 		
 		JButton btnGenerar = new JButton("Generar Presupuesto");
-		btnGenerar.setBounds(450, 527, 157, 23);
+		btnGenerar.setBorder(null);
+		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGenerar.setBounds(349, 527, 197, 23);
 		contentPane.add(btnGenerar);
 		
 		JButton btnVolver = new JButton("Volver");
-		btnVolver.setBounds(617, 527, 157, 23);
+		btnVolver.setBorder(null);
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBounds(556, 527, 157, 23);
 		contentPane.add(btnVolver);
 		
 		txtCliente = new JTextField();
@@ -340,30 +347,30 @@ public class Presupuesto extends JFrame {
 		txtCliente.setColumns(10);
 		
 		JLabel lblDom = new JLabel("Domicilio Cliente");
-		lblDom.setBounds(255, 62, 107, 14);
+		lblDom.setBounds(10, 99, 107, 14);
 		contentPane.add(lblDom);
 		
 		txtDom = new JTextField();
 		txtDom.setColumns(10);
-		txtDom.setBounds(362, 56, 86, 20);
+		txtDom.setBounds(117, 96, 86, 20);
 		contentPane.add(txtDom);
 		
 		txtDni = new JTextField();
 		txtDni.setColumns(10);
-		txtDni.setBounds(589, 56, 97, 20);
+		txtDni.setBounds(117, 139, 97, 20);
 		contentPane.add(txtDni);
 		
 		JLabel lblDni = new JLabel("DNI Cliente");
-		lblDni.setBounds(504, 59, 86, 14);
+		lblDni.setBounds(10, 142, 86, 14);
 		contentPane.add(lblDni);
 		
 		txtDir = new JTextField();
 		txtDir.setColumns(10);
-		txtDir.setBounds(375, 119, 114, 20);
+		txtDir.setBounds(493, 139, 114, 20);
 		contentPane.add(txtDir);
 		
 		JLabel lblDir = new JLabel("Dirección Empresa");
-		lblDir.setBounds(255, 122, 114, 14);
+		lblDir.setBounds(375, 142, 114, 14);
 		contentPane.add(lblDir);
 		
 		cbPro = new JComboBox();
@@ -372,6 +379,7 @@ public class Presupuesto extends JFrame {
 		cbPro.setModel(cargarProducto());
 		
 		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -383,6 +391,7 @@ public class Presupuesto extends JFrame {
 		contentPane.add(btnAgregar);
 		
 		JButton btnRemover = new JButton("Remover");
+		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -407,12 +416,12 @@ public class Presupuesto extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		JLabel lblCuit = new JLabel("CUIT");
-		lblCuit.setBounds(538, 119, 46, 14);
+		lblCuit.setBounds(375, 99, 46, 14);
 		contentPane.add(lblCuit);
 		
 		txtCuit = new JTextField();
 		txtCuit.setColumns(10);
-		txtCuit.setBounds(577, 116, 109, 20);
+		txtCuit.setBounds(493, 96, 109, 20);
 		contentPane.add(txtCuit);
 	}
 }
