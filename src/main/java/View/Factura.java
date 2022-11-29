@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,7 +43,6 @@ public class Factura extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtNro;
-	private JComboBox cbEmisor;
 	private JComboBox cbPunto;
 	private JComboBox cbTipo;
 	private JDateChooser txtFecha;
@@ -55,6 +56,7 @@ public class Factura extends JFrame {
 	private JComboBox cbCon;
 	private JTable table;
 	private JComboBox cbPro;
+	private JTextField txtEmisor;
 
 	class ComboItem
 	{
@@ -204,6 +206,35 @@ public class Factura extends JFrame {
 		return modelo;
     }
 	
+	void cargarEmisor() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Emitter";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			
+			
+			while (result.next()) {
+				txtEmisor.setText(result.getString("name"));
+				txtCuit.setText(result.getString("cuit"));
+				txtDir.setText(result.getString("address"));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    }
+	
 	/**
 	 * Launch the application.
 	 */
@@ -220,8 +251,28 @@ public class Factura extends JFrame {
 		});
 	}
 
+	public void totalV() {
+		float t = 0;
+		float p1 = 0;
+		float p2 = 0;
+		float p3 = 0;
+		float total;
+		
+		if (table.getRowCount() > 0) {
+			for (int i = 0; i < table.getRowCount(); i++) {
+				p1 = Float.parseFloat(table.getValueAt(i, 3).toString());
+				p2 = Float.parseFloat(table.getValueAt(i, 2).toString());
+				p3 = p1*p2;
+				t += p3;
+				
+			}
+			total = t;
+			txtTotal.setText(String.valueOf(total));
+		}
+	}
+	
 	public void generar(String nombre) throws FileNotFoundException,DocumentException {
-		if(!(txtNro.getText().isEmpty() || txtIva.getText().isEmpty() || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") || txtDir.getText().isEmpty() || txtDom.getText().isEmpty() || txtDni.getText().isEmpty() || txtCuit.getText().isEmpty() )) {
+		if(!(txtNro.getText().isEmpty() || txtIva.getText().isEmpty() || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || txtEmisor.getText().isEmpty() || txtDir.getText().isEmpty() || txtDom.getText().isEmpty() || txtDni.getText().isEmpty() || txtCuit.getText().isEmpty() )) {
 			Object punto = cbPunto.getSelectedItem();
 			
 			FileOutputStream archivo = new FileOutputStream("c:/rsc/Factura "+nombre+".pdf");
@@ -240,7 +291,7 @@ public class Factura extends JFrame {
 			
 			documento.add(new Paragraph("Punto de Venta: "+((ComboItem) punto).getValue()));
 			documento.add(new Paragraph("Nro de Comprobante: "+txtNro.getText()));
-			documento.add(new Paragraph("Emisor: "+cbEmisor.getSelectedItem().toString()));
+			documento.add(new Paragraph("Emisor: "+txtEmisor.getText()));
 			documento.add(new Paragraph("CUIT: "+txtCuit.getText()));
 			documento.add(new Paragraph("Direccion Fiscal: "+txtDir.getText()));
 			documento.add(new Paragraph(" "));
@@ -317,10 +368,7 @@ public class Factura extends JFrame {
 		lblEmisor.setBounds(468, 59, 46, 14);
 		contentPane.add(lblEmisor);
 		
-		cbEmisor = new JComboBox();
-		cbEmisor.setBounds(590, 55, 107, 22);
-		contentPane.add(cbEmisor);
-		cbEmisor.setModel(cargarUsuario());
+		
 		
 		JLabel lblPunto = new JLabel("Punto de venta");
 		lblPunto.setBounds(181, 11, 114, 14);
@@ -347,6 +395,7 @@ public class Factura extends JFrame {
 		txtIva.setBounds(57, 191, 86, 20);
 		contentPane.add(txtIva);
 		txtIva.setColumns(10);
+		txtIva.setText("0");
 		
 		JLabel lblTotal = new JLabel("Precio Total");
 		lblTotal.setBounds(500, 290, 90, 14);
@@ -494,6 +543,26 @@ public class Factura extends JFrame {
 		});
 		btnBuscar.setBounds(234, 55, 89, 23);
 		contentPane.add(btnBuscar);
+		
+		cargarEmisor();
+		
+
+		txtEmisor = new JTextField();
+		txtEmisor.setBounds(590, 56, 107, 20);
+		contentPane.add(txtEmisor);
+		txtEmisor.setColumns(10);
+		
+		JButton btnEditar = new JButton("Editar emisor");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Emisor emisor = new Emisor();
+				emisor.setVisible(true);
+				dispose();
+			}
+		});
+		btnEditar.setBorder(null);
+		btnEditar.setBounds(590, 190, 138, 23);
+		contentPane.add(btnEditar);
 	}
 
 
@@ -535,11 +604,6 @@ public class Factura extends JFrame {
 		lblEmisor.setBounds(468, 59, 46, 14);
 		contentPane.add(lblEmisor);
 		
-		cbEmisor = new JComboBox();
-		cbEmisor.setBounds(590, 55, 107, 22);
-		contentPane.add(cbEmisor);
-		cbEmisor.setModel(cargarUsuario());
-		
 		JLabel lblPunto = new JLabel("Punto de venta");
 		lblPunto.setBounds(181, 11, 114, 14);
 		contentPane.add(lblPunto);
@@ -550,11 +614,11 @@ public class Factura extends JFrame {
 		cbPunto.setModel(cargarSucursal());
 		
 		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setBounds(468, 205, 76, 14);
+		lblFecha.setBounds(468, 236, 76, 14);
 		contentPane.add(lblFecha);
 		
 		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
-		txtFecha.setBounds(530, 199, 107, 20);
+		txtFecha.setBounds(532, 230, 107, 20);
 		contentPane.add(txtFecha);
 		
 		JLabel lblIva = new JLabel("IVA");
@@ -562,6 +626,7 @@ public class Factura extends JFrame {
 		contentPane.add(lblIva);
 		
 		txtIva = new JTextField();
+		txtIva.setText("0");
 		txtIva.setBounds(57, 191, 86, 20);
 		contentPane.add(txtIva);
 		txtIva.setColumns(10);
@@ -708,5 +773,34 @@ public class Factura extends JFrame {
 		});
 		btnBuscar.setBounds(234, 55, 89, 23);
 		contentPane.add(btnBuscar);
+		
+		txtEmisor = new JTextField();
+		txtEmisor.setBounds(590, 56, 107, 20);
+		contentPane.add(txtEmisor);
+		txtEmisor.setColumns(10);
+		
+		JButton btnEditar = new JButton("Editar emisor");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Emisor emisor = new Emisor();
+				emisor.setVisible(true);
+				dispose();
+			}
+		});
+		btnEditar.setBorder(null);
+		btnEditar.setBounds(590, 190, 138, 23);
+		contentPane.add(btnEditar);
+		
+		JButton btnTotal = new JButton("Calcular total");
+		btnTotal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				totalV();
+			}
+		});
+		btnTotal.setBorder(null);
+		btnTotal.setBounds(608, 314, 147, 23);
+		contentPane.add(btnTotal);
+		
+		cargarEmisor();
 	}
 }

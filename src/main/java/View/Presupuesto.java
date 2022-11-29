@@ -53,6 +53,7 @@ public class Presupuesto extends JFrame {
 	private JTable table;
 	private JComboBox cbPro;
 	private JTextField txtCuit;
+	private JTextField txtEmisor;
 	
 	class ComboItem
 	{
@@ -201,6 +202,35 @@ public class Presupuesto extends JFrame {
 			}
 		return modelo;
     }
+	
+	void cargarEmisor() {
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		
+		
+		try {
+			cn = (Connection) Connect.getConexion();
+			String SSQL = "SELECT * FROM Emitter";
+			pst = cn.prepareStatement(SSQL);
+			result = pst.executeQuery();
+			
+			
+			while (result.next()) {
+				txtEmisor.setText(result.getString("name"));
+				txtCuit.setText(result.getString("cuit"));
+				txtDir.setText(result.getString("address"));
+				
+			}
+			cn.close();
+		}catch(SQLException e) {
+				JOptionPane.showMessageDialog(null,e);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    }
 
 	/**
 	 * Launch the application.
@@ -220,7 +250,7 @@ public class Presupuesto extends JFrame {
 
 
 	public void generar(String nombre) throws FileNotFoundException,DocumentException {
-		if(!(txtNro.getText().isEmpty()  || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") || txtCuit.getText().isEmpty() || txtDom.getText().isEmpty() || txtDir.getText().isEmpty() || txtDni.getText().isEmpty() )) {
+		if(!(txtNro.getText().isEmpty()  || txtTotal.getText().isEmpty() || txtEmisor.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") || txtCuit.getText().isEmpty() || txtDom.getText().isEmpty() || txtDir.getText().isEmpty() || txtDni.getText().isEmpty() )) {
 			Object punto = cbPunto.getSelectedItem();
 			
 			FileOutputStream archivo = new FileOutputStream("c:/rsc/Presupuesto "+nombre+".pdf");
@@ -234,7 +264,7 @@ public class Presupuesto extends JFrame {
 			
 			documento.add(new Paragraph("Punto de Venta: "+((ComboItem) punto).getValue()));
 			documento.add(new Paragraph("Nro de Comprobante: "+txtNro.getText()));
-			documento.add(new Paragraph("Emisor: "+cbEmisor.getSelectedItem().toString()));
+			documento.add(new Paragraph("Emisor: "+txtEmisor.getText()));
 			documento.add(new Paragraph("CUIT: "+txtCuit.getText()));
 			documento.add(new Paragraph("Direccion Fiscal: "+txtDir.getText()));
 			documento.add(new Paragraph(" "));
@@ -300,9 +330,7 @@ public class Presupuesto extends JFrame {
 		lblEmisor.setBounds(375, 62, 46, 14);
 		contentPane.add(lblEmisor);
 		
-		JComboBox cbEmisor = new JComboBox();
-		cbEmisor.setBounds(493, 58, 107, 22);
-		contentPane.add(cbEmisor);
+		
 		
 		JLabel lblPunto = new JLabel("Punto de venta");
 		lblPunto.setBounds(10, 14, 114, 14);
@@ -442,6 +470,23 @@ public class Presupuesto extends JFrame {
 		txtDni.setText(dni);
 		txtDom.setText(dir);
 		
+		JButton btnEditar = new JButton("Editar emisor");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Emisor_Pre ep = new Emisor_Pre();
+				ep.setVisible(true);
+				dispose();
+			}
+		});
+		btnEditar.setBorder(null);
+		btnEditar.setBounds(610, 58, 117, 23);
+		contentPane.add(btnEditar);
+		
+		txtEmisor = new JTextField();
+		txtEmisor.setBounds(493, 59, 107, 20);
+		contentPane.add(txtEmisor);
+		txtEmisor.setColumns(10);
+		
 	}
 
 
@@ -472,10 +517,6 @@ public class Presupuesto extends JFrame {
 		JLabel lblEmisor = new JLabel("Emisor");
 		lblEmisor.setBounds(375, 62, 46, 14);
 		contentPane.add(lblEmisor);
-		
-		JComboBox cbEmisor = new JComboBox();
-		cbEmisor.setBounds(493, 58, 107, 22);
-		contentPane.add(cbEmisor);
 		
 		JLabel lblPunto = new JLabel("Punto de venta");
 		lblPunto.setBounds(10, 14, 114, 14);
@@ -539,11 +580,11 @@ public class Presupuesto extends JFrame {
 		
 		txtDir = new JTextField();
 		txtDir.setColumns(10);
-		txtDir.setBounds(493, 139, 114, 20);
+		txtDir.setBounds(493, 127, 114, 20);
 		contentPane.add(txtDir);
 		
 		JLabel lblDir = new JLabel("Dirección Empresa");
-		lblDir.setBounds(375, 142, 114, 14);
+		lblDir.setBounds(375, 130, 114, 14);
 		contentPane.add(lblDir);
 		
 		cbPro = new JComboBox();
@@ -610,5 +651,22 @@ public class Presupuesto extends JFrame {
 		});
 		btnBuscar.setBounds(234, 58, 89, 23);
 		contentPane.add(btnBuscar);
+		
+		JButton btnEditar = new JButton("Editar emisor");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Emisor_Pre ep = new Emisor_Pre();
+				ep.setVisible(true);
+				dispose();
+			}
+		});
+		btnEditar.setBorder(null);
+		btnEditar.setBounds(610, 58, 117, 23);
+		contentPane.add(btnEditar);
+		
+		txtEmisor = new JTextField();
+		txtEmisor.setBounds(493, 59, 107, 20);
+		contentPane.add(txtEmisor);
+		txtEmisor.setColumns(10);
 	}
 }
