@@ -273,7 +273,7 @@ public class Presupuesto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Presupuesto() {
+	public Presupuesto(String nom, String dni, String dir) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 753, 600);
 		contentPane = new JPanel();
@@ -423,5 +423,192 @@ public class Presupuesto extends JFrame {
 		txtCuit.setColumns(10);
 		txtCuit.setBounds(493, 96, 109, 20);
 		contentPane.add(txtCuit);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setBorder(null);
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Cliente_Pre bcp = new Buscar_Cliente_Pre();
+				bcp.setVisible(true);
+				
+				dispose();
+				
+			}
+		});
+		btnBuscar.setBounds(234, 58, 89, 23);
+		contentPane.add(btnBuscar);
+		
+		txtCliente.setText(nom);
+		txtDni.setText(dni);
+		txtDom.setText(dir);
+		
+	}
+
+
+	public Presupuesto() {
+		// TODO Auto-generated constructor stub
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 753, 600);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setBackground(new Color(145, 226, 247));
+		contentPane.setLayout(null);
+		
+		JLabel lblNro = new JLabel("Número de comprobante");
+		lblNro.setBounds(283, 14, 147, 14);
+		contentPane.add(lblNro);
+		
+		txtNro = new JTextField();
+		txtNro.setColumns(10);
+		txtNro.setBounds(418, 11, 107, 20);
+		contentPane.add(txtNro);
+		
+		JLabel lblCliente = new JLabel("Cliente");
+		lblCliente.setBounds(10, 62, 60, 14);
+		contentPane.add(lblCliente);
+		
+		JLabel lblEmisor = new JLabel("Emisor");
+		lblEmisor.setBounds(375, 62, 46, 14);
+		contentPane.add(lblEmisor);
+		
+		JComboBox cbEmisor = new JComboBox();
+		cbEmisor.setBounds(493, 58, 107, 22);
+		contentPane.add(cbEmisor);
+		
+		JLabel lblPunto = new JLabel("Punto de venta");
+		lblPunto.setBounds(10, 14, 114, 14);
+		contentPane.add(lblPunto);
+		
+		JComboBox cbPunto = new JComboBox();
+		cbPunto.setBounds(117, 10, 114, 22);
+		contentPane.add(cbPunto);
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(375, 176, 76, 14);
+		contentPane.add(lblFecha);
+		
+		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
+		txtFecha.setBounds(493, 170, 107, 20);
+		contentPane.add(txtFecha);
+		
+		JLabel lblTotal = new JLabel("Precio Total");
+		lblTotal.setBounds(596, 262, 90, 14);
+		contentPane.add(lblTotal);
+		
+		txtTotal = new JTextField();
+		txtTotal.setColumns(10);
+		txtTotal.setBounds(596, 287, 86, 20);
+		contentPane.add(txtTotal);
+		
+		JButton btnGenerar = new JButton("Generar Presupuesto");
+		btnGenerar.setBorder(null);
+		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGenerar.setBounds(349, 527, 197, 23);
+		contentPane.add(btnGenerar);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBorder(null);
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.setBounds(556, 527, 157, 23);
+		contentPane.add(btnVolver);
+		
+		txtCliente = new JTextField();
+		txtCliente.setBounds(117, 59, 107, 20);
+		contentPane.add(txtCliente);
+		txtCliente.setColumns(10);
+		
+		JLabel lblDom = new JLabel("Domicilio Cliente");
+		lblDom.setBounds(10, 99, 107, 14);
+		contentPane.add(lblDom);
+		
+		txtDom = new JTextField();
+		txtDom.setColumns(10);
+		txtDom.setBounds(117, 96, 86, 20);
+		contentPane.add(txtDom);
+		
+		txtDni = new JTextField();
+		txtDni.setColumns(10);
+		txtDni.setBounds(117, 139, 97, 20);
+		contentPane.add(txtDni);
+		
+		JLabel lblDni = new JLabel("DNI Cliente");
+		lblDni.setBounds(10, 142, 86, 14);
+		contentPane.add(lblDni);
+		
+		txtDir = new JTextField();
+		txtDir.setColumns(10);
+		txtDir.setBounds(493, 139, 114, 20);
+		contentPane.add(txtDir);
+		
+		JLabel lblDir = new JLabel("Dirección Empresa");
+		lblDir.setBounds(375, 142, 114, 14);
+		contentPane.add(lblDir);
+		
+		cbPro = new JComboBox();
+		cbPro.setBounds(10, 219, 114, 22);
+		contentPane.add(cbPro);
+		cbPro.setModel(cargarProducto());
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(null);
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				Object valor = cbPro.getSelectedItem();
+				model.addRow(new Object[]{cbPro.getSelectedItem().toString(),"",((ComboItem) valor).getValue()});
+			}
+		});
+		btnAgregar.setBounds(158, 219, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnRemover = new JButton("Remover");
+		btnRemover.setBorder(null);
+		btnRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				((DefaultTableModel)table.getModel()).removeRow(fila);
+			}
+		});
+		btnRemover.setBounds(259, 219, 89, 23);
+		contentPane.add(btnRemover);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 263, 410, 223);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Producto", "Cantidad", "Precio Unitario"
+			}
+		));
+		scrollPane.setViewportView(table);
+		
+		JLabel lblCuit = new JLabel("CUIT");
+		lblCuit.setBounds(375, 99, 46, 14);
+		contentPane.add(lblCuit);
+		
+		txtCuit = new JTextField();
+		txtCuit.setColumns(10);
+		txtCuit.setBounds(493, 96, 109, 20);
+		contentPane.add(txtCuit);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setBorder(null);
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Cliente_Pre bcp = new Buscar_Cliente_Pre();
+				bcp.setVisible(true);
+				
+				dispose();
+				
+			}
+		});
+		btnBuscar.setBounds(234, 58, 89, 23);
+		contentPane.add(btnBuscar);
 	}
 }

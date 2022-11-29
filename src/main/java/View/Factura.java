@@ -280,7 +280,7 @@ public class Factura extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Factura() {
+	public Factura(String nom, String dni, String dir) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -318,7 +318,7 @@ public class Factura extends JFrame {
 		contentPane.add(lblEmisor);
 		
 		cbEmisor = new JComboBox();
-		cbEmisor.setBounds(573, 55, 107, 22);
+		cbEmisor.setBounds(590, 55, 107, 22);
 		contentPane.add(cbEmisor);
 		cbEmisor.setModel(cargarUsuario());
 		
@@ -397,7 +397,7 @@ public class Factura extends JFrame {
 		contentPane.add(lblCuit);
 		
 		txtCuit = new JTextField();
-		txtCuit.setBounds(573, 104, 107, 20);
+		txtCuit.setBounds(590, 104, 107, 20);
 		contentPane.add(txtCuit);
 		txtCuit.setColumns(10);
 		
@@ -424,7 +424,7 @@ public class Factura extends JFrame {
 		contentPane.add(lblDir);
 		
 		txtDir = new JTextField();
-		txtDir.setBounds(573, 150, 107, 20);
+		txtDir.setBounds(590, 150, 107, 20);
 		contentPane.add(txtDir);
 		txtDir.setColumns(10);
 		
@@ -478,5 +478,235 @@ public class Factura extends JFrame {
 			}
 		));
 		scrollPane.setViewportView(table);
+		
+		txtCliente.setText(nom);
+		txtDni.setText(dni);
+		txtDom.setText(dir);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setBorder(null);
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Cliente bc = new Buscar_Cliente();
+				bc.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBounds(234, 55, 89, 23);
+		contentPane.add(btnBuscar);
+	}
+
+
+	public Factura() {
+		// TODO Auto-generated constructor stub
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 800, 600);
+		contentPane = new JPanel();
+
+		contentPane.setBackground(new Color(145, 226, 247));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblTipo = new JLabel("Tipo de factura");
+		lblTipo.setBounds(10, 11, 90, 14);
+		contentPane.add(lblTipo);
+		
+		cbTipo = new JComboBox();
+		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C"}));
+		cbTipo.setBounds(110, 7, 33, 22);
+		contentPane.add(cbTipo);
+		
+		JLabel lblNro = new JLabel("Número de comprobante");
+		lblNro.setBounds(433, 11, 147, 14);
+		contentPane.add(lblNro);
+		
+		txtNro = new JTextField();
+		txtNro.setBounds(590, 8, 107, 20);
+		contentPane.add(txtNro);
+		txtNro.setColumns(10);
+		
+		JLabel lblCliente = new JLabel("Cliente");
+		lblCliente.setBounds(10, 59, 60, 14);
+		contentPane.add(lblCliente);
+		
+		JLabel lblEmisor = new JLabel("Emisor");
+		lblEmisor.setBounds(468, 59, 46, 14);
+		contentPane.add(lblEmisor);
+		
+		cbEmisor = new JComboBox();
+		cbEmisor.setBounds(590, 55, 107, 22);
+		contentPane.add(cbEmisor);
+		cbEmisor.setModel(cargarUsuario());
+		
+		JLabel lblPunto = new JLabel("Punto de venta");
+		lblPunto.setBounds(181, 11, 114, 14);
+		contentPane.add(lblPunto);
+		
+		cbPunto = new JComboBox();
+		cbPunto.setBounds(272, 7, 114, 22);
+		contentPane.add(cbPunto);
+		cbPunto.setModel(cargarSucursal());
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(468, 205, 76, 14);
+		contentPane.add(lblFecha);
+		
+		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
+		txtFecha.setBounds(530, 199, 107, 20);
+		contentPane.add(txtFecha);
+		
+		JLabel lblIva = new JLabel("IVA");
+		lblIva.setBounds(10, 194, 46, 14);
+		contentPane.add(lblIva);
+		
+		txtIva = new JTextField();
+		txtIva.setBounds(57, 191, 86, 20);
+		contentPane.add(txtIva);
+		txtIva.setColumns(10);
+		
+		JLabel lblTotal = new JLabel("Precio Total");
+		lblTotal.setBounds(500, 290, 90, 14);
+		contentPane.add(lblTotal);
+		
+		txtTotal = new JTextField();
+		txtTotal.setBounds(500, 315, 86, 20);
+		contentPane.add(txtTotal);
+		txtTotal.setColumns(10);
+		
+		JButton btnGenerar = new JButton("Generar Factura");
+		btnGenerar.setBorder(null);
+
+		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGenerar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					generar(txtNro.getText());
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnGenerar.setBounds(450, 527, 157, 23);
+		contentPane.add(btnGenerar);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBorder(null);
+		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnVolver.setBounds(617, 527, 157, 23);
+		contentPane.add(btnVolver);
+		
+		txtCliente = new JTextField();
+		txtCliente.setBounds(110, 56, 114, 20);
+		contentPane.add(txtCliente);
+		txtCliente.setColumns(10);
+		
+		JLabel lblCuit = new JLabel("CUIT");
+		lblCuit.setBounds(468, 107, 46, 14);
+		contentPane.add(lblCuit);
+		
+		txtCuit = new JTextField();
+		txtCuit.setBounds(590, 104, 107, 20);
+		contentPane.add(txtCuit);
+		txtCuit.setColumns(10);
+		
+		JLabel lblDom = new JLabel("Domicilio Cliente");
+		lblDom.setBounds(10, 107, 107, 14);
+		contentPane.add(lblDom);
+		
+		txtDom = new JTextField();
+		txtDom.setBounds(110, 104, 86, 20);
+		contentPane.add(txtDom);
+		txtDom.setColumns(10);
+		
+		JLabel lblDni = new JLabel("DNI Cliente");
+		lblDni.setBounds(206, 107, 86, 14);
+		contentPane.add(lblDni);
+		
+		txtDni = new JTextField();
+		txtDni.setBounds(272, 104, 97, 20);
+		contentPane.add(txtDni);
+		txtDni.setColumns(10);
+		
+		JLabel lblDir = new JLabel("Dirección Empresa");
+		lblDir.setBounds(468, 153, 114, 14);
+		contentPane.add(lblDir);
+		
+		txtDir = new JTextField();
+		txtDir.setBounds(590, 150, 107, 20);
+		contentPane.add(txtDir);
+		txtDir.setColumns(10);
+		
+		JLabel lblCon = new JLabel("Condición frente al IVA");
+		lblCon.setBounds(10, 153, 157, 14);
+		contentPane.add(lblCon);
+		
+		 cbCon = new JComboBox();
+		cbCon.setModel(new DefaultComboBoxModel(new String[] {"Sujeto Exento", "Responsable Inscripto", "Consumidor Final"}));
+		cbCon.setBounds(139, 149, 107, 22);
+		contentPane.add(cbCon);
+		
+		 cbPro = new JComboBox();
+		cbPro.setBounds(10, 245, 114, 22);
+		contentPane.add(cbPro);
+		cbPro.setModel(cargarProducto());
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setBorder(null);
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				Object valor = cbPro.getSelectedItem();
+				model.addRow(new Object[]{cbPro.getSelectedItem().toString(),"",((ComboItem) valor).getValue()});
+			}
+		});
+		btnAgregar.setBounds(158, 245, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnRemover = new JButton("Remover");
+		btnRemover.setBorder(null);
+		btnRemover.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int fila = table.getSelectedRow();
+				((DefaultTableModel)table.getModel()).removeRow(fila);
+			}
+		});
+		btnRemover.setBounds(259, 245, 89, 23);
+		contentPane.add(btnRemover);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 289, 410, 223);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Producto", "Cantidad", "Precio Unitario"
+			}
+		));
+		scrollPane.setViewportView(table);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.setBorder(null);
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Cliente bc = new Buscar_Cliente();
+				bc.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBounds(234, 55, 89, 23);
+		contentPane.add(btnBuscar);
 	}
 }
