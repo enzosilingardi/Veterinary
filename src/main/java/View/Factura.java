@@ -250,26 +250,6 @@ public class Factura extends JFrame {
 			}
 		});
 	}
-
-	public void totalV() {
-		float t = 0;
-		float p1 = 0;
-		float p2 = 0;
-		float p3 = 0;
-		float total;
-		
-		if (table.getRowCount() > 0) {
-			for (int i = 0; i < table.getRowCount(); i++) {
-				p1 = Float.parseFloat(table.getValueAt(i, 3).toString());
-				p2 = Float.parseFloat(table.getValueAt(i, 2).toString());
-				p3 = p1*p2;
-				t += p3;
-				
-			}
-			total = t;
-			txtTotal.setText(String.valueOf(total));
-		}
-	}
 	
 	public void generar(String nombre) throws FileNotFoundException,DocumentException {
 		if(!(txtNro.getText().isEmpty() || txtIva.getText().isEmpty() || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || txtEmisor.getText().isEmpty() || txtDir.getText().isEmpty() || txtDom.getText().isEmpty() || txtDni.getText().isEmpty() || txtCuit.getText().isEmpty() )) {
@@ -790,16 +770,6 @@ public class Factura extends JFrame {
 		btnEditar.setBorder(null);
 		btnEditar.setBounds(590, 190, 138, 23);
 		contentPane.add(btnEditar);
-		
-		JButton btnTotal = new JButton("Calcular total");
-		btnTotal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				totalV();
-			}
-		});
-		btnTotal.setBorder(null);
-		btnTotal.setBounds(608, 314, 147, 23);
-		contentPane.add(btnTotal);
 		
 		cargarEmisor();
 	}
