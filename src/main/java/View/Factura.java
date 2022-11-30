@@ -259,9 +259,9 @@ public class Factura extends JFrame {
 		
 		
 		if (table.getRowCount() > 0) {
-			for (int i = 0; i < table.getRowCount(); i++) {
-				p1 = Float.parseFloat(table.getValueAt(i, 3).toString());
-				p2 = Float.parseFloat(table.getValueAt(i, 2).toString());
+			for (int i = 0; i <= table.getRowCount()-1; i++) {
+				p1 = Float.parseFloat(table.getValueAt(i, 2).toString());
+				p2 = Float.parseFloat(table.getValueAt(i, 1).toString());
 				p3 = p1*p2;
 				t += p3;
 				
@@ -563,6 +563,17 @@ public class Factura extends JFrame {
 		btnEditar.setBorder(null);
 		btnEditar.setBounds(590, 190, 138, 23);
 		contentPane.add(btnEditar);
+		
+
+		JButton btnTotal = new JButton("Calcular total");
+		btnTotal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				totalV();
+			}
+		});
+		btnTotal.setBorder(null);
+		btnTotal.setBounds(608, 314, 147, 23);
+		contentPane.add(btnTotal);
 	}
 
 

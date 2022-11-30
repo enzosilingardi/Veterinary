@@ -248,6 +248,25 @@ public class Presupuesto extends JFrame {
 		});
 	}
 
+	public void totalV() {
+		float t = 0;
+		float p1 = 0;
+		float p2 = 0;
+		float p3 = 0;
+		
+		
+		if (table.getRowCount() > 0) {
+			for (int i = 0; i <= table.getRowCount()-1; i++) {
+				p1 = Float.parseFloat(table.getValueAt(i, 2).toString());
+				p2 = Float.parseFloat(table.getValueAt(i, 1).toString());
+				p3 = p1*p2;
+				t += p3;
+				
+			}
+			
+			txtTotal.setText(String.valueOf(t));
+		}
+	}
 
 	public void generar(String nombre) throws FileNotFoundException,DocumentException {
 		if(!(txtNro.getText().isEmpty()  || txtTotal.getText().isEmpty() || txtEmisor.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") || txtCuit.getText().isEmpty() || txtDom.getText().isEmpty() || txtDir.getText().isEmpty() || txtDni.getText().isEmpty() )) {
@@ -487,6 +506,18 @@ public class Presupuesto extends JFrame {
 		contentPane.add(txtEmisor);
 		txtEmisor.setColumns(10);
 		
+		JButton btnCalcular = new JButton("Calcular total");
+		btnCalcular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				totalV();
+			}
+		});
+		btnCalcular.setBorder(null);
+		btnCalcular.setBounds(578, 325, 129, 23);
+		contentPane.add(btnCalcular);
+		
+		cargarEmisor();
+		
 	}
 
 
@@ -668,5 +699,17 @@ public class Presupuesto extends JFrame {
 		txtEmisor.setBounds(493, 59, 107, 20);
 		contentPane.add(txtEmisor);
 		txtEmisor.setColumns(10);
+		
+		JButton btnCalcular = new JButton("Calcular total");
+		btnCalcular.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				totalV();
+			}
+		});
+		btnCalcular.setBorder(null);
+		btnCalcular.setBounds(578, 325, 129, 23);
+		contentPane.add(btnCalcular);
+		
+		cargarEmisor();
 	}
 }
