@@ -242,7 +242,7 @@ public class Modificar_Mascota extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Mascota(String mascota) {
+	public Modificar_Mascota(final String mascota,String id,String nom) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 401);
 		contentPane = new JPanel();
@@ -405,6 +405,14 @@ public class Modificar_Mascota extends JFrame {
 		txtDue.setColumns(10);
 		
 		JButton btnSelec = new JButton("Seleccionar");
+		btnSelec.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota);
+				bcm.setVisible(true);
+				dispose();
+			}
+		});
 		btnSelec.setBounds(315, 23, 114, 23);
 		contentPane.add(btnSelec);
 		
@@ -413,6 +421,188 @@ public class Modificar_Mascota extends JFrame {
 		txtIdDue.setBounds(315, 0, 46, 20);
 		contentPane.add(txtIdDue);
 		txtIdDue.setColumns(10);
+		txtIdDue.setVisible(false);
+	}
+
+	public Modificar_Mascota(final String mascota) {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 455, 401);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(34, 71, 46, 14);
+		contentPane.add(lblNombre);
+		
+		txtNombre = new JTextField();
+		txtNombre.setColumns(10);
+		txtNombre.setBounds(164, 68, 141, 20);
+		contentPane.add(txtNombre);
+		
+		JLabel lblTipo = new JLabel("Tipo de Animal");
+		lblTipo.setBounds(34, 124, 98, 14);
+		contentPane.add(lblTipo);
+		
+		JLabel lblEdad = new JLabel("Edad");
+		lblEdad.setBounds(34, 175, 46, 14);
+		contentPane.add(lblEdad);
+		
+		txtEdad = new JTextField();
+		txtEdad.setColumns(10);
+		txtEdad.setBounds(164, 172, 141, 20);
+		contentPane.add(txtEdad);
+		
+		JLabel lblGenero = new JLabel("Género");
+		lblGenero.setBounds(34, 224, 46, 14);
+		contentPane.add(lblGenero);
+		
+		final JRadioButton rdbtnMacho = new JRadioButton("Macho");
+		rdbtnMacho.setBounds(141, 220, 67, 23);
+		contentPane.add(rdbtnMacho);
+		
+		final JRadioButton rdbtnHembra = new JRadioButton("Hembra");
+		rdbtnHembra.setBounds(234, 220, 109, 23);
+		contentPane.add(rdbtnHembra);
+		
+		JLabel lblDuenio = new JLabel("Dueño");
+		lblDuenio.setBounds(34, 27, 46, 14);
+		contentPane.add(lblDuenio);
+		
+		JLabel lblRaza = new JLabel("Raza ");
+		lblRaza.setBounds(34, 270, 98, 14);
+		contentPane.add(lblRaza);
+		
+		cbAnimal = new JComboBox();
+		cbAnimal.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				Object animal = (ComboItem) cbAnimal.getSelectedItem();             // Revisa el estado del primer combobox y según este cambia el model del segundo
+				cbRaza.setModel(cargarRaza(((ComboItem) animal).getValue()));
+				
+				
+			}
+		});
+		cbAnimal.setBounds(164, 120, 141, 22);
+		contentPane.add(cbAnimal);
+		cbAnimal.setModel(cargarAnimal());
+		
+		cbRaza = new JComboBox();
+		cbRaza.setBounds(164, 266, 141, 22);
+		contentPane.add(cbRaza);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Mascota tm = new Tabla_Mascota();
+				tm.setVisible(true);
+				dispose();
+			}
+		});
+		btnVolver.setBounds(216, 328, 89, 23);
+		contentPane.add(btnVolver);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PreparedStatement ps = null;
+				int id = Integer.parseInt(txtId.getText());
+				String nombre = txtNombre.getText();
+				int idDue = Integer.parseInt(txtIdDue.getText());
+				Object animal = cbAnimal.getSelectedItem();
+				Object raza = cbRaza.getSelectedItem();
+				int edad = Integer.parseInt(txtEdad.getText());
+				String genero;
+				if(rdbtnMacho.isSelected()) {
+					genero = "Macho";
+				} else if (rdbtnHembra.isSelected()) {
+					genero = "Hembra";
+				} else {
+					genero = "Macho";
+				}
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					
+					
+						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ? WHERE id_Pet = ?" );
+						
+
+					
+					
+						
+						ps.setInt(1, idDue);
+						ps.setString(2, nombre);
+						ps.setString(3, ((ComboItem) animal).getValue());
+						ps.setInt(4, edad);
+						ps.setString(5, genero);
+						ps.setString(6, ((ComboItem) raza).getValue());
+						ps.setInt(7, id);
+					
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Mascota modificada");
+		                ControlFiles.addContent("Se ha modificado la mascota "+nombre);
+		                Tabla_Mascota tm = new Tabla_Mascota();
+						tm.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar mascota");
+		                
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					JOptionPane.showMessageDialog(null,E);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(34, 328, 89, 23);
+		contentPane.add(btnModificar);
+		
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(10, 0, 29, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
+		
+		cargarCampos(mascota);
+		txtId.setText(mascota);
+		
+		txtDue = new JTextField();
+		txtDue.setEditable(false);
+		txtDue.setBounds(164, 24, 141, 20);
+		contentPane.add(txtDue);
+		txtDue.setColumns(10);
+		
+		JButton btnSelec = new JButton("Seleccionar");
+		btnSelec.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota);
+				bcm.setVisible(true);
+				dispose();
+			}
+		});
+		btnSelec.setBounds(315, 23, 114, 23);
+		contentPane.add(btnSelec);
+		
+		txtIdDue = new JTextField();
+		txtIdDue.setEditable(false);
+		txtIdDue.setBounds(315, 0, 46, 20);
+		contentPane.add(txtIdDue);
+		txtIdDue.setColumns(10);
+		txtIdDue.setVisible(false);
 	}
 
 	public Modificar_Mascota() {
