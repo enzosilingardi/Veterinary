@@ -184,7 +184,7 @@ public class Producto extends JFrame {
 	public Producto() {
 		setTitle("Productos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 464);
+		setBounds(100, 100, 473, 464);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -323,5 +323,16 @@ public class Producto extends JFrame {
 		});
 		btnVolver.setBounds(315, 389, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JButton btnNuevo = new JButton("Nuevo");
+		btnNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tipo_Producto tp = new Tipo_Producto();
+				tp.setVisible(true);
+				dispose();
+			}
+		});
+		btnNuevo.setBounds(357, 138, 89, 23);
+		contentPane.add(btnNuevo);
 	}
 }

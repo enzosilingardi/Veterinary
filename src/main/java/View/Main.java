@@ -322,6 +322,10 @@ public class Main extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
+		JLabel lblProximos = new JLabel("Proximos Turnos");
+		lblProximos.setBounds(262, 37, 133, 14);
+		panel_1.add(lblProximos);
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(207, 110, 579, 453);
 		contentPane.add(scrollPane);

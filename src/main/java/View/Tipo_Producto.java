@@ -1,34 +1,29 @@
 package View;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
-import Control.Connect;
-import Model.ControlFiles;
-import View.Instrumento.ComboItem;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.awt.event.ActionEvent;
+
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
-public class Tipo_Proveedor extends JFrame {
+import Control.Connect;
+import Model.ControlFiles;
+
+public class Tipo_Producto extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbTipo;
@@ -41,7 +36,7 @@ public class Tipo_Proveedor extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Tipo de proveedor"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Tipo de producto"});
        
         table.setModel(modelo);
         
@@ -51,7 +46,7 @@ public class Tipo_Proveedor extends JFrame {
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Provider_Type" );
+        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Product_Type" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
@@ -75,6 +70,7 @@ public class Tipo_Proveedor extends JFrame {
 		}
         
     }
+
 	/**
 	 * Launch the application.
 	 */
@@ -82,7 +78,7 @@ public class Tipo_Proveedor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Tipo_Proveedor frame = new Tipo_Proveedor();
+					Tipo_Producto frame = new Tipo_Producto();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,7 +86,7 @@ public class Tipo_Proveedor extends JFrame {
 			}
 		});
 	}
-	
+
 	public int existeTipo(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;
@@ -98,7 +94,7 @@ public class Tipo_Proveedor extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(type_Name) FROM Provider_Type WHERE type_Name = ?;";
+			String SSQL = "SELECT count(type_Name) FROM Product_Type WHERE type_Name = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
@@ -127,12 +123,11 @@ public class Tipo_Proveedor extends JFrame {
 		txtNombre.setText("");
 		
 	}
-
 	/**
 	 * Create the frame.
 	 */
-	public Tipo_Proveedor() {
-		setTitle("Tipo Proveedor");
+	public Tipo_Producto() {
+		setTitle("Tipo Producto");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 581, 394);
 		contentPane = new JPanel();
@@ -152,7 +147,7 @@ public class Tipo_Proveedor extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider_Type (type_Name) VALUES (?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Product_Type (type_Name) VALUES (?)" );
 					
 					
 					
@@ -168,7 +163,7 @@ public class Tipo_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Tipo guardado");
-		                ControlFiles.addContent("Se ha añadido el tipo de proveedor "+nombre);
+		                ControlFiles.addContent("Se ha añadido el tipo de producto "+nombre);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
@@ -199,7 +194,7 @@ public class Tipo_Proveedor extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider_Type WHERE id_Provider_Type = ?" );
+					PreparedStatement ps = con.prepareStatement("DELETE FROM Product_Type WHERE id_Provider_Type = ?" );
 					
 					ps.setInt(1, id);
 					
@@ -208,7 +203,7 @@ public class Tipo_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Tipo eliminado");
-		                ControlFiles.addContent("Se ha eliminado el tipo de proveedor "+table.getValueAt(fila,1).toString());
+		                ControlFiles.addContent("Se ha eliminado el tipo de producto "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al eliminar tipo");
@@ -230,7 +225,7 @@ public class Tipo_Proveedor extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Proveedor tp = new Proveedor();
+				Producto tp = new Producto();
 				tp.setVisible(true);
 				dispose();
 			}
@@ -264,7 +259,7 @@ public class Tipo_Proveedor extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Provider_Type SET type_Name = ? WHERE id_Provider_Type = ?" );  //Crea el statement
+					PreparedStatement ps = con.prepareStatement("UPDATE Product_Type SET type_Name = ? WHERE id_Product_Type = ?" );  //Crea el statement
 					
 					ps.setString(1, tipo);
 					ps.setInt(2, id);
@@ -274,7 +269,7 @@ public class Tipo_Proveedor extends JFrame {
 					
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Tipo modificado");
-		                ControlFiles.addContent("Se ha modificado el tipo de proveedor "+table.getValueAt(fila,1).toString());
+		                ControlFiles.addContent("Se ha modificado el tipo de producto "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
 		            } else {
 		                JOptionPane.showMessageDialog(null, "Error al modificar tipo");
@@ -293,6 +288,7 @@ public class Tipo_Proveedor extends JFrame {
 		contentPane.add(btnModificar);
 		
 		mostrarTabla();
+
 	}
 
 }

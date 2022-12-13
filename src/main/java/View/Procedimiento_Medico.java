@@ -306,7 +306,8 @@ public class Procedimiento_Medico extends JFrame {
 		txtHora.setBounds(155, 176, 99, 20);
 		contentPane.add(txtHora);
 		
-		JButton btnTipos = new JButton("Tipos");
+		
+		JButton btnTipos = new JButton("Nuevo");
 		btnTipos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Procedimiento tp = new Tipo_Procedimiento();
