@@ -150,7 +150,7 @@ public class Historial_Medico extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Historial_Medico() {
+	public Historial_Medico(final String perfil) {
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 384);
@@ -220,7 +220,7 @@ public class Historial_Medico extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Historial th = new Tabla_Historial();
+				Tabla_Historial th = new Tabla_Historial(perfil);
 				th.setVisible(true);
 				dispose();
 			}
@@ -249,5 +249,8 @@ public class Historial_Medico extends JFrame {
 		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
 		txtFecha.setBounds(164, 188, 206, 20);
 		contentPane.add(txtFecha);
+	}
+	public Historial_Medico() {
+		// TODO Auto-generated constructor stub
 	}
 }

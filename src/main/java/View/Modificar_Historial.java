@@ -142,7 +142,7 @@ public class Modificar_Historial extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Historial(String historial) {
+	public Modificar_Historial(String historial, final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -210,7 +210,7 @@ public class Modificar_Historial extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Historial guardado");
 		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
-		                Tabla_Historial th = new Tabla_Historial();
+		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
 						dispose();
 		            } else {
@@ -233,7 +233,7 @@ public class Modificar_Historial extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Historial th = new Tabla_Historial();
+				Tabla_Historial th = new Tabla_Historial(perfil);
 				th.setVisible(true);
 				dispose();
 			}

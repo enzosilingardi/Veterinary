@@ -73,6 +73,55 @@ public class Tabla_Historial extends JFrame {
 	        
 	    }
 
+	void mostrarTablaId(String id){
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha"});
+       
+        table.setModel(modelo);
+        
+        
+        
+        String datos[] = new String[6];
+       
+        try {
+        	Connection con = Connect.getConexion();
+        	PreparedStatement ps = con.prepareStatement("SELECT id_Medical_History, Pet.name,  Client.name, Client.surname, description, CONVERT(varchar(10),date,103),Pet.id_Pet\r\n"
+        			+ "FROM Medical_History\r\n"
+        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_History.id_Pet\r\n"
+        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client WHERE Pet.id_Pet ='"+id+"';" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3)+" "+rs.getString(4);
+                datos[3] = rs.getString(5);
+                datos[4] = rs.getString(6);
+                datos[5] = rs.getString(7);
+                
+                modelo.addRow(datos);
+
+            }
+            
+            table.setModel(modelo);
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+    		table.getColumnModel().getColumn(5).setMaxWidth(0);
+    		table.getColumnModel().getColumn(5).setMinWidth(0);
+    		table.getColumnModel().getColumn(5).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(5).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        
+    }
 	/**
 	 * Launch the application.
 	 */
@@ -92,7 +141,7 @@ public class Tabla_Historial extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Historial(String perfil) {
+	public Tabla_Historial(final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 424);
 		contentPane = new JPanel();
@@ -134,7 +183,7 @@ public class Tabla_Historial extends JFrame {
 			btnHistoriales.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnHistoriales.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Historial_Medico hm = new Historial_Medico();
+					Historial_Medico hm = new Historial_Medico(perfil);
 					hm.setVisible(true);
 					dispose();
 				}
@@ -192,7 +241,7 @@ public class Tabla_Historial extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					int fila = table.getSelectedRow();
 					
-					Modificar_Historial mh = new Modificar_Historial(table.getValueAt(fila,0).toString());
+					Modificar_Historial mh = new Modificar_Historial(table.getValueAt(fila,0).toString(),perfil);
 					mh.setVisible(true);
 					dispose();
 				}
@@ -202,10 +251,26 @@ public class Tabla_Historial extends JFrame {
 		
 		}
 		
+
+		JButton btnBuscar = new JButton("Buscar Mascota");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota bm = new Buscar_Mascota(perfil);
+				bm.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBackground(new Color(86, 211, 243));
+		btnBuscar.setBorder(null);
+		btnBuscar.setForeground(new Color(255, 255, 255));
+		btnBuscar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnBuscar.setBounds(425, 339, 141, 23);
+		contentPane.add(btnBuscar);
+		
 		mostrarTabla();
 	}
 
-	public Tabla_Historial() {
+	public Tabla_Historial(final String perfil, String id) {
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 424);
@@ -244,7 +309,7 @@ public class Tabla_Historial extends JFrame {
 		btnHistoriales.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnHistoriales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Historial_Medico hm = new Historial_Medico();
+				Historial_Medico hm = new Historial_Medico(perfil);
 				hm.setVisible(true);
 				dispose();
 			}
@@ -302,7 +367,7 @@ public class Tabla_Historial extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Historial mh = new Modificar_Historial(table.getValueAt(fila,0).toString());
+				Modificar_Historial mh = new Modificar_Historial(table.getValueAt(fila,0).toString(),perfil);
 				mh.setVisible(true);
 				dispose();
 			}
@@ -310,6 +375,25 @@ public class Tabla_Historial extends JFrame {
 		btnModificar.setBounds(127, 337, 91, 23);
 		contentPane.add(btnModificar);
 		
-		mostrarTabla();
+		JButton btnBuscar = new JButton("Buscar Mascota");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota bm = new Buscar_Mascota(perfil);
+				bm.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBackground(new Color(86, 211, 243));
+		btnBuscar.setBorder(null);
+		btnBuscar.setForeground(new Color(255, 255, 255));
+		btnBuscar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnBuscar.setBounds(425, 339, 141, 23);
+		contentPane.add(btnBuscar);
+		
+		mostrarTablaId(id);
+	}
+
+	public Tabla_Historial() {
+		
 	}
 }
