@@ -226,7 +226,7 @@ public class Proveedor extends JFrame {
 	public Proveedor() {
 		setTitle("Proveedor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 502);
+		setBounds(100, 100, 496, 502);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -391,5 +391,16 @@ public class Proveedor extends JFrame {
 		txtDireccion.setBounds(185, 210, 182, 20);
 		contentPane.add(txtDireccion);
 		txtDireccion.setColumns(10);
+		
+		JButton btnNuevo = new JButton("Nuevo");
+		btnNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tipo_Proveedor tp = new Tipo_Proveedor();
+				tp.setVisible(true);
+				dispose();
+			}
+		});
+		btnNuevo.setBounds(377, 77, 89, 23);
+		contentPane.add(btnNuevo);
 	}
 }

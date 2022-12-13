@@ -255,6 +255,8 @@ public class Cliente extends JFrame {
 				String fecha = ((JTextField) txtFechaNacimiento.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
+				
+				
 				int result = 0;
 				
 				try {

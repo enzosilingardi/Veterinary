@@ -29,7 +29,7 @@ public class Veterinario extends JFrame {
 	private JTextField txtMatricula;
 	private JTextField txtNombre;
 	private JTextField txtApellido;
-	private JComboBox cbDireccion;
+	private JTextField txtDireccion;
 	
 	class ComboItem
 	{
@@ -138,7 +138,7 @@ public class Veterinario extends JFrame {
 	}
 	
 	private void limpiar() {
-		cbDireccion.setSelectedIndex(0);
+		txtDireccion.setText("");
 		txtNombre.setText("");
 		txtApellido.setText("");
 		txtMatricula.setText("");
@@ -175,7 +175,7 @@ public class Veterinario extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Object direccion = cbDireccion.getSelectedItem();
+				String direccion = txtDireccion.getText();
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();
 				String matricula = txtMatricula.getText();
@@ -184,22 +184,20 @@ public class Veterinario extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Veterinarian (id_Address,name,surname,medical_License) VALUES (?,?,?,?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Veterinarian (address,name,surname,medical_License) VALUES (?,?,?,?)" );
 					
 					
-					if (((ComboItem) direccion).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una direccion");
-					}else {
+					
 						if(existeVeterinario(nombre,apellido)!=0) {
 						JOptionPane.showMessageDialog(null, "Veterinario ya existe");
 					}else {
-						ps.setString(1, ((ComboItem) direccion).getValue());
+						ps.setString(1, direccion);
 						ps.setString(2,nombre);
 						ps.setString(3,apellido);
 						ps.setString(4,matricula);
 					}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
@@ -258,10 +256,9 @@ public class Veterinario extends JFrame {
 		lblDireccion.setBounds(56, 163, 66, 14);
 		contentPane.add(lblDireccion);
 		
-		cbDireccion = new JComboBox();
-		cbDireccion.setBounds(175, 159, 163, 22);
-		contentPane.add(cbDireccion);
-		cbDireccion.setModel(cargarDireccion());
+		txtDireccion = new JTextField();
+		txtDireccion.setBounds(175, 160, 163, 20);
+		contentPane.add(txtDireccion);
+		txtDireccion.setColumns(10);
 	}
-
 }

@@ -40,7 +40,7 @@ public class Tabla_Pedido extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Orders.id_Order, Product.product_Name, Provider.provider_Name, address, Orders.quantity\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Orders.id_Order, Product.product_Name, Provider.provider_Name, Branch.address, Orders.quantity\r\n"
 	        			+ "FROM Orders\r\n"
 	        			+ "INNER JOIN Product ON Product.id_Product = Orders.id_Product\r\n"
 	        			+ "INNER JOIN Provider ON Provider.id_Provider = Product.id_Provider\r\n"
