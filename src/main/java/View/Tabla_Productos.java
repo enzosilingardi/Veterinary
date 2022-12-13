@@ -40,8 +40,9 @@ public class Tabla_Productos extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Product,product_Name, product_Type, description, cost_Price, sale_Price, provider_Name\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Product,product_Name, type_Name, description, cost_Price, sale_Price, provider_Name\r\n"
 	        			+ "FROM Product\r\n"
+	        			+ "INNER JOIN Product_Type ON Product.id_Product_Type = Product_Type.id_Product_Type\r\n"
 	        			+ "INNER JOIN Provider ON Product.id_Provider = Provider.id_Provider;" );
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()){
