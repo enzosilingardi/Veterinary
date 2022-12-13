@@ -30,7 +30,6 @@ import java.awt.event.ActionEvent;
 public class Modificar_Mascota extends JFrame {
 
 	private JPanel contentPane;
-	private JComboBox cbDuenio;
 	private JTextField txtNombre;
 	private JTextField txtEdad;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -39,6 +38,8 @@ public class Modificar_Mascota extends JFrame {
 	private JTextField txtId;
 	private JRadioButton rdbtnHembra;
 	private JRadioButton rdbtnMacho;
+	private JTextField txtDue;
+	private JTextField txtIdDue;
 
 	
 	class ComboItem
@@ -243,7 +244,7 @@ public class Modificar_Mascota extends JFrame {
 	 */
 	public Modificar_Mascota(String mascota) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 364, 401);
+		setBounds(100, 100, 455, 401);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -288,11 +289,6 @@ public class Modificar_Mascota extends JFrame {
 		lblDuenio.setBounds(34, 27, 46, 14);
 		contentPane.add(lblDuenio);
 		
-		cbDuenio = new JComboBox();
-		cbDuenio.setBounds(164, 23, 141, 22);
-		contentPane.add(cbDuenio);
-		cbDuenio.setModel(cargarCliente());
-		
 		JLabel lblRaza = new JLabel("Raza ");
 		lblRaza.setBounds(34, 270, 98, 14);
 		contentPane.add(lblRaza);
@@ -331,7 +327,7 @@ public class Modificar_Mascota extends JFrame {
 				PreparedStatement ps = null;
 				int id = Integer.parseInt(txtId.getText());
 				String nombre = txtNombre.getText();
-				Object duenio = cbDuenio.getSelectedItem();
+				int idDue = Integer.parseInt(txtIdDue.getText());
 				Object animal = cbAnimal.getSelectedItem();
 				Object raza = cbRaza.getSelectedItem();
 				int edad = Integer.parseInt(txtEdad.getText());
@@ -354,11 +350,9 @@ public class Modificar_Mascota extends JFrame {
 						
 
 					
-					if (((ComboItem) duenio).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione un cliente");
-					}else {
+					
 						
-						ps.setString(1, ((ComboItem) duenio).getValue());
+						ps.setInt(1, idDue);
 						ps.setString(2, nombre);
 						ps.setString(3, ((ComboItem) animal).getValue());
 						ps.setInt(4, edad);
@@ -367,7 +361,7 @@ public class Modificar_Mascota extends JFrame {
 						ps.setInt(7, id);
 					
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
@@ -403,6 +397,22 @@ public class Modificar_Mascota extends JFrame {
 		
 		cargarCampos(mascota);
 		txtId.setText(mascota);
+		
+		txtDue = new JTextField();
+		txtDue.setEditable(false);
+		txtDue.setBounds(164, 24, 141, 20);
+		contentPane.add(txtDue);
+		txtDue.setColumns(10);
+		
+		JButton btnSelec = new JButton("Seleccionar");
+		btnSelec.setBounds(315, 23, 114, 23);
+		contentPane.add(btnSelec);
+		
+		txtIdDue = new JTextField();
+		txtIdDue.setEditable(false);
+		txtIdDue.setBounds(315, 0, 46, 20);
+		contentPane.add(txtIdDue);
+		txtIdDue.setColumns(10);
 	}
 
 	public Modificar_Mascota() {
