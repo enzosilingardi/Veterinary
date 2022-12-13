@@ -403,6 +403,7 @@ public class Modificar_Mascota extends JFrame {
 		txtDue.setBounds(164, 24, 141, 20);
 		contentPane.add(txtDue);
 		txtDue.setColumns(10);
+		txtDue.setText(nom);
 		
 		JButton btnSelec = new JButton("Seleccionar");
 		btnSelec.addActionListener(new ActionListener() {
@@ -422,6 +423,7 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(txtIdDue);
 		txtIdDue.setColumns(10);
 		txtIdDue.setVisible(false);
+		txtIdDue.setText(id);
 	}
 
 	public Modificar_Mascota(final String mascota) {
