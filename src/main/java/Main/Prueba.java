@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.mxrck.autocompleter.TextAutoCompleter;
+import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
 import Model.ControlFiles;
@@ -18,15 +19,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
+import java.util.Calendar;
+
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JLabel;
 
 public class Prueba extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtPrueba;
 	private TextAutoCompleter ac;
+	private JDateChooser txtFecha;
+	private JTextField txtEdad;
 
 	/**
 	 * Launch the application.
@@ -81,7 +90,7 @@ public class Prueba extends JFrame {
 				ControlFiles.addContent("Hola");
 			}
 		});
-		btnNewButton.setBounds(158, 124, 89, 23);
+		btnNewButton.setBounds(62, 68, 89, 23);
 		contentPane.add(btnNewButton);
 		
 		txtPrueba = new JTextField();
@@ -95,5 +104,39 @@ public class Prueba extends JFrame {
 		txtPrueba.setBounds(62, 37, 86, 20);
 		contentPane.add(txtPrueba);
 		txtPrueba.setColumns(10);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(62, 146, 141, 20);
+		contentPane.add(txtFecha);
+		
+		txtEdad = new JTextField();
+		txtEdad.setBounds(62, 194, 141, 20);
+		contentPane.add(txtEdad);
+		txtEdad.setColumns(10);
+		
+		JButton btnNewButton_1 = new JButton("Calcular edad");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date dateN = Date.valueOf(fecha);
+				LocalDate date = dateN.toInstant()
+						.atZone(ZoneId.systemDefault())
+						.toLocalDate();
+				LocalDate dateA = LocalDate.now(); 
+				int anio = date.getYear();
+				int mes = date.getMonthValue();
+				int dia = date.getDayOfYear();
+				int diff_mes = dateA.getMonthValue() - mes ;
+				int diff_anio = dateA.getYear() - anio ;
+				int diff_dia = dateA.getDayOfYear() - dia ;
+				if(diff_mes<0 ||(diff_mes==0 && diff_dia<0)){
+					diff_anio =diff_anio-1;
+					}
+				txtEdad.setText(Integer.toString(diff_anio));
+			}
+		});
+		btnNewButton_1.setBounds(225, 146, 89, 23);
+		contentPane.add(btnNewButton_1);
+	
 	}
 }
