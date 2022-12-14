@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.Calendar;
 
@@ -118,21 +119,11 @@ public class Prueba extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
-				Date dateN = Date.valueOf(fecha);
-				LocalDate date = dateN.toInstant()
-						.atZone(ZoneId.systemDefault())
-						.toLocalDate();
+				
+				LocalDate date = LocalDate.parse(fecha);
 				LocalDate dateA = LocalDate.now(); 
-				int anio = date.getYear();
-				int mes = date.getMonthValue();
-				int dia = date.getDayOfYear();
-				int diff_mes = dateA.getMonthValue() - mes ;
-				int diff_anio = dateA.getYear() - anio ;
-				int diff_dia = dateA.getDayOfYear() - dia ;
-				if(diff_mes<0 ||(diff_mes==0 && diff_dia<0)){
-					diff_anio =diff_anio-1;
-					}
-				txtEdad.setText(Integer.toString(diff_anio));
+				Period diff_anio = Period.between(date, dateA);
+				txtEdad.setText(diff_anio.getYears()+"");
 			}
 		});
 		btnNewButton_1.setBounds(225, 146, 89, 23);
