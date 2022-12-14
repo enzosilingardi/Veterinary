@@ -77,11 +77,11 @@ public class Tabla_Historial extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha","IDMas"});
        
         table.setModel(modelo);
         
-        
+        int idM = Integer.parseInt(id);
         
         String datos[] = new String[6];
        
@@ -90,7 +90,7 @@ public class Tabla_Historial extends JFrame {
         	PreparedStatement ps = con.prepareStatement("SELECT id_Medical_History, Pet.name,  Client.name, Client.surname, description, CONVERT(varchar(10),date,103),Pet.id_Pet\r\n"
         			+ "FROM Medical_History\r\n"
         			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_History.id_Pet\r\n"
-        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client WHERE Pet.id_Pet ='"+id+"';" );
+        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client WHERE Pet.id_Pet ='"+idM+"';" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 datos[0] = rs.getString(1);
