@@ -3,6 +3,8 @@ package View;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +19,16 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import Control.Connect;
 import Model.ControlFiles;
+import View.Factura.ComboItem;
+
 import java.awt.Font;
 import java.awt.Color;
 
@@ -138,12 +148,52 @@ public class Tabla_Historial extends JFrame {
 		});
 	}
 
+	public void generar() throws FileNotFoundException,DocumentException {
+		
+			
+			
+			FileOutputStream archivo = new FileOutputStream("c:/rsc/Historial "+table.getValueAt(0,5).toString()+".pdf");
+			Document documento = new Document();
+			PdfWriter.getInstance(documento, archivo);
+			documento.open();
+			
+			Paragraph parrafo = new Paragraph("Historial médico");
+			parrafo.setAlignment(1);
+			documento.add(parrafo);
+			
+			
+			Paragraph parrafoM = new Paragraph("Mascota: "+table.getValueAt(0,1).toString());
+			parrafoM.setAlignment(1);
+			documento.add(parrafoM);
+			
+			Paragraph parrafoD = new Paragraph("Dueño: "+table.getValueAt(0,2).toString());
+			parrafoD.setAlignment(1);
+			documento.add(parrafoD);
+			
+			documento.add(new Paragraph(" "));
+			
+            for (int cols = 0; cols < table.getColumnCount(); cols++) {
+                for (int rows = 0; rows < table.getRowCount(); rows++) {
+                    documento.add(new Paragraph("Fecha: "+table.getValueAt(0,4).toString()));
+                    documento.add(new Paragraph("Descripción: "+table.getValueAt(0,3).toString()));
+                    documento.add(new Paragraph(" "));
+                }
+            }
+			
+	       
+			
+			documento.close();
+			
+			JOptionPane.showMessageDialog(null, "Historial creado");
+			
+		
+	}
 	/**
 	 * Create the frame.
 	 */
 	public Tabla_Historial(final String perfil) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 800, 424);
+		setBounds(100, 100, 800, 458);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -267,13 +317,33 @@ public class Tabla_Historial extends JFrame {
 		btnBuscar.setBounds(425, 339, 141, 23);
 		contentPane.add(btnBuscar);
 		
+		JButton btnGen = new JButton("Generar historial");
+		btnGen.setBackground(new Color(86, 211, 243));
+		btnGen.setBorder(null);
+		btnGen.setForeground(new Color(255, 255, 255));
+		btnGen.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					generar();
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnGen.setBounds(425, 373, 141, 23);
+		contentPane.add(btnGen);
+		
 		mostrarTabla();
 	}
 
 	public Tabla_Historial(final String perfil, String id) {
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 800, 424);
+		setBounds(100, 100, 800, 458);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -391,6 +461,26 @@ public class Tabla_Historial extends JFrame {
 		contentPane.add(btnBuscar);
 		
 		mostrarTablaId(id);
+		
+		JButton btnGen = new JButton("Generar historial");
+		btnGen.setBackground(new Color(86, 211, 243));
+		btnGen.setBorder(null);
+		btnGen.setForeground(new Color(255, 255, 255));
+		btnGen.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					generar();
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnGen.setBounds(425, 373, 141, 23);
+		contentPane.add(btnGen);
 	}
 
 	public Tabla_Historial() {
