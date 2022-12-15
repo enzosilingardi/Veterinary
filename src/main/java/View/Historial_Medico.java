@@ -30,8 +30,9 @@ public class Historial_Medico extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtDescripcion;
-	private JComboBox cbMascota;
 	private JDateChooser txtFecha;
+	private JTextField txtMascota;
+	private JTextField txtIdM;
 
 	
 	class ComboItem
@@ -143,17 +144,18 @@ public class Historial_Medico extends JFrame {
 	
 	private void limpiar() {
 		txtDescripcion.setText("");
-		cbMascota.setSelectedIndex(0);
+		txtMascota.setText("");
+		txtIdM.setText("");
 		
 	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public Historial_Medico(final String perfil) {
+	public Historial_Medico(final String perfil, String idMas) {
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 384);
+		setBounds(100, 100, 519, 384);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -172,7 +174,8 @@ public class Historial_Medico extends JFrame {
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String descripcion = txtDescripcion.getText();
-				Object mascota = cbMascota.getSelectedItem();
+				String mascota = txtMascota.getText();
+				int idM = Integer.parseInt(txtIdM.getText());
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
@@ -183,14 +186,12 @@ public class Historial_Medico extends JFrame {
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
 					
 					
-					if (((ComboItem) mascota).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
-					}else {
+				
 					
-						ps.setString(1, ((ComboItem) mascota).getValue());
+						ps.setInt(1, idM);
 						ps.setString(2, descripcion);
 						ps.setDate(3, date);
-					}
+					
 						
 					
 					
@@ -237,10 +238,122 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 		
-		cbMascota = new JComboBox();
-		cbMascota.setBounds(164, 60, 206, 22);
-		contentPane.add(cbMascota);
-		cbMascota.setModel(cargarMascota());
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(74, 191, 53, 14);
+		contentPane.add(lblFecha);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(164, 188, 206, 20);
+		contentPane.add(txtFecha);
+		
+		txtMascota = new JTextField();
+		txtMascota.setEditable(false);
+		txtMascota.setBounds(164, 61, 206, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Buscar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(380, 60, 104, 23);
+		contentPane.add(btnNewButton);
+		
+		txtIdM = new JTextField();
+		txtIdM.setEditable(false);
+		txtIdM.setBounds(380, 27, 86, 20);
+		contentPane.add(txtIdM);
+		txtIdM.setColumns(10);
+		txtIdM.setVisible(false);
+		
+		txtIdM.setText(idMas);
+	}
+	public Historial_Medico(final String perfil) {
+		setTitle("Historial Médico");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 519, 384);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblTitulo = new JLabel("Historiales médicos");
+		lblTitulo.setBounds(164, 11, 119, 14);
+		contentPane.add(lblTitulo);
+		
+		JLabel lblMascota = new JLabel("Mascota");
+		lblMascota.setBounds(74, 64, 77, 14);
+		contentPane.add(lblMascota);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String descripcion = txtDescripcion.getText();
+				String mascota = txtMascota.getText();
+				int idM = Integer.parseInt(txtIdM.getText());
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
+					
+					
+				
+					
+						ps.setInt(1, idM);
+						ps.setString(2, descripcion);
+						ps.setDate(3, date);
+					
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                ControlFiles.addContent("Se ha añadido un historial para la mascota "+mascota);
+		                limpiar();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                limpiar();
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnAgregar.setBounds(164, 259, 89, 23);
+		contentPane.add(btnAgregar);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Historial th = new Tabla_Historial(perfil);
+				th.setVisible(true);
+				dispose();
+			}
+		});
+		btnVolver.setBounds(335, 311, 89, 23);
+		contentPane.add(btnVolver);
+		
+		JLabel lblDescripcion = new JLabel("Descripcion");
+		lblDescripcion.setBounds(74, 121, 77, 14);
+		contentPane.add(lblDescripcion);
+		
+		txtDescripcion = new JTextField();
+		txtDescripcion.setBounds(162, 118, 208, 20);
+		contentPane.add(txtDescripcion);
+		txtDescripcion.setColumns(10);
 		
 		JLabel lblFecha = new JLabel("Fecha");
 		lblFecha.setBounds(74, 191, 53, 14);
@@ -249,6 +362,27 @@ public class Historial_Medico extends JFrame {
 		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
 		txtFecha.setBounds(164, 188, 206, 20);
 		contentPane.add(txtFecha);
+		
+		txtMascota = new JTextField();
+		txtMascota.setEditable(false);
+		txtMascota.setBounds(164, 61, 206, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Buscar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(380, 60, 104, 23);
+		contentPane.add(btnNewButton);
+		
+		txtIdM = new JTextField();
+		txtIdM.setEditable(false);
+		txtIdM.setBounds(380, 27, 86, 20);
+		contentPane.add(txtIdM);
+		txtIdM.setColumns(10);
+		txtIdM.setVisible(false);
 	}
 	public Historial_Medico() {
 		// TODO Auto-generated constructor stub
