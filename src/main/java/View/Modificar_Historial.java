@@ -29,9 +29,10 @@ public class Modificar_Historial extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtDescripcion;
-	private JComboBox cbMascota;
 	private JDateChooser txtFecha;
 	private JTextField txtId;
+	private JTextField txtMascota;
+	private JTextField txtIdM;
 	
 	class ComboItem
 	{
@@ -142,19 +143,14 @@ public class Modificar_Historial extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Historial(String historial, final String perfil) {
+	public Modificar_Historial(final String historial, final String perfil, String idMas) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 483, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		cbMascota = new JComboBox();
-		cbMascota.setBounds(149, 33, 206, 22);
-		contentPane.add(cbMascota);
-		cbMascota.setModel(cargarMascota());
 		
 		JLabel lblMascota = new JLabel("Mascota");
 		lblMascota.setBounds(59, 37, 77, 14);
@@ -182,7 +178,8 @@ public class Modificar_Historial extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
 				String descripcion = txtDescripcion.getText();
-				Object mascota = cbMascota.getSelectedItem();
+				String mascota = txtMascota.getText();
+				int idM = Integer.parseInt(txtIdM.getText());
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
@@ -193,15 +190,13 @@ public class Modificar_Historial extends JFrame {
 					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
 					
 					
-					if (((ComboItem) mascota).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
-					}else {
 					
-						ps.setString(1, ((ComboItem) mascota).getValue());
+					
+						ps.setInt(1, idM);
 						ps.setString(2, descripcion);
 						ps.setDate(3, date);
 						ps.setInt(4, id);
-					}
+					
 						
 					
 					
@@ -249,8 +244,162 @@ public class Modificar_Historial extends JFrame {
 		txtId.setVisible(false);
 		txtId.setText(historial);
 		
+		txtMascota = new JTextField();
+		txtMascota.setEditable(false);
+		txtMascota.setBounds(146, 34, 209, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		txtIdM = new JTextField();
+		txtIdM.setEditable(false);
+		txtIdM.setBounds(269, 11, 86, 20);
+		contentPane.add(txtIdM);
+		txtIdM.setColumns(10);
+		txtIdM.setVisible(false);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota_ModHis bmh = new Buscar_Mascota_ModHis(perfil,historial);
+				bmh.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBounds(365, 33, 89, 23);
+		contentPane.add(btnBuscar);
+		
 		cargarCampos(historial);
 		
+		txtIdM.setText(idMas);
+		
+	}
+
+	public Modificar_Historial(final String historial, final String perfil) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 483, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblMascota = new JLabel("Mascota");
+		lblMascota.setBounds(59, 37, 77, 14);
+		contentPane.add(lblMascota);
+		
+		JLabel lblDescripcion = new JLabel("Descripcion");
+		lblDescripcion.setBounds(59, 94, 77, 14);
+		contentPane.add(lblDescripcion);
+		
+		txtDescripcion = new JTextField();
+		txtDescripcion.setColumns(10);
+		txtDescripcion.setBounds(147, 91, 208, 20);
+		contentPane.add(txtDescripcion);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(149, 146, 206, 20);
+		contentPane.add(txtFecha);
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(59, 149, 53, 14);
+		contentPane.add(lblFecha);
+		
+		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(txtId.getText());
+				String descripcion = txtDescripcion.getText();
+				String mascota = txtMascota.getText();
+				int idM = Integer.parseInt(txtIdM.getText());
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
+					
+					
+					
+					
+						ps.setInt(1, idM);
+						ps.setString(2, descripcion);
+						ps.setDate(3, date);
+						ps.setInt(4, id);
+					
+						
+					
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
+		                Tabla_Historial th = new Tabla_Historial(perfil);
+						th.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(99, 209, 89, 23);
+		contentPane.add(btnModificar);
+		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Historial th = new Tabla_Historial(perfil);
+				th.setVisible(true);
+				dispose();
+			}
+		});
+		btnVolver.setBounds(239, 209, 89, 23);
+		contentPane.add(btnVolver);
+		
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(10, 11, 21, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
+		txtId.setText(historial);
+		
+		txtMascota = new JTextField();
+		txtMascota.setEditable(false);
+		txtMascota.setBounds(146, 34, 209, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		txtIdM = new JTextField();
+		txtIdM.setEditable(false);
+		txtIdM.setBounds(269, 11, 86, 20);
+		contentPane.add(txtIdM);
+		txtIdM.setColumns(10);
+		txtIdM.setVisible(false);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota_ModHis bmh = new Buscar_Mascota_ModHis(perfil,historial);
+				bmh.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBounds(365, 33, 89, 23);
+		contentPane.add(btnBuscar);
+		
+		cargarCampos(historial);
 	}
 
 	public Modificar_Historial() {

@@ -255,6 +255,9 @@ public class Historial_Medico extends JFrame {
 		JButton btnNewButton = new JButton("Buscar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota_Hist bmh = new Buscar_Mascota_Hist(perfil);
+				bmh.setVisible(true);
+				dispose();
 			}
 		});
 		btnNewButton.setBounds(380, 60, 104, 23);
@@ -372,6 +375,9 @@ public class Historial_Medico extends JFrame {
 		JButton btnNewButton = new JButton("Buscar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota_Hist bmh = new Buscar_Mascota_Hist(perfil);
+				bmh.setVisible(true);
+				dispose();
 			}
 		});
 		btnNewButton.setBounds(380, 60, 104, 23);
