@@ -7,10 +7,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
 import Model.ControlFiles;
@@ -40,6 +44,7 @@ public class Modificar_Mascota extends JFrame {
 	private JRadioButton rdbtnMacho;
 	private JTextField txtDue;
 	private JTextField txtIdDue;
+	private JDateChooser txtFecha;
 
 	
 	class ComboItem
@@ -244,7 +249,7 @@ public class Modificar_Mascota extends JFrame {
 	 */
 	public Modificar_Mascota(final String mascota,String id,String nom) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 455, 401);
+		setBounds(100, 100, 455, 479);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -265,24 +270,25 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(lblTipo);
 		
 		JLabel lblEdad = new JLabel("Edad");
-		lblEdad.setBounds(34, 175, 46, 14);
+		lblEdad.setBounds(34, 234, 46, 14);
 		contentPane.add(lblEdad);
 		
 		txtEdad = new JTextField();
+		txtEdad.setEditable(false);
 		txtEdad.setColumns(10);
-		txtEdad.setBounds(164, 172, 141, 20);
+		txtEdad.setBounds(164, 231, 141, 20);
 		contentPane.add(txtEdad);
 		
 		JLabel lblGenero = new JLabel("Género");
-		lblGenero.setBounds(34, 224, 46, 14);
+		lblGenero.setBounds(34, 283, 46, 14);
 		contentPane.add(lblGenero);
 		
 		final JRadioButton rdbtnMacho = new JRadioButton("Macho");
-		rdbtnMacho.setBounds(141, 220, 67, 23);
+		rdbtnMacho.setBounds(141, 279, 67, 23);
 		contentPane.add(rdbtnMacho);
 		
 		final JRadioButton rdbtnHembra = new JRadioButton("Hembra");
-		rdbtnHembra.setBounds(234, 220, 109, 23);
+		rdbtnHembra.setBounds(234, 279, 109, 23);
 		contentPane.add(rdbtnHembra);
 		
 		JLabel lblDuenio = new JLabel("Dueño");
@@ -290,7 +296,7 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(lblDuenio);
 		
 		JLabel lblRaza = new JLabel("Raza ");
-		lblRaza.setBounds(34, 270, 98, 14);
+		lblRaza.setBounds(34, 329, 98, 14);
 		contentPane.add(lblRaza);
 		
 		cbAnimal = new JComboBox();
@@ -307,7 +313,7 @@ public class Modificar_Mascota extends JFrame {
 		cbAnimal.setModel(cargarAnimal());
 		
 		cbRaza = new JComboBox();
-		cbRaza.setBounds(164, 266, 141, 22);
+		cbRaza.setBounds(164, 325, 141, 22);
 		contentPane.add(cbRaza);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -318,7 +324,7 @@ public class Modificar_Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(216, 328, 89, 23);
+		btnVolver.setBounds(216, 387, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnModificar = new JButton("Modificar");
@@ -385,7 +391,7 @@ public class Modificar_Mascota extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(34, 328, 89, 23);
+		btnModificar.setBounds(34, 387, 89, 23);
 		contentPane.add(btnModificar);
 		
 		txtId = new JTextField();
@@ -424,11 +430,34 @@ public class Modificar_Mascota extends JFrame {
 		txtIdDue.setColumns(10);
 		txtIdDue.setVisible(false);
 		txtIdDue.setText(id);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(164, 178, 141, 20);
+		contentPane.add(txtFecha);
+		
+		JButton btnGen = new JButton("Generar edad");
+		btnGen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				
+				LocalDate date = LocalDate.parse(fecha);
+				LocalDate dateA = LocalDate.now(); 
+				Period diff_anio = Period.between(date, dateA);
+				txtEdad.setText(diff_anio.getYears()+"");
+			}
+		});
+		btnGen.setBounds(315, 177, 114, 23);
+		contentPane.add(btnGen);
+		txtIdDue.setVisible(false);
+		
+		JLabel lblFecha = new JLabel("Fecha de nacimiento");
+		lblFecha.setBounds(34, 181, 120, 14);
+		contentPane.add(lblFecha);
 	}
 
 	public Modificar_Mascota(final String mascota) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 455, 401);
+		setBounds(100, 100, 455, 477);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -449,24 +478,25 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(lblTipo);
 		
 		JLabel lblEdad = new JLabel("Edad");
-		lblEdad.setBounds(34, 175, 46, 14);
+		lblEdad.setBounds(34, 221, 46, 14);
 		contentPane.add(lblEdad);
 		
 		txtEdad = new JTextField();
+		txtEdad.setEditable(false);
 		txtEdad.setColumns(10);
-		txtEdad.setBounds(164, 172, 141, 20);
+		txtEdad.setBounds(164, 218, 141, 20);
 		contentPane.add(txtEdad);
 		
 		JLabel lblGenero = new JLabel("Género");
-		lblGenero.setBounds(34, 224, 46, 14);
+		lblGenero.setBounds(34, 270, 46, 14);
 		contentPane.add(lblGenero);
 		
 		final JRadioButton rdbtnMacho = new JRadioButton("Macho");
-		rdbtnMacho.setBounds(141, 220, 67, 23);
+		rdbtnMacho.setBounds(141, 266, 67, 23);
 		contentPane.add(rdbtnMacho);
 		
 		final JRadioButton rdbtnHembra = new JRadioButton("Hembra");
-		rdbtnHembra.setBounds(234, 220, 109, 23);
+		rdbtnHembra.setBounds(234, 266, 109, 23);
 		contentPane.add(rdbtnHembra);
 		
 		JLabel lblDuenio = new JLabel("Dueño");
@@ -474,7 +504,7 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(lblDuenio);
 		
 		JLabel lblRaza = new JLabel("Raza ");
-		lblRaza.setBounds(34, 270, 98, 14);
+		lblRaza.setBounds(34, 316, 98, 14);
 		contentPane.add(lblRaza);
 		
 		cbAnimal = new JComboBox();
@@ -491,7 +521,7 @@ public class Modificar_Mascota extends JFrame {
 		cbAnimal.setModel(cargarAnimal());
 		
 		cbRaza = new JComboBox();
-		cbRaza.setBounds(164, 266, 141, 22);
+		cbRaza.setBounds(164, 312, 141, 22);
 		contentPane.add(cbRaza);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -502,7 +532,7 @@ public class Modificar_Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(216, 328, 89, 23);
+		btnVolver.setBounds(216, 374, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JButton btnModificar = new JButton("Modificar");
@@ -569,7 +599,7 @@ public class Modificar_Mascota extends JFrame {
 				}
 			}
 		});
-		btnModificar.setBounds(34, 328, 89, 23);
+		btnModificar.setBounds(34, 374, 89, 23);
 		contentPane.add(btnModificar);
 		
 		txtId = new JTextField();
@@ -604,6 +634,28 @@ public class Modificar_Mascota extends JFrame {
 		txtIdDue.setBounds(315, 0, 46, 20);
 		contentPane.add(txtIdDue);
 		txtIdDue.setColumns(10);
+		
+		JLabel lblFecha = new JLabel("Fecha de nacimiento");
+		lblFecha.setBounds(34, 172, 120, 14);
+		contentPane.add(lblFecha);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(164, 169, 141, 20);
+		contentPane.add(txtFecha);
+		
+		JButton btnGen = new JButton("Generar edad");
+		btnGen.setBounds(315, 168, 114, 23);
+		btnGen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				
+				LocalDate date = LocalDate.parse(fecha);
+				LocalDate dateA = LocalDate.now(); 
+				Period diff_anio = Period.between(date, dateA);
+				txtEdad.setText(diff_anio.getYears()+"");
+			}
+		});
+		contentPane.add(btnGen);
 		txtIdDue.setVisible(false);
 	}
 

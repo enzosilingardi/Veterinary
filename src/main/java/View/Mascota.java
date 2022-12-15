@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import Control.Connect;
 import Model.Breed;
 import Model.ControlFiles;
@@ -22,9 +24,12 @@ import javax.swing.DefaultComboBoxModel;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
@@ -43,6 +48,7 @@ public class Mascota extends JFrame {
 	private JComboBox cbRaza;
 	private JTextField txtDuenio;
 	private JTextField txtIdDue;
+	private JDateChooser txtFecha;
 
 	
 	class ComboItem
@@ -233,7 +239,7 @@ public class Mascota extends JFrame {
 	public Mascota(String id, String nom) {
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 473, 459);
+		setBounds(100, 100, 473, 510);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -258,10 +264,11 @@ public class Mascota extends JFrame {
 		contentPane.add(lblTipo);
 		
 		JLabel lblEdad = new JLabel("Edad");
-		lblEdad.setBounds(45, 205, 46, 14);
+		lblEdad.setBounds(45, 256, 46, 14);
 		contentPane.add(lblEdad);
 		
 		txtEdad = new JTextField();
+		txtEdad.setEditable(false);
 		txtEdad.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -271,22 +278,22 @@ public class Mascota extends JFrame {
 				}
 			}
 		});
-		txtEdad.setBounds(175, 202, 141, 20);
+		txtEdad.setBounds(175, 253, 141, 20);
 		contentPane.add(txtEdad);
 		txtEdad.setColumns(10);
 		
 		JLabel lblGenero = new JLabel("Género");
-		lblGenero.setBounds(45, 254, 46, 14);
+		lblGenero.setBounds(45, 305, 46, 14);
 		contentPane.add(lblGenero);
 		
 		final JRadioButton rdbtnMacho = new JRadioButton("Macho");
 		buttonGroup.add(rdbtnMacho);
-		rdbtnMacho.setBounds(152, 250, 67, 23);
+		rdbtnMacho.setBounds(152, 301, 67, 23);
 		contentPane.add(rdbtnMacho);
 		
 		final JRadioButton rdbtnHembra = new JRadioButton("Hembra");
 		buttonGroup.add(rdbtnHembra);
-		rdbtnHembra.setBounds(245, 250, 109, 23);
+		rdbtnHembra.setBounds(245, 301, 109, 23);
 		contentPane.add(rdbtnHembra);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -297,6 +304,8 @@ public class Mascota extends JFrame {
 				int idDue = Integer.parseInt(txtIdDue.getText());
 				Object animal = cbAnimal.getSelectedItem();
 				Object raza = cbRaza.getSelectedItem();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
 				if(rdbtnMacho.isSelected()) {
@@ -313,7 +322,7 @@ public class Mascota extends JFrame {
 					Connection con = Connect.getConexion();
 					
 					
-						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed ) VALUES (?,?,?,?,?,?)" );
+						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed,birthdate ) VALUES (?,?,?,?,?,?,?)" );
 						
 
 					
@@ -327,6 +336,7 @@ public class Mascota extends JFrame {
 						ps.setInt(4, edad);
 						ps.setString(5, genero);
 						ps.setString(6, ((ComboItem) raza).getValue());
+						ps.setDate(7, date);
 					}
 						
 					
@@ -352,7 +362,7 @@ public class Mascota extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(165, 350, 89, 23);
+		btnAgregar.setBounds(165, 401, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -363,7 +373,7 @@ public class Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(289, 386, 89, 23);
+		btnVolver.setBounds(289, 437, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JLabel lblDuenio = new JLabel("Dueño");
@@ -371,7 +381,7 @@ public class Mascota extends JFrame {
 		contentPane.add(lblDuenio);
 		
 		JLabel lblRaza = new JLabel("Raza ");
-		lblRaza.setBounds(45, 300, 98, 14);
+		lblRaza.setBounds(45, 351, 98, 14);
 		contentPane.add(lblRaza);
 		
 		cbAnimal = new JComboBox();
@@ -388,7 +398,7 @@ public class Mascota extends JFrame {
 		cbAnimal.setModel(cargarAnimal());
 		
 		cbRaza = new JComboBox();
-		cbRaza.setBounds(175, 296, 141, 22);
+		cbRaza.setBounds(175, 347, 141, 22);
 		contentPane.add(cbRaza);
 		
 		
@@ -409,7 +419,7 @@ public class Mascota extends JFrame {
 				raza.setVisible(true);
 			}
 		});
-		btnRazas.setBounds(326, 296, 121, 23);
+		btnRazas.setBounds(326, 347, 121, 23);
 		contentPane.add(btnRazas);
 		
 		JButton btnSelec = new JButton("Seleccionar");
@@ -439,12 +449,34 @@ public class Mascota extends JFrame {
 		txtIdDue.setVisible(false);
 		
 		txtIdDue.setText(id);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(175, 201, 141, 20);
+		contentPane.add(txtFecha);
+		
+		JButton btnGen = new JButton("Generar edad");
+		btnGen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				
+				LocalDate date = LocalDate.parse(fecha);
+				LocalDate dateA = LocalDate.now(); 
+				Period diff_anio = Period.between(date, dateA);
+				txtEdad.setText(diff_anio.getYears()+"");
+			}
+		});
+		btnGen.setBounds(326, 200, 121, 23);
+		contentPane.add(btnGen);
+		
+		JLabel lblFecha = new JLabel("Fecha de nacimiento");
+		lblFecha.setBounds(45, 207, 120, 14);
+		contentPane.add(lblFecha);
 	}
 
 	public Mascota() {
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 473, 459);
+		setBounds(100, 100, 473, 510);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -469,10 +501,11 @@ public class Mascota extends JFrame {
 		contentPane.add(lblTipo);
 		
 		JLabel lblEdad = new JLabel("Edad");
-		lblEdad.setBounds(45, 205, 46, 14);
+		lblEdad.setBounds(45, 256, 46, 14);
 		contentPane.add(lblEdad);
 		
 		txtEdad = new JTextField();
+		txtEdad.setEditable(false);
 		txtEdad.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -482,22 +515,22 @@ public class Mascota extends JFrame {
 				}
 			}
 		});
-		txtEdad.setBounds(175, 202, 141, 20);
+		txtEdad.setBounds(175, 253, 141, 20);
 		contentPane.add(txtEdad);
 		txtEdad.setColumns(10);
 		
 		JLabel lblGenero = new JLabel("Género");
-		lblGenero.setBounds(45, 254, 46, 14);
+		lblGenero.setBounds(45, 305, 46, 14);
 		contentPane.add(lblGenero);
 		
 		final JRadioButton rdbtnMacho = new JRadioButton("Macho");
 		buttonGroup.add(rdbtnMacho);
-		rdbtnMacho.setBounds(152, 250, 67, 23);
+		rdbtnMacho.setBounds(152, 301, 67, 23);
 		contentPane.add(rdbtnMacho);
 		
 		final JRadioButton rdbtnHembra = new JRadioButton("Hembra");
 		buttonGroup.add(rdbtnHembra);
-		rdbtnHembra.setBounds(245, 250, 109, 23);
+		rdbtnHembra.setBounds(245, 301, 109, 23);
 		contentPane.add(rdbtnHembra);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -508,6 +541,8 @@ public class Mascota extends JFrame {
 				int idDue = Integer.parseInt(txtIdDue.getText());
 				Object animal = cbAnimal.getSelectedItem();
 				Object raza = cbRaza.getSelectedItem();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
 				if(rdbtnMacho.isSelected()) {
@@ -524,7 +559,7 @@ public class Mascota extends JFrame {
 					Connection con = Connect.getConexion();
 					
 					
-						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed ) VALUES (?,?,?,?,?,?)" );
+						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed,birthdate ) VALUES (?,?,?,?,?,?,?)" );
 						
 
 					
@@ -538,6 +573,7 @@ public class Mascota extends JFrame {
 						ps.setInt(4, edad);
 						ps.setString(5, genero);
 						ps.setString(6, ((ComboItem) raza).getValue());
+						ps.setDate(7, date);
 					}
 						
 					
@@ -563,7 +599,7 @@ public class Mascota extends JFrame {
 				
 			}
 		});
-		btnAgregar.setBounds(165, 350, 89, 23);
+		btnAgregar.setBounds(165, 401, 89, 23);
 		contentPane.add(btnAgregar);
 		
 		JButton btnVolver = new JButton("Volver");
@@ -574,7 +610,7 @@ public class Mascota extends JFrame {
 				dispose();
 			}
 		});
-		btnVolver.setBounds(289, 386, 89, 23);
+		btnVolver.setBounds(289, 437, 89, 23);
 		contentPane.add(btnVolver);
 		
 		JLabel lblDuenio = new JLabel("Dueño");
@@ -582,7 +618,7 @@ public class Mascota extends JFrame {
 		contentPane.add(lblDuenio);
 		
 		JLabel lblRaza = new JLabel("Raza ");
-		lblRaza.setBounds(45, 300, 98, 14);
+		lblRaza.setBounds(45, 351, 98, 14);
 		contentPane.add(lblRaza);
 		
 		cbAnimal = new JComboBox();
@@ -599,7 +635,7 @@ public class Mascota extends JFrame {
 		cbAnimal.setModel(cargarAnimal());
 		
 		cbRaza = new JComboBox();
-		cbRaza.setBounds(175, 296, 141, 22);
+		cbRaza.setBounds(175, 347, 141, 22);
 		contentPane.add(cbRaza);
 		
 		
@@ -620,7 +656,7 @@ public class Mascota extends JFrame {
 				raza.setVisible(true);
 			}
 		});
-		btnRazas.setBounds(326, 296, 121, 23);
+		btnRazas.setBounds(326, 347, 121, 23);
 		contentPane.add(btnRazas);
 		
 		JButton btnSelec = new JButton("Seleccionar");
@@ -645,6 +681,28 @@ public class Mascota extends JFrame {
 		txtIdDue.setBounds(326, 22, 27, 20);
 		contentPane.add(txtIdDue);
 		txtIdDue.setColumns(10);
+		
+		JLabel lblFecha = new JLabel("Fecha de nacimiento");
+		lblFecha.setBounds(45, 204, 121, 14);
+		contentPane.add(lblFecha);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(175, 201, 141, 20);
+		contentPane.add(txtFecha);
+		
+		JButton btnGen = new JButton("Generar edad");
+		btnGen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				
+				LocalDate date = LocalDate.parse(fecha);
+				LocalDate dateA = LocalDate.now(); 
+				Period diff_anio = Period.between(date, dateA);
+				txtEdad.setText(diff_anio.getYears()+"");
+			}
+		});
+		btnGen.setBounds(326, 200, 121, 23);
+		contentPane.add(btnGen);
 		txtIdDue.setVisible(false);
 	}
 }
