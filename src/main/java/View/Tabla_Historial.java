@@ -41,17 +41,17 @@ public class Tabla_Historial extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha","IDMas"});
 	       
 	        table.setModel(modelo);
 	        
 	        
 	        
-	        String datos[] = new String[5];
+	        String datos[] = new String[6];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Medical_History, Pet.name,  Client.name, Client.surname, description, CONVERT(varchar(10),date,103)\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT id_Medical_History, Pet.name,  Client.name, Client.surname, description, CONVERT(varchar(10),date,103),Pet.id_Pet\r\n"
 	        			+ "FROM Medical_History\r\n"
 	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_History.id_Pet\r\n"
 	        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client\r\n"
@@ -63,6 +63,7 @@ public class Tabla_Historial extends JFrame {
 	                datos[2] = rs.getString(3)+" "+rs.getString(4);
 	                datos[3] = rs.getString(5);
 	                datos[4] = rs.getString(6);
+	                datos[5] = rs.getString(7);
 	                
 	                modelo.addRow(datos);
 
@@ -74,6 +75,10 @@ public class Tabla_Historial extends JFrame {
 	    		table.getColumnModel().getColumn(0).setMinWidth(0);
 	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 	    		table.getColumnModel().getColumn(0).setResizable(false);
+	    		table.getColumnModel().getColumn(5).setMaxWidth(0);
+	    		table.getColumnModel().getColumn(5).setMinWidth(0);
+	    		table.getColumnModel().getColumn(5).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(5).setResizable(false);
 	        } catch(SQLException E) {
 				JOptionPane.showMessageDialog(null,E);
 			}catch (ClassNotFoundException e1) {
@@ -152,7 +157,7 @@ public class Tabla_Historial extends JFrame {
 		
 			
 			
-			FileOutputStream archivo = new FileOutputStream("c:/rsc/Historial "+table.getValueAt(0,5).toString()+".pdf");
+			FileOutputStream archivo = new FileOutputStream("c:/rsc/Historial Mascota "+table.getValueAt(0,5).toString()+".pdf");
 			Document documento = new Document();
 			PdfWriter.getInstance(documento, archivo);
 			documento.open();
@@ -171,15 +176,14 @@ public class Tabla_Historial extends JFrame {
 			documento.add(parrafoD);
 			
 			documento.add(new Paragraph(" "));
-			
-            for (int cols = 0; cols < table.getColumnCount(); cols++) {
-                for (int rows = 0; rows < table.getRowCount(); rows++) {
-                    documento.add(new Paragraph("Fecha: "+table.getValueAt(0,4).toString()));
-                    documento.add(new Paragraph("Descripción: "+table.getValueAt(0,3).toString()));
+            
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    documento.add(new Paragraph("Fecha: "+table.getValueAt(i,4).toString()));
+                    documento.add(new Paragraph("Descripción: "+table.getValueAt(i,3).toString()));
                     documento.add(new Paragraph(" "));
                 }
-            }
-			
+            
+		
 	       
 			
 			documento.close();
