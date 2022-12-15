@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -336,6 +337,8 @@ public class Modificar_Mascota extends JFrame {
 				int idDue = Integer.parseInt(txtIdDue.getText());
 				Object animal = cbAnimal.getSelectedItem();
 				Object raza = cbRaza.getSelectedItem();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
 				if(rdbtnMacho.isSelected()) {
@@ -352,7 +355,7 @@ public class Modificar_Mascota extends JFrame {
 					Connection con = Connect.getConexion();
 					
 					
-						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ? WHERE id_Pet = ?" );
+						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ?, birthdate = ? WHERE id_Pet = ?" );
 						
 
 					
@@ -364,7 +367,8 @@ public class Modificar_Mascota extends JFrame {
 						ps.setInt(4, edad);
 						ps.setString(5, genero);
 						ps.setString(6, ((ComboItem) raza).getValue());
-						ps.setInt(7, id);
+						ps.setDate(7, date);
+						ps.setInt(8, id);
 					
 						
 					
@@ -544,6 +548,8 @@ public class Modificar_Mascota extends JFrame {
 				int idDue = Integer.parseInt(txtIdDue.getText());
 				Object animal = cbAnimal.getSelectedItem();
 				Object raza = cbRaza.getSelectedItem();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
 				if(rdbtnMacho.isSelected()) {
@@ -560,7 +566,7 @@ public class Modificar_Mascota extends JFrame {
 					Connection con = Connect.getConexion();
 					
 					
-						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ? WHERE id_Pet = ?" );
+						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ?, birthdate = ? WHERE id_Pet = ?" );
 						
 
 					
@@ -572,7 +578,8 @@ public class Modificar_Mascota extends JFrame {
 						ps.setInt(4, edad);
 						ps.setString(5, genero);
 						ps.setString(6, ((ComboItem) raza).getValue());
-						ps.setInt(7, id);
+						ps.setDate(7, date);
+						ps.setInt(8, id);
 					
 						
 					
