@@ -34,16 +34,16 @@ public class Tabla_Mascota extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});
+	        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Fecha de nacimiento","Edad","Género","Raza","Dueño"});
 	       
 	        table.setModel(modelo);
 	        
 	        
-	        String datos[] = new String[7];
+	        String datos[] = new String[8];
 	       
 	        try {
 	        	Connection con = Connect.getConexion();
-	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
+	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type,Pet.birthdate, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
 	        			+ "FROM Pet\r\n"
 	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
 	        			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
@@ -56,7 +56,8 @@ public class Tabla_Mascota extends JFrame {
 	                datos[3] = rs.getString(4);
 	                datos[4] = rs.getString(5);
 	                datos[5] = rs.getString(6);
-	                datos[6] = rs.getString(7)+" "+rs.getString(8);
+	                datos[6] = rs.getString(7);
+	                datos[7] = rs.getString(8)+" "+rs.getString(9);
 	                
 	                modelo.addRow(datos);
 
