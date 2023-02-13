@@ -234,7 +234,6 @@ public class Factura extends JFrame {
 				e1.printStackTrace();
 			}
     }
-	
 	/**
 	 * Launch the application.
 	 */
@@ -380,11 +379,11 @@ public class Factura extends JFrame {
 		cbPunto.setModel(cargarSucursal());
 		
 		JLabel lblFecha = new JLabel("Fecha");
-		lblFecha.setBounds(468, 205, 76, 14);
+		lblFecha.setBounds(468, 228, 76, 14);
 		contentPane.add(lblFecha);
 		
 		txtFecha = new JDateChooser("dd-MM-yyyy", "##-##-####", ' ');
-		txtFecha.setBounds(530, 199, 107, 20);
+		txtFecha.setBounds(531, 222, 107, 20);
 		contentPane.add(txtFecha);
 		
 		JLabel lblIva = new JLabel("IVA");
@@ -544,7 +543,7 @@ public class Factura extends JFrame {
 		btnBuscar.setBounds(234, 55, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		cargarEmisor();
+		
 		
 
 		txtEmisor = new JTextField();
@@ -574,6 +573,8 @@ public class Factura extends JFrame {
 		btnTotal.setBorder(null);
 		btnTotal.setBounds(608, 314, 147, 23);
 		contentPane.add(btnTotal);
+		
+		cargarEmisor();
 	}
 
 

@@ -113,8 +113,8 @@ public class Emisor extends JFrame {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String cuit = txtEmisor.getText();
 				String nombre = txtEmisor.getText();
+				String cuit = txtCuit.getText();
 				String empresa = txtEmpresa.getText();
 				int result = 0;
 				

@@ -385,6 +385,11 @@ public class Presupuesto extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.setBorder(null);
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnVolver.setBounds(556, 527, 157, 23);
 		contentPane.add(btnVolver);
 		
@@ -583,6 +588,11 @@ public class Presupuesto extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.setBorder(null);
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnVolver.setBounds(556, 527, 157, 23);
 		contentPane.add(btnVolver);
 		
