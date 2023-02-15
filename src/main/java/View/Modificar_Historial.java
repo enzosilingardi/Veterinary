@@ -143,7 +143,7 @@ public class Modificar_Historial extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Historial(final String historial, final String perfil, String idMas) {
+	public Modificar_Historial(final String historial, final String perfil, String idMas, String nomMas) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 483, 300);
 		contentPane = new JPanel();
@@ -271,7 +271,7 @@ public class Modificar_Historial extends JFrame {
 		cargarCampos(historial);
 		
 		txtIdM.setText(idMas);
-		
+		txtMascota.setText(nomMas);
 	}
 
 	public Modificar_Historial(final String historial, final String perfil) {

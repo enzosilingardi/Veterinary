@@ -152,7 +152,7 @@ public class Historial_Medico extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Historial_Medico(final String perfil, String idMas) {
+	public Historial_Medico(final String perfil, String idMas, String nomMas) {
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 519, 384);
@@ -271,6 +271,7 @@ public class Historial_Medico extends JFrame {
 		txtIdM.setVisible(false);
 		
 		txtIdM.setText(idMas);
+		txtMascota.setText(nomMas);
 	}
 	public Historial_Medico(final String perfil) {
 		setTitle("Historial Médico");

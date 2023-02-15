@@ -259,8 +259,9 @@ public class Buscar_Mascota_Hist extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				String id = table.getValueAt(fila,0).toString();
+				String nom = table.getValueAt(fila,1).toString();
 				
-				Historial_Medico hm = new Historial_Medico(perfil,id);
+				Historial_Medico hm = new Historial_Medico(perfil,id,nom);
 				hm.setVisible(true);
 				dispose();
 			}

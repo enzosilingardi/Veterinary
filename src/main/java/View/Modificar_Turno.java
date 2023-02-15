@@ -31,12 +31,14 @@ public class Modificar_Turno extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbTipo;
-	private JComboBox cbMascota;
 	private JDateChooser txtFecha;
 	private JDateChooser txtHora;
 	private JButton btnModificar;
 	private JButton btnVolver;
 	private JTextField txtId;
+	private JTextField txtMascota;
+	private JTextField txtIdM;
+	private JButton btnBuscar;
 	
 
 	class ComboItem
@@ -174,9 +176,9 @@ public class Modificar_Turno extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Turno(String turno) {
+	public Modificar_Turno(final String turno) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 382, 332);
+		setBounds(100, 100, 449, 332);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -187,11 +189,6 @@ public class Modificar_Turno extends JFrame {
 		cbTipo.setBounds(137, 38, 187, 22);
 		contentPane.add(cbTipo);
 		cbTipo.setModel(cargarTipo());
-		
-		cbMascota = new JComboBox();
-		cbMascota.setBounds(137, 77, 187, 22);
-		contentPane.add(cbMascota);
-		cbMascota.setModel(cargarMascota());
 		
 		JLabel lblMascota = new JLabel("Mascota");
 		lblMascota.setBounds(35, 81, 77, 14);
@@ -224,7 +221,7 @@ public class Modificar_Turno extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
 				Object tipo = cbTipo.getSelectedItem();
-				Object mascota = cbMascota.getSelectedItem();
+				int idM = Integer.parseInt(txtIdM.getText());
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
@@ -244,7 +241,7 @@ public class Modificar_Turno extends JFrame {
 						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
 					}else {
 						ps.setString(1, ((ComboItem) tipo).getValue());
-						ps.setString(2, ((ComboItem) mascota).getValue());
+						ps.setInt(2, idM);
 						ps.setDate(3, date);
 						ps.setTime(4, start);
 						ps.setInt(5, id);
@@ -300,7 +297,182 @@ public class Modificar_Turno extends JFrame {
 		txtId.setVisible(false);
 		
 		txtId.setText(turno);
+		
+		txtMascota = new JTextField();
+		txtMascota.setEditable(false);
+		txtMascota.setBounds(137, 78, 187, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		txtIdM = new JTextField();
+		txtIdM.setEditable(false);
+		txtIdM.setVisible(false);
+		txtIdM.setBounds(270, 11, 86, 20);
+		contentPane.add(txtIdM);
+		txtIdM.setColumns(10);
+		
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota_ModPro bmm = new Buscar_Mascota_ModPro(turno);
+				bmm.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBounds(334, 77, 89, 23);
+		contentPane.add(btnBuscar);
 		cargarCampos(turno);
+	}
+
+	public Modificar_Turno(final String turno, String idMas, String nomMas) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 449, 332);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		cbTipo = new JComboBox();
+		cbTipo.setBounds(137, 38, 187, 22);
+		contentPane.add(cbTipo);
+		cbTipo.setModel(cargarTipo());
+		
+		JLabel lblMascota = new JLabel("Mascota");
+		lblMascota.setBounds(35, 81, 77, 14);
+		contentPane.add(lblMascota);
+		
+		JLabel lblTipo = new JLabel("Tipo");
+		lblTipo.setBounds(35, 42, 46, 14);
+		contentPane.add(lblTipo);
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(35, 123, 46, 14);
+		contentPane.add(lblFecha);
+		
+		JLabel lblHora = new JLabel("Hora");
+		lblHora.setBounds(35, 168, 92, 14);
+		contentPane.add(lblHora);
+		
+		txtFecha = new JDateChooser("yyyy-MM-dd", "####-##-##", '_');
+		txtFecha.setBounds(137, 117, 187, 20);
+		contentPane.add(txtFecha);
+		
+		txtHora = new JDateChooser("HH:mm:ss", "##:##:##", '_');
+		txtHora.getCalendarButton().setEnabled(false);
+		txtHora.getCalendarButton().setVisible(false);
+		txtHora.setBounds(137, 162, 99, 20);
+		contentPane.add(txtHora);
+		
+		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int id = Integer.parseInt(txtId.getText());
+				Object tipo = cbTipo.getSelectedItem();
+				int idM = Integer.parseInt(txtIdM.getText());
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				Date date = Date.valueOf(fecha);
+				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
+				Time start = Time.valueOf(hora);
+				
+				int result = 0;
+				
+				try {
+					Connection con = Connect.getConexion();
+					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
+					
+					
+					if (((ComboItem) tipo).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
+					}else {
+						if(((ComboItem) tipo).getValue() == "") {
+						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
+					}else {
+						ps.setString(1, ((ComboItem) tipo).getValue());
+						ps.setInt(2, idM);
+						ps.setDate(3, date);
+						ps.setTime(4, start);
+						ps.setInt(5, id);
+						
+						
+							
+						}
+						
+					}
+					
+					result = ps.executeUpdate();
+					
+					if(result > 0){
+		                JOptionPane.showMessageDialog(null, "Turno modificado");
+		                ControlFiles.addContent("Se ha modificado el turno para la fecha "+date+" y hora "+start);
+		                Tabla_Turnos tt = new Tabla_Turnos();
+						tt.setVisible(true);
+						dispose();
+		            } else {
+		                JOptionPane.showMessageDialog(null, "Error al modificar turno");
+		                
+		            }
+				
+					con.close();
+				}catch(SQLException E) {
+					E.printStackTrace();
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnModificar.setBounds(57, 230, 89, 23);
+		contentPane.add(btnModificar);
+		
+		btnVolver = new JButton("Volver");
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Turnos tt = new Tabla_Turnos();
+				tt.setVisible(true);
+				dispose();
+			
+			}
+		});
+		btnVolver.setBounds(211, 230, 89, 23);
+		contentPane.add(btnVolver);
+		
+		txtId = new JTextField();
+		txtId.setEnabled(false);
+		txtId.setBounds(10, 11, 69, 20);
+		contentPane.add(txtId);
+		txtId.setColumns(10);
+		txtId.setVisible(false);
+		
+		txtId.setText(turno);
+		
+		txtMascota = new JTextField();
+		txtMascota.setEditable(false);
+		txtMascota.setBounds(137, 78, 187, 20);
+		contentPane.add(txtMascota);
+		txtMascota.setColumns(10);
+		
+		txtIdM = new JTextField();
+		txtIdM.setEditable(false);
+		txtIdM.setVisible(false);
+		txtIdM.setBounds(270, 11, 86, 20);
+		contentPane.add(txtIdM);
+		txtIdM.setColumns(10);
+		
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Buscar_Mascota_ModPro bmm = new Buscar_Mascota_ModPro(turno);
+				bmm.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuscar.setBounds(334, 77, 89, 23);
+		contentPane.add(btnBuscar);
+		cargarCampos(turno);
+		
+		txtIdM.setText(idMas);
+		txtMascota.setText(nomMas);
 	}
 
 	public Modificar_Turno() {

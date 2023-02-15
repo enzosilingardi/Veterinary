@@ -23,9 +23,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import View.Buscar_Mascota_Hist.ComboItem;
+import View.Buscar_Mascota_ModHis.ComboItem;
 
-public class Buscar_Mascota_ModHis extends JFrame {
+public class Buscar_Mascota_Pro extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -207,6 +207,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 
 
 
+
 	/**
 	 * Launch the application.
 	 */
@@ -214,7 +215,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Buscar_Mascota_ModHis frame = new Buscar_Mascota_ModHis();
+					Buscar_Mascota_Pro frame = new Buscar_Mascota_Pro();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -226,7 +227,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Mascota_ModHis(final String perfil, final String historial) {
+	public Buscar_Mascota_Pro() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 459);
 		contentPane = new JPanel();
@@ -247,8 +248,8 @@ public class Buscar_Mascota_ModHis extends JFrame {
 
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Modificar_Historial mh = new Modificar_Historial(historial,perfil);
-				mh.setVisible(true);
+				Procedimiento_Medico pm = new Procedimiento_Medico();
+				pm.setVisible(true);
 				dispose();
 			}
 		});
@@ -262,8 +263,8 @@ public class Buscar_Mascota_ModHis extends JFrame {
 				String id = table.getValueAt(fila,0).toString();
 				String nom = table.getValueAt(fila,1).toString();
 				
-				Modificar_Historial mh = new Modificar_Historial(historial,perfil,id,nom);
-				mh.setVisible(true);
+				Procedimiento_Medico pm = new Procedimiento_Medico(id,nom);
+				pm.setVisible(true);
 				dispose();
 			}
 		});
@@ -311,11 +312,6 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		contentPane.add(btnLimpiar);
 		
 		mostrarTabla();
-	}
-
-
-	public Buscar_Mascota_ModHis() {
-		// TODO Auto-generated constructor stub
 	}
 
 }
