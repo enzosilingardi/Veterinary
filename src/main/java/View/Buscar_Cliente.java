@@ -87,7 +87,7 @@ public class Buscar_Cliente extends JFrame {
         	
         	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {
         		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
-            			+ "FROM Client WHERE name ='"+txtNombre.getText()+"';" );
+            			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"' ;" );
         	}else {
         		if(txtNombre.getText().isBlank() && txtDir.getText().isBlank()) {
             		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
@@ -100,18 +100,18 @@ public class Buscar_Cliente extends JFrame {
             	} else {
             		if(txtDir.getText().isBlank()) {
                 		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
-                    			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' AND dni ='"+txtDni.getText() +"';" );
+                    			+ "FROM Client WHERE (name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"') AND dni ='"+txtDni.getText() +"';" );
             	} else {
             		if(txtDni.getText().isBlank()) {
                 		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
-                    			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' AND address ='"+txtDir.getText() +"';" );
+                    			+ "FROM Client WHERE (name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"') AND address ='"+txtDir.getText() +"';" );
             	} else {
             		if(txtNombre.getText().isBlank()) {
                 		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
                     			+ "FROM Client WHERE dni ='"+txtDni.getText()+"' AND address ='"+txtDir.getText() +"';" );
             	} else {
             		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
-                			+ "FROM Client WHERE dni ='"+txtDni.getText()+"' AND address ='"+txtDir.getText() +"' AND name ='"+txtNombre.getText()+"';" );
+                			+ "FROM Client WHERE dni ='"+txtDni.getText()+"' AND address ='"+txtDir.getText() +"' AND (name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"');" );
             	}
         	}
             	}
