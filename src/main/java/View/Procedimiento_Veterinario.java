@@ -101,7 +101,7 @@ public class Procedimiento_Veterinario extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103) as pd,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
+			String SSQL = "SELECT DISTINCT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103) as pd,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
 					+ "FROM Medical_Procedure\r\n"
 					+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
 					+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
