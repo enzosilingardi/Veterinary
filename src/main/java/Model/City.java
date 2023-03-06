@@ -2,6 +2,8 @@ package Model;
 
 public class City {
 
+	// Clase City que no se utiliza en la versión actual
+	
 	protected int id_City;
 	protected Province id_Province;
 	protected String name;

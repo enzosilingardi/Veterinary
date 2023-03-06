@@ -2,6 +2,8 @@ package Model;
 
 public class Product {
 
+	//Clase Product con getter, setter y constructor
+	
 	protected int id_Product;
 	protected int id_Provider;
 	protected String product_Name;

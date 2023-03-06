@@ -30,23 +30,23 @@ public class Buscar_Cliente_Masc extends JFrame {
 	private JTextField txtDni;
 	private JTextField txtDir;
 
-	void mostrarTabla(){
+	void mostrarTabla(){												//Tabla utilizada para buscar un cliente y devuelve el cliente seleccionado
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","DNI","Dirección"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","DNI","Dirección"}); 			// nombre de las columnas
        
         table.setModel(modelo);
         
         
-        String datos[] = new String[5];
+        String datos[] = new String[5];						// Declara que va a haber 5 columnas
        
         try {
         	Connection con = Connect.getConexion();
         	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
         			+ "FROM Client;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){							// Carga las columnas de la base de datos a la tabla
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -56,8 +56,9 @@ public class Buscar_Cliente_Masc extends JFrame {
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.setModel(modelo);     							// setea el modelo
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);			// los 4 siguientes hacen que la columna del id, sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -70,22 +71,22 @@ public class Buscar_Cliente_Masc extends JFrame {
         
     }
 	
-	void mostrarTablaParametro(){
+	void mostrarTablaParametro(){								//Muestra la tabla segun los parametros recibidos 
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","DNI","Dirección"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","DNI","Dirección"});			// nombre de las columnas
        
-        table.setModel(modelo);
-        
+        table.setModel(modelo);					//setea el modelo
+        	
         PreparedStatement ps = null;
         
-        String datos[] = new String[5];
+        String datos[] = new String[5];			// Declara que va a haber 5 columnas
        
         try {
-        	Connection con = Connect.getConexion();
+        	Connection con = Connect.getConexion();					// Realiza la conexión
         	
-        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {
+        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {														// Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
         		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
             			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"' ;" );
         	}else {
@@ -120,7 +121,7 @@ public class Buscar_Cliente_Masc extends JFrame {
         	}
         	
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){					//llena las columnas de la tabla con las columnas de la base de datos
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -131,8 +132,8 @@ public class Buscar_Cliente_Masc extends JFrame {
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.setModel(modelo); 									//Setea el modelo
+            table.getColumnModel().getColumn(0).setMaxWidth(0);				// Los 4 siguientes hacen invisible la columna del id, para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -165,13 +166,13 @@ public class Buscar_Cliente_Masc extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Cliente_Masc() {
+	public Buscar_Cliente_Masc(){									// Crea la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 633, 480);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));		//Setea el icono de la ventana
 
 		
 		setContentPane(contentPane);
@@ -184,7 +185,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");					// Este boton cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Mascota mascota = new Mascota();
@@ -195,14 +196,14 @@ public class Buscar_Cliente_Masc extends JFrame {
 		btnVolver.setBounds(458, 407, 149, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnSeleccionar = new JButton("Seleccionar");
+		JButton btnSeleccionar = new JButton("Seleccionar");		// Este boton permite selecciona un cliente y la devuelve a la ventana mascota	
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				String nom = table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString();
 				String id = table.getValueAt(fila,0).toString();
 				
-				Mascota mascota = new Mascota(id,nom);
+				Mascota mascota = new Mascota(id,nom);			// abre la ventana mascota, recibiendo como parametro el id y el nombre del cliente
 				mascota.setVisible(true);
 				dispose();
 				
@@ -238,7 +239,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 		lblDir.setBounds(274, 11, 68, 14);
 		contentPane.add(lblDir);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");					//Filtra los resultados vistos en la tabla
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarTablaParametro();
@@ -247,7 +248,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 		btnBuscar.setBounds(419, 7, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");
+		JButton btnLimpiar = new JButton("Limpiar");				//Limpia los campos de texto
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNombre.setText("");

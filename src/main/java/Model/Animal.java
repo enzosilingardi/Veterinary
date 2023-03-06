@@ -2,6 +2,8 @@ package Model;
 
 public class Animal {
 
+	// Clase Animal con getter, setter y constructor
+	
 	protected int id_Animal;
 	protected String type;
 	

@@ -2,6 +2,8 @@ package Model;
 
 public class Medical_Instrument {
 
+	//Clase Medical_Instrument con getter, setter y constructor
+	
 	protected int id_Medical_Instrument;
 	protected String instrument_Name;
 	protected String instrument_Description;

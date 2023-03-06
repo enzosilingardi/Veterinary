@@ -38,6 +38,8 @@ public class Prueba extends JFrame {
 	private JDateChooser txtFecha;
 	private JTextField txtEdad;
 
+	// Esta ventana no tiene relevancia, es de prueba
+	
 	/**
 	 * Launch the application.
 	 */

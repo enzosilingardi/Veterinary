@@ -2,6 +2,8 @@ package Model;
 
 public class Procedure_Type {
 
+	// Clase Procedure_Type con getter, setter y constructor
+	
 	private int id_Procedure_Type;
 	private String proced_Name;
 	

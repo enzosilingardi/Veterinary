@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 public class Medical_Procedure {
 
+	// Clase Medical_Procedure con getter, setter y constructor
+	
 	protected int id_procedure;
 	protected Procedure_Type id_Procedure_Type;
 	protected Pet id_Pet;

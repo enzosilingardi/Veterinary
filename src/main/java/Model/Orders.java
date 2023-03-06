@@ -2,6 +2,8 @@ package Model;
 
 public class Orders {
 
+	// Clase Orders con getter, setter y constructor
+	
 	protected int id_Order;
 	protected Product id_Product;
 	protected Branch id_Branch;

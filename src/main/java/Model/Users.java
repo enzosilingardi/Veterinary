@@ -2,6 +2,8 @@ package Model;
 
 public class Users {
 
+	//Clase Users con getter, setter y constructor
+	
 	protected int id_User;
 	protected String profile;
 	protected String name;

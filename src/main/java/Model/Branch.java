@@ -2,6 +2,8 @@ package Model;
 
 public class Branch {
 
+	//Clase branch con getter, setter y constructor
+	
 	protected int id_Branch;
 	protected String address;
 	

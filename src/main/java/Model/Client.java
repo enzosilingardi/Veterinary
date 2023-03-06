@@ -2,6 +2,8 @@ package Model;
 
 public class Client {
 
+	// Clase client con getter, setter y constructor
+	
 	protected int id_Client;
 	protected String address;
 	protected String dni;

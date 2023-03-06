@@ -2,6 +2,8 @@ package Model;
 
 public class Stock {
 
+	//Clase Stock que no es utilizada en la versión actual
+	
 	protected int id_Stock;
 	protected Product id_Product;
 	protected int amount;

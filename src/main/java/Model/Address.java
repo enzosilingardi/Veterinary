@@ -2,6 +2,8 @@ package Model;
 
 public class Address {
 
+	//Clase Address que en la versión actual no se utiliza
+	
 	protected int id_Address;
 	protected City id_City;
 	protected String address_Name;

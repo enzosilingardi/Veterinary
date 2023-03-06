@@ -29,6 +29,8 @@ public class Tabla_Stock extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	
+	// Esta ventana no tiene relevancia, es de prueba
+	
 	public static boolean contieneSoloNumerosRegex(String cadena) {
 	    return cadena.matches("[0-9]+");
 	}

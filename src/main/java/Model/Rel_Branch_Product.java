@@ -2,6 +2,8 @@ package Model;
 
 public class Rel_Branch_Product {
 
+	//Clase Rel_Branch_Product con getter, setter y constructor
+	
 	protected int id_BP;
 	protected Branch id_Branch;
 	protected Product id_Product;

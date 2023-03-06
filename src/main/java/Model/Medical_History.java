@@ -2,6 +2,8 @@ package Model;
 
 public class Medical_History {
 
+	//Clase Medical_History con getter, setter y constructor
+	
 	protected int id_Medical_History;
 	protected Pet id_Pet;
 	protected String description;

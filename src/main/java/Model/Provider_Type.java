@@ -2,6 +2,8 @@ package Model;
 
 public class Provider_Type {
 
+	//Clase Provider_Type con getter, setter y constructor
+	
 	protected int id_Provider_Type;
 	protected String type_Name;
 	

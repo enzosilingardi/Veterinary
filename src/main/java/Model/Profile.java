@@ -2,6 +2,8 @@ package Model;
 
 public class Profile {
 
+	//Clase profile que no se utiliza en la versión actual
+	
 	protected int id_profile;
 	protected String profile_Name;
 	

@@ -24,29 +24,29 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class Animal extends JFrame {
+public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 
 	private JPanel contentPane;
 	private JTextField txtTipo;
 	private JTable table;
 
-	void mostrarTabla(){
+	void mostrarTabla(){      										// Esta es la tabla que muestra los animales 
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Animal"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Animal"});			// nombre de las columnas
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[2]; 							//declara que va a haber 2 columnas
        
         try {
         	Connection con = Connect.getConexion();
         	PreparedStatement ps = con.prepareStatement("SELECT * FROM Animal;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){								// carga las columnas de la base de datos a la tabla
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 
@@ -54,9 +54,9 @@ public class Animal extends JFrame {
 
             }
             
-            table.setModel(modelo);
+            table.setModel(modelo);								// se setea el modelo
             
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.getColumnModel().getColumn(0).setMaxWidth(0); // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -91,7 +91,7 @@ public class Animal extends JFrame {
 		txtTipo.setText("");       //Limpia los campos
 	}
 	
-	public int existeAnimal(String animal) {
+	public int existeAnimal(String animal) {		// Verifica si ya existe el animal en la base de datos
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -103,7 +103,7 @@ public class Animal extends JFrame {
 			pst.setString(1, animal);
 			result = pst.executeQuery();
 			
-			if (result.next()) {
+			if (result.next()) {				// si ya existe, la variable la coloca como 1
 				return result.getInt(1);
 			}
 			return 1;
@@ -120,7 +120,7 @@ public class Animal extends JFrame {
 		
 	}
 	
-	public int animalEnUso(String animal) {
+	public int animalEnUso(String animal) {				// Esta funcion no esta en unso debido que encontramos otra manera de mostrar dicho registro, posiblemente sera eliminada a futuro
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -155,7 +155,7 @@ public class Animal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Animal() {
+	public Animal() {												// Construye la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 581, 394);
 		contentPane = new JPanel();
@@ -170,13 +170,13 @@ public class Animal extends JFrame {
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();
+				dispose();											// cierra la ventana
 			}
 		});
 		btnVolver.setBounds(466, 321, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		JButton btnEliminar = new JButton("Eliminar");					// elimina el animal seleccionado
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -193,17 +193,17 @@ public class Animal extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Animal eliminado");
-		                ControlFiles.addContent("Se ha eliminado un tipo de animal");
+		                JOptionPane.showMessageDialog(null, "Animal eliminado");			//Si es exitoso lo muestra en pantalla
+		                ControlFiles.addContent("Se ha eliminado un tipo de animal");		
 		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar animal");
+		                JOptionPane.showMessageDialog(null, "Error al eliminar animal");	// Si falla, lo muestra en pantalla
 		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Animal está en uso, por favor elimine todos los registros relacionados");
+					JOptionPane.showMessageDialog(null, "Animal está en uso, por favor elimine todos los registros relacionados");			// Si falla, lo muestra en pantalla
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -213,7 +213,7 @@ public class Animal extends JFrame {
 		btnEliminar.setBounds(447, 99, 89, 23);
 		contentPane.add(btnEliminar);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");				// Agrega un animal nuevo
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -230,12 +230,12 @@ public class Animal extends JFrame {
 					
 					result = ps.executeUpdate();
 					
-					if(result > 0){
+					if(result > 0){																//Si es exitoso lo muestra en pantalla
 		                JOptionPane.showMessageDialog(null, "Animal guardado");
 		                ControlFiles.addContent("Se ha añadido el tipo de animal "+tipo);
 		                limpiar();
 		                mostrarTabla();
-		            } else {
+		            } else {																	//Si falla lo muestra en pantalla
 		                JOptionPane.showMessageDialog(null, "Error al guardar animal");
 		                limpiar();
 		                mostrarTabla();
@@ -257,11 +257,11 @@ public class Animal extends JFrame {
 		txtTipo.setBounds(369, 54, 186, 20);
 		contentPane.add(txtTipo);
 		
-		JLabel lblTipo = new JLabel("Tipo");
+		JLabel lblTipo = new JLabel("Tipo");					
 		lblTipo.setBounds(321, 57, 46, 14);
 		contentPane.add(lblTipo);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");			// Boton que modifica el registro seleccionado
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -279,11 +279,11 @@ public class Animal extends JFrame {
 					
 					result = ps.executeUpdate();
 					
-					if(result > 0){
+					if(result > 0){																		//Si es exitoso lo muestra
 		                JOptionPane.showMessageDialog(null, "Animal modificado");
 		                ControlFiles.addContent("Se ha modificado un tipo de animal a "+tipo);
 		                mostrarTabla();
-		            } else {
+		            } else {																			//Si falla lo muestra
 		                JOptionPane.showMessageDialog(null, "Error al modificar animal");
 		                mostrarTabla();
 		            }

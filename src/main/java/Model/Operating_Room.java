@@ -2,6 +2,8 @@ package Model;
 
 public class Operating_Room {
 
+	// Clase Operating_Room con getter, setter y constructor
+	
 	protected int id_Operating_Room;
 	protected int room_Number;
 	

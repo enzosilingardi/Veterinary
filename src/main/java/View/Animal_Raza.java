@@ -26,8 +26,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class Animal_Raza extends JFrame {
-
+public class Animal_Raza extends JFrame {       // Esta clase añade o remueve una relacion entre animal y raza
 	private JPanel contentPane;
 	private JComboBox cbAnimal;
 	private JComboBox cbRaza;
@@ -61,7 +60,7 @@ public class Animal_Raza extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarAnimal() {
+	public DefaultComboBoxModel cargarAnimal() {       // la clase genera el combobox animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -71,7 +70,7 @@ public class Animal_Raza extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";
+			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";   // realiza una sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
@@ -90,7 +89,7 @@ public class Animal_Raza extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarRaza() {
+	public DefaultComboBoxModel cargarRaza() {            // Carga el combobox con la raza del animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -100,7 +99,7 @@ public class Animal_Raza extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Breed ORDER BY id_Breed";
+			String SSQL = "SELECT * FROM Breed ORDER BY id_Breed";      // realiza una sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
@@ -120,26 +119,26 @@ public class Animal_Raza extends JFrame {
     }
 
 
-	void mostrarTabla(){
+	void mostrarTabla(){            // carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Animal","Raza"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Animal","Raza"});       // Nombre de las columnas
        
         table.setModel(modelo);
         
         
         
-        String datos[] = new String[3];
+        String datos[] = new String[3];         // declara que va a haber 3 columnas
        
         try {
         	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("SELECT id_AB, Animal.type, Breed.type\r\n"
+        	PreparedStatement ps = con.prepareStatement("SELECT id_AB, Animal.type, Breed.type\r\n"     // sentencia sql
         			+ "FROM Rel_Animal_Breed\r\n"
         			+ "INNER JOIN Animal ON Animal.id_Animal = Rel_Animal_Breed.id_Animal\r\n"
         			+ "INNER JOIN Breed ON Breed.id_Breed = Rel_Animal_Breed.id_Breed;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){                                // cargan las columnas de la base de datos a la tabla
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -149,8 +148,8 @@ public class Animal_Raza extends JFrame {
 
             }
             
-            table.setModel(modelo);
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.setModel(modelo);                       					//Se setea el modelo
+            table.getColumnModel().getColumn(0).setMaxWidth(0);				// los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -180,22 +179,22 @@ public class Animal_Raza extends JFrame {
 	}
 
 
-	public int existeRel(Object animal, Object raza) {
+	public int existeRel(Object animal, Object raza) {     					// Es una funcion que determina si ya existe la relacion entre animal y raza
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Rel_Animal_Breed WHERE id_Animal = ? AND id_Breed = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Animal_Breed WHERE id_Animal = ? AND id_Breed = ?;"; 			//sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) animal);
 			pst.setString(2, (String) raza);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
-			}
+				return result.getInt(1);  				// si la relacion ya existe, entonces la variable se pone en 1
+			} 
 			return 1;
 			
 		} catch(SQLException e) {
@@ -210,7 +209,7 @@ public class Animal_Raza extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {					// Limpia los campos txt
 		cbAnimal.setSelectedIndex(0);
 		cbRaza.setSelectedIndex(0);
 		
@@ -218,13 +217,13 @@ public class Animal_Raza extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Animal_Raza() {
+	public Animal_Raza() {												// Arma la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));				// Se cambia el icono de la ventana
 
 		
 		setContentPane(contentPane);
@@ -238,7 +237,7 @@ public class Animal_Raza extends JFrame {
 		lblAnimal.setBounds(467, 60, 60, 14);
 		contentPane.add(lblAnimal);
 		
-		cbAnimal = new JComboBox();
+		cbAnimal = new JComboBox();						// Se arma el combobox animal
 		cbAnimal.setBounds(537, 56, 168, 22);
 		contentPane.add(cbAnimal);
 		cbAnimal.setModel(cargarAnimal());
@@ -247,12 +246,12 @@ public class Animal_Raza extends JFrame {
 		lblRaza.setBounds(467, 116, 46, 14);
 		contentPane.add(lblRaza);
 		
-		cbRaza = new JComboBox();
+		cbRaza = new JComboBox();						// se arma el combobox raza
 		cbRaza.setBounds(537, 112, 168, 22);
 		contentPane.add(cbRaza);
 		cbRaza.setModel(cargarRaza());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar"); 			// al presionar este boton se añade una relacion entre animal y raza
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object animal = cbAnimal.getSelectedItem();
@@ -285,12 +284,12 @@ public class Animal_Raza extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Raza asociada");
+		                JOptionPane.showMessageDialog(null, "Raza asociada");				// en caso de ser exitoso, muestra un cartel en pantalla indicando que fue un exito
 		                limpiar();
-		                ControlFiles.addContent("Se ha asociado la raza "+raza+" al animal "+animal);
+		                ControlFiles.addContent("Se ha asociado la raza "+raza+" al animal "+animal);		// añade al log la accion realizada	
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al asociar raza");
+		                JOptionPane.showMessageDialog(null, "Error al asociar raza");				// en caso de fallar, lo muestra en un cartel en pantalla
 		                limpiar();
 		            }
 				
@@ -306,8 +305,8 @@ public class Animal_Raza extends JFrame {
 		});
 		btnAgregar.setBounds(475, 176, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnEliminar = new JButton("Eliminar");
+			
+		JButton btnEliminar = new JButton("Eliminar");				// boton que elimina la relacion seleccionada
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -323,18 +322,18 @@ public class Animal_Raza extends JFrame {
 					
 					result = ps.executeUpdate();
 					
-					if(result > 0){
+					if(result > 0){																						// en caso de ser exitoso lo muestra en pantalla y lo añade al log
 		                JOptionPane.showMessageDialog(null, "Raza eliminada de animal");
 		                ControlFiles.addContent("Se ha eliminado una relación entre una raza y un tipo de animal");
 		               mostrarTabla();
-		            } else {
+		            } else {																						// en caso de fallar lo muestra por pantalla
 		                JOptionPane.showMessageDialog(null, "Error al eliminar raza");
 		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");			// en caso de fallar lo muestra por pantalla
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -346,7 +345,7 @@ public class Animal_Raza extends JFrame {
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {				// cierra la ventana
 				dispose();
 			}
 		});
