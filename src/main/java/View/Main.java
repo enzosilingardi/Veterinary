@@ -38,6 +38,7 @@ import Control.Connect;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import java.awt.Toolkit;
 
 public class Main extends JFrame {
 
@@ -121,6 +122,9 @@ public class Main extends JFrame {
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -358,6 +362,7 @@ public class Main extends JFrame {
 	}
 
 	public Main() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 		// TODO Auto-generated constructor stub
 	}
 }

@@ -29,6 +29,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 public class Tabla_Stock extends JFrame {
 
@@ -115,6 +116,8 @@ public class Tabla_Stock extends JFrame {
 		contentPane.setForeground(new Color(255, 255, 255));
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -295,6 +298,8 @@ public class Tabla_Stock extends JFrame {
 		contentPane.setForeground(new Color(255, 255, 255));
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

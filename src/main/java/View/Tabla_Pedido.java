@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import Control.Connect;
 import Model.ControlFiles;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.Color;
 
 public class Tabla_Pedido extends JFrame {
@@ -97,6 +98,8 @@ public class Tabla_Pedido extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -209,6 +212,8 @@ public class Tabla_Pedido extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		

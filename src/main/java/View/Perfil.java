@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -116,6 +117,8 @@ public class Perfil extends JFrame {
 		setBounds(100, 100, 416, 248);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

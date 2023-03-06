@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
@@ -253,6 +254,9 @@ public class Modificar_Mascota extends JFrame {
 		setBounds(100, 100, 455, 479);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -465,6 +469,9 @@ public class Modificar_Mascota extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		

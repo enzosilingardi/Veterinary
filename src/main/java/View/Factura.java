@@ -3,6 +3,7 @@ package View;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -335,6 +336,8 @@ public class Factura extends JFrame {
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		
 		contentPane.setBackground(new Color(145, 226, 247));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -583,6 +586,8 @@ public class Factura extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		contentPane.setBackground(new Color(145, 226, 247));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

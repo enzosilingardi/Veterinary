@@ -21,6 +21,7 @@ import Control.Connect;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Toolkit;
 
 public class Tabla_Clientes extends JFrame {
 
@@ -97,6 +98,8 @@ public class Tabla_Clientes extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -212,6 +215,8 @@ public class Tabla_Clientes extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
