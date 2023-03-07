@@ -59,12 +59,13 @@ public class Factura extends JFrame {
 	private JComboBox cbPro;
 	private JTextField txtEmisor;
 
-	class ComboItem
+	class ComboItem                                    //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                             //Label visible del ComboBox
+	    
+	    private String value;                           //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)        //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -88,7 +89,7 @@ public class Factura extends JFrame {
 	}
 	
 
-	public DefaultComboBoxModel cargarCliente() {
+	public DefaultComboBoxModel cargarCliente() {           //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -97,14 +98,15 @@ public class Factura extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();                     
+			
 			String SSQL = "SELECT * FROM Client ORDER BY id_Client";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));           
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("name")+" "+result.getString("surname"),result.getString("id_Client")));
+				modelo.addElement(new ComboItem(result.getString("name")+" "+result.getString("surname"),result.getString("id_Client")));  
 				
 			}
 			cn.close();
@@ -118,7 +120,7 @@ public class Factura extends JFrame {
     }
 	
 
-	public DefaultComboBoxModel cargarUsuario() {
+	public DefaultComboBoxModel cargarUsuario() {                 //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -147,7 +149,7 @@ public class Factura extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {                      //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -178,7 +180,7 @@ public class Factura extends JFrame {
     }
 	
 
-	public DefaultComboBoxModel cargarProducto() {
+	public DefaultComboBoxModel cargarProducto() {         //Carga el ComboBox Producto 
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -187,14 +189,15 @@ public class Factura extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
+			cn = (Connection) Connect.getConexion();                       //Realiza la conexión 
+			
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";       //Realiza una sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));             //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));      //El elemento del ComboBox recibe el nombre y precio del producto
 				
 			}
 			cn.close();
@@ -207,7 +210,7 @@ public class Factura extends JFrame {
 		return modelo;
     }
 	
-	void cargarEmisor() {
+	void cargarEmisor() {                     //Este proceso carga los datos del emisor actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -215,13 +218,13 @@ public class Factura extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();       //Realiza la conexión
 			String SSQL = "SELECT * FROM Emitter";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			
 			
-			while (result.next()) {
+			while (result.next()) {                               //Carga los campos con los datos del registro
 				txtEmisor.setText(result.getString("name"));
 				txtCuit.setText(result.getString("cuit"));
 				txtDir.setText(result.getString("address"));
@@ -251,14 +254,14 @@ public class Factura extends JFrame {
 		});
 	}
 
-	public void totalV() {
+	public void totalV() {                 //Este procedimiento calcula el total de la factura
 		float t = 0;
 		float p1 = 0;
 		float p2 = 0;
 		float p3 = 0;
 		
 		
-		if (table.getRowCount() > 0) {
+		if (table.getRowCount() > 0) {                                         //Recorre la tabla y suma los precios de los productos multiplicados por su cantidad
 			for (int i = 0; i <= table.getRowCount()-1; i++) {
 				p1 = Float.parseFloat(table.getValueAt(i, 2).toString());
 				p2 = Float.parseFloat(table.getValueAt(i, 1).toString());
@@ -267,27 +270,30 @@ public class Factura extends JFrame {
 				
 			}
 			
-			txtTotal.setText(String.valueOf(t));
+			txtTotal.setText(String.valueOf(t));              //Carga el valor total al campo
 		}
 	}
 	
-	public void generar(String nombre) throws FileNotFoundException,DocumentException {
+	public void generar(String nombre) throws FileNotFoundException,DocumentException {           //Genera un PDF con los datos
+		//Revisa si todos los campos estan llenos
 		if(!(txtNro.getText().isEmpty() || txtIva.getText().isEmpty() || txtTotal.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || txtEmisor.getText().isEmpty() || txtDir.getText().isEmpty() || txtDom.getText().isEmpty() || txtDni.getText().isEmpty() || txtCuit.getText().isEmpty() )) {
 			Object punto = cbPunto.getSelectedItem();
 			
-			FileOutputStream archivo = new FileOutputStream("c:/rsc/Factura "+nombre+".pdf");
+			FileOutputStream archivo = new FileOutputStream("c:/rsc/Factura "+nombre+".pdf");    //Genera la ruta del pdf
 			Document documento = new Document();
-			PdfWriter.getInstance(documento, archivo);
+			PdfWriter.getInstance(documento, archivo);          //Prepara el documento
 			documento.open();
 			
-			Paragraph parrafo = new Paragraph("Factura");
+			Paragraph parrafo = new Paragraph("Factura");      //Añade el Titulo
 			parrafo.setAlignment(1);
 			documento.add(parrafo);
 			
 			
-			Paragraph parrafoT = new Paragraph(cbTipo.getSelectedItem().toString());
+			Paragraph parrafoT = new Paragraph(cbTipo.getSelectedItem().toString());        //Escribe el tipo de factura
 			parrafoT.setAlignment(1);
 			documento.add(parrafoT);
+			
+			//Escribe todos los datos
 			
 			documento.add(new Paragraph("Punto de Venta: "+((ComboItem) punto).getValue()));
 			documento.add(new Paragraph("Nro de Comprobante: "+txtNro.getText()));
@@ -304,7 +310,7 @@ public class Factura extends JFrame {
 			documento.add(new Paragraph(" "));
 			PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
 	          
-            for (int i = 0; i < table.getColumnCount(); i++) {
+            for (int i = 0; i < table.getColumnCount(); i++) {         //Agrega la tabla con los productos
                 pdfTable.addCell(table.getColumnName(i));
             }
       
@@ -320,23 +326,23 @@ public class Factura extends JFrame {
 			
 			documento.close();
 			
-			JOptionPane.showMessageDialog(null, "Factura Creada");
+			JOptionPane.showMessageDialog(null, "Factura Creada");          //Muestra un mensaje en pantala indicando que se creó con exito
 			
 			
 		} else {
-			JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");
-		}
+			JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");        //Si no todos los campos están llenos, lo muestra en pantalla 
+		} 
 	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public Factura(String nom, String dni, String dir) {
+	public Factura(String nom, String dni, String dir) {         //Crea la ventana recibiendo por parámetro el nombre, dni y dirección del cliente
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 		
 		contentPane.setBackground(new Color(145, 226, 247));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -348,7 +354,7 @@ public class Factura extends JFrame {
 		lblTipo.setBounds(10, 11, 90, 14);
 		contentPane.add(lblTipo);
 		
-		cbTipo = new JComboBox();
+		cbTipo = new JComboBox();       //Crea un ComboBox con los tipos de facturas
 		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C"}));
 		cbTipo.setBounds(110, 7, 33, 22);
 		contentPane.add(cbTipo);
@@ -408,7 +414,7 @@ public class Factura extends JFrame {
 		contentPane.add(txtTotal);
 		txtTotal.setColumns(10);
 		
-		JButton btnGenerar = new JButton("Generar Factura");
+		JButton btnGenerar = new JButton("Generar Factura");          //Este botón genera la factura
 		btnGenerar.setBorder(null);
 
 		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
@@ -427,7 +433,7 @@ public class Factura extends JFrame {
 		btnGenerar.setBounds(450, 527, 157, 23);
 		contentPane.add(btnGenerar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                  //Este botón cierra la ventana
 		btnVolver.setBorder(null);
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
@@ -483,7 +489,7 @@ public class Factura extends JFrame {
 		lblCon.setBounds(10, 153, 157, 14);
 		contentPane.add(lblCon);
 		
-		 cbCon = new JComboBox();
+		 cbCon = new JComboBox();              //Crea un ComboBox con los tipos de IVA
 		cbCon.setModel(new DefaultComboBoxModel(new String[] {"Sujeto Exento", "Responsable Inscripto", "Consumidor Final"}));
 		cbCon.setBounds(139, 149, 107, 22);
 		contentPane.add(cbCon);
@@ -493,7 +499,7 @@ public class Factura extends JFrame {
 		contentPane.add(cbPro);
 		cbPro.setModel(cargarProducto());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                  //Agrega un producto a la tabla
 		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -505,7 +511,7 @@ public class Factura extends JFrame {
 		btnAgregar.setBounds(158, 245, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnRemover = new JButton("Remover");
+		JButton btnRemover = new JButton("Remover");                      //Remueve el producto seleccionado de la tabla
 		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -520,7 +526,7 @@ public class Factura extends JFrame {
 		scrollPane.setBounds(10, 289, 410, 223);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		table = new JTable();                                   //Crea la tabla donde se colocarán los productos
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -530,11 +536,11 @@ public class Factura extends JFrame {
 		));
 		scrollPane.setViewportView(table);
 		
-		txtCliente.setText(nom);
+		txtCliente.setText(nom);         //Setea los parametros en los campos 
 		txtDni.setText(dni);
 		txtDom.setText(dir);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");                   //Este botón permite buscar un cliente
 		btnBuscar.setBorder(null);
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -554,7 +560,7 @@ public class Factura extends JFrame {
 		contentPane.add(txtEmisor);
 		txtEmisor.setColumns(10);
 		
-		JButton btnEditar = new JButton("Editar emisor");
+		JButton btnEditar = new JButton("Editar emisor");         //Este botón permite editar el emisor
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor emisor = new Emisor();
@@ -567,7 +573,7 @@ public class Factura extends JFrame {
 		contentPane.add(btnEditar);
 		
 
-		JButton btnTotal = new JButton("Calcular total");
+		JButton btnTotal = new JButton("Calcular total");              //Calcula el total de los productos seleccionados
 		btnTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				totalV();
@@ -581,13 +587,13 @@ public class Factura extends JFrame {
 	}
 
 
-	public Factura() {
+	public Factura() {                                //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 
 		contentPane.setBackground(new Color(145, 226, 247));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -599,7 +605,7 @@ public class Factura extends JFrame {
 		lblTipo.setBounds(10, 11, 90, 14);
 		contentPane.add(lblTipo);
 		
-		cbTipo = new JComboBox();
+		cbTipo = new JComboBox();          //Crea un ComboBox con los tipos de factura
 		cbTipo.setModel(new DefaultComboBoxModel(new String[] {"A", "B", "C"}));
 		cbTipo.setBounds(110, 7, 33, 22);
 		contentPane.add(cbTipo);
@@ -657,7 +663,7 @@ public class Factura extends JFrame {
 		contentPane.add(txtTotal);
 		txtTotal.setColumns(10);
 		
-		JButton btnGenerar = new JButton("Generar Factura");
+		JButton btnGenerar = new JButton("Generar Factura");         //Este botón genera la factura
 		btnGenerar.setBorder(null);
 
 		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
@@ -676,7 +682,7 @@ public class Factura extends JFrame {
 		btnGenerar.setBounds(450, 527, 157, 23);
 		contentPane.add(btnGenerar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                //Este botón cierra la ventana
 		btnVolver.setBorder(null);
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
@@ -732,7 +738,7 @@ public class Factura extends JFrame {
 		lblCon.setBounds(10, 153, 157, 14);
 		contentPane.add(lblCon);
 		
-		 cbCon = new JComboBox();
+		 cbCon = new JComboBox();           //Crea un ComboBox con los tipos de IVA
 		cbCon.setModel(new DefaultComboBoxModel(new String[] {"Sujeto Exento", "Responsable Inscripto", "Consumidor Final"}));
 		cbCon.setBounds(139, 149, 107, 22);
 		contentPane.add(cbCon);
@@ -742,7 +748,7 @@ public class Factura extends JFrame {
 		contentPane.add(cbPro);
 		cbPro.setModel(cargarProducto());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");            //Agrega un producto a la tabla
 		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -753,8 +759,8 @@ public class Factura extends JFrame {
 		});
 		btnAgregar.setBounds(158, 245, 89, 23);
 		contentPane.add(btnAgregar);
-		
-		JButton btnRemover = new JButton("Remover");
+		 
+		JButton btnRemover = new JButton("Remover");                 //Remueve el producto seleccionado de la tabla
 		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -769,7 +775,7 @@ public class Factura extends JFrame {
 		scrollPane.setBounds(10, 289, 410, 223);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
+		table = new JTable();                      //Crea la tabla donde se colocarán los productos
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -779,7 +785,7 @@ public class Factura extends JFrame {
 		));
 		scrollPane.setViewportView(table);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");               //Este botón permite buscar un cliente
 		btnBuscar.setBorder(null);
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -796,7 +802,7 @@ public class Factura extends JFrame {
 		contentPane.add(txtEmisor);
 		txtEmisor.setColumns(10);
 		
-		JButton btnEditar = new JButton("Editar emisor");
+		JButton btnEditar = new JButton("Editar emisor");         //Este botón permite ediar el emisor
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor emisor = new Emisor();
@@ -808,7 +814,7 @@ public class Factura extends JFrame {
 		btnEditar.setBounds(590, 190, 138, 23);
 		contentPane.add(btnEditar);
 		
-		JButton btnTotal = new JButton("Calcular total");
+		JButton btnTotal = new JButton("Calcular total");           //Calcula el total de los productos seleccionados
 		btnTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				totalV();

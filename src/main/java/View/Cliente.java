@@ -77,7 +77,7 @@ public class Cliente extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {
+	public DefaultComboBoxModel cargarDireccion() {                   //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -86,13 +86,14 @@ public class Cliente extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT *\r\n"
+			cn = (Connection) Connect.getConexion();                            
+		
+			String SSQL = "SELECT *\r\n"                                          
 					+ "FROM Address\r\n"
 					+ "INNER JOIN City ON Address.id_City = City.id_City";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));                           
 			
 			while (result.next()) {
 				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number")+" - "+result.getString("name"),result.getString("id_Address")));
@@ -124,23 +125,25 @@ public class Cliente extends JFrame {
 	}
 	
 	
-	// Validaciones de los formatos de E-Mail, Telefono y Fecha
 	
-	 public static Boolean validaEmail (String email) {
+	
+	 public static Boolean validaEmail (String email) {  // Validacion del formato de E-Mail
+		 
 			Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
 			Matcher matcher = pattern.matcher(email);
 			return matcher.matches();
 		}
 	    
 
-	public int existeCliente(String nombre, String dni) {
+	public int existeCliente(String nombre, String dni) {                // Verifica si ya existe el cliente en la base de datos
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Client WHERE name = ? AND dni = ?   ;";
+			cn = (Connection) Connect.getConexion();       //Realiza la conexión
+			
+			String SSQL = "SELECT count(*) FROM Client WHERE name = ? AND dni = ?   ;";   
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
 			pst.setString(2,dni);
@@ -148,7 +151,7 @@ public class Cliente extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);                     // si ya existe, la variable la coloca como 1
 			}
 			return 1;
 			
@@ -168,8 +171,8 @@ public class Cliente extends JFrame {
 	
 	
 	
-	private void limpiar() {
-		txtNombre.setText("");
+	private void limpiar() {                  //Limpia los campos
+		txtNombre.setText(""); 
 		txtDireccion.setText("");
 		txtDni.setText("");
 		txtTelefono.setText("");
@@ -181,14 +184,14 @@ public class Cliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Cliente() {
+	public Cliente() {                          //Crea la ventana
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 459, 575);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));           //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -245,7 +248,7 @@ public class Cliente extends JFrame {
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                       //Agrega un cliente
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement ps = null;
@@ -264,9 +267,10 @@ public class Cliente extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();         //Realiza la conexión
 					
-					if (txtTelefonoOp.getText().isBlank()) {
+					if (txtTelefonoOp.getText().isBlank()) {          //Realiza la consulta dependiendo si el campo telefono opcional está vacío
+						
 						ps = con.prepareStatement("INSERT INTO Client (address, dni, name,surname,  phone_Number , birthdate, gender, email) VALUES (?,?,?,?,?,?,?,?)" );
 					} else {
 						ps = con.prepareStatement("INSERT INTO Client (address, dni, name,surname,  phone_Number , birthdate, gender, email, phone_Optional) VALUES (?,?,?,?,?,?,?,?,?)" );
@@ -275,7 +279,7 @@ public class Cliente extends JFrame {
 					}
 					
 					
-						if(existeCliente(nombre,dni)!=0) {
+						if(existeCliente(nombre,dni)!=0) {                           //Si ya existe el cliente no lo agrega y muestra el error por pantalla
 						JOptionPane.showMessageDialog(null, "Cliente ya existe");
 					}else {
 						ps.setString(1, direccion);
@@ -295,7 +299,7 @@ public class Cliente extends JFrame {
 						if(validaEmail(email)) {
 							ps.setString(8,email);
 						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");
+							JOptionPane.showMessageDialog(null, "E-Mail no válido");        //Si el E-Mail no es válido, no lo agrega y muestra por pantalla el error
 						}
 						
 						
@@ -308,11 +312,11 @@ public class Cliente extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cliente guardado");
+		                JOptionPane.showMessageDialog(null, "Cliente guardado");                                    //En caso de ser exitoso, lo muestra en pantalla y lo agrega al log
 		                ControlFiles.addContent("Se ha añadido un cliente de nombre "+nombre+" "+apellido);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");
+		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");                         //En caso de fallar, muestra el error por pantalla
 		                limpiar();
 		            }
 				
@@ -329,7 +333,7 @@ public class Cliente extends JFrame {
 		btnAgregar.setBounds(169, 473, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");              //Este botón cierra la ventana
 		btnVolver.setBounds(296, 502, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
