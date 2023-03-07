@@ -40,12 +40,13 @@ public class Modificar_Proveedor extends JFrame {
 	private JTextField txtDireccion;
 
 	
-	class ComboItem
+	class ComboItem                  //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;           //Label visible del ComboBox
+	    
+	    private String value;          //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)     //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -68,7 +69,7 @@ public class Modificar_Proveedor extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {
+	public DefaultComboBoxModel cargarDireccion() {               //Este ComboBox no se Utiliza en la versión Actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -77,16 +78,16 @@ public class Modificar_Proveedor extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();            
 			String SSQL = "SELECT *\r\n"
 					+ "FROM Address\r\n"
 					+ "INNER JOIN City ON Address.id_City = City.id_City";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));              
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number")+" - "+result.getString("name"),result.getString("id_Address")));
+				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number")+" - "+result.getString("name"),result.getString("id_Address")));    
 				
 			}
 			cn.close();
@@ -99,7 +100,7 @@ public class Modificar_Proveedor extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarTipo() {
+	public DefaultComboBoxModel cargarTipo() {                 //Carga el el ComboBox con los tipos de proveedores
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -108,14 +109,15 @@ public class Modificar_Proveedor extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();          //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));        //El primer elemento está en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));
+				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));      //El elemento recibe el tipo de proveedor como label y el id del tipo como valor
 				
 			}
 			cn.close();
@@ -144,7 +146,7 @@ public class Modificar_Proveedor extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String proveedor) {
+	private void cargarCampos(String proveedor) {            //Cargar los campos recibiendo como parámetro el id del proveedor
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -152,14 +154,15 @@ public class Modificar_Proveedor extends JFrame {
 		int id = Integer.parseInt(proveedor);
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();           //Realiza la conexión
+			
 			String SSQL = "SELECT provider_Name, name, surname, phone_Number, email, cuit FROM Provider WHERE id_Provider = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                        //Carga los campos de acuerdo a los resultados de la base de datos
 			txtNombrePro.setText(result.getString(1));
 			txtNombre.setText(result.getString(2));
 			txtApellido.setText(result.getString(3));
@@ -176,7 +179,8 @@ public class Modificar_Proveedor extends JFrame {
 			}
 	}
 	
-	public static Boolean validaEmail (String email) {
+	public static Boolean validaEmail (String email) {        //Verifica el formato del E-Mail
+		
 		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
@@ -262,7 +266,7 @@ public class Modificar_Proveedor extends JFrame {
 		txtCuit.setBounds(177, 326, 182, 20);
 		contentPane.add(txtCuit);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");              //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Proveedor tp = new Tabla_Proveedor();
@@ -273,7 +277,7 @@ public class Modificar_Proveedor extends JFrame {
 		btnVolver.setBounds(265, 387, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");               //Este botón modifica el proveedor según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String direccion = txtDireccion.getText();
@@ -289,12 +293,13 @@ public class Modificar_Proveedor extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();            //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Provider SET id_Provider_Type = ?, address = ?, provider_Name = ?, name = ?, surname = ?, phone_Number = ?, email = ?, cuit = ? WHERE id_Provider = ?" );
 					
 					
 					
-						if (((ComboItem) tipo).getValue() == "") {
+						if (((ComboItem) tipo).getValue() == "") {                         //Revisa si el ComboBox está en blanco
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
 							
@@ -308,7 +313,7 @@ public class Modificar_Proveedor extends JFrame {
 								
 								
 								
-								if(validaEmail(email)) {
+								if(validaEmail(email)) {         //Revisa si el E-Mail es válido
 									ps.setString(7,email);
 								} else {
 									JOptionPane.showMessageDialog(null, "E-Mail no válido");
@@ -326,13 +331,13 @@ public class Modificar_Proveedor extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor modificado");
+		                JOptionPane.showMessageDialog(null, "Proveedor modificado");            //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después vuelve a la ventana Tabla_Proveedor
 		                ControlFiles.addContent("Se ha modificado el proveedor "+nombre);
 		                Tabla_Proveedor tp = new Tabla_Proveedor();
 						tp.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar proveedor");
+		                JOptionPane.showMessageDialog(null, "Error al modificar proveedor");      //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 				

@@ -45,12 +45,13 @@ public class Modificar_Cliente extends JFrame {
 	
 	
 	
-	class ComboItem
+	class ComboItem                     //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;               //Label visible del ComboBox
+	    
+	    private String value;            //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)         //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -73,7 +74,7 @@ public class Modificar_Cliente extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {
+	public DefaultComboBoxModel cargarDireccion() {           //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -120,13 +121,14 @@ public class Modificar_Cliente extends JFrame {
 		});
 	}
 
-	 public static Boolean validaEmail (String email) {
+	 public static Boolean validaEmail (String email) {       //Valida el formato del E-Mail
+		 
 			Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
 			Matcher matcher = pattern.matcher(email);
 			return matcher.matches();
 		}
 	 
-	 private void cargarCampos(String cliente) {
+	 private void cargarCampos(String cliente) {              //Carga los campos recibiendo al id del cliente como parámetro
 			Connection cn = null;
 			PreparedStatement pst = null;
 			ResultSet result = null;
@@ -134,14 +136,15 @@ public class Modificar_Cliente extends JFrame {
 			int id = Integer.parseInt(cliente);
 			
 			try {
-				cn = (Connection) Connect.getConexion();
+				cn = (Connection) Connect.getConexion();   //Realiza la conexión
+				
 				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate FROM Client WHERE id_Client = ?";
 				pst = cn.prepareStatement(SSQL);
 				pst.setInt(1, id);
 				
 				
 				result = pst.executeQuery();
-				while (result.next()){
+				while (result.next()){                       //Carga los campos según los resultados en la base de datos
 				txtDni.setText(result.getString(1));
 				txtNombre.setText(result.getString(2));
 				txtApellido.setText(result.getString(3));
@@ -160,7 +163,7 @@ public class Modificar_Cliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Cliente(String cliente) {
+	public Modificar_Cliente(String cliente) {                //Crea la ventana reccibiendo por parámetro el id del cliente
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 459, 520);
@@ -168,7 +171,7 @@ public class Modificar_Cliente extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));        //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -209,7 +212,7 @@ public class Modificar_Cliente extends JFrame {
 		
 		cbGenero = new JComboBox();
 		cbGenero.setBounds(226, 252, 171, 22);
-		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));
+		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));             //Crea un ComboBox con los generos que puede tener el cliente
 		contentPane.add(cbGenero);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
@@ -221,7 +224,7 @@ public class Modificar_Cliente extends JFrame {
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                //Cierra la ventana
 		btnVolver.setBounds(254, 447, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -250,7 +253,7 @@ public class Modificar_Cliente extends JFrame {
 		contentPane.add(txtApellido);
 		txtApellido.setColumns(10);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");              //Este boton modifica el cliente según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement ps = null;
@@ -268,10 +271,11 @@ public class Modificar_Cliente extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();         //Realiza la conexión
 					
 					
-					if (txtTelefonoOp.getText().isBlank()) {
+					if (txtTelefonoOp.getText().isBlank()) {        //Realiza la consulta sql dependiendo si el campo telefono opcional está vacío
+						
 						ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? WHERE id_Client = ?" );
 						ps.setInt(9, id);
 					} else {
@@ -294,11 +298,11 @@ public class Modificar_Cliente extends JFrame {
 						
 
 						ps.setString(7, genero);
-						
-						if(validaEmail(email)) {
+						 
+						if(validaEmail(email)) {             //Revisa si el formato del E-Mail es correcto
 							ps.setString(8,email);
 						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");
+							JOptionPane.showMessageDialog(null, "E-Mail no válido");      //Si no es correcot lo avisa en pantalla
 						}
 						
 						
@@ -307,14 +311,15 @@ public class Modificar_Cliente extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cliente modificado");
+		                JOptionPane.showMessageDialog(null, "Cliente modificado");       //Si fue exitoso, lo avisa en un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Clientes
+		                
 		                ControlFiles.addContent("Se ha modificado un cliente con el nombre "+nombre+" "+apellido);
 		                Tabla_Clientes tc = new Tabla_Clientes();
 		                tc.setVisible(true);
 		                dispose();
 		                
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar cliente");
+		                JOptionPane.showMessageDialog(null, "Error al modificar cliente");       //Si falla, lo avisa en pantalla
 		                
 		            }
 				

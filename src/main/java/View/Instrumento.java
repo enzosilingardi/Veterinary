@@ -31,12 +31,13 @@ public class Instrumento extends JFrame {
 	private JTextField txtDescripcion;
 
 	
-	class ComboItem
+	class ComboItem                                //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                         //Label visible del ComboBox
+	    
+	    private String value;                      //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)      //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -59,7 +60,7 @@ public class Instrumento extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarQuirofano() {
+	public DefaultComboBoxModel cargarQuirofano() {             //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -103,20 +104,21 @@ public class Instrumento extends JFrame {
 		});
 	}
 
-	public int existeInstrumento(String nombre) {
+	public int existeInstrumento(String nombre) {            //Determina si ya existe el instrumento
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();          //Realiza la conexión
+			
 			String SSQL = "SELECT count(instrument_Name) FROM Medical_Instrument WHERE instrument_Name = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);                    //Si la relación ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -132,7 +134,7 @@ public class Instrumento extends JFrame {
 		
 	}
 	
-	public int instrumentoEnUso(String nombre) {
+	public int instrumentoEnUso(String nombre) {         //Este procedimiento no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -164,7 +166,7 @@ public class Instrumento extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {                      //Este procedimiento limpia los campos
 		txtNombre.setText("");
 		txtDescripcion.setText("");
 		
@@ -173,14 +175,14 @@ public class Instrumento extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Instrumento() {
+	public Instrumento() {              //Crea la ventana
 		setTitle("Instrumento");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 304);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));          //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -207,7 +209,7 @@ public class Instrumento extends JFrame {
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                      //Este boton permite agregar un instrumento
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
@@ -216,10 +218,11 @@ public class Instrumento extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();        //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Instrument (instrument_Name, instrument_Description) VALUES (?,?)" );
 					
-					if(existeInstrumento(nombre) != 0) {
+					if(existeInstrumento(nombre) != 0) {                                   //Revisa si el instrumento ya existe
 						JOptionPane.showMessageDialog(null, "Instrumento ya existe");
 					}else {
 						ps.setString(1, nombre);
@@ -230,12 +233,12 @@ public class Instrumento extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento guardado");
+		                JOptionPane.showMessageDialog(null, "Instrumento guardado");                    //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido un instrumento de nombre "+nombre);
 		                
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar instrumento");
+		                JOptionPane.showMessageDialog(null, "Error al guardar instrumento");             //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -251,7 +254,7 @@ public class Instrumento extends JFrame {
 		btnAgregar.setBounds(164, 171, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                 //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Instrumento ti = new Tabla_Instrumento();

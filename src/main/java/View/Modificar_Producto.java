@@ -37,12 +37,13 @@ public class Modificar_Producto extends JFrame {
 	private JTextField txtIdPro;
 	private JTextField txtPro;
 	
-	class ComboItem
+	class ComboItem                      //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;               //Label visible del ComboBox
+	    
+	    private String value;            //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)          //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -65,7 +66,7 @@ public class Modificar_Producto extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarProveedor() {
+	public DefaultComboBoxModel cargarProveedor() {            //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -78,7 +79,7 @@ public class Modificar_Producto extends JFrame {
 			String SSQL = "SELECT * FROM Provider ORDER BY id_Provider";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("","")); 
 			
 			while (result.next()) {
 				modelo.addElement(new ComboItem(result.getString("provider_Name"),result.getString("id_Provider")));
@@ -94,7 +95,7 @@ public class Modificar_Producto extends JFrame {
 		return modelo;
     }
 
-	public DefaultComboBoxModel cargarTipo() {
+	public DefaultComboBoxModel cargarTipo() {             //Carga el combobox con los tipos de producto
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -103,14 +104,14 @@ public class Modificar_Producto extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();                                //Realiza la conexión
 			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));              //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Product_Type")));
+				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Product_Type")));      //El elemento recibe el tipo como label y el id de tipo como valor
 				
 			}
 			cn.close();
@@ -139,15 +140,16 @@ public class Modificar_Producto extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String producto) {
+	private void cargarCampos(String producto) {           //Carga los campos recibiendo como parámetro el id del producto
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		int id = Integer.parseInt(producto);
+		int id = Integer.parseInt(producto); 
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();         //Realiza la conexión
+			
 			String SSQL = "SELECT product_Type, product_Name, description, cost_Price, sale_Price\r\n"
 					+ "FROM Product WHERE id_Product = ?";
 			pst = cn.prepareStatement(SSQL);
@@ -155,7 +157,7 @@ public class Modificar_Producto extends JFrame {
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                           //Carga los campos según los resultados de la base de datos
 			cbTipo.setSelectedItem(result.getString(1));	
 			txtNombre.setText(result.getString(2));
 			txtDescripcion.setText(result.getString(3));
@@ -173,14 +175,14 @@ public class Modificar_Producto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Producto(final String producto) {
+	public Modificar_Producto(final String producto) {              //Crea la ventana recibiendo como parámetro el id del producto
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 511, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));            //Setea el logo de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -234,7 +236,7 @@ public class Modificar_Producto extends JFrame {
 		txtPrecio.setBounds(172, 268, 187, 20);
 		contentPane.add(txtPrecio);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Productos tp = new Tabla_Productos();
@@ -245,7 +247,7 @@ public class Modificar_Producto extends JFrame {
 		btnVolver.setBounds(276, 316, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");        //Modifica el producto según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -259,7 +261,8 @@ public class Modificar_Producto extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la red neuronal
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Product SET id_Provider = ?, product_Name = ?, id_Product_Type = ?, description = ?, cost_Price = ?, sale_Price = ? WHERE id_Product = ?" );
 					
 					
@@ -269,13 +272,15 @@ public class Modificar_Producto extends JFrame {
 						ps.setString(3, ((ComboItem) tipo).getValue());
 						ps.setString(4, descripcion);
 						
-						if (costo < 0) {
+						if (costo < 0) {          //Revisa que no hayan números negativos en el costo
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(5,costo);
 						}
-						
-						if (precio < 0) {
+						 
+						if (precio < 0) {              //Revisa que no hayan números negativos en el precio
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(6,precio);
@@ -288,13 +293,13 @@ public class Modificar_Producto extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto modificado");
+		                JOptionPane.showMessageDialog(null, "Producto modificado");             //Si fue exitoso, lo avisa por pantalla mediante un mensaje y lo añade al log, después regresa a la ventana Tabla_Productos
 		                ControlFiles.addContent("Se ha modificado el producto "+nombre);
 		                Tabla_Productos tp = new Tabla_Productos();
 						tp.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar producto");
+		                JOptionPane.showMessageDialog(null, "Error al modificar producto");       //En caso de fallar, lo avisa por pantalla
 		                
 		            }
 				
@@ -320,7 +325,7 @@ public class Modificar_Producto extends JFrame {
 		cargarCampos(producto);
 		txtId.setText(producto);
 		
-		btnSelec = new JButton("Seleccionar");
+		btnSelec = new JButton("Seleccionar");                 //Este botón permite seleccionar un proveedor
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor_ModPro bpm = new Buscar_Proveedor_ModPro(producto);
@@ -345,14 +350,14 @@ public class Modificar_Producto extends JFrame {
 		
 	}
 
-	public Modificar_Producto(final String producto, String id, String nom) {
+	public Modificar_Producto(final String producto, String id, String nom) {          //Crea la ventana recibiendo como parámetros el id del producto, y el id y nombre del proveedor
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 511, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -406,7 +411,7 @@ public class Modificar_Producto extends JFrame {
 		txtPrecio.setBounds(172, 268, 187, 20);
 		contentPane.add(txtPrecio);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");              //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Productos tp = new Tabla_Productos();
@@ -417,7 +422,7 @@ public class Modificar_Producto extends JFrame {
 		btnVolver.setBounds(276, 316, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");                //Modifica el producto segun los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -431,7 +436,8 @@ public class Modificar_Producto extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();          //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Product SET id_Provider = ?, product_Name = ?, id_Product_Type = ?, description = ?, cost_Price = ?, sale_Price = ? WHERE id_Product = ?" );
 					
 					
@@ -441,13 +447,15 @@ public class Modificar_Producto extends JFrame {
 						ps.setString(3, ((ComboItem) tipo).getValue());
 						ps.setString(4, descripcion);
 						
-						if (costo < 0) {
+						if (costo < 0) {       //Revisa que no hayan números negativos en el costo
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(5,costo);
 						}
 						
-						if (precio < 0) {
+						if (precio < 0) {       //Revisa que no hayan números negativos en el precio
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(6,precio);
@@ -460,13 +468,13 @@ public class Modificar_Producto extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto modificado");
+		                JOptionPane.showMessageDialog(null, "Producto modificado");       //Si fue exitoso, lo avisa por pantalla mediante un mensaje y lo añade al log, después regresa a la ventana Tabla_Productos
 		                ControlFiles.addContent("Se ha modificado el producto "+nombre);
 		                Tabla_Productos tp = new Tabla_Productos();
 						tp.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar producto");
+		                JOptionPane.showMessageDialog(null, "Error al modificar producto");   //En caso de fallar, lo avisa pro pantalla
 		                
 		            }
 				
@@ -492,7 +500,7 @@ public class Modificar_Producto extends JFrame {
 		cargarCampos(producto);
 		txtId.setText(producto);
 		
-		btnSelec = new JButton("Seleccionar");
+		btnSelec = new JButton("Seleccionar");                  //Este botón permite seleccionar un proveedor
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor_ModPro bpm = new Buscar_Proveedor_ModPro(producto);

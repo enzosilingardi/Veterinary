@@ -25,6 +25,8 @@ import java.awt.event.ActionEvent;
 
 public class Modificar_Direccion extends JFrame {
 
+	//Esta ventana no de utiliza en la versión actual
+	
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtNumero;
@@ -34,12 +36,13 @@ public class Modificar_Direccion extends JFrame {
 	private JComboBox cbCiudad;
 	
 	
-	class ComboItem
+	class ComboItem                      //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;              //Label visible del ComboBox
+	    
+	    private String value;             //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)         //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -62,7 +65,7 @@ public class Modificar_Direccion extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarCiudad() {
+	public DefaultComboBoxModel cargarCiudad() {           
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;

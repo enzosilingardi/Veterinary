@@ -24,7 +24,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Modificar_Ciudad extends JFrame {
-
+	
+	//Esta ventana no se utiliza en la versión actual
+	
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtId;
@@ -32,10 +34,11 @@ public class Modificar_Ciudad extends JFrame {
 	private JButton btnModificar;
 	private JButton btnVolver;
 	
-	class ComboItem
+	class ComboItem                       //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                //Label visible del ComboBox  
+	    
+	    private String value;             //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -60,7 +63,7 @@ public class Modificar_Ciudad extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarProvincia() {
+	public DefaultComboBoxModel cargarProvincia() {        
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;

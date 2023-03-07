@@ -126,7 +126,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
         
         modelo.setColumnIdentifiers(new Object[] {"ID","Animal","Raza"});       // Nombre de las columnas
        
-        table.setModel(modelo);
+        table.setModel(modelo);                    //Setea el modelo
         
         
         
@@ -186,7 +186,8 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();              //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Rel_Animal_Breed WHERE id_Animal = ? AND id_Breed = ?;"; 			//sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) animal);

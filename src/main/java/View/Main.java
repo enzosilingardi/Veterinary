@@ -48,27 +48,28 @@ public class Main extends JFrame {
 	private JTable table;
 	
 
-	void mostrarTabla(){
+	void mostrarTabla(){            //Muestra la tabal con los 10 turnos más recientes
 			
 		
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});      //Nombres de las columnas
 	       
-	        table.setModel(modelo);
+	        table.setModel(modelo);                //Setea el modelo
 	        
 	        
-	        String datos[] = new String[5];
+	        String datos[] = new String[5];         //Declara que va a haber 5 columnas
 	       
 	        try {
-	        	Connection con = Connect.getConexion();
+	        	Connection con = Connect.getConexion();             //Realiza la conexión
+	        	
 	        	PreparedStatement ps = con.prepareStatement("SELECT TOP 10 id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
 	        			+ "FROM Medical_Procedure\r\n"
 	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
 	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
 	        			+ "ORDER BY proced_Date DESC" );
 	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){
+	            while (rs.next()){                     //Carga las columnas de la base de datos en la tabla
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
 	                datos[2] = rs.getString(3);
@@ -79,8 +80,9 @@ public class Main extends JFrame {
 	                
 
 	            }
-	            table.setModel(modelo);
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	            table.setModel(modelo);          //Setea el modelo
+	            
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);                // los 4 siguientes hacen que la columna del id sea invisible para el usuario
 	    		table.getColumnModel().getColumn(0).setMinWidth(0);
 	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 	    		table.getColumnModel().getColumn(0).setResizable(false);
@@ -109,7 +111,7 @@ public class Main extends JFrame {
 		});
 	}
 	
-	private void setScaleImage(JLabel lblFoto, String rutaFoto) {
+	private void setScaleImage(JLabel lblFoto, String rutaFoto) {            //Setea la escala de la imagen ingresada
 		ImageIcon foto = new ImageIcon(rutaFoto);
 		Icon icono = new ImageIcon(foto.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), 1));
 		lblFoto.setIcon(icono);
@@ -118,12 +120,12 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main(final String perfil) {
+	public Main(final String perfil) {                         //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setTitle("Principal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));           //Setea el icono de la ventana
 
 		
 		contentPane = new JPanel();
@@ -139,7 +141,7 @@ public class Main extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JButton btnInstrumentos = new JButton("Instrumentos");
+		JButton btnInstrumentos = new JButton("Instrumentos");                 //Abre la ventana Tabla_Instrumento usando como parámetro el perfil del usuario
 		btnInstrumentos.setForeground(new Color(255, 255, 255));
 		btnInstrumentos.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnInstrumentos.setBackground(new Color(86, 211, 243));
@@ -153,7 +155,7 @@ public class Main extends JFrame {
 			}
 		});
 		
-		JButton btnSucursales = new JButton("Sucursales");
+		JButton btnSucursales = new JButton("Sucursales");                      //Abre la ventana Tabla_Sucursales usando como parámetro el perfil del usuario
 		btnSucursales.setForeground(new Color(255, 255, 255));
 		btnSucursales.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnSucursales.setBackground(new Color(86, 211, 243));
@@ -167,7 +169,7 @@ public class Main extends JFrame {
 			}
 		});
 		
-		JButton btnVeterinarios = new JButton("Veterinarios");
+		JButton btnVeterinarios = new JButton("Veterinarios");                 //Abre la ventana Tabla_Veterinarios usando como parámetro el perfil del usuario
 		btnVeterinarios.setForeground(new Color(255, 255, 255));
 		btnVeterinarios.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVeterinarios.setBackground(new Color(86, 211, 243));
@@ -181,7 +183,7 @@ public class Main extends JFrame {
 			}
 		});
 		
-		JButton btnMascotas = new JButton("Mascotas");
+		JButton btnMascotas = new JButton("Mascotas");                     //Abre la ventana Tabla_Mascota usando como parámetro el perfil del usuario
 		btnMascotas.setForeground(new Color(255, 255, 255));
 		btnMascotas.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnMascotas.setBackground(new Color(86, 211, 243));
@@ -189,7 +191,7 @@ public class Main extends JFrame {
 		btnMascotas.setBounds(0, 286, 207, 23);
 		panel.add(btnMascotas);
 		
-		JButton btnQuirofanos = new JButton("Quirófanos");
+		JButton btnQuirofanos = new JButton("Quirófanos");              //Abre la ventana Tabla_Quirofano usando como parámetro el perfil del usuario
 		btnQuirofanos.setForeground(new Color(255, 255, 255));
 		btnQuirofanos.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnQuirofanos.setBackground(new Color(86, 211, 243));
@@ -203,15 +205,15 @@ public class Main extends JFrame {
 			}
 		});
 		
-		JButton btnHistoriales = new JButton("Historiales");
-		btnHistoriales.setForeground(new Color(255, 255, 255));
+		JButton btnHistoriales = new JButton("Historiales");         //Abre la ventana Tabla_Historial usando como parámetro el perfil del usuario
+		btnHistoriales.setForeground(new Color(255, 255, 255)); 
 		btnHistoriales.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnHistoriales.setBackground(new Color(86, 211, 243));
 		btnHistoriales.setBorder(null);
 		btnHistoriales.setBounds(0, 320, 207, 23);
 		panel.add(btnHistoriales);
 		
-		JButton btnTurnos = new JButton("Turnos");
+		JButton btnTurnos = new JButton("Turnos");                  //Abre la ventana Tabla_Turnos usando como parámetro el perfil del usuario
 		btnTurnos.setBorder(null);
 		btnTurnos.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnTurnos.setForeground(new Color(255, 255, 255));
@@ -226,7 +228,7 @@ public class Main extends JFrame {
 			}
 		});
 		
-		JButton btnClientes = new JButton("Clientes");
+		JButton btnClientes = new JButton("Clientes");                     //Abre la ventana Tabla_Clientes usando como parámetro el perfil del usuario
 		btnClientes.setForeground(new Color(255, 255, 255));
 		btnClientes.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnClientes.setBorder(null);
@@ -234,7 +236,7 @@ public class Main extends JFrame {
 		panel.add(btnClientes);
 		btnClientes.setBackground(new Color(86, 211, 243));
 		
-		JButton btnUsuarios = new JButton("Usuarios");
+		JButton btnUsuarios = new JButton("Usuarios");            //Abre la ventana Tabla_Usuarios usando como parámetro el perfil del usuario
 		btnUsuarios.setForeground(new Color(255, 255, 255));
 		btnUsuarios.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnUsuarios.setBackground(new Color(86, 211, 243));
@@ -247,7 +249,7 @@ public class Main extends JFrame {
 		lblLogo.setBounds(0, 0, 207, 207);
 		panel.add(lblLogo);
 		
-		setScaleImage(lblLogo,"src/main/java/images/vet.png");
+		setScaleImage(lblLogo,"src/main/java/images/vet.png");                  //Setea la imagen del logo
 		
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -266,7 +268,7 @@ public class Main extends JFrame {
 		menuBar.add(mnVentas);
 		
 		
-		JMenuItem mntmProductos = new JMenuItem("Productos");
+		JMenuItem mntmProductos = new JMenuItem("Productos");                  //Abre la ventana Tabla_Productos usando como parámetro el perfil del usuario
 		mntmProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Productos productos = new Tabla_Productos(perfil);
@@ -275,7 +277,7 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmProductos);
 		
-		JMenuItem mntmProveedores = new JMenuItem("Proveedores");
+		JMenuItem mntmProveedores = new JMenuItem("Proveedores");            //Abre la ventana Tabla_Proveedor usando como parámetro el perfil del usuario
 		mntmProveedores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Proveedor tp = new Tabla_Proveedor(perfil); 
@@ -284,7 +286,7 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmProveedores);
 		
-		JMenuItem mntmStock = new JMenuItem("Stock");
+		JMenuItem mntmStock = new JMenuItem("Stock");                     //Abre la ventana Tabla_Stock usando como parámetro el perfil del usuario
 		mntmStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Stock ts = new Tabla_Stock(perfil);
@@ -293,7 +295,7 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmStock);
 		
-		JMenuItem mntmPedidos = new JMenuItem("Pedidos");
+		JMenuItem mntmPedidos = new JMenuItem("Pedidos");               //Abre la ventana Tabla_Pedido usando como parámetro el perfil del usuario
 		mntmPedidos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Pedido tp = new Tabla_Pedido(perfil);
@@ -302,8 +304,8 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmPedidos);
 		
-		JMenuItem mntmFacturacion = new JMenuItem("Facturacion");
-		mntmFacturacion.addActionListener(new ActionListener() {
+		JMenuItem mntmFacturacion = new JMenuItem("Facturacion");            //Abre la ventana Factura
+		mntmFacturacion.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				Factura factura = new Factura();
 				factura.setVisible(true);
@@ -311,7 +313,7 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmFacturacion);
 		
-		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");
+		JMenuItem mntmPresupuestos = new JMenuItem("Presupuestos");            //Abre la ventana Presupuesto
 		mntmPresupuestos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Presupuesto presupuesto = new Presupuesto();

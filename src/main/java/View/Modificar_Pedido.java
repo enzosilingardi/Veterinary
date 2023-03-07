@@ -32,12 +32,13 @@ public class Modificar_Pedido extends JFrame {
 	private JComboBox cbProducto;
 	private JComboBox cbSucursal;
 	
-	class ComboItem
+	class ComboItem                         //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                //Label visible del ComboBox
+	    
+	    private String value;               //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)                 //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -61,7 +62,7 @@ public class Modificar_Pedido extends JFrame {
 	}
 	
 	
-	public DefaultComboBoxModel cargarProducto() {
+	public DefaultComboBoxModel cargarProducto() {          //Carga el ComboBox Producto
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -70,14 +71,14 @@ public class Modificar_Pedido extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
+			cn = (Connection) Connect.getConexion();                        //Realiza la conexión
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";        
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));                        //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));            //El elemento recibe el nombre del producto como label y el id como valor
 				
 			}
 			cn.close();
@@ -90,7 +91,7 @@ public class Modificar_Pedido extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {                  //Carga el combobox sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -99,17 +100,15 @@ public class Modificar_Pedido extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();              //Realiza la conexión
 			String SSQL = "Select *\r\n"
-					+ "FROM Branch\r\n"
-					+ "INNER JOIN Address ON Branch.id_Address = Address.id_Address\r\n"
-					+ "ORDER BY Branch.id_Address";
+					+ "FROM Branch\r\n";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));              //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address_Name")+" - "+result.getString("address_Number"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));           //El elemento recibe la dirección y el id de la sucursal
 				
 			}
 			cn.close();
@@ -138,22 +137,22 @@ public class Modificar_Pedido extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String quirofano) {
+	private void cargarCampos(String pedido) {                  //Carga los campos recibiendo el id del pedido como parámetro
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		int id = Integer.parseInt(quirofano);
+		int id = Integer.parseInt(pedido);
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();                            //Realiza la conexión
 			String SSQL = "SELECT quantity FROM Orders WHERE id_Order = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                            //Carga los campos según los resultados en la base de datos
 			txtCantidad.setText(result.getString(1));
 			}
 			cn.close();
@@ -168,13 +167,13 @@ public class Modificar_Pedido extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Pedido(String pedido) {
+	public Modificar_Pedido(String pedido) {                     //Crea la ventana recibiendo como parámetro el id del pedido
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 343, 304);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));           //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -206,7 +205,7 @@ public class Modificar_Pedido extends JFrame {
 		txtCantidad.setBounds(125, 161, 157, 20);
 		contentPane.add(txtCantidad);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");         //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Pedido tp = new Tabla_Pedido();
@@ -224,7 +223,7 @@ public class Modificar_Pedido extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");                    //Este boton modifica el pedido según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -235,11 +234,12 @@ public class Modificar_Pedido extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();      //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Orders SET id_Product = ? , id_Branch = ? , quantity = ? WHERE id_Order = ?" );
 					
 					
-					if (((ComboItem) producto).getValue() == "") {
+					if (((ComboItem) producto).getValue() == "") {                         //Revisa que los ComboBox no estén en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un producto");
 					}else {
 						if (((ComboItem) sucursal).getValue() == "") {
@@ -261,13 +261,13 @@ public class Modificar_Pedido extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Pedido modificado");
+		                JOptionPane.showMessageDialog(null, "Pedido modificado");                //Si fue exitoso, lo avisa por pantalla mediante un mensaje y lo añade al log, después regresa a la ventana Tabla_Pedido 
 		                ControlFiles.addContent("Se ha modificado un pedido de "+producto);
 		                Tabla_Pedido tp = new Tabla_Pedido();
 						tp.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar pedido");
+		                JOptionPane.showMessageDialog(null, "Error al modificar pedido");        //En caso de fallar, lo avisa por pantalla
 		                
 		            }
 				

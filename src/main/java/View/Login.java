@@ -53,13 +53,14 @@ public class Login extends JFrame {
 		});
 	}
 	
-	public int existeUsuario(String usuario, String contrasenia) {
+	public int existeUsuario(String usuario, String contrasenia) {              //Revisa si existe el usuario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();               //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Users WHERE username = ? AND password = ?   ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, usuario);
@@ -67,7 +68,7 @@ public class Login extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);               //Si existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -82,13 +83,14 @@ public class Login extends JFrame {
 		
 	}
 	
-	public String perfilUsuario(String usuario, String contrasenia) {
+	public String perfilUsuario(String usuario, String contrasenia) {               //Toma el perfil del usuario ingresado según su nombre de usuario y contraseña
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();          //Realiza la contraseña
+			
 			String SSQL = "SELECT profile FROM Users WHERE username = ? AND password = ?   ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, usuario);
@@ -96,7 +98,7 @@ public class Login extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getString(1);
+				return result.getString(1);        //Toma el contenido de el campo profile
 			}
 			
 			
@@ -113,7 +115,7 @@ public class Login extends JFrame {
 	}
 
 	
-	private void setScaleImage(JLabel lblFoto, String rutaFoto) {
+	private void setScaleImage(JLabel lblFoto, String rutaFoto) {          //Setea la escala de la imagen ingresada
 		ImageIcon foto = new ImageIcon(rutaFoto);
 		Icon icono = new ImageIcon(foto.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), 1));
 		lblFoto.setIcon(icono);
@@ -121,7 +123,7 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Login() {
+	public Login() {          //Crea la ventana
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException e2) {
@@ -144,7 +146,7 @@ public class Login extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));    //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -170,7 +172,7 @@ public class Login extends JFrame {
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
 		
-		JButton btnIngresar = new JButton("Ingresar");
+		JButton btnIngresar = new JButton("Ingresar");                //Este botón realiza el login tras ingresar el usuario y contraseña
 		btnIngresar.setForeground(new Color(255, 255, 255));
 		btnIngresar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnIngresar.setBackground(new Color(86, 211, 243));
@@ -181,12 +183,13 @@ public class Login extends JFrame {
 				String usuario = txtUsuario.getText();
 				String contrasenia = txtContrasenia.getText();
 				
-					if(existeUsuario(usuario,contrasenia) != 0) {
-						Main main = new Main(perfilUsuario(usuario,contrasenia));
+					if(existeUsuario(usuario,contrasenia) != 0) {                       //Revisa si el usuario ingresado existe
+						
+						Main main = new Main(perfilUsuario(usuario,contrasenia));         //Abre la ventana principal usando como parámetro el perfil del usuario
 						main.setVisible(true);
 						dispose();
 					}else {
-						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");    //Si el usuario ingresado no existe, lo avisa en pantalla
 					}
 					
 				
@@ -196,7 +199,7 @@ public class Login extends JFrame {
 		btnIngresar.setBounds(244, 196, 89, 23);
 		contentPane.add(btnIngresar);
 		
-		JButton btnCerrar = new JButton("Cerrar");
+		JButton btnCerrar = new JButton("Cerrar");                //Cierra el programa
 		btnCerrar.setForeground(new Color(255, 255, 255));
 		btnCerrar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnCerrar.setBackground(new Color(86, 211, 243));
@@ -214,7 +217,7 @@ public class Login extends JFrame {
 		txtContrasenia.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (txtContrasenia.getText().length() >= 16 ) 
+				if (txtContrasenia.getText().length() >= 16 )         //Permite que solo se ingresen hasta 16 caracteres en el campo contraseña
 		            e.consume(); 
 			}
 		});
@@ -232,16 +235,16 @@ public class Login extends JFrame {
 		panel.add(lblLogo);
 		
 
-		setScaleImage(lblLogo,"src/main/java/images/vet.png");
+		setScaleImage(lblLogo,"src/main/java/images/vet.png");         //Sete la imagen del logo
 		
 		JLabel lblUserIcon = new JLabel("");
 		lblUserIcon.setBounds(260, 78, 26, 26);
 		contentPane.add(lblUserIcon);
-		setScaleImage(lblUserIcon,"src/main/java/images/user.png");
+		setScaleImage(lblUserIcon,"src/main/java/images/user.png");        //Setea el icono de usuario
 		
 		JLabel lblPasswordIcon = new JLabel("");
 		lblPasswordIcon.setBounds(258, 145, 32, 32);
 		contentPane.add(lblPasswordIcon);
-		setScaleImage(lblPasswordIcon,"src/main/java/images/pass.png");
+		setScaleImage(lblPasswordIcon,"src/main/java/images/pass.png");     //Setea el icono de contraseña
 	}
 }

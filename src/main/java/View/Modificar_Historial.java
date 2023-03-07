@@ -35,10 +35,11 @@ public class Modificar_Historial extends JFrame {
 	private JTextField txtMascota;
 	private JTextField txtIdM;
 	
-	class ComboItem
+	class ComboItem                                 //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                          //Label visible del ComboBox
+	    
+	    private String value;                         //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -63,7 +64,7 @@ public class Modificar_Historial extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarMascota() {
+	public DefaultComboBoxModel cargarMascota() {             //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -111,7 +112,7 @@ public class Modificar_Historial extends JFrame {
 		});
 	}
 	
-	private void cargarCampos(String historial) {
+	private void cargarCampos(String historial) {               //Este proceso carga los campos recibiendo como parámetro el id del historial
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -119,7 +120,8 @@ public class Modificar_Historial extends JFrame {
 		int id = Integer.parseInt(historial);
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();           //Realiza la conexión
+			
 			String SSQL = "SELECT description, date\r\n"
 					+ "FROM Medical_History\r\n"
 					+ "WHERE id_Medical_History = ?";
@@ -128,7 +130,7 @@ public class Modificar_Historial extends JFrame {
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                              //Carga los campos segun el resultado en la base de datos
 			txtDescripcion.setText(result.getString(1));
 			txtFecha.setDate(result.getDate(2));
 			}
@@ -144,14 +146,14 @@ public class Modificar_Historial extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Historial(final String historial, final String perfil, String idMas, String nomMas) {
+	public Modificar_Historial(final String historial, final String perfil, String idMas, String nomMas) {            //Crea la ventana recibiendo como parámetros el id del historial, el perfil del usuario, y el id y el nombre de la mascota
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 483, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -177,7 +179,7 @@ public class Modificar_Historial extends JFrame {
 		lblFecha.setBounds(59, 149, 53, 14);
 		contentPane.add(lblFecha);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");         //Este botón modifica el historial según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -190,7 +192,8 @@ public class Modificar_Historial extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();      //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
 					
 					
@@ -207,13 +210,13 @@ public class Modificar_Historial extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                JOptionPane.showMessageDialog(null, "Historial guardado");                         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo agrega al log, despues regresa a la ventana Tabla_Historial
 		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
 		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");       //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 				
@@ -229,7 +232,7 @@ public class Modificar_Historial extends JFrame {
 		btnModificar.setBounds(99, 209, 89, 23);
 		contentPane.add(btnModificar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                    //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
@@ -261,7 +264,7 @@ public class Modificar_Historial extends JFrame {
 		txtIdM.setColumns(10);
 		txtIdM.setVisible(false);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");                 //Este botón permite buscar una mascota
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModHis bmh = new Buscar_Mascota_ModHis(perfil,historial);
@@ -278,14 +281,14 @@ public class Modificar_Historial extends JFrame {
 		txtMascota.setText(nomMas);
 	}
 
-	public Modificar_Historial(final String historial, final String perfil) {
+	public Modificar_Historial(final String historial, final String perfil) {          //Crea la ventana recibiendo como parámetros el id del historial y el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 483, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));        //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -311,7 +314,7 @@ public class Modificar_Historial extends JFrame {
 		lblFecha.setBounds(59, 149, 53, 14);
 		contentPane.add(lblFecha);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");                   //Este botón modifica el historial según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -324,7 +327,8 @@ public class Modificar_Historial extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();            //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
 					
 					
@@ -341,13 +345,13 @@ public class Modificar_Historial extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                JOptionPane.showMessageDialog(null, "Historial guardado");                             //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Historial
 		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
 		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");             //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 				
@@ -363,7 +367,7 @@ public class Modificar_Historial extends JFrame {
 		btnModificar.setBounds(99, 209, 89, 23);
 		contentPane.add(btnModificar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                  //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
@@ -395,7 +399,7 @@ public class Modificar_Historial extends JFrame {
 		txtIdM.setColumns(10);
 		txtIdM.setVisible(false);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");               //Este botón permite buscar una mascota
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModHis bmh = new Buscar_Mascota_ModHis(perfil,historial);

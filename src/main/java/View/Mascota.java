@@ -52,12 +52,13 @@ public class Mascota extends JFrame {
 	private JDateChooser txtFecha;
 
 	
-	class ComboItem
+	class ComboItem                    //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;              //Label visible del ComboBox
+	    
+	    private String value;           //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)       //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -82,7 +83,7 @@ public class Mascota extends JFrame {
 	
 
 	
-	public DefaultComboBoxModel cargarCliente() {
+	public DefaultComboBoxModel cargarCliente() {                 //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -111,22 +112,24 @@ public class Mascota extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarAnimal() {
+	public DefaultComboBoxModel cargarAnimal() {           //Carga el ComboBox animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel(); 
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();        //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("Seleccionar animal",""));
+			modelo.addElement(new ComboItem("Seleccionar animal",""));                //El primer elemento es "Seleccionar animal"
+			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));   
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));    //El elemento del ComboBox recibe el tipo de animal como label y el id como valor
 				
 			}
 			cn.close();
@@ -139,7 +142,7 @@ public class Mascota extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarRaza(Object animal) {
+	public DefaultComboBoxModel cargarRaza(Object animal) {                  //Carga el ComboBox raza recibiendo como parámetro el animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -148,7 +151,7 @@ public class Mascota extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();                 //Realiza la conexión
 			String SSQL = "SELECT *\r\n"
 					+ "FROM Breed\r\n"
 					+ "INNER JOIN Rel_Animal_Breed ON Rel_Animal_Breed.id_Breed = Breed.id_Breed\r\n"   //Toma solo las razas que están relacionadas al animal elegido
@@ -158,7 +161,7 @@ public class Mascota extends JFrame {
 			result = pst.executeQuery();
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));    
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));       //El elemento del ComboBox recibe el tipo de raza como label y el id como valor  
 				
 			}
 			cn.close();
@@ -190,13 +193,14 @@ public class Mascota extends JFrame {
 		});
 	}
 
-	public int existeMascota(int duenio, String nombre) {
+	public int existeMascota(int duenio, String nombre) {                   //Ese procedimiento determina si ya existe la mascota
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();        //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Pet WHERE name = ? AND id_Client = ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
@@ -205,7 +209,7 @@ public class Mascota extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);          //Si la mascota existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -223,7 +227,7 @@ public class Mascota extends JFrame {
 	
 	
 	
-	private void limpiar() {
+	private void limpiar() {                     //Ese procedimiento limpia los campos
 		txtNombre.setText("");
 		cbAnimal.setSelectedIndex(0);
 		txtIdDue.setText("");
@@ -236,15 +240,15 @@ public class Mascota extends JFrame {
 	
 	/**
 	 * Create the frame.
-	 */
-	public Mascota(String id, String nom) {
+	 */ 
+	public Mascota(String id, String nom) {                          //Crea la ventana recibiendo como parámetros en id y nombre de la mascota
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 473, 510);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));        //Setea el ícono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -270,13 +274,13 @@ public class Mascota extends JFrame {
 		lblEdad.setBounds(45, 256, 46, 14);
 		contentPane.add(lblEdad);
 		
-		txtEdad = new JTextField();
+		txtEdad = new JTextField();                     
 		txtEdad.setEditable(false);
 		txtEdad.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (Character.isLetter(c)) {
+				if (Character.isLetter(c)) {                    //Impide que se inserten letras en el campo edad
 					e.consume();
 				}
 			}
@@ -299,7 +303,7 @@ public class Mascota extends JFrame {
 		rdbtnHembra.setBounds(245, 301, 109, 23);
 		contentPane.add(rdbtnHembra);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");               //Este botón permite agregar una mascota
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement ps = null;
@@ -311,26 +315,26 @@ public class Mascota extends JFrame {
 				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
-				if(rdbtnMacho.isSelected()) {
+				if(rdbtnMacho.isSelected()) {                     //Revisa el género seleccionado
 					genero = "Macho";
 				} else if (rdbtnHembra.isSelected()) {
 					genero = "Hembra";
 				} else {
-					genero = "Macho";
+					genero = "Macho";                 //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();            //Realiza la conexión
 					
 					
-						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed,birthdate ) VALUES (?,?,?,?,?,?,?)" );
+						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed,birthdate ) VALUES (?,?,?,?,?,?,?)" );       
 						
 
 					
 					
-						if(existeMascota(idDue,nombre)!=0) {
+						if(existeMascota(idDue,nombre)!=0) {                        //Revisa si ya existe la mascota
 						JOptionPane.showMessageDialog(null, "Mascota ya existe");
 					}else {
 						ps.setInt(1, idDue);
@@ -347,11 +351,11 @@ public class Mascota extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Mascota guardada");
+		                JOptionPane.showMessageDialog(null, "Mascota guardada");                       //Si es exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido una mascota de nombre "+ nombre);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar mascota");
+		                JOptionPane.showMessageDialog(null, "Error al guardar mascota");        //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -368,7 +372,7 @@ public class Mascota extends JFrame {
 		btnAgregar.setBounds(165, 401, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                 //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Mascota tm = new Tabla_Mascota();
@@ -405,7 +409,7 @@ public class Mascota extends JFrame {
 		contentPane.add(cbRaza);
 		
 		
-		JButton btnAnimales = new JButton("Animales");
+		JButton btnAnimales = new JButton("Animales");              //Abre la ventana Animales
 		btnAnimales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Animal animal = new Animal();
@@ -415,7 +419,7 @@ public class Mascota extends JFrame {
 		btnAnimales.setBounds(326, 150, 121, 23);
 		contentPane.add(btnAnimales);
 		
-		JButton btnRazas = new JButton("Razas");
+		JButton btnRazas = new JButton("Razas");                  //Abre la ventana Razas
 		btnRazas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Raza raza = new Raza();
@@ -425,7 +429,7 @@ public class Mascota extends JFrame {
 		btnRazas.setBounds(326, 347, 121, 23);
 		contentPane.add(btnRazas);
 		
-		JButton btnSelec = new JButton("Seleccionar");
+		JButton btnSelec = new JButton("Seleccionar");                  //Este boton permite seleccionar un cliente
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Cliente_Masc bcm = new Buscar_Cliente_Masc();
@@ -457,7 +461,7 @@ public class Mascota extends JFrame {
 		txtFecha.setBounds(175, 201, 141, 20);
 		contentPane.add(txtFecha);
 		
-		JButton btnGen = new JButton("Generar edad");
+		JButton btnGen = new JButton("Generar edad");             //Al presionarse calcula la edad de la mascota segun la fecha de nacimiento ingresada
 		btnGen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
@@ -465,7 +469,7 @@ public class Mascota extends JFrame {
 				LocalDate date = LocalDate.parse(fecha);
 				LocalDate dateA = LocalDate.now(); 
 				Period diff_anio = Period.between(date, dateA);
-				txtEdad.setText(diff_anio.getYears()+"");
+				txtEdad.setText(diff_anio.getYears()+"");               //Coloca la edad obtenida en el campo edad
 			}
 		});
 		btnGen.setBounds(326, 200, 121, 23);
@@ -476,14 +480,14 @@ public class Mascota extends JFrame {
 		contentPane.add(lblFecha);
 	}
 
-	public Mascota() {
+	public Mascota() {                                //Crea la ventana
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 473, 510);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -515,7 +519,7 @@ public class Mascota extends JFrame {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				char c = e.getKeyChar();
-				if (Character.isLetter(c)) {
+				if (Character.isLetter(c)) {             //Impide que se inserten letras en el campo edad
 					e.consume();
 				}
 			}
@@ -538,7 +542,7 @@ public class Mascota extends JFrame {
 		rdbtnHembra.setBounds(245, 301, 109, 23);
 		contentPane.add(rdbtnHembra);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                 //Este boton permite agregar una mascota
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement ps = null;
@@ -549,19 +553,19 @@ public class Mascota extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
-				String genero;
-				if(rdbtnMacho.isSelected()) {
+				String genero; 
+				if(rdbtnMacho.isSelected()) {                     //Revisa el género seleccionado
 					genero = "Macho";
 				} else if (rdbtnHembra.isSelected()) {
 					genero = "Hembra";
 				} else {
-					genero = "Macho";
+					genero = "Macho";        //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();          //Realiza la conexión
 					
 					
 						ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed,birthdate ) VALUES (?,?,?,?,?,?,?)" );
@@ -569,7 +573,7 @@ public class Mascota extends JFrame {
 
 					
 					
-						if(existeMascota(idDue,nombre)!=0) {
+						if(existeMascota(idDue,nombre)!=0) {                          //Revisa si ya existe la mascota
 						JOptionPane.showMessageDialog(null, "Mascota ya existe");
 					}else {
 						ps.setInt(1, idDue);
@@ -585,12 +589,12 @@ public class Mascota extends JFrame {
 					
 					result = ps.executeUpdate();
 					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Mascota guardada");
+					if(result > 0){                   
+		                JOptionPane.showMessageDialog(null, "Mascota guardada");                    //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido una mascota de nombre "+ nombre);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar mascota");
+		                JOptionPane.showMessageDialog(null, "Error al guardar mascota");          //En caso de fallar, LO avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -607,7 +611,7 @@ public class Mascota extends JFrame {
 		btnAgregar.setBounds(165, 401, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");           //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Mascota tm = new Tabla_Mascota();
@@ -644,7 +648,7 @@ public class Mascota extends JFrame {
 		contentPane.add(cbRaza);
 		
 		
-		JButton btnAnimales = new JButton("Animales");
+		JButton btnAnimales = new JButton("Animales");              //Abre la ventana Animal
 		btnAnimales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Animal animal = new Animal();
@@ -654,7 +658,7 @@ public class Mascota extends JFrame {
 		btnAnimales.setBounds(326, 150, 121, 23);
 		contentPane.add(btnAnimales);
 		
-		JButton btnRazas = new JButton("Razas");
+		JButton btnRazas = new JButton("Razas");                 //Abre la ventana Raza
 		btnRazas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Raza raza = new Raza();
@@ -664,7 +668,7 @@ public class Mascota extends JFrame {
 		btnRazas.setBounds(326, 347, 121, 23);
 		contentPane.add(btnRazas);
 		
-		JButton btnSelec = new JButton("Seleccionar");
+		JButton btnSelec = new JButton("Seleccionar");               //Este boton permite seleccionar un cliente
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Cliente_Masc bcm = new Buscar_Cliente_Masc();
@@ -695,15 +699,15 @@ public class Mascota extends JFrame {
 		txtFecha.setBounds(175, 201, 141, 20);
 		contentPane.add(txtFecha);
 		
-		JButton btnGen = new JButton("Generar edad");
+		JButton btnGen = new JButton("Generar edad");               //Al presionarse calcula la edad de la mascota segun la fecha de nacimiento ingresada
 		btnGen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
+				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();     
 				
 				LocalDate date = LocalDate.parse(fecha);
 				LocalDate dateA = LocalDate.now(); 
 				Period diff_anio = Period.between(date, dateA);
-				txtEdad.setText(diff_anio.getYears()+"");
+				txtEdad.setText(diff_anio.getYears()+"");               //Coloca la edad obtenida en el campo edad
 			}
 		});
 		btnGen.setBounds(326, 200, 121, 23);

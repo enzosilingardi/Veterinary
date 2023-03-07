@@ -114,7 +114,7 @@ public class Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(*) FROM Branch WHERE id_Address = ? ;";
+			String SSQL = "SELECT count(*) FROM Branch WHERE id_Branch= ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, direccion);
 
@@ -175,7 +175,7 @@ public class Sucursal extends JFrame {
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (id_Address) VALUES (?)" );
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
 					
 					
 					

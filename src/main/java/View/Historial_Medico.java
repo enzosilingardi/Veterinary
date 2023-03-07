@@ -36,10 +36,11 @@ public class Historial_Medico extends JFrame {
 	private JTextField txtIdM;
 
 	
-	class ComboItem
+	class ComboItem                                     //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                             //Label visible del ComboBox
+	    
+	    private String value;                           //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -64,17 +65,18 @@ public class Historial_Medico extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarMascota() {
+	public DefaultComboBoxModel cargarMascota() {                  //Carga el ComboBox mascota
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();     
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN, Client.surname as ClientS\r\n"
+			cn = (Connection) Connect.getConexion();         //Realiza la conexión
+			
+			String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN, Client.surname as ClientS\r\n"       //Realiza una sentencia sql
 					+ "FROM Pet\r\n"
 					+ "INNER JOIN Client ON Pet.id_Client = Client.id_Client\r\n"
 					+ "ORDER BY id_Pet";
@@ -83,7 +85,7 @@ public class Historial_Medico extends JFrame {
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));
+				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));   //El elemento del ComboBox recibe el nombre de la mascota, el nombre y apellido de su dueño y como valor el id de la mascota
 				
 			}
 			cn.close();
@@ -111,7 +113,7 @@ public class Historial_Medico extends JFrame {
 		});
 	}
 
-	public int existeHistorial(Object mascota) {
+	public int existeHistorial(Object mascota) {                   //Este procedimiento no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -143,7 +145,7 @@ public class Historial_Medico extends JFrame {
 	
 	
 	
-	private void limpiar() {
+	private void limpiar() {                     //Este procedimiento limpia los campos
 		txtDescripcion.setText("");
 		txtMascota.setText("");
 		txtIdM.setText("");
@@ -153,14 +155,14 @@ public class Historial_Medico extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Historial_Medico(final String perfil, String idMas, String nomMas) {
+	public Historial_Medico(final String perfil, String idMas, String nomMas) {          //Crea la ventana recibiendo como parámetros el perfil del usuario, el id y el nombre de la mascota
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 519, 384);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png"))); //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -173,7 +175,7 @@ public class Historial_Medico extends JFrame {
 		lblMascota.setBounds(74, 64, 77, 14);
 		contentPane.add(lblMascota);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                       // Este boton agrega un historial nuevo
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String descripcion = txtDescripcion.getText();
@@ -185,7 +187,8 @@ public class Historial_Medico extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();   //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
 					
 					
@@ -201,11 +204,11 @@ public class Historial_Medico extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                JOptionPane.showMessageDialog(null, "Historial guardado");                            //Si fue existoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido un historial para la mascota "+mascota);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");                   //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -221,7 +224,7 @@ public class Historial_Medico extends JFrame {
 		btnAgregar.setBounds(164, 259, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                    //Este botón cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
@@ -255,7 +258,7 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(txtMascota);
 		txtMascota.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Buscar");
+		JButton btnNewButton = new JButton("Buscar");                       //Este botón permite buscar una mascota
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Hist bmh = new Buscar_Mascota_Hist(perfil);
@@ -276,14 +279,15 @@ public class Historial_Medico extends JFrame {
 		txtIdM.setText(idMas);
 		txtMascota.setText(nomMas);
 	}
-	public Historial_Medico(final String perfil) {
+	
+	public Historial_Medico(final String perfil) {                 //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setTitle("Historial Médico");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 519, 384);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -296,7 +300,7 @@ public class Historial_Medico extends JFrame {
 		lblMascota.setBounds(74, 64, 77, 14);
 		contentPane.add(lblMascota);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                            //Este boton permite agregar un nuevo historial
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String descripcion = txtDescripcion.getText();
@@ -308,7 +312,8 @@ public class Historial_Medico extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
 					
 					
@@ -324,11 +329,11 @@ public class Historial_Medico extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");
+		                JOptionPane.showMessageDialog(null, "Historial guardado");                          //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido un historial para la mascota "+mascota);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");
+		                JOptionPane.showMessageDialog(null, "Error al guardar historial");                 //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -344,7 +349,7 @@ public class Historial_Medico extends JFrame {
 		btnAgregar.setBounds(164, 259, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                       //Este boton cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
@@ -378,7 +383,7 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(txtMascota);
 		txtMascota.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Buscar");
+		JButton btnNewButton = new JButton("Buscar");                           //Este boton permite buscar una mascota
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Hist bmh = new Buscar_Mascota_Hist(perfil);
