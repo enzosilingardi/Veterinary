@@ -26,7 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class Ciudad extends JFrame {
+public class Ciudad extends JFrame {             //Esta ventana no se utiliza en la versión actual
 
 	private JPanel contentPane;
 	private JTextField txtNombre;

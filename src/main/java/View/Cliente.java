@@ -48,12 +48,13 @@ public class Cliente extends JFrame {
 	
 	
 	
-	class ComboItem
+	class ComboItem                                    //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                               //Label visible del ComboBox
+	    
+	    private String value;                               //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)              //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;

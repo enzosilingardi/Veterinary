@@ -30,7 +30,7 @@ public class Buscar_Cliente_Pre extends JFrame {
 	private JTextField txtDni;
 	private JTextField txtDir;
 
-	void mostrarTabla(){                                               //Tabla utilizada para buscar un cliente y devuelve el cliente seleccionado
+	void mostrarTabla(){                                               //Tabla que muestra los clientes
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -196,7 +196,7 @@ public class Buscar_Cliente_Pre extends JFrame {
 		btnVolver.setBounds(472, 407, 135, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnSeleccionar = new JButton("Seleccionar");               // Este boton permite selecciona un cliente y la devuelve a la ventana Presupuesto	
+		JButton btnSeleccionar = new JButton("Seleccionar");               // Este boton permite selecciona un cliente y lo devuelve a la ventana Presupuesto	
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();

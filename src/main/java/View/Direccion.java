@@ -23,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class Direccion extends JFrame {
+public class Direccion extends JFrame {                   //Esta ventana no se utliza en la versión actual
 
 	private JPanel contentPane;
 	private JTextField txtNombre;

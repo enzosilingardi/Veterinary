@@ -32,10 +32,11 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 	private JComboBox cbRaza;
 	private JTable table;
 	
-	class ComboItem
+	class ComboItem                                     //Clase utilizada para armar un ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                              //Label visible del ComboBox
+	    
+	    private String value;                           //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -60,7 +61,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarAnimal() {       // la clase genera el combobox animal
+	public DefaultComboBoxModel cargarAnimal() {       // Carga el ComboBox animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -70,13 +71,13 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";   // realiza una sentencia sql
+			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";   // Realiza una sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));   
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));    //El elemento del ComboBox recibe el tipo de animal como label y el id como valor
 				
 			}
 			cn.close();
@@ -89,7 +90,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarRaza() {            // Carga el combobox con la raza del animal
+	public DefaultComboBoxModel cargarRaza() {            // Carga el ComboBox con la raza del animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -105,7 +106,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));    
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));           //El elemento del ComboBox recibe el tipo de raza como label y el id como valor
 				
 			}
 			cn.close();

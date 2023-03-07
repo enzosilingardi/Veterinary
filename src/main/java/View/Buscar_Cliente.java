@@ -31,7 +31,7 @@ public class Buscar_Cliente extends JFrame {
 	private JTextField txtDni;
 	private JTextField txtDir;
  
-	void mostrarTabla(){                                          //Tabla utilizada para buscar un cliente y devuelve el cliente seleccionado
+	void mostrarTabla(){                                          //Tabla que muestra los clientes
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -72,7 +72,7 @@ public class Buscar_Cliente extends JFrame {
         
     }
 	
-	void mostrarTablaParametro(){                                                                  //Las siguientes 4 hacen que la columna id, sea invisible para el usuario
+	void mostrarTablaParametro(){                                                                  //Muestra la tabla segun los parametros recibidos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -196,7 +196,7 @@ public class Buscar_Cliente extends JFrame {
 		btnVolver.setBounds(458, 407, 149, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnSeleccionar = new JButton("Seleccionar");                     // Este boton permite selecciona un cliente y la devuelve a la ventana Factura	
+		JButton btnSeleccionar = new JButton("Seleccionar");                     // Este boton permite selecciona un cliente y lo devuelve a la ventana Factura	
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -240,7 +240,7 @@ public class Buscar_Cliente extends JFrame {
 		lblDir.setBounds(274, 11, 68, 14);
 		contentPane.add(lblDir);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");                   //Filtra los resultados vistos en la tabla
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarTablaParametro();
@@ -249,7 +249,7 @@ public class Buscar_Cliente extends JFrame {
 		btnBuscar.setBounds(419, 7, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");
+		JButton btnLimpiar = new JButton("Limpiar");                     //Limpia los campos de texto
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNombre.setText("");

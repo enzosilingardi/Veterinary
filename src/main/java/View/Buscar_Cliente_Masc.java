@@ -30,7 +30,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 	private JTextField txtDni;
 	private JTextField txtDir;
 
-	void mostrarTabla(){												//Tabla utilizada para buscar un cliente y devuelve el cliente seleccionado
+	void mostrarTabla(){												//Tabla que muestra los clientes
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -196,7 +196,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 		btnVolver.setBounds(458, 407, 149, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnSeleccionar = new JButton("Seleccionar");		// Este boton permite selecciona un cliente y la devuelve a la ventana mascota	
+		JButton btnSeleccionar = new JButton("Seleccionar");		// Este boton permite selecciona un cliente y lo devuelve a la ventana mascota	
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();

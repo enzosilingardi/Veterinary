@@ -35,26 +35,27 @@ public class Buscar_Mascota_ModHis extends JFrame {
 	private JLabel lblNombre;
 	private JComboBox cbAnimal;
 	
-	void mostrarTabla(){
+	void mostrarTabla(){                                             //Tabla que muestra las mascotas
         
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = new DefaultTableModel();               
         
-        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});
+        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});       //Nombre de las columnas
        
-        table.setModel(modelo);
+        table.setModel(modelo);            //Setea el modelo
         
         
-        String datos[] = new String[7];
+        String datos[] = new String[7];                //Declara que va a haber 7 columnas
        
         try {
-        	Connection con = Connect.getConexion();
+        	Connection con = Connect.getConexion();    //Realiza la conexión
+        	
         	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
         			+ "FROM Pet\r\n"
         			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
         			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
         			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){                                       //Llena las columnas de la tabla con las columnas de la base de datos 
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -66,8 +67,9 @@ public class Buscar_Mascota_ModHis extends JFrame {
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.setModel(modelo);                              //Setea el modelo
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);          //Las siguientes 4 vuelven invisible la columna id, para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -81,24 +83,25 @@ public class Buscar_Mascota_ModHis extends JFrame {
     }
 	
 	
-	void mostrarTablaParametro(){
+	void mostrarTablaParametro(){                               //Muestra la tabla segun los parametros recibidos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});
+        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});          //Nombre de las columnas
        
-        table.setModel(modelo);
+        table.setModel(modelo);                           //Setea el modelo
         
         PreparedStatement ps = null;
         
         Object animal = cbAnimal.getSelectedItem();
         
-        String datos[] = new String[7];
+        String datos[] = new String[7];                     //Declara que va a haber 7 columnas
        
         try {
         	Connection con = Connect.getConexion();
         	
-        	if(((ComboItem) animal).getValue() == "") {
+        	if(((ComboItem) animal).getValue() == "") {               // Realiza la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
+        		
         		ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
             			+ "FROM Pet\r\n"
             			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
@@ -122,7 +125,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
         	
         	
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){                                        //Llena las columnas de la tabla con las columnas de la base de datos  
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -131,11 +134,12 @@ public class Buscar_Mascota_ModHis extends JFrame {
                 datos[5] = rs.getString(6);
                 datos[6] = rs.getString(7)+" "+rs.getString(8);
                 
-                modelo.addRow(datos);
+                modelo.addRow(datos);                                 
 
             }
-            table.setModel(modelo);
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.setModel(modelo);                               //Setea el modelo
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);            //Las siguientes 4 vuelven invisible la columna id, para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -148,12 +152,13 @@ public class Buscar_Mascota_ModHis extends JFrame {
         
     }
 	
-	class ComboItem
+	class ComboItem                                            //Clase utilizada para armar un ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;                                  //Label visible del ComboBox
+	    
+	    private String value;                                 //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)                //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -177,22 +182,22 @@ public class Buscar_Mascota_ModHis extends JFrame {
 	}
 	
 	
-	public DefaultComboBoxModel cargarAnimal() {
+	public DefaultComboBoxModel cargarAnimal() {                          //Carga el ComboBox animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();               
 		
 		
 		try {
 			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";
+			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";               //Realiza una sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("Seleccionar animal",""));
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));   
+			modelo.addElement(new ComboItem("Seleccionar animal",""));              //El primer elemento del ComboBox dice "Seleccionar animal"
+			while (result.next()) { 
+				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));          //El elemento del ComboBox recibe el tipo de animal como label y el id como valor
 				
 			}
 			cn.close();
@@ -227,13 +232,13 @@ public class Buscar_Mascota_ModHis extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Mascota_ModHis(final String perfil, final String historial) {
+	public Buscar_Mascota_ModHis(final String perfil, final String historial) {                 //Crea la ventana recibiendo por parámetro el perfil del usuario y el id del historial
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 459);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));              //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -246,9 +251,9 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                               //Este botón cierra la ventana
 
-		btnVolver.addActionListener(new ActionListener() {
+		btnVolver.addActionListener(new ActionListener() {                                 
 			public void actionPerformed(ActionEvent e) {
 				Modificar_Historial mh = new Modificar_Historial(historial,perfil);
 				mh.setVisible(true);
@@ -258,14 +263,14 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		btnVolver.setBounds(497, 386, 89, 23);
 		contentPane.add(btnVolver);
 		
-		btnSelec = new JButton("Seleccionar");
+		btnSelec = new JButton("Seleccionar");                           //Este boton permite seleccionar una mascota y la devuelve a la ventana Modificar_Historial
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				String id = table.getValueAt(fila,0).toString();
 				String nom = table.getValueAt(fila,1).toString();
 				
-				Modificar_Historial mh = new Modificar_Historial(historial,perfil,id,nom);
+				Modificar_Historial mh = new Modificar_Historial(historial,perfil,id,nom);          //Abre la ventana Modificar_Historial , recibiendo como parámetro el id del historial, el perfil del usuario, el id de la mascota y su nombre
 				mh.setVisible(true);
 				dispose();
 			}
@@ -292,7 +297,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		lblAnimal.setBounds(159, 22, 46, 14);
 		contentPane.add(lblAnimal);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");                      //Filtra los resultados vistos en la tabla
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarTablaParametro();
@@ -301,7 +306,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		btnBuscar.setBounds(427, 11, 127, 23);
 		contentPane.add(btnBuscar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");
+		JButton btnLimpiar = new JButton("Limpiar");                      //Limpia los campos
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNombre.setText("");

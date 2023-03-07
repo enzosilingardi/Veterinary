@@ -31,7 +31,7 @@ public class Buscar_Cliente_ModMasc extends JFrame {
 	private JTextField txtDir;
 	private JTextField txtId;
 
-	void mostrarTabla(){       											//Tabla utilizada para buscar un cliente y devuelve el cliente seleccionado
+	void mostrarTabla(){       											//Tabla que muestra los clientes
         
         
         DefaultTableModel modelo = new DefaultTableModel();
@@ -197,7 +197,7 @@ public class Buscar_Cliente_ModMasc extends JFrame {
 		btnVolver.setBounds(458, 407, 149, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnSeleccionar = new JButton("Seleccionar");					// Este boton permite selecciona un cliente y la devuelve a la ventana Modificar_Mascota	
+		JButton btnSeleccionar = new JButton("Seleccionar");					// Este boton permite selecciona un cliente y lo devuelve a la ventana Modificar_Mascota	
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
