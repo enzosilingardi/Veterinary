@@ -26,6 +26,8 @@ import javax.swing.JComboBox;
 
 public class Provincia extends JFrame {
 
+	//Esta ventana no es utilizada en la versión actual
+	
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JComboBox cbPaises;

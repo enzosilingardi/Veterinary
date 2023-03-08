@@ -32,12 +32,13 @@ public class Veterinario extends JFrame {
 	private JTextField txtApellido;
 	private JTextField txtDireccion;
 	
-	class ComboItem
-	{
-	    private String key;
-	    private String value;
+	class ComboItem                  //Clase utilizada para armar un ComboBox
+	{ 
+	    private String key;           //Label visible del ComboBox
+	    
+	    private String value;          //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -60,7 +61,7 @@ public class Veterinario extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {
+	public DefaultComboBoxModel cargarDireccion() {        //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -107,13 +108,14 @@ public class Veterinario extends JFrame {
 		});
 	}
 	
-	public int existeVeterinario(String nombre, String apellido) {
+	public int existeVeterinario(String nombre, String apellido) {       //Este procedimiento revisa si ya existe el veterinario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();     //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Veterinarian WHERE name = ? AND surname = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
@@ -122,7 +124,7 @@ public class Veterinario extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);     //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -138,7 +140,7 @@ public class Veterinario extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {         //Este procedimiento limpia los campos
 		txtDireccion.setText("");
 		txtNombre.setText("");
 		txtApellido.setText("");
@@ -149,14 +151,14 @@ public class Veterinario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Veterinario() {
+	public Veterinario() {             //Crea la ventana
 		setTitle("Veterinario");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 418, 397);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -174,7 +176,7 @@ public class Veterinario extends JFrame {
 		contentPane.add(txtMatricula);
 		txtMatricula.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");            //Este botón permite agregar un veterinario
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -186,12 +188,13 @@ public class Veterinario extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();       //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Veterinarian (address,name,surname,medical_License) VALUES (?,?,?,?)" );
 					
 					
 					
-						if(existeVeterinario(nombre,apellido)!=0) {
+						if(existeVeterinario(nombre,apellido)!=0) {    //Revisa si ya existe el veterinario
 						JOptionPane.showMessageDialog(null, "Veterinario ya existe");
 					}else {
 						ps.setString(1, direccion);
@@ -205,11 +208,12 @@ public class Veterinario extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Veterinario guardado");
+		                JOptionPane.showMessageDialog(null, "Veterinario guardado");        //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha agregado el veterinario "+nombre+" "+apellido);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar veterinario");
+		                JOptionPane.showMessageDialog(null, "Error al guardar veterinario");    //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -226,7 +230,7 @@ public class Veterinario extends JFrame {
 		btnAgregar.setBounds(148, 270, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");           //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Veterinario tv = new Tabla_Veterinario();

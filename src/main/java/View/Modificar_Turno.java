@@ -42,10 +42,11 @@ public class Modificar_Turno extends JFrame {
 	private JButton btnBuscar;
 	
 
-	class ComboItem
+	class ComboItem                    //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;            //Label visible del ComboBox
+	    
+	    private String value;         //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -70,7 +71,7 @@ public class Modificar_Turno extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarMascota() {
+	public DefaultComboBoxModel cargarMascota() {      //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -102,7 +103,7 @@ public class Modificar_Turno extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarTipo() {
+	public DefaultComboBoxModel cargarTipo() {         //Carga el combobox tipo
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -111,14 +112,15 @@ public class Modificar_Turno extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));
+				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));    //El elemento recibe el nombre del procedimiento como label y el tipo de procedimiento como valor
 				
 			}
 			cn.close();
@@ -147,7 +149,7 @@ public class Modificar_Turno extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String turno) {
+	private void cargarCampos(String turno) {           //Carga los campos recibiendo el id de turno como parámetro
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -155,14 +157,15 @@ public class Modificar_Turno extends JFrame {
 		int id = Integer.parseInt(turno);
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();     //Realiza la conexión
+			
 			String SSQL = "SELECT proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                   //Carga los campos según los resultados de la base de datos
 			txtFecha.setDate(result.getDate(1));
 			txtHora.setDate(result.getTime(2));
 			}
@@ -177,13 +180,13 @@ public class Modificar_Turno extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Turno(final String turno) {
+	public Modificar_Turno(final String turno) {                   //Crea la ventana recibiendo como parámetro el id del turno
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 449, 332);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -219,7 +222,7 @@ public class Modificar_Turno extends JFrame {
 		txtHora.setBounds(137, 162, 99, 20);
 		contentPane.add(txtHora);
 		
-		btnModificar = new JButton("Modificar");
+		btnModificar = new JButton("Modificar");                   //Este boton permite modificar el turno de acuerdo a los datos insertados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -233,15 +236,13 @@ public class Modificar_Turno extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();        //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
 					
 					
-					if (((ComboItem) tipo).getValue() == "") {
+					if (((ComboItem) tipo).getValue() == "") {                      //Revisa que si el ComboBox está en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
-					}else {
-						if(((ComboItem) tipo).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
 					}else {
 						ps.setString(1, ((ComboItem) tipo).getValue());
 						ps.setInt(2, idM);
@@ -253,18 +254,19 @@ public class Modificar_Turno extends JFrame {
 							
 						}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno modificado");
+		                JOptionPane.showMessageDialog(null, "Turno modificado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues vuelve a la ventana Tabla_Turnos
+		                
 		                ControlFiles.addContent("Se ha modificado el turno para la fecha "+date+" y hora "+start);
 		                Tabla_Turnos tt = new Tabla_Turnos();
 						tt.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar turno");
+		                JOptionPane.showMessageDialog(null, "Error al modificar turno");   //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 				
@@ -280,7 +282,7 @@ public class Modificar_Turno extends JFrame {
 		btnModificar.setBounds(57, 230, 89, 23);
 		contentPane.add(btnModificar);
 		
-		btnVolver = new JButton("Volver");
+		btnVolver = new JButton("Volver");                     //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
@@ -314,7 +316,7 @@ public class Modificar_Turno extends JFrame {
 		contentPane.add(txtIdM);
 		txtIdM.setColumns(10);
 		
-		btnBuscar = new JButton("Buscar");
+		btnBuscar = new JButton("Buscar");                     //Este botón permite buscar una mascota
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModPro bmm = new Buscar_Mascota_ModPro(turno);
@@ -327,13 +329,13 @@ public class Modificar_Turno extends JFrame {
 		cargarCampos(turno);
 	}
 
-	public Modificar_Turno(final String turno, String idMas, String nomMas) {
+	public Modificar_Turno(final String turno, String idMas, String nomMas) {           //Crea la ventana recibiendo como parámetros el id del turno y el id y el nombre de la mascota
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 449, 332);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));  //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -369,7 +371,7 @@ public class Modificar_Turno extends JFrame {
 		txtHora.setBounds(137, 162, 99, 20);
 		contentPane.add(txtHora);
 		
-		btnModificar = new JButton("Modificar");
+		btnModificar = new JButton("Modificar");                    //Este boton permite modificar el turno de acuerdo a los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -383,15 +385,13 @@ public class Modificar_Turno extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();   //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
 					
 					
-					if (((ComboItem) tipo).getValue() == "") {
+					if (((ComboItem) tipo).getValue() == "") {                       //Revisa si el ComboBox está en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
-					}else {
-						if(((ComboItem) tipo).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
 					}else {
 						ps.setString(1, ((ComboItem) tipo).getValue());
 						ps.setInt(2, idM);
@@ -403,18 +403,19 @@ public class Modificar_Turno extends JFrame {
 							
 						}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno modificado");
+		                JOptionPane.showMessageDialog(null, "Turno modificado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues regresa a la ventana Tabla_Turnos
+		                
 		                ControlFiles.addContent("Se ha modificado el turno para la fecha "+date+" y hora "+start);
 		                Tabla_Turnos tt = new Tabla_Turnos();
 						tt.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar turno");
+		                JOptionPane.showMessageDialog(null, "Error al modificar turno");     //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 				
@@ -430,7 +431,7 @@ public class Modificar_Turno extends JFrame {
 		btnModificar.setBounds(57, 230, 89, 23);
 		contentPane.add(btnModificar);
 		
-		btnVolver = new JButton("Volver");
+		btnVolver = new JButton("Volver");                    //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
@@ -464,7 +465,7 @@ public class Modificar_Turno extends JFrame {
 		contentPane.add(txtIdM);
 		txtIdM.setColumns(10);
 		
-		btnBuscar = new JButton("Buscar");
+		btnBuscar = new JButton("Buscar");                     //Este botón permite buscar una mascota
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModPro bmm = new Buscar_Mascota_ModPro(turno);

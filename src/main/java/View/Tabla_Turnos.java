@@ -29,25 +29,26 @@ public class Tabla_Turnos extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 
-	void mostrarTabla(){
+	void mostrarTabla(){          // Carga la tabla con la informacion de la base de datos
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});
+	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});       //Nombre de las columnas
 	       
-	        table.setModel(modelo);
+	        table.setModel(modelo);     //Setea el modelo
 	        
 	        
-	        String datos[] = new String[5];
+	        String datos[] = new String[5];     //Declara que va a haber 5 columnas
 	       
 	        try {
-	        	Connection con = Connect.getConexion();
+	        	Connection con = Connect.getConexion();      //Realiza la conexión
+	        	//Sentencia sql
 	        	PreparedStatement ps = con.prepareStatement("SELECT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
 	        			+ "FROM Medical_Procedure\r\n"
 	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
 	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type;" );
 	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){
+	            while (rs.next()){                  //Carga las columnas de la base de datos en la tabla
 	                datos[0] = rs.getString(1);
 	                datos[1] = rs.getString(2);
 	                datos[2] = rs.getString(3);
@@ -58,8 +59,9 @@ public class Tabla_Turnos extends JFrame {
 	                
 
 	            }
-	            table.setModel(modelo);
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);
+	            table.setModel(modelo);    //Setea el modelo
+	            
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);          // los 4 siguientes hacen que la columna del id sea invisible para el usuario
 	    		table.getColumnModel().getColumn(0).setMinWidth(0);
 	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 	    		table.getColumnModel().getColumn(0).setResizable(false);
@@ -72,7 +74,7 @@ public class Tabla_Turnos extends JFrame {
 	        
 	    }
 
-	public int existeRel(int historial, int proced) {
+	public int existeRel(int historial, int proced) {      //Este procedimiento no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -120,14 +122,14 @@ public class Tabla_Turnos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Turnos(String perfil) {
+	public Tabla_Turnos(String perfil) {                         //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 380);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -141,7 +143,7 @@ public class Tabla_Turnos extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");          //Cierra la ventana
 		btnVolver.setForeground(new Color(255, 255, 255));
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.setBackground(new Color(86, 211, 243));
@@ -154,10 +156,10 @@ public class Tabla_Turnos extends JFrame {
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
-		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {         //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
 		
-			JButton btnVeterinario = new JButton("Asociar veterinario");
+			JButton btnVeterinario = new JButton("Asociar veterinario");        //Abre la ventana Procedimiento_Veterinario
 			btnVeterinario.setForeground(new Color(255, 255, 255));
 			btnVeterinario.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnVeterinario.setBackground(new Color(86, 211, 243));
@@ -171,7 +173,7 @@ public class Tabla_Turnos extends JFrame {
 			btnVeterinario.setBounds(202, 309, 150, 23);
 			contentPane.add(btnVeterinario);
 			
-			JButton btnSucursal = new JButton("Asociar sucursal");
+			JButton btnSucursal = new JButton("Asociar sucursal");      //Abre la ventana Procedimiento_Sucursal
 			btnSucursal.setForeground(new Color(255, 255, 255));
 			btnSucursal.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnSucursal.setBackground(new Color(86, 211, 243));
@@ -185,7 +187,7 @@ public class Tabla_Turnos extends JFrame {
 			btnSucursal.setBounds(40, 309, 150, 23);
 			contentPane.add(btnSucursal);
 			
-			JButton btnModificar = new JButton("Modificar");
+			JButton btnModificar = new JButton("Modificar");          //Abre la ventana Modificar_Turno
 			btnModificar.setForeground(new Color(255, 255, 255));
 			btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnModificar.setBackground(new Color(86, 211, 243));
@@ -194,7 +196,7 @@ public class Tabla_Turnos extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					int fila = table.getSelectedRow();
 					
-					Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());
+					Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());      //Envía como parámetro el id de la fila seleccionada
 					mt.setVisible(true);
 					dispose();
 				}
@@ -202,7 +204,7 @@ public class Tabla_Turnos extends JFrame {
 			btnModificar.setBounds(146, 260, 100, 23);
 			contentPane.add(btnModificar);
 			
-			JButton btnEliminar = new JButton("Eliminar");
+			JButton btnEliminar = new JButton("Eliminar");        //Este botón permite eliminar la fila seleccionada
 			btnEliminar.setForeground(new Color(255, 255, 255));
 			btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnEliminar.setBackground(new Color(86, 211, 243));
@@ -214,7 +216,8 @@ public class Tabla_Turnos extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					
 					try {
-						Connection con = Connect.getConexion();
+						Connection con = Connect.getConexion();       //Realiza la conexión
+						
 						PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Procedure WHERE id_Procedure = ?" );
 						
 							ps.setInt(1, id);
@@ -223,17 +226,18 @@ public class Tabla_Turnos extends JFrame {
 						result = ps.executeUpdate();
 						
 						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Turno eliminado");
+			                JOptionPane.showMessageDialog(null, "Turno eliminado");        //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+			                
 			                ControlFiles.addContent("Se ha eliminado el turno para la fecha "+table.getValueAt(fila,3).toString()+" y hora "+table.getValueAt(fila,4).toString());
 			               mostrarTabla();
 			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar turno");
+			                JOptionPane.showMessageDialog(null, "Error al eliminar turno");    //En caso de fallar, lo avisa en pantalla
 			                
 			            }
 						con.close();
 					}catch(SQLException E) {
 						E.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");
+						JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");     //En caso de fallar, lo avisa en pantalla
 					}catch (ClassNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -243,7 +247,7 @@ public class Tabla_Turnos extends JFrame {
 			btnEliminar.setBounds(252, 260, 100, 23);
 			contentPane.add(btnEliminar);
 			
-			JButton btnAgregar = new JButton("Agregar turno");
+			JButton btnAgregar = new JButton("Agregar turno");     //Abre la ventana Procedimiento_Medico
 			btnAgregar.setForeground(new Color(255, 255, 255));
 			btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnAgregar.setBackground(new Color(86, 211, 243));
@@ -263,7 +267,7 @@ public class Tabla_Turnos extends JFrame {
 		mostrarTabla();
 	}
 
-	public Tabla_Turnos() {
+	public Tabla_Turnos() {                        //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 380);
@@ -271,7 +275,7 @@ public class Tabla_Turnos extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -285,7 +289,7 @@ public class Tabla_Turnos extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");         //Cierra la ventana
 		btnVolver.setForeground(new Color(255, 255, 255));
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.setBackground(new Color(86, 211, 243));
@@ -298,8 +302,8 @@ public class Tabla_Turnos extends JFrame {
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnVeterinario = new JButton("Asociar veterinario");
-		btnVeterinario.setForeground(new Color(255, 255, 255));
+		JButton btnVeterinario = new JButton("Asociar veterinario");      //Abre la ventana Procedimiento_Veterinario
+		btnVeterinario.setForeground(new Color(255, 255, 255)); 
 		btnVeterinario.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVeterinario.setBackground(new Color(86, 211, 243));
 		btnVeterinario.setBorder(null);
@@ -312,7 +316,7 @@ public class Tabla_Turnos extends JFrame {
 		btnVeterinario.setBounds(202, 309, 150, 23);
 		contentPane.add(btnVeterinario);
 		
-		JButton btnSucursal = new JButton("Asociar sucursal");
+		JButton btnSucursal = new JButton("Asociar sucursal");      //Abre la ventana Procedimiento_Sucursal
 		btnSucursal.setForeground(new Color(255, 255, 255));
 		btnSucursal.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnSucursal.setBackground(new Color(86, 211, 243));
@@ -326,7 +330,7 @@ public class Tabla_Turnos extends JFrame {
 		btnSucursal.setBounds(40, 309, 150, 23);
 		contentPane.add(btnSucursal);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");         //Abre la ventana Modificar_Turno
 		btnModificar.setForeground(new Color(255, 255, 255));
 		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnModificar.setBackground(new Color(86, 211, 243));
@@ -335,7 +339,7 @@ public class Tabla_Turnos extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());
+				Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());         //Envía como parámetro el id de la fila seleccionada
 				mt.setVisible(true);
 				dispose();
 			}
@@ -343,7 +347,7 @@ public class Tabla_Turnos extends JFrame {
 		btnModificar.setBounds(146, 260, 100, 23);
 		contentPane.add(btnModificar);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		JButton btnEliminar = new JButton("Eliminar");             //Este botón permite eliminar la fila seleccionada
 		btnEliminar.setForeground(new Color(255, 255, 255));
 		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnEliminar.setBackground(new Color(86, 211, 243));
@@ -355,7 +359,8 @@ public class Tabla_Turnos extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Procedure WHERE id_Procedure = ?" );
 					
 						ps.setInt(1, id);
@@ -364,17 +369,18 @@ public class Tabla_Turnos extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno eliminado");
+		                JOptionPane.showMessageDialog(null, "Turno eliminado");   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha eliminado el turno para la fecha "+table.getValueAt(fila,3).toString()+" y hora "+table.getValueAt(fila,4).toString());
 		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar turno");
+		                JOptionPane.showMessageDialog(null, "Error al eliminar turno");      //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");
+					JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");     //En caso de fallar, lo avisa en pantalla
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -384,7 +390,7 @@ public class Tabla_Turnos extends JFrame {
 		btnEliminar.setBounds(252, 260, 100, 23);
 		contentPane.add(btnEliminar);
 		
-		JButton btnAgregar = new JButton("Agregar turno");
+		JButton btnAgregar = new JButton("Agregar turno");      //Abre la ventana Procedimiento_Medico
 		btnAgregar.setForeground(new Color(255, 255, 255));
 		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnAgregar.setBackground(new Color(86, 211, 243));

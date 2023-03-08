@@ -33,10 +33,11 @@ public class Sucursal_Producto extends JFrame {
 	private JComboBox cbSucursal;
 	private JTextField txtCantidad;
 
-	class ComboItem
+	class ComboItem               //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;        //Label visible del ComboBox
+	    
+	    private String value;       //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -61,7 +62,7 @@ public class Sucursal_Producto extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarProducto() {
+	public DefaultComboBoxModel cargarProducto() {      //Carga el ComboBox producto
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -70,14 +71,15 @@ public class Sucursal_Producto extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));    //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));     //El elemento del ComboBox recibe el nombre del producto como label y el id como valor
 				
 			}
 			cn.close();
@@ -90,7 +92,7 @@ public class Sucursal_Producto extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {     //Carga el combobox sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -99,16 +101,16 @@ public class Sucursal_Producto extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));       //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));      //El elemento del ComboBox recibe la dirección de la sucursal como label y el id como valor
 				
 			}
 			cn.close();
@@ -139,13 +141,14 @@ public class Sucursal_Producto extends JFrame {
 	}
 
 	
-	public int existeRel(Object producto, Object sucursal) {
+	public int existeRel(Object producto, Object sucursal) {        //Este procedimiento revisa si ya existe la relación
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Rel_Branch_Product WHERE id_Product = ? AND id_Branch = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) producto);
@@ -153,7 +156,7 @@ public class Sucursal_Producto extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);      //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -169,7 +172,7 @@ public class Sucursal_Producto extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {                 //Este procedimiento limpia los campos
 		cbProducto.setSelectedIndex(0);
 		cbSucursal.setSelectedIndex(0);
 		txtCantidad.setText("");
@@ -177,13 +180,14 @@ public class Sucursal_Producto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Sucursal_Producto() {
+	public Sucursal_Producto() {        //Crea la ventana
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 406, 369);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -210,7 +214,7 @@ public class Sucursal_Producto extends JFrame {
 		contentPane.add(cbProducto);
 		cbProducto.setModel(cargarProducto());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");           //Este botón permite agregar un producto a una sucursal
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -224,16 +228,18 @@ public class Sucursal_Producto extends JFrame {
 				
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();      //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Branch_Product (id_Branch,id_Product,amount) VALUES (?,?,?)" );
 					
 					
-					if (((ComboItem) producto).getValue() == "") {
+					if (((ComboItem) producto).getValue() == "") {                     //Revisa si los ComboBox están en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un Producto");
 					}else {
 						if(((ComboItem) sucursal).getValue() == ""){
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
+							//Revisa si la relación ya existe
 							if(existeRel(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Producto ya se encuentra en la sucursal");
 							}else {
@@ -242,11 +248,11 @@ public class Sucursal_Producto extends JFrame {
 								
 								
 								
-								if(cantidad >250000) {
+								if(cantidad >250000) {      //Revisa si la cantidad exede el límite
 									JOptionPane.showMessageDialog(null, "Número excede el límite (250000)",null,JOptionPane.ERROR_MESSAGE);
 									
 									
-								}else if(cantidad<0){
+								}else if(cantidad<0){        //Revisa si en la cantidad hay números negativos
 									JOptionPane.showMessageDialog(null, "No se permiten números negativos",null,JOptionPane.ERROR_MESSAGE);
 									
 							
@@ -265,11 +271,12 @@ public class Sucursal_Producto extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto colocado");
+		                JOptionPane.showMessageDialog(null, "Producto colocado");         //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+		
 		                ControlFiles.addContent("Se ha asociado el producto "+producto+" con la sucursal "+sucursal);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar producto");
+		                JOptionPane.showMessageDialog(null, "Error al colocar producto");    //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				

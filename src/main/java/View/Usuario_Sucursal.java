@@ -34,10 +34,11 @@ public class Usuario_Sucursal extends JFrame {
 	private JTable table;
 
 
-	class ComboItem
+	class ComboItem           //Clase utilizada para armar un ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;         //Label visible del ComboBox
+	    
+	    private String value;       //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -63,7 +64,7 @@ public class Usuario_Sucursal extends JFrame {
 	}
 	
 
-	public DefaultComboBoxModel cargarUsuario() {
+	public DefaultComboBoxModel cargarUsuario() {          //Carga el ComboBox usuario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -71,15 +72,16 @@ public class Usuario_Sucursal extends JFrame {
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
 		
-		try {
-			cn = (Connection) Connect.getConexion();
+		try { 
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Users ORDER BY id_User";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));     //El primer elemento está en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("username"),result.getString("id_User")));
+				modelo.addElement(new ComboItem(result.getString("username"),result.getString("id_User")));      //El elemento del ComboBox recibe el nombre de usuario como label y el id como valor
 				
 			}
 			cn.close();
@@ -92,7 +94,7 @@ public class Usuario_Sucursal extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {        //Carga el ComboBox sucursal  
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -101,15 +103,15 @@ public class Usuario_Sucursal extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));       //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));    //El elemento del ComboBox recibe la dirección de la sucursal como label y el id como valor
 				
 			}
 			cn.close();
@@ -122,26 +124,27 @@ public class Usuario_Sucursal extends JFrame {
 		return modelo;
     }
 	
-	void mostrarTabla(){
+	void mostrarTabla(){               // Carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Usuario","Sucursal"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Usuario","Sucursal"});    //Nombre de las columnas
        
-        table.setModel(modelo);
+        table.setModel(modelo);         //Setea el modelo
         
         
         
-        String datos[] = new String[3];
+        String datos[] = new String[3];       //Decalara que va a haber 3 columnas
        
         try {
-        	Connection con = Connect.getConexion();
+        	Connection con = Connect.getConexion();      //Realiza la conexión
+        	//Sentencia sql
         	PreparedStatement ps = con.prepareStatement("SELECT id_UB, username, address\r\n"
         			+ "FROM Rel_Users_Branch\r\n"
         			+ "INNER JOIN Users ON Users.id_User = Rel_Users_Branch.id_User\r\n"
         			+ "INNER JOIN Branch ON Branch.id_Branch = Rel_Users_Branch.id_Branch;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){                    //Carga las columnas de la base de datos en la tabla
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -151,9 +154,9 @@ public class Usuario_Sucursal extends JFrame {
 
             }
             
-            table.setModel(modelo);
+            table.setModel(modelo);       //Setea el modelo
 
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);         // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -182,13 +185,14 @@ public class Usuario_Sucursal extends JFrame {
 		});
 	}
 
-	public int existeRel(Object usuario, Object sucursal) {
+	public int existeRel(Object usuario, Object sucursal) {          // Es una funcion que determina si ya existe la relacion entre usuario y sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();       //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Rel_Users_Branch WHERE id_User = ? AND id_Branch = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) usuario);
@@ -196,7 +200,7 @@ public class Usuario_Sucursal extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);           // si la relacion ya existe, entonces la variable se pone en 1
 			}
 			return 1;
 			
@@ -212,21 +216,21 @@ public class Usuario_Sucursal extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {                 //Este procedimiento limpia los campos
 		cbUsuario.setSelectedIndex(0);
 		cbSucursal.setSelectedIndex(0);
 		
 	}
 	/**
 	 * Create the frame.
-	 */
-	public Usuario_Sucursal() {
+	 */ 
+	public Usuario_Sucursal() {                             //Crea la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -253,7 +257,7 @@ public class Usuario_Sucursal extends JFrame {
 		contentPane.add(cbSucursal);
 		cbSucursal.setModel(cargarSucursal());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");                //Este botón permite agregar un usuario a una sucursal
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object usuario = cbUsuario.getSelectedItem();
@@ -262,16 +266,18 @@ public class Usuario_Sucursal extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();   //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Users_Branch (id_User,id_Branch) VALUES (?,?)" );
 					
 					
-					if (((ComboItem) usuario).getValue() == "") {
+					if (((ComboItem) usuario).getValue() == "") {                       //Revisa si los ComboBox están en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un usuario");
 					}else {
 						if(((ComboItem) sucursal).getValue() == ""){
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
+							//Revisa si existe la relación
 							if(existeRel(((ComboItem) cbUsuario.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Usuario ya se encuentra en la sucursal");
 							}else {
@@ -287,12 +293,13 @@ public class Usuario_Sucursal extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario colocado");
+		                JOptionPane.showMessageDialog(null, "Usuario colocado");           //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha colocado el usuario "+usuario+" en la sucursal "+sucursal);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar usuario");
+		                JOptionPane.showMessageDialog(null, "Error al colocar usuario");       //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -309,7 +316,7 @@ public class Usuario_Sucursal extends JFrame {
 		btnAgregar.setBounds(487, 174, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		JButton btnEliminar = new JButton("Eliminar");            //Este botón permite eliminar la fila seleccionada
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -317,7 +324,8 @@ public class Usuario_Sucursal extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();        //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Rel_Users_Branch WHERE id_UB = ?" );
 					
 					ps.setInt(1, id);
@@ -326,17 +334,18 @@ public class Usuario_Sucursal extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario eliminado de sucursal");
+		                JOptionPane.showMessageDialog(null, "Usuario eliminado de sucursal");         //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha eliminado el usuario "+table.getValueAt(fila,1).toString()+" de la sucursal "+table.getValueAt(fila,2).toString());
 		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");
+		                JOptionPane.showMessageDialog(null, "Error al eliminar usuario");     //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");
+					JOptionPane.showMessageDialog(null, "Relación está en uso, por favor elimine todos los registros relacionados");      //En caso de fallar, lo avisa en pantalla
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -346,7 +355,7 @@ public class Usuario_Sucursal extends JFrame {
 		btnEliminar.setBounds(628, 174, 89, 23);
 		contentPane.add(btnEliminar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");         //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

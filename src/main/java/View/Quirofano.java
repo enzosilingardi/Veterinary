@@ -30,13 +30,14 @@ public class Quirofano extends JFrame {
 	private JTextField txtNumero;
 	private JButton btnAgregar;
 	private JButton btnVolver;
-	
-	class ComboItem
+	 
+	class ComboItem                //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;       //Label visible del ComboBox
+	    
+	    private String value;      //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)       //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -59,7 +60,7 @@ public class Quirofano extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {       //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -108,20 +109,21 @@ public class Quirofano extends JFrame {
 	}
 
 	
-	public int existeQuirofano(int numero) {
+	public int existeQuirofano(int numero) {       //Este procedimiento revisa si ya existe el quirófano, recibiendo como parámetro el número
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();        //Realiza la conexión
+			
 			String SSQL = "SELECT count(room_Number) FROM Operating_Room WHERE room_Number = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, numero);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);        //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -139,7 +141,7 @@ public class Quirofano extends JFrame {
 	
 	
 	
-	private void limpiar() {
+	private void limpiar() {         //Este procedimiento limpia los campos
 		txtNumero.setText("");
 
 		
@@ -147,14 +149,14 @@ public class Quirofano extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Quirofano(final String perfil) {
+	public Quirofano(final String perfil) {            //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setTitle("Quirófano");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 273);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -172,7 +174,7 @@ public class Quirofano extends JFrame {
 		contentPane.add(txtNumero);
 		txtNumero.setColumns(10);
 		
-		btnAgregar = new JButton("Agregar");
+		btnAgregar = new JButton("Agregar");                       //Este botón permite agregar un quirófano
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int numero = Integer.parseInt(txtNumero.getText());
@@ -181,7 +183,8 @@ public class Quirofano extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();        //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number) VALUES (?)" );
 					if(existeQuirofano(numero) != 0) {
 						JOptionPane.showMessageDialog(null, "Quirofano ya existe");
@@ -192,12 +195,12 @@ public class Quirofano extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano agrgado");
+		                JOptionPane.showMessageDialog(null, "Quirófano agrgado");                      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha agregado el quirófano "+txtNumero.getText());
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al agregar quirófano");
-		                limpiar();
+		                JOptionPane.showMessageDialog(null, "Error al agregar quirófano");        //En caso de fallar, lo avisa en pantalla
+		                limpiar(); 
 		            }
 					
 					
@@ -212,7 +215,7 @@ public class Quirofano extends JFrame {
 		btnAgregar.setBounds(168, 142, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		btnVolver = new JButton("Volver");
+		btnVolver = new JButton("Volver");                   //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);

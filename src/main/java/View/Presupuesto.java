@@ -56,12 +56,13 @@ public class Presupuesto extends JFrame {
 	private JTextField txtCuit;
 	private JTextField txtEmisor;
 	
-	class ComboItem
+	class ComboItem         //Clase utilizada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;      //Label visible del ComboBox
+	    
+	    private String value;      //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)          //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -85,7 +86,7 @@ public class Presupuesto extends JFrame {
 	}
 	
 
-	public DefaultComboBoxModel cargarCliente() {
+	public DefaultComboBoxModel cargarCliente() {       //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -115,7 +116,7 @@ public class Presupuesto extends JFrame {
     }
 	
 
-	public DefaultComboBoxModel cargarUsuario() {
+	public DefaultComboBoxModel cargarUsuario() {          //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -144,7 +145,7 @@ public class Presupuesto extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {           //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -175,7 +176,7 @@ public class Presupuesto extends JFrame {
     }
 	
 
-	public DefaultComboBoxModel cargarProducto() {
+	public DefaultComboBoxModel cargarProducto() {         //Carga el ComboBox Producto
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -184,14 +185,15 @@ public class Presupuesto extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));      //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));      //El elemento del ComboBox recibe el nombre del producto como label y el precio del producto como valor
 				
 			}
 			cn.close();
@@ -204,7 +206,7 @@ public class Presupuesto extends JFrame {
 		return modelo;
     }
 	
-	void cargarEmisor() {
+	void cargarEmisor() {                   //Este proceso carga los datos del emisor actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -212,13 +214,13 @@ public class Presupuesto extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			String SSQL = "SELECT * FROM Emitter";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			
 			
-			while (result.next()) {
+			while (result.next()) {                            //Carga los campos según los resultados de la base de datos
 				txtEmisor.setText(result.getString("name"));
 				txtCuit.setText(result.getString("cuit"));
 				txtDir.setText(result.getString("address"));
@@ -249,14 +251,14 @@ public class Presupuesto extends JFrame {
 		});
 	}
 
-	public void totalV() {
+	public void totalV() {            //Este procedimiento calcula el total de la factura
 		float t = 0;
 		float p1 = 0;
 		float p2 = 0;
 		float p3 = 0;
 		
 		
-		if (table.getRowCount() > 0) {
+		if (table.getRowCount() > 0) {                                       //Recorre la tabla y suma los precios de los productos multiplicados por su cantidad
 			for (int i = 0; i <= table.getRowCount()-1; i++) {
 				p1 = Float.parseFloat(table.getValueAt(i, 2).toString());
 				p2 = Float.parseFloat(table.getValueAt(i, 1).toString());
@@ -265,24 +267,27 @@ public class Presupuesto extends JFrame {
 				
 			}
 			
-			txtTotal.setText(String.valueOf(t));
+			txtTotal.setText(String.valueOf(t));        //Carga el valor total al campo
 		}
 	}
 
-	public void generar(String nombre) throws FileNotFoundException,DocumentException {
+	public void generar(String nombre) throws FileNotFoundException,DocumentException {           //Genera un PDF con los datos
+		//Revisa si todos los campos estan llenos
 		if(!(txtNro.getText().isEmpty()  || txtTotal.getText().isEmpty() || txtEmisor.getText().isEmpty() || cbPunto.getSelectedItem().toString().equals("") || txtCliente.getText().isEmpty() || cbEmisor.getSelectedItem().toString().equals("") || txtCuit.getText().isEmpty() || txtDom.getText().isEmpty() || txtDir.getText().isEmpty() || txtDni.getText().isEmpty() )) {
 			Object punto = cbPunto.getSelectedItem();
 			
-			FileOutputStream archivo = new FileOutputStream("c:/rsc/Presupuesto "+nombre+".pdf");
+			FileOutputStream archivo = new FileOutputStream("c:/rsc/Presupuesto "+nombre+".pdf");     //Genera la ruta del pdf
 			Document documento = new Document();
-			PdfWriter.getInstance(documento, archivo);
+			PdfWriter.getInstance(documento, archivo);         //Prepara el documento
 			documento.open();
 			
-			Paragraph parrafo = new Paragraph("Presupuesto");
+			Paragraph parrafo = new Paragraph("Presupuesto");       //Añade el Titulo
 			parrafo.setAlignment(1);
 			documento.add(parrafo);
 			
-			documento.add(new Paragraph("Punto de Venta: "+((ComboItem) punto).getValue()));
+			//Escribe todos los datos
+			
+			documento.add(new Paragraph("Punto de Venta: "+((ComboItem) punto).getValue()));      
 			documento.add(new Paragraph("Nro de Comprobante: "+txtNro.getText()));
 			documento.add(new Paragraph("Emisor: "+txtEmisor.getText()));
 			documento.add(new Paragraph("CUIT: "+txtCuit.getText()));
@@ -295,7 +300,7 @@ public class Presupuesto extends JFrame {
 			documento.add(new Paragraph(" "));
 			PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
 	          
-            for (int i = 0; i < table.getColumnCount(); i++) {
+            for (int i = 0; i < table.getColumnCount(); i++) {           //Agrega la tabla con los productos
                 pdfTable.addCell(table.getColumnName(i));
             }
       
@@ -312,24 +317,24 @@ public class Presupuesto extends JFrame {
 			
 			documento.close();
 			
-			JOptionPane.showMessageDialog(null, "Presupuesto Creado");
+			JOptionPane.showMessageDialog(null, "Presupuesto Creado");    //Muestra un mensaje en pantala indicando que se creó con exito
 			
 			
 		} else {
-			JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");
+			JOptionPane.showMessageDialog(null, "Debe llenar todos los campos");   //Si no todos los campos están llenos, lo muestra en pantalla 
 		}
 	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public Presupuesto(String nom, String dni, String dir) {
+	public Presupuesto(String nom, String dni, String dir) {       //Crea la ventana recibiendo por parámetro el nombre, dni y dirección del cliente
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 753, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setBackground(new Color(145, 226, 247));
@@ -379,13 +384,25 @@ public class Presupuesto extends JFrame {
 		txtTotal.setBounds(596, 287, 86, 20);
 		contentPane.add(txtTotal);
 		
-		JButton btnGenerar = new JButton("Generar Presupuesto");
+		JButton btnGenerar = new JButton("Generar Presupuesto");       //Este botón genera el presupuesto
 		btnGenerar.setBorder(null);
 		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGenerar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					generar(txtNro.getText());
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnGenerar.setBounds(349, 527, 197, 23);
 		contentPane.add(btnGenerar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                //Cierra la ventana
 		btnVolver.setBorder(null);
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
@@ -433,7 +450,7 @@ public class Presupuesto extends JFrame {
 		contentPane.add(cbPro);
 		cbPro.setModel(cargarProducto());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");             //Agrega un producto a la tabla
 		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -445,7 +462,7 @@ public class Presupuesto extends JFrame {
 		btnAgregar.setBounds(158, 219, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnRemover = new JButton("Remover");
+		JButton btnRemover = new JButton("Remover");          //Remueve el producto seleccionado de la tabla
 		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -460,8 +477,8 @@ public class Presupuesto extends JFrame {
 		scrollPane.setBounds(10, 263, 410, 223);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		table = new JTable();                       //Crea la tabla donde se colocarán los productos
+		table.setModel(new DefaultTableModel( 
 			new Object[][] {
 			},
 			new String[] {
@@ -479,7 +496,7 @@ public class Presupuesto extends JFrame {
 		txtCuit.setBounds(493, 96, 109, 20);
 		contentPane.add(txtCuit);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");       //Este botón permite buscar un cliente
 		btnBuscar.setBorder(null);
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -493,11 +510,11 @@ public class Presupuesto extends JFrame {
 		btnBuscar.setBounds(234, 58, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		txtCliente.setText(nom);
+		txtCliente.setText(nom);    //Setea los parámetros en los campos
 		txtDni.setText(dni);
 		txtDom.setText(dir);
 		
-		JButton btnEditar = new JButton("Editar emisor");
+		JButton btnEditar = new JButton("Editar emisor");       //Este botón permite ediar el emisor
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor_Pre ep = new Emisor_Pre();
@@ -514,7 +531,7 @@ public class Presupuesto extends JFrame {
 		contentPane.add(txtEmisor);
 		txtEmisor.setColumns(10);
 		
-		JButton btnCalcular = new JButton("Calcular total");
+		JButton btnCalcular = new JButton("Calcular total");        //Calcula el total de los productos seleccionados
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				totalV();
@@ -529,14 +546,14 @@ public class Presupuesto extends JFrame {
 	}
 
 
-	public Presupuesto() {
+	public Presupuesto() {           //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 753, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setBackground(new Color(145, 226, 247));
@@ -584,13 +601,25 @@ public class Presupuesto extends JFrame {
 		txtTotal.setBounds(596, 287, 86, 20);
 		contentPane.add(txtTotal);
 		
-		JButton btnGenerar = new JButton("Generar Presupuesto");
+		JButton btnGenerar = new JButton("Generar Presupuesto");     //Este botón genera el presupuesto
 		btnGenerar.setBorder(null);
 		btnGenerar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnGenerar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					generar(txtNro.getText());
+				} catch (FileNotFoundException ex) {
+					ex.printStackTrace();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnGenerar.setBounds(349, 527, 197, 23);
 		contentPane.add(btnGenerar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");             //Cierra la ventana
 		btnVolver.setBorder(null);
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.addActionListener(new ActionListener() {
@@ -638,7 +667,7 @@ public class Presupuesto extends JFrame {
 		contentPane.add(cbPro);
 		cbPro.setModel(cargarProducto());
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");          //Agrega un producto a la tabla
 		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -650,7 +679,7 @@ public class Presupuesto extends JFrame {
 		btnAgregar.setBounds(158, 219, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnRemover = new JButton("Remover");
+		JButton btnRemover = new JButton("Remover");               //Remueve el producto seleccionado de la tabla
 		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -665,8 +694,8 @@ public class Presupuesto extends JFrame {
 		scrollPane.setBounds(10, 263, 410, 223);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		table = new JTable();                       //Crea la tabla donde se colocarán los productos
+		table.setModel(new DefaultTableModel( 
 			new Object[][] {
 			},
 			new String[] {
@@ -684,7 +713,7 @@ public class Presupuesto extends JFrame {
 		txtCuit.setBounds(493, 96, 109, 20);
 		contentPane.add(txtCuit);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");                //Este botón permite buscar un cliente
 		btnBuscar.setBorder(null);
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -698,7 +727,7 @@ public class Presupuesto extends JFrame {
 		btnBuscar.setBounds(234, 58, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		JButton btnEditar = new JButton("Editar emisor");
+		JButton btnEditar = new JButton("Editar emisor");         //Este botón permite editar el emisor
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor_Pre ep = new Emisor_Pre();
@@ -715,7 +744,7 @@ public class Presupuesto extends JFrame {
 		contentPane.add(txtEmisor);
 		txtEmisor.setColumns(10);
 		
-		JButton btnCalcular = new JButton("Calcular total");
+		JButton btnCalcular = new JButton("Calcular total");       //Calcula el total de los productos seleccionados
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				totalV();

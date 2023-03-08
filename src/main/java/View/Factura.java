@@ -197,7 +197,7 @@ public class Factura extends JFrame {
 			modelo.addElement(new ComboItem("",""));             //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));      //El elemento del ComboBox recibe el nombre y precio del producto
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));      //El elemento del ComboBox recibe el nombre del producto como label y el precio del producto como valor
 				
 			}
 			cn.close();

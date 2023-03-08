@@ -21,7 +21,9 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class Perfil extends JFrame {
-
+    
+	//Esta ventana no es utilizada en la versión actual
+	
 	private JPanel contentPane;
 	private JTextField txtNombre;
 

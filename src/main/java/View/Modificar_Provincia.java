@@ -25,6 +25,8 @@ import java.awt.event.ActionEvent;
 
 public class Modificar_Provincia extends JFrame {
 
+	//Esta ventana no se utiliza en la versión actual
+	
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JComboBox cbPaises;

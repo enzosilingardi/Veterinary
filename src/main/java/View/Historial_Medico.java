@@ -85,7 +85,7 @@ public class Historial_Medico extends JFrame {
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));   //El elemento del ComboBox recibe el nombre de la mascota, el nombre y apellido de su dueño y como valor el id de la mascota
+				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));   //El elemento del ComboBox recibe el nombre de la mascota, el nombre y apellido de su dueño como label y como valor el id de la mascota
 				
 			}
 			cn.close();

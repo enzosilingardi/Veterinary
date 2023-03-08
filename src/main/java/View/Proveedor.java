@@ -39,12 +39,13 @@ public class Proveedor extends JFrame {
 	private JTextField txtDireccion;
 
 	
-	class ComboItem
+	class ComboItem             //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;      //Label visible del ComboBox
+	    
+	    private String value;     //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)    //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -67,7 +68,7 @@ public class Proveedor extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {
+	public DefaultComboBoxModel cargarDireccion() {           //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -98,7 +99,7 @@ public class Proveedor extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarTipo() {
+	public DefaultComboBoxModel cargarTipo() {           //Carga el ComboBox tipo
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -107,14 +108,15 @@ public class Proveedor extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));         //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));
+				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));    //El elemento del ComboBox recibe el tipo de proveedor como label y el id del tipo como valor
 				
 			}
 			cn.close();
@@ -142,13 +144,14 @@ public class Proveedor extends JFrame {
 		});
 	}
 	
-	public int existeProveedor(String nombre) {
+	public int existeProveedor(String nombre) {        //Este procedimiento revisa si existe el proveedor, recibiendo como parámetro el nombre
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();   //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Provider WHERE provider_Name = ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
@@ -156,7 +159,7 @@ public class Proveedor extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);     //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -172,19 +175,21 @@ public class Proveedor extends JFrame {
 		
 	}
 	
-	public static Boolean validaEmail (String email) {
+	public static Boolean validaEmail (String email) {      //Valida el formato del E-Mail
+		
 		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
 
-	public int proveedorEnUso(String proveedor) {
+	public int proveedorEnUso(String proveedor) {      //Este procedimiento no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();    
+			
 			String SSQL = "SELECT count(Product.id_Provider)\r\n"
 					+ "FROM Provider\r\n"
 					+ "JOIN Product ON Provider.id_Provider = Product.id_Provider\r\n"
@@ -210,7 +215,7 @@ public class Proveedor extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {           //Este procedimiento limpia los campos
 		txtDireccion.setText("");
 		cbTipo.setSelectedIndex(0);
 		txtNombre.setText("");
@@ -224,14 +229,14 @@ public class Proveedor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Proveedor() {
+	public Proveedor() {           //Crea la ventana
 		setTitle("Proveedor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 496, 502);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -266,7 +271,7 @@ public class Proveedor extends JFrame {
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");             //Este botón permite agregar un proveedor
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -282,15 +287,16 @@ public class Proveedor extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider (id_Provider_Type, address, provider_Name, name, surname, phone_Number, email, cuit) VALUES (?,?,?,?,?,?,?,?)" );
 					
 					
 				
-						if (((ComboItem) tipo).getValue() == "") {
+						if (((ComboItem) tipo).getValue() == "") {                      //Revisa si el ComboBox está en blanco
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
-							if(existeProveedor(nombrePro)!=0) {
+							if(existeProveedor(nombrePro)!=0) {                         //Revisa si el proveedor ya existe
 								JOptionPane.showMessageDialog(null, "Proveedor ya existe");
 							}else {
 								ps.setString(1, ((ComboItem) tipo).getValue());
@@ -303,7 +309,7 @@ public class Proveedor extends JFrame {
 								
 								
 								
-								if(validaEmail(email)) {
+								if(validaEmail(email)) {        //Revisa si el E-Mail es válido
 									ps.setString(7,email);
 								} else {
 									JOptionPane.showMessageDialog(null, "E-Mail no válido");
@@ -317,11 +323,11 @@ public class Proveedor extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor guardado");
+		                JOptionPane.showMessageDialog(null, "Proveedor guardado");                   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido un proveedor de nombre "+nombre);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar proveedor");
+		                JOptionPane.showMessageDialog(null, "Error al guardar proveedor");      //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -338,7 +344,7 @@ public class Proveedor extends JFrame {
 		btnAgregar.setBounds(180, 380, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                 //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Proveedor tp = new Tabla_Proveedor();
@@ -395,7 +401,7 @@ public class Proveedor extends JFrame {
 		contentPane.add(txtDireccion);
 		txtDireccion.setColumns(10);
 		
-		JButton btnNuevo = new JButton("Nuevo");
+		JButton btnNuevo = new JButton("Nuevo");                //Abre la ventana Tipo_Proveedor
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Proveedor tp = new Tipo_Proveedor();

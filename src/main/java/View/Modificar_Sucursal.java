@@ -30,12 +30,13 @@ public class Modificar_Sucursal extends JFrame {
 	private JTextField txtId;
 	private JTextField txtDireccion;
 
-	class ComboItem
+	class ComboItem               //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;        //Label visible del ComboBox
+	    
+	    private String value;      //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)       //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -58,7 +59,7 @@ public class Modificar_Sucursal extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {
+	public DefaultComboBoxModel cargarDireccion() {     //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -109,13 +110,13 @@ public class Modificar_Sucursal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Sucursal(String sucursal) {
+	public Modificar_Sucursal(String sucursal) {              //Crea la ventana recibiendo como parámetro el id de la sucursal
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 352, 230);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -124,7 +125,7 @@ public class Modificar_Sucursal extends JFrame {
 		lblDireccion.setBounds(10, 77, 67, 14);
 		contentPane.add(lblDireccion);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");                //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Sucursales ts = new Tabla_Sucursales();
@@ -135,7 +136,7 @@ public class Modificar_Sucursal extends JFrame {
 		btnVolver.setBounds(191, 130, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");         //Este boton modifica la sucursal de acuerdo a los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -144,7 +145,8 @@ public class Modificar_Sucursal extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();       //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
 					
 					
@@ -159,13 +161,13 @@ public class Modificar_Sucursal extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+		                JOptionPane.showMessageDialog(null, "Sucursal modificada");              //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues vuelve a la ventana Tabla_Sucursales
 		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 		                Tabla_Sucursales ts = new Tabla_Sucursales();
 						ts.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");
+		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");      //En caso de fallar, lo avisa en pantalla
 		            }
 				
 					con.close();

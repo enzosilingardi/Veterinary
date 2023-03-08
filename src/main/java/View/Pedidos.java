@@ -30,12 +30,13 @@ public class Pedidos extends JFrame {
 	private JComboBox cbProducto;
 	private JComboBox cbSucursal;
 	
-	class ComboItem
+	class ComboItem              //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;         //Label visible del ComboBox
+	    
+	    private String value;        //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)  //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -59,7 +60,7 @@ public class Pedidos extends JFrame {
 	}
 	
 	
-	public DefaultComboBoxModel cargarProducto() {
+	public DefaultComboBoxModel cargarProducto() {           //Carga el ComboBox producto
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -68,14 +69,15 @@ public class Pedidos extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();         //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));      //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));
+				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));    //El elemento del ComboBox recibe el nombre dle producto como Label y el id del Producto como valor
 				
 			}
 			cn.close();
@@ -88,25 +90,25 @@ public class Pedidos extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {
+	public DefaultComboBoxModel cargarSucursal() {      //Carga el ComboBox sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel();   
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			String SSQL = "Select *\r\n"
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));    //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));
+				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));     //El elemento del ComboBox recibe la dirección de la sucursal como label y el id de la sucursal como valor
 				
 			}
 			cn.close();
@@ -135,13 +137,14 @@ public class Pedidos extends JFrame {
 		});
 	}
 
-	public int existePedido(Object producto, Object sucursal) {
+	public int existePedido(Object producto, Object sucursal) {         //Esta función determina si ya existe el pedido
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();         //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Orders WHERE id_Product = ? AND id_Branch = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) producto);
@@ -150,7 +153,7 @@ public class Pedidos extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);          //Si ya existe el pedido, la variable se pone en 1
 			}
 			return 1;
 			
@@ -166,7 +169,7 @@ public class Pedidos extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {              //Este procedimiento limpia los campos
 		cbProducto.setSelectedIndex(0);
 		cbSucursal.setSelectedIndex(0);
 		txtCantidad.setText("");
@@ -175,14 +178,14 @@ public class Pedidos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Pedidos() {
+	public Pedidos() {           //Crea la ventana
 		setTitle("Pedidos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 385, 355);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -218,7 +221,7 @@ public class Pedidos extends JFrame {
 		contentPane.add(txtCantidad);
 		txtCantidad.setColumns(10);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");          //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Pedido tp = new Tabla_Pedido();
@@ -229,7 +232,7 @@ public class Pedidos extends JFrame {
 		btnVolver.setBounds(270, 268, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");              //Este botón permite agregar un pedido de acuerdo a los datos ingresados
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -240,18 +243,19 @@ public class Pedidos extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();     //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Orders (id_Product,id_Branch,quantity) VALUES (?,?,?)" );
 					
 					
-					if (((ComboItem) producto).getValue() == "") {
+					if (((ComboItem) producto).getValue() == "") {                       //Revisa si los ComboBox están en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un producto");
 					}else {
 						if (((ComboItem) sucursal).getValue() == "") {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							if(existePedido(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
-						
+						         //Revisa si ya existe el pedido
 								JOptionPane.showMessageDialog(null, "Pedido ya existe");
 					
 							}else {
@@ -269,11 +273,12 @@ public class Pedidos extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Pedido guardado");
+		                JOptionPane.showMessageDialog(null, "Pedido guardado");      //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha creado un pedido de "+producto+" para la sucursal "+sucursal);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar pedido");
+		                JOptionPane.showMessageDialog(null, "Error al guardar pedido");      //En caso de fallar, lo avisa en pantalla 
 		                limpiar();
 		            }
 				

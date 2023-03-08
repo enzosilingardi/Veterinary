@@ -38,32 +38,33 @@ public class Tabla_Sucursales extends JFrame {
 
 	
 	
-	void mostrarTabla(){
+	void mostrarTabla(){         // Carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Dirección"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Dirección"});  //Nombre de las columnas
        
-        table.setModel(modelo);
+        table.setModel(modelo);      //Setea el modelo
         
         
-        String datos[] = new String[2];
+        String datos[] = new String[2];  //Declara que va a haber 2 columnas
        
         try {
-        	Connection con = Connect.getConexion();
+        	Connection con = Connect.getConexion();     //Realiza la conexión
+        	//Sentencia sql
         	PreparedStatement ps = con.prepareStatement("SELECT Branch.id_Branch, address\r\n"
         			+ "FROM Branch;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){                      //Carga las columnas de la base de datos en la tabla
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);
+            table.setModel(modelo);        //Setea el modelo
 
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);    // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -95,21 +96,21 @@ public class Tabla_Sucursales extends JFrame {
 	}
 	
 
-	public int existeSucursal(String direccion) {
+	public int existeSucursal(String direccion) {        //Este procedimiento revisa si existe la sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			String SSQL = "SELECT count(*) FROM Branch WHERE address = ? ;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, direccion);
 
 			result = pst.executeQuery();
 			
-			if (result.next()) {
-				return result.getInt(1);
+			if (result.next()) {               
+				return result.getInt(1);       //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -125,8 +126,8 @@ public class Tabla_Sucursales extends JFrame {
 		
 	}
 	
-	
-	private void limpiar() {
+	 
+	private void limpiar() {           //Este procedimiento limpia los campos
 		txtDireccion.setText("");
 		
 	}
@@ -134,7 +135,7 @@ public class Tabla_Sucursales extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Sucursales(String perfil) {
+	public Tabla_Sucursales(String perfil) {           //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setTitle("Sucursales");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 623, 364);
@@ -142,7 +143,7 @@ public class Tabla_Sucursales extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));        //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -156,7 +157,7 @@ public class Tabla_Sucursales extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");      //Cierra la ventana
 		btnVolver.setBorder(null);
 		btnVolver.setBackground(new Color(86, 211, 243));
 		btnVolver.setForeground(new Color(255, 255, 255));
@@ -169,10 +170,10 @@ public class Tabla_Sucursales extends JFrame {
 		btnVolver.setBounds(484, 288, 89, 23);
 		contentPane.add(btnVolver);
 		
-		if (perfil.equals("Admin") || perfil.equals("Manager")) {
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {         //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
 
-			btnModificar = new JButton("Modificar");
+			btnModificar = new JButton("Modificar");              //Este botón permite modificar la sucursal seleccionada
 			btnModificar.setBorder(null);
 			btnModificar.setBackground(new Color(86, 211, 243));
 			btnModificar.setForeground(new Color(255, 255, 255));
@@ -188,7 +189,8 @@ public class Tabla_Sucursales extends JFrame {
 					int result = 0;
 					
 					try {
-						Connection con = Connect.getConexion();
+						Connection con = Connect.getConexion();        //Realiza la conexión
+						
 						PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
 						
 						
@@ -200,12 +202,12 @@ public class Tabla_Sucursales extends JFrame {
 						result = ps.executeUpdate();
 						
 						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+			                JOptionPane.showMessageDialog(null, "Sucursal modificada");          //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 			                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 			                limpiar();
 			                mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");
+			            } else { 
+			                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");     //En caso de fallar, lo avisa en pantalla
 			                limpiar();
 			            }
 					
@@ -222,7 +224,7 @@ public class Tabla_Sucursales extends JFrame {
 			btnModificar.setBounds(484, 83, 89, 23);
 			contentPane.add(btnModificar);
 			
-			btnAgregar = new JButton("Agregar");
+			btnAgregar = new JButton("Agregar");                 //Este botón permite agregar una sucursal
 			btnAgregar.setBorder(null);
 			btnAgregar.setBackground(new Color(86, 211, 243));
 			btnAgregar.setForeground(new Color(255, 255, 255));
@@ -234,12 +236,14 @@ public class Tabla_Sucursales extends JFrame {
 					int result = 0;
 					
 					try {
-						Connection con = Connect.getConexion();
+						Connection con = Connect.getConexion();     //Realiza la conexión
+						
 						PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
 						
 						
 						
-						if(existeSucursal(direccion)!=0) {
+						if(existeSucursal(direccion)!=0) {     //Revisa si la sucursal ya existe
+							
 							JOptionPane.showMessageDialog(null, "Sucursal ya existe");
 						}else {
 							ps.setString(1, direccion);
@@ -250,12 +254,12 @@ public class Tabla_Sucursales extends JFrame {
 						result = ps.executeUpdate();
 						
 						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+			                JOptionPane.showMessageDialog(null, "Sucursal guardada");         //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 			                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
 			                limpiar();
 			                mostrarTabla();
 			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
+			                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");    //En caso de fallar, lo avisa en pantalla
 			                limpiar();
 			            }
 					
@@ -271,7 +275,7 @@ public class Tabla_Sucursales extends JFrame {
 			btnAgregar.setBounds(385, 83, 89, 23);
 			contentPane.add(btnAgregar);
 			
-			btnEliminar = new JButton("Eliminar");
+			btnEliminar = new JButton("Eliminar");         //Este botón permite eliminar la fila seleccionada
 			btnEliminar.setBorder(null);
 			btnEliminar.setBackground(new Color(86, 211, 243));
 			btnEliminar.setForeground(new Color(255, 255, 255));
@@ -283,7 +287,8 @@ public class Tabla_Sucursales extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					
 					try {
-						Connection con = Connect.getConexion();
+						Connection con = Connect.getConexion();      //Realiza la conexión
+						
 						PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
 						
 							ps.setInt(1, id);
@@ -292,17 +297,18 @@ public class Tabla_Sucursales extends JFrame {
 						result = ps.executeUpdate();
 						
 						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
+			                JOptionPane.showMessageDialog(null, "Sucursal eliminada");            //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+			                
 			                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
 			               mostrarTabla();
 			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");
+			                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");       //En caso de fallar, lo avisa en pantalla
 			                
 			            }
 						con.close();
 					}catch(SQLException E) {
 						E.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");
+						JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");       //En caso de fallar, lo avisa en pantalla
 					}catch (ClassNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -327,7 +333,7 @@ public class Tabla_Sucursales extends JFrame {
 		mostrarTabla();
 	}
 	
-	public Tabla_Sucursales() {
+	public Tabla_Sucursales() {                    //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setTitle("Sucursales");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -336,7 +342,7 @@ public class Tabla_Sucursales extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));     //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -350,7 +356,7 @@ public class Tabla_Sucursales extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");     //Cierra la ventana
 		btnVolver.setBorder(null);
 		btnVolver.setBackground(new Color(86, 211, 243));
 		btnVolver.setForeground(new Color(255, 255, 255));
@@ -364,7 +370,7 @@ public class Tabla_Sucursales extends JFrame {
 		contentPane.add(btnVolver);
 		
 		
-		btnModificar = new JButton("Modificar");
+		btnModificar = new JButton("Modificar");       //Este botón permite modificar la sucursal seleccionada
 		btnModificar.setBorder(null);
 		btnModificar.setBackground(new Color(86, 211, 243));
 		btnModificar.setForeground(new Color(255, 255, 255));
@@ -380,7 +386,8 @@ public class Tabla_Sucursales extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();     //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
 					
 					
@@ -392,12 +399,12 @@ public class Tabla_Sucursales extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal modificada");
+		                JOptionPane.showMessageDialog(null, "Sucursal modificada");             //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");
+		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");      //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -414,7 +421,7 @@ public class Tabla_Sucursales extends JFrame {
 		btnModificar.setBounds(484, 83, 89, 23);
 		contentPane.add(btnModificar);
 		
-		btnAgregar = new JButton("Agregar");
+		btnAgregar = new JButton("Agregar");           //Este botón permite agregar una sucursal
 		btnAgregar.setBorder(null);
 		btnAgregar.setBackground(new Color(86, 211, 243));
 		btnAgregar.setForeground(new Color(255, 255, 255));
@@ -426,12 +433,14 @@ public class Tabla_Sucursales extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();        //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
 					
 					
 					
-					if(existeSucursal(direccion)!=0) {
+					if(existeSucursal(direccion)!=0) {       //Revisa si ya existe la sucursal
+						
 						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
 					}else {
 						ps.setString(1, direccion);
@@ -442,12 +451,12 @@ public class Tabla_Sucursales extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal guardada");
+		                JOptionPane.showMessageDialog(null, "Sucursal guardada");             //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");
+		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");      //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -463,7 +472,7 @@ public class Tabla_Sucursales extends JFrame {
 		btnAgregar.setBounds(385, 83, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar");       //Este botón permite eliminar la fila seleccionada
 		btnEliminar.setBorder(null);
 		btnEliminar.setBackground(new Color(86, 211, 243));
 		btnEliminar.setForeground(new Color(255, 255, 255));
@@ -475,7 +484,8 @@ public class Tabla_Sucursales extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();       //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
 					
 						ps.setInt(1, id);
@@ -484,17 +494,18 @@ public class Tabla_Sucursales extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");
+		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
 		               mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");
+		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");      //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 					con.close();
 				}catch(SQLException E) {
 					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");
+					JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");       //En caso de fallar, lo avisa en pantalla
 				}catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

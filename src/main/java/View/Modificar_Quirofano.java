@@ -43,7 +43,7 @@ public class Modificar_Quirofano extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String quirofano) {
+	private void cargarCampos(String quirofano) {         //Carga los campos recibiendo como parámetro el id del quirófano
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -51,14 +51,15 @@ public class Modificar_Quirofano extends JFrame {
 		int id = Integer.parseInt(quirofano);
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
+			
 			String SSQL = "SELECT room_Number FROM Operating_Room WHERE id_Operating_Room = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                       //Carga los campos con los resultados de la base de datos
 			txtNumero.setText(result.getString(1));
 			}
 			cn.close();
@@ -72,13 +73,13 @@ public class Modificar_Quirofano extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Quirofano(String quirofano, final String perfil) {
+	public Modificar_Quirofano(String quirofano, final String perfil) {       //Crea la ventana recibiendo como parámetro el id del quirófano y el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 262);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -92,7 +93,7 @@ public class Modificar_Quirofano extends JFrame {
 		txtNumero.setBounds(192, 63, 183, 20);
 		contentPane.add(txtNumero);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");               //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
@@ -103,7 +104,7 @@ public class Modificar_Quirofano extends JFrame {
 		btnVolver.setBounds(254, 137, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");          //Este botón modifica el quirófano según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -113,7 +114,8 @@ public class Modificar_Quirofano extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();      //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Operating_Room SET room_Number = ? WHERE id_Operating_Room = ?" );
 					
 					ps.setInt(1, numero);
@@ -123,14 +125,14 @@ public class Modificar_Quirofano extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano modificado");
+		                JOptionPane.showMessageDialog(null, "Quirófano modificado");            //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo agrega al log, después regresa a la ventana Table_Quirofano
 		                ControlFiles.addContent("Se ha modificado el quirófano "+numero);
 		                Tabla_Quirofano tq = new Tabla_Quirofano();
 						tq.setVisible(true);
 						dispose();
 		                
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar quirófano");
+		                JOptionPane.showMessageDialog(null, "Error al modificar quirófano");     //En caso de fallar, lo avisa en pantalla
 		                
 		            }
 					

@@ -120,7 +120,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
     }
 
 
-	void mostrarTabla(){            // carga la tabla con la informacion de la base de datos
+	void mostrarTabla(){            // Carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -130,7 +130,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
         
         
         
-        String datos[] = new String[3];         // declara que va a haber 3 columnas
+        String datos[] = new String[3];         // Declara que va a haber 3 columnas
        
         try {
         	Connection con = Connect.getConexion();
@@ -180,7 +180,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 	}
 
 
-	public int existeRel(Object animal, Object raza) {     					// Es una funcion que determina si ya existe la relacion entre animal y raza
+	public int existeRel(Object animal, Object raza) {     		// Es una funcion que determina si ya existe la relacion entre animal y raza
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;

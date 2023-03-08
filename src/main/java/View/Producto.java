@@ -35,12 +35,13 @@ public class Producto extends JFrame {
 	private JTextField txtPro;
 	private JTextField txtIdPro;
 	
-	class ComboItem
+	class ComboItem                     //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;           //Label visible del ComboBox
+	    
+	    private String value;          //Valor del ComboBox
 
-	    public ComboItem(String key, String value)
+	    public ComboItem(String key, String value)    //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -63,7 +64,7 @@ public class Producto extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarProveedor() {
+	public DefaultComboBoxModel cargarProveedor() {          //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -93,7 +94,7 @@ public class Producto extends JFrame {
     }
 	
 
-	public DefaultComboBoxModel cargarTipo() {
+	public DefaultComboBoxModel cargarTipo() {           //Carga el ComboBox tipo
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -102,14 +103,15 @@ public class Producto extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));
+			modelo.addElement(new ComboItem("",""));     //El primer elemento es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Product_Type")));
+				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Product_Type")));     //El elemento del ComboBox recibe el tipo de producto como label y el id del tipo como valor
 				
 			}
 			cn.close();
@@ -138,13 +140,14 @@ public class Producto extends JFrame {
 		});
 	}
 	
-	public int existeProducto(String nombre) {
+	public int existeProducto(String nombre) {       //Este procedimiento revisa si ya existe el producto, recibiendo por parametro el nombre
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Product WHERE product_Name = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
@@ -152,7 +155,7 @@ public class Producto extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);         //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -168,7 +171,7 @@ public class Producto extends JFrame {
 		
 	}
 	
-	public int productoEnUso(String producto) {
+	public int productoEnUso(String producto) {       //Este procedimiento no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -200,7 +203,7 @@ public class Producto extends JFrame {
 		
 	}
 	
-	private void limpiar() {
+	private void limpiar() {          //Este procedimiento limpia los campos
 		txtIdPro.setText("");
 		txtPro.setText("");
 		cbTipo.setSelectedIndex(0);
@@ -214,14 +217,14 @@ public class Producto extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Producto(String id, String nom) {
+	public Producto(String id, String nom) {        //Crea la tabla recibiendo como parámetros el id y el nombre del proveedor
 		setTitle("Productos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 464);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));    //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -279,7 +282,7 @@ public class Producto extends JFrame {
 		contentPane.add(txtPrecio);
 		txtPrecio.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");            //Este botón permite agregar un producto
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -293,7 +296,8 @@ public class Producto extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Product (id_Provider, product_Name, id_Product_Type, description, cost_Price, sale_Price) VALUES (?,?,?,?,?,?)" );
 					
 					
@@ -302,13 +306,15 @@ public class Producto extends JFrame {
 						ps.setString(2, nombre);
 						ps.setString(3, ((ComboItem) tipo).getValue());
 						ps.setString(4, descripcion);
-						if (costo < 0) {
+						if (costo < 0) {                //Revisa que en el costo no hayan números negativos
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(5,costo);
 						}
 						
-						if (precio < 0) {
+						if (precio < 0) {           //Revisa que en el precio no hayan números negativos
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(6,precio);
@@ -319,11 +325,11 @@ public class Producto extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto guardado");
+		                JOptionPane.showMessageDialog(null, "Producto guardado");                   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se a añadido un producto de nombre "+nombre);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar producto");
+		                JOptionPane.showMessageDialog(null, "Error al guardar producto");    //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -340,7 +346,7 @@ public class Producto extends JFrame {
 		btnAgregar.setBounds(156, 336, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");             //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -352,7 +358,7 @@ public class Producto extends JFrame {
 		btnVolver.setBounds(315, 389, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnNuevo = new JButton("Nuevo");
+		JButton btnNuevo = new JButton("Nuevo");               //Abre la ventana Tipo_Producto
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Producto tp = new Tipo_Producto();
@@ -363,7 +369,7 @@ public class Producto extends JFrame {
 		btnNuevo.setBounds(357, 138, 117, 23);
 		contentPane.add(btnNuevo);
 		
-		JButton btnSelec = new JButton("Seleccionar");
+		JButton btnSelec = new JButton("Seleccionar");         //Este botón permite seleccionar un proveedor
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor bp = new Buscar_Proveedor();
@@ -390,14 +396,14 @@ public class Producto extends JFrame {
 		txtIdPro.setText(id);
 	}
 
-	public Producto() {
+	public Producto() {                           //Crea la ventana
 		setTitle("Productos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 464);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -455,7 +461,7 @@ public class Producto extends JFrame {
 		contentPane.add(txtPrecio);
 		txtPrecio.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");            //Este botón permite agregar un producto
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -469,7 +475,8 @@ public class Producto extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();  //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Product (id_Provider, product_Name, id_Product_Type, description, cost_Price, sale_Price) VALUES (?,?,?,?,?,?)" );
 					
 					
@@ -478,13 +485,16 @@ public class Producto extends JFrame {
 						ps.setString(2, nombre);
 						ps.setString(3, ((ComboItem) tipo).getValue());
 						ps.setString(4, descripcion);
-						if (costo < 0) {
+						
+						if (costo < 0) {      //Revisa que en el costo no hayan números negativos
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(5,costo);
 						}
 						
-						if (precio < 0) {
+						if (precio < 0) {     //Revisa que en el precio no hayan números negativos
+							
 							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
 						} else {
 							ps.setFloat(6,precio);
@@ -495,11 +505,11 @@ public class Producto extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto guardado");
+		                JOptionPane.showMessageDialog(null, "Producto guardado");                  //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se a añadido un producto de nombre "+nombre);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar producto");
+		                JOptionPane.showMessageDialog(null, "Error al guardar producto");        //En caso de fallar, lo muestra en pantalla
 		                limpiar();
 		            }
 				
@@ -516,8 +526,8 @@ public class Producto extends JFrame {
 		btnAgregar.setBounds(156, 336, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
+		JButton btnVolver = new JButton("Volver");              //Cierra la ventana
+		btnVolver.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				
 				Tabla_Productos tp = new Tabla_Productos();
@@ -528,7 +538,7 @@ public class Producto extends JFrame {
 		btnVolver.setBounds(315, 389, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnNuevo = new JButton("Nuevo");
+		JButton btnNuevo = new JButton("Nuevo");              //Abre la ventana Tipo_Producto
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Producto tp = new Tipo_Producto();
@@ -539,7 +549,7 @@ public class Producto extends JFrame {
 		btnNuevo.setBounds(357, 138, 117, 23);
 		contentPane.add(btnNuevo);
 		
-		JButton btnSelec = new JButton("Seleccionar");
+		JButton btnSelec = new JButton("Seleccionar");         //Este botón permite buscar un proveedor
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor bp = new Buscar_Proveedor();

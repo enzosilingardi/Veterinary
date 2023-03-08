@@ -38,10 +38,11 @@ public class Procedimiento_Medico extends JFrame {
 	private JTextField txtIdM;
 	
 
-	class ComboItem
+	class ComboItem              //Clase usada para armar el ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;        //Label visible del ComboBox
+	    
+	    private String value;       //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -66,7 +67,7 @@ public class Procedimiento_Medico extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarMascota() {
+	public DefaultComboBoxModel cargarMascota() {        //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -98,7 +99,7 @@ public class Procedimiento_Medico extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarTipo() {
+	public DefaultComboBoxModel cargarTipo() {            //Carga el ComboBox tipo
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -107,14 +108,15 @@ public class Procedimiento_Medico extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			
 			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));
+				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));    //El elemento del ComboBox recibe el nombre del procedimiento como label y el id del procedimiento como valor
 				
 			}
 			cn.close();
@@ -142,13 +144,14 @@ public class Procedimiento_Medico extends JFrame {
 		});
 	}
 
-	public int existeTurno(Date date, Time time) {
+	public int existeTurno(Date date, Time time) {        //Esta función verifica si ya existe el turno
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();     //Realiza la conexión
+			
 			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? And proced_Time = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setDate(1,date);
@@ -158,7 +161,8 @@ public class Procedimiento_Medico extends JFrame {
 			
 			if (result.next()) {
 				
-				return result.getInt(1);
+				return result.getInt(1);    //Si ya existe el turno, la variable se pone en 1
+				
 			}
 			return 1;
 			
@@ -175,7 +179,7 @@ public class Procedimiento_Medico extends JFrame {
 	}
 
 	
-	private void limpiar() {
+	private void limpiar() {          //Este procedimiento limpia los campos
 		cbTipo.setSelectedIndex(0);
 		txtMascota.setText("");
 		txtIdM.setText("");
@@ -184,14 +188,14 @@ public class Procedimiento_Medico extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Procedimiento_Medico(String idMas, String nomMas) {
+	public Procedimiento_Medico(String idMas, String nomMas) {       //Crea la table recibiendo como parámetros el id y el nombre de la mascota
 		setTitle("Procedimientos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 481, 365);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));     //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -208,7 +212,7 @@ public class Procedimiento_Medico extends JFrame {
 		lblMascota.setBounds(53, 92, 77, 14);
 		contentPane.add(lblMascota);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");           //Este boton permite agregar un turno
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -222,21 +226,19 @@ public class Procedimiento_Medico extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Time) VALUES (?,?,?,?)" );
 					
 					
-					if (((ComboItem) tipo).getValue() == "") {
+					if (((ComboItem) tipo).getValue() == "") {                      //Revisa si el ComboBox está en blanco                    
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
-					}else {
-						if(((ComboItem) tipo).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
 					}else {
 						ps.setString(1, ((ComboItem) tipo).getValue());
 						ps.setInt(2, idM);
 						ps.setDate(3, date);
 						
-						if(existeTurno(date,start) != 0) {
+						if(existeTurno(date,start) != 0) {                           //Revisa si ya existe el turno
 							JOptionPane.showMessageDialog(null, "Turno ya existe");
 						}else {
 							ps.setTime(4, start);
@@ -246,16 +248,17 @@ public class Procedimiento_Medico extends JFrame {
 							
 						}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno guardado");
+		                JOptionPane.showMessageDialog(null, "Turno guardado");    //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha añadido un turno para la fecha "+date+" y hora "+start);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar turno");
+		                JOptionPane.showMessageDialog(null, "Error al guardar turno");    //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -272,7 +275,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnAgregar.setBounds(155, 240, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");              //Cierra la ventana
 		btnVolver.setBounds(366, 292, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -306,8 +309,8 @@ public class Procedimiento_Medico extends JFrame {
 		txtHora.setBounds(155, 176, 99, 20);
 		contentPane.add(txtHora);
 		
-		
-		JButton btnTipos = new JButton("Nuevo");
+		 
+		JButton btnTipos = new JButton("Nuevo");               //Abre la ventana Tipo_Procedimiento
 		btnTipos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Procedimiento tp = new Tipo_Procedimiento();
@@ -318,7 +321,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnTipos.setBounds(355, 49, 89, 23);
 		contentPane.add(btnTipos);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");               //Este botón permite buscar una mascota
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Pro bmp = new Buscar_Mascota_Pro();
@@ -346,15 +349,15 @@ public class Procedimiento_Medico extends JFrame {
 		txtMascota.setText(nomMas);
 		
 	}
-
-	public Procedimiento_Medico() {
+ 
+	public Procedimiento_Medico() {          //Crea la ventana
 		setTitle("Procedimientos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 481, 365);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));    //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -371,7 +374,7 @@ public class Procedimiento_Medico extends JFrame {
 		lblMascota.setBounds(53, 92, 77, 14);
 		contentPane.add(lblMascota);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");             //Este botón permite agregar un turno
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -385,22 +388,20 @@ public class Procedimiento_Medico extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();      //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Time) VALUES (?,?,?,?)" );
 					
 					
-					if (((ComboItem) tipo).getValue() == "") {
+					if (((ComboItem) tipo).getValue() == "") {                        //Revisa si el ComboBox está en blanco            
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
-					}else {
-						if(((ComboItem) tipo).getValue() == "") {
-						JOptionPane.showMessageDialog(null, "Seleccione una mascota");
 					}else {
 						ps.setString(1, ((ComboItem) tipo).getValue());
 						ps.setInt(2, idM);
 						ps.setDate(3, date);
 						
-						if(existeTurno(date,start) != 0) {
-							JOptionPane.showMessageDialog(null, "Turno ya existe");
+						if(existeTurno(date,start) != 0) {                              //Revisa si el turno ya existe
+							JOptionPane.showMessageDialog(null, "Turno ya existe"); 
 						}else {
 							ps.setTime(4, start);
 						}
@@ -409,16 +410,17 @@ public class Procedimiento_Medico extends JFrame {
 							
 						}
 						
-					}
+					
 					
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno guardado");
+		                JOptionPane.showMessageDialog(null, "Turno guardado");     //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
+		                
 		                ControlFiles.addContent("Se ha añadido un turno para la fecha "+date+" y hora "+start);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar turno");
+		                JOptionPane.showMessageDialog(null, "Error al guardar turno");   //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -435,7 +437,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnAgregar.setBounds(155, 240, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");           //Cierra la ventana
 		btnVolver.setBounds(366, 292, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -470,7 +472,7 @@ public class Procedimiento_Medico extends JFrame {
 		contentPane.add(txtHora);
 		
 		
-		JButton btnTipos = new JButton("Nuevo");
+		JButton btnTipos = new JButton("Nuevo");                  //Abre la ventana Tipo_Procedimiento
 		btnTipos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Procedimiento tp = new Tipo_Procedimiento();
@@ -481,7 +483,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnTipos.setBounds(355, 49, 89, 23);
 		contentPane.add(btnTipos);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar");               //Este botón permite buscar una mascota
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Pro bmp = new Buscar_Mascota_Pro();

@@ -52,13 +52,14 @@ public class Modificar_Usuario extends JFrame {
 		});
 	}
 
-	public static Boolean validaEmail (String email) {
+	public static Boolean validaEmail (String email) {       //Valida el formato del E-Mail
+		
 		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
 	
-	private void cargarCampos(String usuario) {
+	private void cargarCampos(String usuario) {        //Carga los campos recibiendo como parámetro el id del usuario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -66,7 +67,7 @@ public class Modificar_Usuario extends JFrame {
 		int id = Integer.parseInt(usuario);
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			String SSQL = "SELECT profile, name, surname, username, password, email\r\n"
 					+ "FROM Users WHERE id_User = ?";
 			pst = cn.prepareStatement(SSQL);
@@ -74,7 +75,7 @@ public class Modificar_Usuario extends JFrame {
 			
 			
 			result = pst.executeQuery();
-			while (result.next()){
+			while (result.next()){                           //Carga los campos según los resultados de la base de datos
 			cbPerfil.setSelectedItem(result.getString(1));	
 			txtNombre.setText(result.getString(2));
 			txtApellido.setText(result.getString(3));
@@ -93,13 +94,13 @@ public class Modificar_Usuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Usuario(String usuario) {
+	public Modificar_Usuario(String usuario) {                   //Crea la ventana recibiendo como parámetro el id del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 423);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));    //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -127,7 +128,7 @@ public class Modificar_Usuario extends JFrame {
 		contentPane.add(lblPerfil);
 		
 		cbPerfil = new JComboBox();
-		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));    //Crea un ComboBox con los perfiles que puede tener un usuario
 		cbPerfil.setBounds(185, 117, 163, 22);
 		contentPane.add(cbPerfil);
 		
@@ -158,7 +159,7 @@ public class Modificar_Usuario extends JFrame {
 		txtEmail.setBounds(185, 275, 164, 20);
 		contentPane.add(txtEmail);
 		
-		JButton btnModificar = new JButton("Modificar");
+		JButton btnModificar = new JButton("Modificar");            //Este botón permite modificar el usuario de acuerdo a los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int id = Integer.parseInt(txtId.getText());
@@ -172,11 +173,13 @@ public class Modificar_Usuario extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();           //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("UPDATE Users SET profile = ?, name = ?, surname = ?, username = ?, password = ?, email = ? WHERE id_User = ?" );
 					
 					
-					if (perfil == "") {
+					if (perfil == "") {              //Revisa si el ComboBox está en blanco
+						
 						JOptionPane.showMessageDialog(null, "Seleccione un perfil");
 					}else {
 					
@@ -185,14 +188,15 @@ public class Modificar_Usuario extends JFrame {
 						ps.setString(3, apellido);
 						ps.setString(4, nombreU);
 						
-						if(contrasenia.length()<8) {
+						if(contrasenia.length()<8) {          //Verifica si le contraseña tiene por lo menos 8 caracteres
+							
 							JOptionPane.showMessageDialog(null, "La contraseña debe tener por lo menos 8 caracteres");
 						}else {
 							ps.setString(5, contrasenia);
 						}
 						
 						
-						if(validaEmail(email)) {
+						if(validaEmail(email)) {             //Verifica que el E-Mail sea valido
 							ps.setString(6,email);
 						} else {
 							JOptionPane.showMessageDialog(null, "E-Mail no válido");
@@ -208,13 +212,13 @@ public class Modificar_Usuario extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario modificado");
+		                JOptionPane.showMessageDialog(null, "Usuario modificado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues regresa a la ventana Tabla_Usuarios
 		                ControlFiles.addContent("Se ha modificado el usuario "+nombreU);
 		                Tabla_Usuarios tu = new Tabla_Usuarios();
 						tu.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar usuario");
+		                JOptionPane.showMessageDialog(null, "Error al modificar usuario");      //En caso de fallar, lo avisa en pantalla
 		               
 		            }
 				
@@ -230,7 +234,7 @@ public class Modificar_Usuario extends JFrame {
 		btnModificar.setBounds(87, 336, 89, 23);
 		contentPane.add(btnModificar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");             //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Usuarios tu = new Tabla_Usuarios();

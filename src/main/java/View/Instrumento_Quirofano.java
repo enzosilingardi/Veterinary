@@ -81,7 +81,7 @@ public class Instrumento_Quirofano extends JFrame {
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("room_Number"),result.getString("id_Operating_Room")));    //El elemento del ComboBox recibe el número y el id del quirófano
+				modelo.addElement(new ComboItem(result.getString("room_Number"),result.getString("id_Operating_Room")));    //El elemento del ComboBox recibe el número de quirófano como label y el id del quirófano como valor
 				
 			}
 			cn.close();
@@ -111,7 +111,7 @@ public class Instrumento_Quirofano extends JFrame {
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("instrument_Name"),result.getString("id_Medical_Instrument")));         //El elemento del ComboBox recibe el nombre y el id del instrumento
+				modelo.addElement(new ComboItem(result.getString("instrument_Name"),result.getString("id_Medical_Instrument")));         //El elemento del ComboBox recibe el nombre del instrumento como label y el id del instrumento como valor
 				
 			}
 			cn.close();

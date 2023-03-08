@@ -22,6 +22,9 @@ import java.awt.event.ActionEvent;
 
 public class Tabla_Direccion extends JFrame {
 
+	
+	//Esta ventana no se utiliza en la versión actual
+	
 	private JPanel contentPane;
 	private JTable table;
 	private JButton btnVolver;
@@ -30,24 +33,25 @@ public class Tabla_Direccion extends JFrame {
 	private JButton btnEliminar;
 	private JButton btnCiudad;
 
-	void mostrarTabla(){
+	void mostrarTabla(){                  // Carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Ciudad","Calle","Número","Piso","Departamento"});
+        modelo.setColumnIdentifiers(new Object[] {"ID","Ciudad","Calle","Número","Piso","Departamento"});    //Nombre de las columnas
        
-        table.setModel(modelo);
+        table.setModel(modelo);      //Setea el modelo
         
         
-        String datos[] = new String[6];
+        String datos[] = new String[6];      //Declara que va a haber 6 columnas
        
         try {
-        	Connection con = Connect.getConexion();
+        	Connection con = Connect.getConexion();    //Realiza la conexión
+        	//Sentencia sql
         	PreparedStatement ps = con.prepareStatement("SELECT id_Address, City.name, address_Name, address_Number, floor_Number, dept_Number\r\n"
         			+ "FROM Address\r\n"
         			+ "INNER JOIN City ON City.id_City = Address.id_City;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()){                     //Carga las columnas de la base de datos en la tabla
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -58,9 +62,9 @@ public class Tabla_Direccion extends JFrame {
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);
+            table.setModel(modelo);      //Setea el modelo
 
-            table.getColumnModel().getColumn(0).setMaxWidth(0);
+            table.getColumnModel().getColumn(0).setMaxWidth(0);            // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -91,13 +95,13 @@ public class Tabla_Direccion extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Direccion(final String perfil) {
+	public Tabla_Direccion(final String perfil) {                //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));  //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -110,7 +114,7 @@ public class Tabla_Direccion extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		btnVolver = new JButton("Volver");
+		btnVolver = new JButton("Volver");                       //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

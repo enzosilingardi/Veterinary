@@ -38,10 +38,11 @@ public class Usuario extends JFrame {
 	private JTextField txtEmail;
 	private JComboBox cbPerfil;
 	
-	class ComboItem
+	class ComboItem                 //Clase utilizada para armar un ComboBox
 	{
-	    private String key;
-	    private String value;
+	    private String key;           //Label visible del ComboBox
+	    
+	    private String value;         //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -68,26 +69,28 @@ public class Usuario extends JFrame {
 	
 	
 	
-	public static Boolean validaEmail (String email) {
+	public static Boolean validaEmail (String email) {     //Verifica el formato del E-Mail
+		
 		Pattern pattern = Pattern.compile("^([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}$");
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
 	
-	public int existeUsuario(String nombre) {
+	public int existeUsuario(String nombre) {    //Este procedimiento revisa si ya exise el usuario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();       //Realiza la conexión
+			
 			String SSQL = "SELECT count(username) FROM Users WHERE username = ?;";
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);
+				return result.getInt(1);      //Si ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -117,7 +120,7 @@ public class Usuario extends JFrame {
 		});
 	}
 	
-	private void limpiar() {
+	private void limpiar() {                //Este procedimiento limpia los campos
 		txtNombre.setText("");
 		cbPerfil.setSelectedIndex(0);
 		txtContrasenia.setText("");
@@ -130,14 +133,14 @@ public class Usuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Usuario() {
+	public Usuario() {         //Crea la ventana
 		setTitle("Usuario");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 483);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -154,7 +157,7 @@ public class Usuario extends JFrame {
 		lblContrasenia.setBounds(70, 97, 74, 14);
 		contentPane.add(lblContrasenia);
 		
-		JButton btnAgregar = new JButton("Agregar");
+		JButton btnAgregar = new JButton("Agregar");              //Esste botón permite agregar un usuario
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -168,13 +171,16 @@ public class Usuario extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();    //Realiza la conexión
+					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Users (profile,name,surname,username,password,email) VALUES (?,?,?,?,?,?)" );
 					
 					
-					if (perfil == "") {
+					if (perfil == "") {      //Revisa si el ComboBox está en blanco
+						
 						JOptionPane.showMessageDialog(null, "Seleccione un perfil");
 					}else {
+						//Revisa si el usuario ya existe
 						if(existeUsuario(nombreU)!=0) {
 						JOptionPane.showMessageDialog(null, "Usuario ya existe");
 					}else {
@@ -183,14 +189,14 @@ public class Usuario extends JFrame {
 						ps.setString(3, apellido);
 						ps.setString(4, nombreU);
 						
-						if(contrasenia.length()<8) {
+						if(contrasenia.length()<8) {             //Revisa que la contraseña tenga por lo menos 8 caracteres
 							JOptionPane.showMessageDialog(null, "La contraseña debe tener por lo menos 8 caracteres");
 						}else {
 							ps.setString(5, contrasenia);
 						}
 						
 						
-						if(validaEmail(email)) {
+						if(validaEmail(email)) {        //Revisa si el E-Mail es válido
 							ps.setString(6,email);
 						} else {
 							JOptionPane.showMessageDialog(null, "E-Mail no válido");
@@ -206,11 +212,11 @@ public class Usuario extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario guardado");
+		                JOptionPane.showMessageDialog(null, "Usuario guardado");         //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha agregado el usuario "+nombreU);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar usuario");
+		                JOptionPane.showMessageDialog(null, "Error al guardar usuario");  //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -227,7 +233,7 @@ public class Usuario extends JFrame {
 		btnAgregar.setBounds(168, 361, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");           //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Usuarios tu = new Tabla_Usuarios();
@@ -241,8 +247,8 @@ public class Usuario extends JFrame {
 		txtContrasenia = new JTextField();
 		txtContrasenia.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyTyped(KeyEvent e) {
-				if (txtContrasenia.getText().length() >= 16 ) 
+			public void keyTyped(KeyEvent e) {                    
+				if (txtContrasenia.getText().length() >= 16 )     //Impide que se inserten más de 16 caracteres en la contraseña
 		            e.consume(); 
 			}
 		});
@@ -262,7 +268,7 @@ public class Usuario extends JFrame {
 		cbPerfil = new JComboBox();
 		cbPerfil.setBounds(189, 141, 163, 22);
 		contentPane.add(cbPerfil);
-		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));
+		cbPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Admin", "Manager", "Regular"}));   //Crea un comboBox con los tipos de perfiles
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setBounds(70, 198, 59, 14);
