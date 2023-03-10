@@ -72,7 +72,7 @@ public class Modificar_Pedido extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();                        //Realiza la conexión
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";        
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";    //Sentencia sql    
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));                        //El primer elemento es en blanco
@@ -91,7 +91,7 @@ public class Modificar_Pedido extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarSucursal() {                  //Carga el combobox sucursal
+	public DefaultComboBoxModel cargarSucursal() {             //Carga el combobox sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -101,7 +101,7 @@ public class Modificar_Pedido extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();              //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"		//Sentencia sql
 					+ "FROM Branch\r\n";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
@@ -137,7 +137,7 @@ public class Modificar_Pedido extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String pedido) {                  //Carga los campos recibiendo el id del pedido como parámetro
+	private void cargarCampos(String pedido) {             //Carga los campos recibiendo el id del pedido como parámetro
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -146,7 +146,7 @@ public class Modificar_Pedido extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();                            //Realiza la conexión
-			String SSQL = "SELECT quantity FROM Orders WHERE id_Order = ?";
+			String SSQL = "SELECT quantity FROM Orders WHERE id_Order = ?";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
@@ -209,7 +209,7 @@ public class Modificar_Pedido extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Pedido tp = new Tabla_Pedido();
-				tp.setVisible(true);
+				tp.setVisible(true);			//Abre la ventana Tabla_Pedido
 				dispose();
 			}
 		});

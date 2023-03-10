@@ -187,7 +187,7 @@ public class Presupuesto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));      //El primer elemento es en blanco
@@ -267,7 +267,7 @@ public class Presupuesto extends JFrame {
 				
 			}
 			
-			txtTotal.setText(String.valueOf(t));        //Carga el valor total al campo
+			txtTotal.setText(String.valueOf(t));        //Carga el valor total al campo txtTotal
 		}
 	}
 
@@ -312,7 +312,7 @@ public class Presupuesto extends JFrame {
             }
             documento.add(pdfTable);
 			documento.add(new Paragraph(" "));
-			documento.add(new Paragraph("Precio Total: "+txtTotal.getText()));
+			documento.add(new Paragraph("Precio Total: "+txtTotal.getText()));		//Agrega el precio total
 			
 			
 			documento.close();
@@ -482,7 +482,7 @@ public class Presupuesto extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Producto", "Cantidad", "Precio Unitario"
+				"Producto", "Cantidad", "Precio Unitario"		//Nombre de las columnas
 			}
 		));
 		scrollPane.setViewportView(table);
@@ -501,7 +501,7 @@ public class Presupuesto extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Cliente_Pre bcp = new Buscar_Cliente_Pre();
-				bcp.setVisible(true);
+				bcp.setVisible(true);		//Abre la ventana Buscar_Cliente_Pre
 				
 				dispose();
 				
@@ -518,7 +518,7 @@ public class Presupuesto extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor_Pre ep = new Emisor_Pre();
-				ep.setVisible(true);
+				ep.setVisible(true);		//Abre la ventana Emisor_Pre
 				dispose();
 			}
 		});
@@ -699,7 +699,7 @@ public class Presupuesto extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Producto", "Cantidad", "Precio Unitario"
+				"Producto", "Cantidad", "Precio Unitario"		//Nombre de las columnas
 			}
 		));
 		scrollPane.setViewportView(table);
@@ -718,7 +718,7 @@ public class Presupuesto extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Cliente_Pre bcp = new Buscar_Cliente_Pre();
-				bcp.setVisible(true);
+				bcp.setVisible(true);		//Abre la ventana Buscar_Cliente_Pre
 				
 				dispose();
 				
@@ -731,7 +731,7 @@ public class Presupuesto extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor_Pre ep = new Emisor_Pre();
-				ep.setVisible(true);
+				ep.setVisible(true);		//Abre la ventana Emisor_pre
 				dispose();
 			}
 		});

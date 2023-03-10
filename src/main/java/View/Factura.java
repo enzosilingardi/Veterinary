@@ -59,11 +59,11 @@ public class Factura extends JFrame {
 	private JComboBox cbPro;
 	private JTextField txtEmisor;
 
-	class ComboItem                                    //Clase utilizada para armar el ComboBox
+	class ComboItem              //Clase utilizada para armar el ComboBox
 	{
-	    private String key;                             //Label visible del ComboBox
+	    private String key;            //Label visible del ComboBox
 	    
-	    private String value;                           //Valor del ComboBox
+	    private String value;                 //Valor del ComboBox
 
 	    public ComboItem(String key, String value)        //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
@@ -219,7 +219,7 @@ public class Factura extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();       //Realiza la conexión
-			String SSQL = "SELECT * FROM Emitter";
+			String SSQL = "SELECT * FROM Emitter";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			
@@ -254,14 +254,14 @@ public class Factura extends JFrame {
 		});
 	}
 
-	public void totalV() {                 //Este procedimiento calcula el total de la factura
+	public void totalV() {        //Este procedimiento calcula el total de la factura
 		float t = 0;
 		float p1 = 0;
 		float p2 = 0;
 		float p3 = 0;
 		
 		
-		if (table.getRowCount() > 0) {                                         //Recorre la tabla y suma los precios de los productos multiplicados por su cantidad
+		if (table.getRowCount() > 0) {             //Recorre la tabla y suma los precios de los productos multiplicados por su cantidad
 			for (int i = 0; i <= table.getRowCount()-1; i++) {
 				p1 = Float.parseFloat(table.getValueAt(i, 2).toString());
 				p2 = Float.parseFloat(table.getValueAt(i, 1).toString());
@@ -270,7 +270,7 @@ public class Factura extends JFrame {
 				
 			}
 			
-			txtTotal.setText(String.valueOf(t));              //Carga el valor total al campo
+			txtTotal.setText(String.valueOf(t));     //Carga el valor total al campo txtTotal
 		}
 	}
 	
@@ -322,7 +322,7 @@ public class Factura extends JFrame {
             }
             documento.add(pdfTable);
 			documento.add(new Paragraph(" "));
-			documento.add(new Paragraph("Precio Total: "+txtTotal.getText()));
+			documento.add(new Paragraph("Precio Total: "+txtTotal.getText()));		//Agrega el precio total
 			
 			documento.close();
 			
@@ -499,7 +499,7 @@ public class Factura extends JFrame {
 		contentPane.add(cbPro);
 		cbPro.setModel(cargarProducto());
 		
-		JButton btnAgregar = new JButton("Agregar");                  //Agrega un producto a la tabla
+		JButton btnAgregar = new JButton("Agregar");         //Agrega un producto a la tabla
 		btnAgregar.setBorder(null);
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -511,7 +511,7 @@ public class Factura extends JFrame {
 		btnAgregar.setBounds(158, 245, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnRemover = new JButton("Remover");                      //Remueve el producto seleccionado de la tabla
+		JButton btnRemover = new JButton("Remover");          //Remueve el producto seleccionado de la tabla
 		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -526,12 +526,12 @@ public class Factura extends JFrame {
 		scrollPane.setBounds(10, 289, 410, 223);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();                                   //Crea la tabla donde se colocarán los productos
+		table = new JTable();                         //Crea la tabla donde se colocarán los productos
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Producto", "Cantidad", "Precio Unitario"
+				"Producto", "Cantidad", "Precio Unitario"			//Nombre de las columnas
 			}
 		));
 		scrollPane.setViewportView(table);
@@ -540,11 +540,11 @@ public class Factura extends JFrame {
 		txtDni.setText(dni);
 		txtDom.setText(dir);
 		
-		JButton btnBuscar = new JButton("Buscar");                   //Este botón permite buscar un cliente
+		JButton btnBuscar = new JButton("Buscar");      //Este botón permite buscar un cliente
 		btnBuscar.setBorder(null);
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Buscar_Cliente bc = new Buscar_Cliente();
+				Buscar_Cliente bc = new Buscar_Cliente();		//Abre la ventana Buscar_Cliente
 				bc.setVisible(true);
 				dispose();
 			}
@@ -563,8 +563,8 @@ public class Factura extends JFrame {
 		JButton btnEditar = new JButton("Editar emisor");         //Este botón permite editar el emisor
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Emisor emisor = new Emisor();
-				emisor.setVisible(true);
+				Emisor emisor = new Emisor();	
+				emisor.setVisible(true);		//Abre la ventana Emisor
 				dispose();
 			}
 		});
@@ -573,7 +573,7 @@ public class Factura extends JFrame {
 		contentPane.add(btnEditar);
 		
 
-		JButton btnTotal = new JButton("Calcular total");              //Calcula el total de los productos seleccionados
+		JButton btnTotal = new JButton("Calcular total");        //Calcula el total de los productos seleccionados
 		btnTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				totalV();
@@ -587,7 +587,7 @@ public class Factura extends JFrame {
 	}
 
 
-	public Factura() {                                //Crea la ventana
+	public Factura() {       //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
@@ -760,7 +760,7 @@ public class Factura extends JFrame {
 		btnAgregar.setBounds(158, 245, 89, 23);
 		contentPane.add(btnAgregar);
 		 
-		JButton btnRemover = new JButton("Remover");                 //Remueve el producto seleccionado de la tabla
+		JButton btnRemover = new JButton("Remover");      //Remueve el producto seleccionado de la tabla
 		btnRemover.setBorder(null);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -780,7 +780,7 @@ public class Factura extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Producto", "Cantidad", "Precio Unitario"
+				"Producto", "Cantidad", "Precio Unitario"		//Nombre de las columnas
 			}
 		));
 		scrollPane.setViewportView(table);
@@ -789,7 +789,7 @@ public class Factura extends JFrame {
 		btnBuscar.setBorder(null);
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Buscar_Cliente bc = new Buscar_Cliente();
+				Buscar_Cliente bc = new Buscar_Cliente();		//Abre la ventana Buscar_Cliente
 				bc.setVisible(true);
 				dispose();
 			}
@@ -806,7 +806,7 @@ public class Factura extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Emisor emisor = new Emisor();
-				emisor.setVisible(true);
+				emisor.setVisible(true);		//Abre la ventana Emisor
 				dispose();
 			}
 		});

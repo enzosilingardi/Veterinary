@@ -111,7 +111,7 @@ public class Modificar_Proveedor extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();          //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";
+			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));        //El primer elemento está en blanco
@@ -156,7 +156,7 @@ public class Modificar_Proveedor extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();           //Realiza la conexión
 			
-			String SSQL = "SELECT provider_Name, name, surname, phone_Number, email, cuit FROM Provider WHERE id_Provider = ?";
+			String SSQL = "SELECT provider_Name, name, surname, phone_Number, email, cuit FROM Provider WHERE id_Provider = ?";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
@@ -188,13 +188,13 @@ public class Modificar_Proveedor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Proveedor(String proveedor) {
+	public Modificar_Proveedor(String proveedor) {			//Crea la ventana recibiendo como parámetro el id del proveedor
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 460);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));	//Sentencia sql
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -270,7 +270,7 @@ public class Modificar_Proveedor extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Proveedor tp = new Tabla_Proveedor();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Proveedor
 				dispose();
 			}
 		});

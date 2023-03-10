@@ -48,13 +48,13 @@ public class Cliente extends JFrame {
 	
 	
 	
-	class ComboItem                                    //Clase utilizada para armar el ComboBox
+	class ComboItem             //Clase utilizada para armar el ComboBox
 	{
-	    private String key;                               //Label visible del ComboBox
+	    private String key;         //Label visible del ComboBox
 	    
-	    private String value;                               //Valor del ComboBox
+	    private String value;              //Valor del ComboBox
 
-	    public ComboItem(String key, String value)              //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
+	    public ComboItem(String key, String value)      //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -77,7 +77,7 @@ public class Cliente extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarDireccion() {                   //Este ComboBox no se utiliza en la versión actual
+	public DefaultComboBoxModel cargarDireccion() {       //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -135,7 +135,7 @@ public class Cliente extends JFrame {
 		}
 	    
 
-	public int existeCliente(String nombre, String dni) {                // Verifica si ya existe el cliente en la base de datos
+	public int existeCliente(String nombre, String dni) {     // Verifica si ya existe el cliente en la base de datos
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -143,7 +143,7 @@ public class Cliente extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();       //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Client WHERE name = ? AND dni = ?   ;";   
+			String SSQL = "SELECT count(*) FROM Client WHERE name = ? AND dni = ?   ;";   //Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
 			pst.setString(2,dni);
@@ -151,7 +151,7 @@ public class Cliente extends JFrame {
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);                     // si ya existe, la variable la coloca como 1
+				return result.getInt(1);        // si ya existe, la variable la coloca como 1
 			}
 			return 1;
 			
@@ -171,7 +171,7 @@ public class Cliente extends JFrame {
 	
 	
 	
-	private void limpiar() {                  //Limpia los campos
+	private void limpiar() {      //Limpia los campos
 		txtNombre.setText(""); 
 		txtDireccion.setText("");
 		txtDni.setText("");
@@ -184,7 +184,7 @@ public class Cliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Cliente() {                          //Crea la ventana
+	public Cliente() {         //Crea la ventana
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 459, 575);
@@ -236,7 +236,7 @@ public class Cliente extends JFrame {
 		
 		cbGenero = new JComboBox();
 		cbGenero.setBounds(224, 271, 171, 22);
-		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));
+		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));		//Crea un ComboBox con los géneros que puede tener un cliente
 		contentPane.add(cbGenero);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
@@ -248,7 +248,7 @@ public class Cliente extends JFrame {
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");                       //Agrega un cliente
+		JButton btnAgregar = new JButton("Agregar");          //Agrega un cliente
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement ps = null;
@@ -279,7 +279,7 @@ public class Cliente extends JFrame {
 					}
 					
 					
-						if(existeCliente(nombre,dni)!=0) {                           //Si ya existe el cliente no lo agrega y muestra el error por pantalla
+						if(existeCliente(nombre,dni)!=0) {                  //Si ya existe el cliente no lo agrega y muestra el error por pantalla
 						JOptionPane.showMessageDialog(null, "Cliente ya existe");
 					}else {
 						ps.setString(1, direccion);
@@ -312,11 +312,11 @@ public class Cliente extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cliente guardado");                                    //En caso de ser exitoso, lo muestra en pantalla y lo agrega al log
+		                JOptionPane.showMessageDialog(null, "Cliente guardado");                   //En caso de ser exitoso, lo muestra en pantalla y lo agrega al log
 		                ControlFiles.addContent("Se ha añadido un cliente de nombre "+nombre+" "+apellido);
 		                limpiar();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");                         //En caso de fallar, muestra el error por pantalla
+		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");        //En caso de fallar, muestra el error por pantalla
 		                limpiar();
 		            }
 				
@@ -338,7 +338,7 @@ public class Cliente extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Clientes tc = new Tabla_Clientes();
-				tc.setVisible(true);
+				tc.setVisible(true);		//Abre la ventana Tabla_Clientes
 				dispose();
 			}
 		});

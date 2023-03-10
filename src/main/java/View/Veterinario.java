@@ -116,7 +116,7 @@ public class Veterinario extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Veterinarian WHERE name = ? AND surname = ?;";
+			String SSQL = "SELECT count(*) FROM Veterinarian WHERE name = ? AND surname = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
 			pst.setString(2,apellido);
@@ -158,7 +158,7 @@ public class Veterinario extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));  //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

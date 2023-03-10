@@ -29,7 +29,7 @@ public class Tabla_Turnos extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 
-	void mostrarTabla(){          // Carga la tabla con la informacion de la base de datos
+	void mostrarTabla(){      // Carga la tabla con la informacion de la base de datos
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
@@ -339,7 +339,7 @@ public class Tabla_Turnos extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				
-				Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());         //Envía como parámetro el id de la fila seleccionada
+				Modificar_Turno mt = new Modificar_Turno(table.getValueAt(fila,0).toString());    //Envía como parámetro el id de la fila seleccionada
 				mt.setVisible(true);
 				dispose();
 			}

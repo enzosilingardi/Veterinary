@@ -68,7 +68,7 @@ public class Modificar_Usuario extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
-			String SSQL = "SELECT profile, name, surname, username, password, email\r\n"
+			String SSQL = "SELECT profile, name, surname, username, password, email\r\n"		//Sentencia sql
 					+ "FROM Users WHERE id_User = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
@@ -238,7 +238,7 @@ public class Modificar_Usuario extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Usuarios tu = new Tabla_Usuarios();
-				tu.setVisible(true);
+				tu.setVisible(true);		//Abre la ventana Tabla_Usuarios
 				dispose();
 			}
 		});

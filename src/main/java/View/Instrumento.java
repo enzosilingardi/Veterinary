@@ -31,11 +31,11 @@ public class Instrumento extends JFrame {
 	private JTextField txtDescripcion;
 
 	
-	class ComboItem                                //Clase utilizada para armar el ComboBox
+	class ComboItem              //Clase utilizada para armar el ComboBox
 	{
-	    private String key;                         //Label visible del ComboBox
+	    private String key;          //Label visible del ComboBox
 	    
-	    private String value;                      //Valor del ComboBox
+	    private String value;           //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
 	    {
@@ -112,13 +112,13 @@ public class Instrumento extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();          //Realiza la conexión
 			
-			String SSQL = "SELECT count(instrument_Name) FROM Medical_Instrument WHERE instrument_Name = ?;";
+			String SSQL = "SELECT count(instrument_Name) FROM Medical_Instrument WHERE instrument_Name = ?;";	//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
 			
 			if (result.next()) {
-				return result.getInt(1);                    //Si la relación ya existe, la variable se pone en 1
+				return result.getInt(1);           //Si la relación ya existe, la variable se pone en 1
 			}
 			return 1;
 			
@@ -166,7 +166,7 @@ public class Instrumento extends JFrame {
 		
 	}
 	
-	private void limpiar() {                      //Este procedimiento limpia los campos
+	private void limpiar() {           //Este procedimiento limpia los campos
 		txtNombre.setText("");
 		txtDescripcion.setText("");
 		
@@ -209,7 +209,7 @@ public class Instrumento extends JFrame {
 		contentPane.add(txtDescripcion);
 		txtDescripcion.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");                      //Este boton permite agregar un instrumento
+		JButton btnAgregar = new JButton("Agregar");         //Este boton permite agregar un instrumento
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
@@ -258,7 +258,7 @@ public class Instrumento extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Instrumento ti = new Tabla_Instrumento();
-				ti.setVisible(true);
+				ti.setVisible(true);			//Abre la ventana Tabla_Instrumento
 				dispose();
 			}
 		});

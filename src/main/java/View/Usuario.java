@@ -84,7 +84,7 @@ public class Usuario extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();       //Realiza la conexión
 			
-			String SSQL = "SELECT count(username) FROM Users WHERE username = ?;";
+			String SSQL = "SELECT count(username) FROM Users WHERE username = ?;";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
@@ -237,7 +237,7 @@ public class Usuario extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Usuarios tu = new Tabla_Usuarios();
-				tu.setVisible(true);
+				tu.setVisible(true);		//Abre la ventana Tabla_Usuarios
 				dispose();
 			}
 		});

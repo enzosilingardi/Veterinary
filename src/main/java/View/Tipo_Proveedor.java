@@ -38,7 +38,7 @@ public class Tipo_Proveedor extends JFrame {
 
 	
 
-	void mostrarTabla(){             // Carga la tabla con la informacion de la base de datos
+	void mostrarTabla(){    // Carga la tabla con la informacion de la base de datos
          
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -53,7 +53,7 @@ public class Tipo_Proveedor extends JFrame {
         try {
         	Connection con = Connect.getConexion();       //Realiza la conexión
         	
-        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Provider_Type" );
+        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Provider_Type" );		//Sentencia Sql
             ResultSet rs = ps.executeQuery();
             while (rs.next()){                        //Carga las columnas de la base de datos en la tabla
                 datos[0] = rs.getString(1);
@@ -65,7 +65,7 @@ public class Tipo_Proveedor extends JFrame {
             
             table.setModel(modelo);       //Setea el modelo
 
-            table.getColumnModel().getColumn(0).setMaxWidth(0);            // los 4 siguientes hacen que la columna del id sea invisible para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);     // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -101,7 +101,7 @@ public class Tipo_Proveedor extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT count(type_Name) FROM Provider_Type WHERE type_Name = ?;";
+			String SSQL = "SELECT count(type_Name) FROM Provider_Type WHERE type_Name = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
@@ -197,7 +197,7 @@ public class Tipo_Proveedor extends JFrame {
 		btnAgregar.setBounds(352, 130, 89, 23);
 		contentPane.add(btnAgregar);
 		
-		JButton btnEliminar = new JButton("Eliminar");               //Este botón elimina la fila seleccionada
+		JButton btnEliminar = new JButton("Eliminar");    //Este botón elimina la fila seleccionada
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -240,7 +240,7 @@ public class Tipo_Proveedor extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Proveedor tp = new Proveedor();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Proveedor
 				dispose();
 			}
 		});

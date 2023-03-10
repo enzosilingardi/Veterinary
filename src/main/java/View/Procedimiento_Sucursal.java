@@ -72,7 +72,7 @@ public class Procedimiento_Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();       //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"				//Sentencia Sql
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
@@ -104,7 +104,7 @@ public class Procedimiento_Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT DISTINCT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103) as pd,CONVERT(varchar(10),proced_Time,8) as pt\r\n"
+			String SSQL = "SELECT DISTINCT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103) as pd,CONVERT(varchar(10),proced_Time,8) as pt\r\n"  //Sentencia Sql
 					+ "FROM Medical_Procedure\r\n"
 					+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
 					+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
@@ -190,7 +190,7 @@ public class Procedimiento_Sucursal extends JFrame {
 		});
 	}
 
-	public int existeRel(Object procedimiento, Object sucursal) {       // Es una funcion que determina si ya existe la relacion entre procedimiento y sucursal
+	public int existeRel(Object procedimiento, Object sucursal) {      // Es una funcion que determina si ya existe la relacion entre procedimiento y sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -198,7 +198,7 @@ public class Procedimiento_Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Rel_Branch_Medical_P WHERE id_Procedure = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Branch_Medical_P WHERE id_Procedure = ? AND id_Branch = ?;";  //Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) procedimiento);
 			pst.setString(2, (String) sucursal);

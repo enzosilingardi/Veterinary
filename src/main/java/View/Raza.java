@@ -102,7 +102,7 @@ public class Raza extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT count(type) FROM Breed WHERE type = ?;";
+			String SSQL = "SELECT count(type) FROM Breed WHERE type = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, raza);
 			result = pst.executeQuery();
@@ -130,8 +130,8 @@ public class Raza extends JFrame {
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT count(Pet.id_Breed)\r\n"
+			cn = (Connection) Connect.getConexion();		//Realiza la Conexión
+			String SSQL = "SELECT count(Pet.id_Breed)\r\n"		//Sentencia Sql
 					+ "FROM Breed\r\n"
 					+ "JOIN Pet ON Pet.id_Breed = Breed.id_Breed\r\n"
 					+ "WHERE Breed.type LIKE ?;";
@@ -295,7 +295,7 @@ public class Raza extends JFrame {
 				try {
 					Connection con = Connect.getConexion();  //Realiza la conexión
 					
-					PreparedStatement ps = con.prepareStatement("UPDATE Breed SET type = ? WHERE id_Breed = ?" );  //Crea el statement
+					PreparedStatement ps = con.prepareStatement("UPDATE Breed SET type = ? WHERE id_Breed = ?" );  
 					
 					ps.setString(1, tipo);
 					ps.setInt(2, id);

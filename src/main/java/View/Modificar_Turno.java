@@ -114,7 +114,7 @@ public class Modificar_Turno extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";
+			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
@@ -159,7 +159,7 @@ public class Modificar_Turno extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";
+			String SSQL = "SELECT proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
@@ -286,7 +286,7 @@ public class Modificar_Turno extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
-				tt.setVisible(true);
+				tt.setVisible(true);		//Abre la ventana Tabla_Turnos
 				dispose();
 			
 			}
@@ -320,7 +320,7 @@ public class Modificar_Turno extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModPro bmm = new Buscar_Mascota_ModPro(turno);
-				bmm.setVisible(true);
+				bmm.setVisible(true);		//Abre la ventana Buscar_Mascota_ModPro recibiendo como parámetro el id del turno
 				dispose();
 			}
 		});
@@ -435,7 +435,7 @@ public class Modificar_Turno extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
-				tt.setVisible(true);
+				tt.setVisible(true);		//Abre la ventana Tabla_turnos
 				dispose();
 			
 			}
@@ -469,7 +469,7 @@ public class Modificar_Turno extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModPro bmm = new Buscar_Mascota_ModPro(turno);
-				bmm.setVisible(true);
+				bmm.setVisible(true);		//Abre la ventana Buscar_Mascota_ModPro
 				dispose();
 			}
 		});

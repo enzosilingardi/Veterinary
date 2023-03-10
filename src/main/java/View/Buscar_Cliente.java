@@ -43,8 +43,8 @@ public class Buscar_Cliente extends JFrame {
         String datos[] = new String[5];                  //Declara que va a haber 5 columnas
        
         try {
-        	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
+        	Connection con = Connect.getConexion();		//Realiza la conexión
+        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"		//Sentencia sql
         			+ "FROM Client;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){                             //Carga las columnas de la base de datos
@@ -87,7 +87,7 @@ public class Buscar_Cliente extends JFrame {
         try {
         	Connection con = Connect.getConexion();                            //Realiza la conexión
         	
-        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {                                                     // Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
+        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {                         // Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
         		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
             			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"' ;" );
         	}else {
@@ -167,13 +167,13 @@ public class Buscar_Cliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Cliente() {                                                  //Crea la ventana
+	public Buscar_Cliente() {                                   //Crea la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 633, 480);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));                    //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));          //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -189,7 +189,7 @@ public class Buscar_Cliente extends JFrame {
 		btnVolver.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				Factura factura = new Factura();
-				factura.setVisible(true);
+				factura.setVisible(true);			//Abre la ventana Factura
 				dispose();
 			}
 		});

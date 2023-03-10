@@ -56,7 +56,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
             
             table.setModel(modelo);								// se setea el modelo
             
-            table.getColumnModel().getColumn(0).setMaxWidth(0); // los 4 siguientes hacen que la columna del id sea invisible para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);     // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -161,7 +161,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));     // setea el icono de la ventana
 
 
 		setContentPane(contentPane);
@@ -193,7 +193,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Animal eliminado");			//Si es exitoso lo muestra en pantalla
+		                JOptionPane.showMessageDialog(null, "Animal eliminado");			//Si es exitoso lo muestra en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha eliminado un tipo de animal");		
 		               mostrarTabla();
 		            } else {
@@ -221,7 +221,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 				
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Animal (type) VALUES (?)" );  //Crea el statement
+					PreparedStatement ps = con.prepareStatement("INSERT INTO Animal (type) VALUES (?)" );  //Crea la sentencia sql
 					if(existeAnimal(tipo) != 0) {
 						JOptionPane.showMessageDialog(null, "Animal ya existe");            //Revisa si ya existe el registro
 					}else {
@@ -230,7 +230,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 					
 					result = ps.executeUpdate();
 					
-					if(result > 0){																//Si es exitoso lo muestra en pantalla
+					if(result > 0){																//Si es exitoso lo muestra en pantalla y lo añade al log
 		                JOptionPane.showMessageDialog(null, "Animal guardado");
 		                ControlFiles.addContent("Se ha añadido el tipo de animal "+tipo);
 		                limpiar();
@@ -271,7 +271,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				try {
 					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("UPDATE Animal SET type = ? WHERE id_Animal = ?" );  //Crea el statement
+					PreparedStatement ps = con.prepareStatement("UPDATE Animal SET type = ? WHERE id_Animal = ?" );  //Crea la sentencia sql
 					
 					ps.setString(1, tipo);
 					ps.setInt(2, id);
@@ -279,11 +279,11 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 					
 					result = ps.executeUpdate();
 					
-					if(result > 0){																		//Si es exitoso lo muestra
+					if(result > 0){																		//Si es exitoso lo muestra por pantalla y lo añade al log
 		                JOptionPane.showMessageDialog(null, "Animal modificado");
 		                ControlFiles.addContent("Se ha modificado un tipo de animal a "+tipo);
 		                mostrarTabla();
-		            } else {																			//Si falla lo muestra
+		            } else {																			//Si falla lo muestra por pantalla
 		                JOptionPane.showMessageDialog(null, "Error al modificar animal");
 		                mostrarTabla();
 		            }

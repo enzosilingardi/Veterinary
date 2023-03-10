@@ -33,7 +33,7 @@ public class Tipo_Producto extends JFrame {
 
 	
 
-	void mostrarTabla(){             // Carga la tabla con la informacion de la base de datos
+	void mostrarTabla(){     // Carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -60,7 +60,7 @@ public class Tipo_Producto extends JFrame {
             
             table.setModel(modelo);       //Setea el modelo
 
-            table.getColumnModel().getColumn(0).setMaxWidth(0);          // los 4 siguientes hacen que la columna del id sea invisible para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);     // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -97,7 +97,7 @@ public class Tipo_Producto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT count(type_Name) FROM Product_Type WHERE type_Name = ?;";
+			String SSQL = "SELECT count(type_Name) FROM Product_Type WHERE type_Name = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
@@ -236,7 +236,7 @@ public class Tipo_Producto extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Producto tp = new Producto();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Producto
 				dispose();
 			}
 		});
@@ -270,7 +270,7 @@ public class Tipo_Producto extends JFrame {
 				try {
 					Connection con = Connect.getConexion();   //Realiza la conexión
 					
-					PreparedStatement ps = con.prepareStatement("UPDATE Product_Type SET type_Name = ? WHERE id_Product_Type = ?" );  //Crea el statement
+					PreparedStatement ps = con.prepareStatement("UPDATE Product_Type SET type_Name = ? WHERE id_Product_Type = ?" ); 					
 					
 					ps.setString(1, tipo);
 					ps.setInt(2, id);

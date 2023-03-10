@@ -30,24 +30,24 @@ public class Buscar_Proveedor extends JFrame {
 	private JTextField txtCuit;
 	private JTextField txtDir;
 
-	void mostrarTabla(){                                            //Tabla que muestra los proveedores
+	void mostrarTabla(){       //Tabla que muestra los proveedores
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","CUIT","Dirección"});           //Nombre de las columnas
+        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","CUIT","Dirección"});     //Nombre de las columnas
        
-        table.setModel(modelo);               //Setea el modelo
+        table.setModel(modelo);     //Setea el modelo
         
         
         String datos[] = new String[4];       //Declara que va a haber 4 columnas
        
         try {
-        	Connection con = Connect.getConexion();           //Realiza la conexión
-        	
+        	Connection con = Connect.getConexion();      //Realiza la conexión
+        	//Sentencia sql
         	PreparedStatement ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
         			+ "FROM Provider;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){                         //Llena las columnas de la tabla con las columnas de la base de datos
+            while (rs.next()){                   //Llena las columnas de la tabla con las columnas de la base de datos
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -56,9 +56,9 @@ public class Buscar_Proveedor extends JFrame {
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);                                        //Setea el modelo
+            table.setModel(modelo);      //Setea el modelo
             
-            table.getColumnModel().getColumn(0).setMaxWidth(0);              //Las siguientes 4 vuelven invisible la columna id, para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);     //Las siguientes 4 vuelven invisible la columna id, para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -71,22 +71,22 @@ public class Buscar_Proveedor extends JFrame {
         
     }
 	
-	void mostrarTablaParametro(){                             //Muestra la tabla segun los parametros recibidos
+	void mostrarTablaParametro(){      //Muestra la tabla segun los parametros recibidos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
         modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","DNI","Dirección"});       //Nombre de las columnas
        
-        table.setModel(modelo);                      //Setea el modelo
+        table.setModel(modelo);      //Setea el modelo
         
         PreparedStatement ps = null;
         
-        String datos[] = new String[4];                  //Declara que va a haber 4 columnas
+        String datos[] = new String[4];      //Declara que va a haber 4 columnas
        
         try {
-        	Connection con = Connect.getConexion();                                 //Realiza la conexión
+        	Connection con = Connect.getConexion();       //Realiza la conexión
         	
-        	if(txtCuit.getText().isBlank() && txtDir.getText().isBlank()) {                            // Realiza la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
+        	if(txtCuit.getText().isBlank() && txtDir.getText().isBlank()) {                     // Realiza la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
         		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
             			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"';" );
         	}else {
@@ -121,7 +121,7 @@ public class Buscar_Proveedor extends JFrame {
         	}
         	
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){                               //Llena las columnas de la tabla con las columnas de la base de datos 
+            while (rs.next()){              //Llena las columnas de la tabla con las columnas de la base de datos 
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -131,9 +131,9 @@ public class Buscar_Proveedor extends JFrame {
                 modelo.addRow(datos);
 
             }
-            table.setModel(modelo);                                        //Setea el modelo
+            table.setModel(modelo);    //Setea el modelo
             
-            table.getColumnModel().getColumn(0).setMaxWidth(0);            //Las siguientes 4 vuelven invisible la columna id, para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);     //Las siguientes 4 vuelven invisible la columna id, para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -167,7 +167,7 @@ public class Buscar_Proveedor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Proveedor() {                                     //Crea la ventana
+	public Buscar_Proveedor() {      //Crea la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 633, 480);
 		contentPane = new JPanel();
@@ -185,25 +185,25 @@ public class Buscar_Proveedor extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");                 //Este botón cierra la ventana
+		JButton btnVolver = new JButton("Volver");           //Este botón cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Producto producto = new Producto();
-				producto.setVisible(true);
+				producto.setVisible(true);		//Abre la ventana Producto
 				dispose();
 			}
 		});
 		btnVolver.setBounds(458, 407, 149, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnSeleccionar = new JButton("Seleccionar");            //Este boton permite seleccionar un proveedor y la devuelve a la ventana Producto   
+		JButton btnSeleccionar = new JButton("Seleccionar");       //Este boton permite seleccionar un proveedor y la devuelve a la ventana Producto   
 		btnSeleccionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				String nom = table.getValueAt(fila,1).toString();
 				String id = table.getValueAt(fila,0).toString();
 				
-				Producto producto = new Producto(id,nom);                  //Abre la ventana Producto recibiendo como parámetro el id del proveedor y su nombre
+				Producto producto = new Producto(id,nom);       //Abre la ventana Producto recibiendo como parámetro el id del proveedor y su nombre
 				producto.setVisible(true);
 				dispose();
 				
@@ -239,7 +239,7 @@ public class Buscar_Proveedor extends JFrame {
 		lblDir.setBounds(274, 11, 68, 14);
 		contentPane.add(lblDir);
 		
-		JButton btnBuscar = new JButton("Buscar");                    //Filtra los resultados vistos en la tabla
+		JButton btnBuscar = new JButton("Buscar");            //Filtra los resultados vistos en la tabla
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mostrarTablaParametro();
@@ -248,7 +248,7 @@ public class Buscar_Proveedor extends JFrame {
 		btnBuscar.setBounds(419, 7, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		JButton btnLimpiar = new JButton("Limpiar");                   //Limpia los campos
+		JButton btnLimpiar = new JButton("Limpiar");         //Limpia los campos
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtNombre.setText("");

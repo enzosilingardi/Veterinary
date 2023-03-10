@@ -105,7 +105,7 @@ public class Producto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";
+			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";	//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));     //El primer elemento es en blanco
@@ -148,7 +148,7 @@ public class Producto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Product WHERE product_Name = ?;";
+			String SSQL = "SELECT count(*) FROM Product WHERE product_Name = ?;";	//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
 
@@ -351,7 +351,7 @@ public class Producto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				Tabla_Productos tp = new Tabla_Productos();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Productos
 				dispose();
 			}
 		});
@@ -362,7 +362,7 @@ public class Producto extends JFrame {
 		btnNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tipo_Producto tp = new Tipo_Producto();
-				tp.setVisible(true);
+				tp.setVisible(true);		
 				dispose();
 			}
 		});
@@ -373,7 +373,7 @@ public class Producto extends JFrame {
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor bp = new Buscar_Proveedor();
-				bp.setVisible(true);
+				bp.setVisible(true);		//Abre la ventana Buscar_Proveedor
 				dispose();
 			}
 		});
@@ -396,7 +396,7 @@ public class Producto extends JFrame {
 		txtIdPro.setText(id);
 	}
 
-	public Producto() {                           //Crea la ventana
+	public Producto() {                 //Crea la ventana
 		setTitle("Productos");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 464);
@@ -531,7 +531,7 @@ public class Producto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				Tabla_Productos tp = new Tabla_Productos();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Productos
 				dispose();
 			}
 		});
@@ -553,7 +553,7 @@ public class Producto extends JFrame {
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor bp = new Buscar_Proveedor();
-				bp.setVisible(true);
+				bp.setVisible(true);		//Abre la ventana Buscar_Proveedor
 				dispose();
 			}
 		});

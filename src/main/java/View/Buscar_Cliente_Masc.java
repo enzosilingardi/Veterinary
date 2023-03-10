@@ -42,8 +42,8 @@ public class Buscar_Cliente_Masc extends JFrame {
         String datos[] = new String[5];						// Declara que va a haber 5 columnas
        
         try {
-        	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
+        	Connection con = Connect.getConexion();				// Realiza la conexión
+        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"			//Sentencia sql
         			+ "FROM Client;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){							// Carga las columnas de la base de datos a la tabla
@@ -86,7 +86,7 @@ public class Buscar_Cliente_Masc extends JFrame {
         try {
         	Connection con = Connect.getConexion();					// Realiza la conexión
         	
-        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {														// Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
+        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {											// Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
         		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
             			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"' ;" );
         	}else {
@@ -189,7 +189,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Mascota mascota = new Mascota();
-				mascota.setVisible(true);
+				mascota.setVisible(true);					// Abre la ventana mascota
 				dispose();
 			}
 		});
@@ -205,7 +205,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 				
 				Mascota mascota = new Mascota(id,nom);			// abre la ventana mascota, recibiendo como parametro el id y el nombre del cliente
 				mascota.setVisible(true);
-				dispose();
+				dispose();								//Cierra la ventana
 				
 			}
 		});

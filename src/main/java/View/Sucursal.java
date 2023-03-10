@@ -68,8 +68,8 @@ public class Sucursal extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT *\r\n"
+			cn = (Connection) Connect.getConexion();		//Realiza la Conexión
+			String SSQL = "SELECT *\r\n"		//Sentencia Sql
 					+ "FROM Address\r\n"
 					+ "INNER JOIN City ON Address.id_City = City.id_City";
 			pst = cn.prepareStatement(SSQL);
@@ -116,7 +116,7 @@ public class Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Branch WHERE id_Branch= ? ;";
+			String SSQL = "SELECT count(*) FROM Branch WHERE id_Branch= ? ;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, direccion);
 
@@ -219,7 +219,7 @@ public class Sucursal extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Sucursales ts = new Tabla_Sucursales();
-				ts.setVisible(true);
+				ts.setVisible(true);		//Abre la ventana Tabla_Sucursales
 				dispose();
 			}
 		});

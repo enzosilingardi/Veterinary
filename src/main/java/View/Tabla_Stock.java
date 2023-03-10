@@ -72,7 +72,7 @@ public class Tabla_Stock extends JFrame {
 	            
 	            table.setModel(modelo);       //Setea el modelo
 	            
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);              // los 4 siguientes hacen que la columna del id sea invisible para el usuario
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);      // los 4 siguientes hacen que la columna del id sea invisible para el usuario
 	    		table.getColumnModel().getColumn(0).setMinWidth(0);
 	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
 	    		table.getColumnModel().getColumn(0).setResizable(false);
@@ -118,7 +118,7 @@ public class Tabla_Stock extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));    //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -144,10 +144,10 @@ public class Tabla_Stock extends JFrame {
 		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
-		if (perfil.equals("Admin") || perfil.equals("Manager")) {               //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
+		if (perfil.equals("Admin") || perfil.equals("Manager")) {        //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
 			
-			JButton btnModificar = new JButton("Modificar cantidad");          //Este botón permite modificar la cantidad del producto
+			JButton btnModificar = new JButton("Modificar cantidad");      //Este botón permite modificar la cantidad del producto
 			btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnModificar.setBorder(null);
 			btnModificar.setBackground(new Color(86, 211, 243));
@@ -297,7 +297,7 @@ public class Tabla_Stock extends JFrame {
 		
 	}
 
-	public Tabla_Stock() {                          //Crea la ventana
+	public Tabla_Stock() {       //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
@@ -306,7 +306,7 @@ public class Tabla_Stock extends JFrame {
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));      //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png"))); //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -319,7 +319,7 @@ public class Tabla_Stock extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");                  //Cierra la ventana
+		JButton btnVolver = new JButton("Volver");      //Cierra la ventana
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.setBorder(null);
 		btnVolver.setBackground(new Color(86, 211, 243));

@@ -110,7 +110,7 @@ public class Proveedor extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";
+			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));         //El primer elemento es en blanco
@@ -152,7 +152,7 @@ public class Proveedor extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();   //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Provider WHERE provider_Name = ? ;";
+			String SSQL = "SELECT count(*) FROM Provider WHERE provider_Name = ? ;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,nombre);
 
@@ -348,7 +348,7 @@ public class Proveedor extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Proveedor tp = new Tabla_Proveedor();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Proveedor
 				dispose();
 			}
 		});

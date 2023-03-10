@@ -140,14 +140,14 @@ public class Tabla_Usuarios extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Usuarios(String perfil) {                         //Crea la ventana recibiendo como parámetro el perfil del usuario
+	public Tabla_Usuarios(String perfil) {     //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 678, 398);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -160,7 +160,7 @@ public class Tabla_Usuarios extends JFrame {
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
-		JButton btnVolver = new JButton("Volver");              //Cierra la ventana
+		JButton btnVolver = new JButton("Volver");     //Cierra la ventana
 		btnVolver.setForeground(new Color(255, 255, 255));
 		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnVolver.setBackground(new Color(86, 211, 243));
@@ -303,7 +303,7 @@ public class Tabla_Usuarios extends JFrame {
 		mostrarTabla();
 	}
 
-	public Tabla_Usuarios() {                       //Crea la ventana
+	public Tabla_Usuarios() {     //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 678, 398);

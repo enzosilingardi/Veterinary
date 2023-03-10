@@ -129,7 +129,7 @@ public class Modificar_Sucursal extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Sucursales ts = new Tabla_Sucursales();
-				ts.setVisible(true);
+				ts.setVisible(true);		//Abre la ventana Tabla_Sucursales
 				dispose();
 			}
 		});
