@@ -7,10 +7,10 @@ import java.sql.*;
 public class Connect {
     public static Connection getConexion() throws ClassNotFoundException{       // Realiza la conexión con la base de datos
         
-        String connectionUrl = "jdbc:sqlserver://DESKTOP-NAG76QA\\SQLEXPRESS:1433;"        // Genera el URL de la conexión
+        String connectionUrl = "jdbc:sqlserver://DESKTOP-UQUV652\\SQLEXPRESS:1433;"        // Genera el URL de la conexión
                 +"database=DB_Veterinary;"
                 +"user=superusuario;"
-                +"password=contrasuperu2;"
+                +"password=contrasuperu1;"
                 +"encrypt=true;"
                 +"trustServerCertificate=true;"
                 +"loginTimeout=30;";

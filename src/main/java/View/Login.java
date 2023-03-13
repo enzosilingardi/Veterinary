@@ -181,7 +181,7 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				String usuario = txtUsuario.getText();
-				String contrasenia = txtContrasenia.getText();
+				String contrasenia = new String (txtContrasenia.getPassword());
 				
 					if(existeUsuario(usuario,contrasenia) != 0) {                       //Revisa si el usuario ingresado existe
 						
