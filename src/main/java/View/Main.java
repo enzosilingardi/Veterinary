@@ -246,6 +246,13 @@ public class Main extends JFrame {
 		btnUsuarios.setBounds(0, 490, 207, 23);
 		panel.add(btnUsuarios);
 		
+		btnUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tabla_Usuarios usuarios = new Tabla_Usuarios(perfil);
+				usuarios.setVisible(true);
+			}
+		});
+		
 		}
 		
 		JLabel lblLogo = new JLabel("");
@@ -255,12 +262,6 @@ public class Main extends JFrame {
 		
 		setScaleImage(lblLogo,"src/main/java/images/vet.png");         //Setea la imagen del logo
 		
-		btnUsuarios.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Tabla_Usuarios usuarios = new Tabla_Usuarios(perfil);
-				usuarios.setVisible(true);
-			}
-		});
 		
 		
 		JMenuBar menuBar = new JMenuBar();
