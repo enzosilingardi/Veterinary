@@ -184,7 +184,7 @@ public class Cliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Cliente() {         //Crea la ventana
+	public Cliente(final String perfil) {         //Crea la ventana
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 459, 575);
@@ -337,7 +337,7 @@ public class Cliente extends JFrame {
 		btnVolver.setBounds(296, 502, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Clientes tc = new Tabla_Clientes();
+				Tabla_Clientes tc = new Tabla_Clientes(perfil);
 				tc.setVisible(true);		//Abre la ventana Tabla_Clientes
 				dispose();
 			}
@@ -377,5 +377,8 @@ public class Cliente extends JFrame {
 		txtTelefonoOp.setColumns(10);
 		
 		
+	}
+	public Cliente() {
+		// TODO Auto-generated constructor stub
 	}
 }

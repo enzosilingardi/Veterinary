@@ -95,7 +95,7 @@ public class Tabla_Clientes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Clientes(String perfil) {                     //Crea la ventana recibiendo como parámetro el perfil del usuario
+	public Tabla_Clientes(final String perfil) {                     //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 750, 424);
 		contentPane = new JPanel();
@@ -129,6 +129,22 @@ public class Tabla_Clientes extends JFrame {
 		});
 		btnVolver.setBounds(618, 351, 89, 23);
 		contentPane.add(btnVolver);
+		
+		JButton btnAgregar = new JButton("Agregar");     //Abre la ventana Cliente
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setBorder(null);
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Cliente cliente = new Cliente(perfil);
+				cliente.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(28, 330, 91, 23);
+		contentPane.add(btnAgregar);
+		
 		
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {       //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
@@ -193,20 +209,7 @@ public class Tabla_Clientes extends JFrame {
 			btnEliminar.setBounds(220, 330, 91, 23);
 			contentPane.add(btnEliminar);
 			
-			JButton btnAgregar = new JButton("Agregar");     //Abre la ventana Cliente
-			btnAgregar.setForeground(new Color(255, 255, 255));
-			btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
-			btnAgregar.setBackground(new Color(86, 211, 243));
-			btnAgregar.setBorder(null);
-			btnAgregar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Cliente cliente = new Cliente();
-					cliente.setVisible(true);
-					dispose();
-				}
-			});
-			btnAgregar.setBounds(28, 330, 91, 23);
-			contentPane.add(btnAgregar);
+			
 		
 		}
 		
