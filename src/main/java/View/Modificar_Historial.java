@@ -35,11 +35,11 @@ public class Modificar_Historial extends JFrame {
 	private JTextField txtMascota;
 	private JTextField txtIdM;
 	
-	class ComboItem                                 //Clase usada para armar el ComboBox
+	class ComboItem                    //Clase usada para armar el ComboBox
 	{
-	    private String key;                          //Label visible del ComboBox
+	    private String key;             //Label visible del ComboBox
 	    
-	    private String value;                         //Valor del ComboBox
+	    private String value;                 //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -112,7 +112,7 @@ public class Modificar_Historial extends JFrame {
 		});
 	}
 	
-	private void cargarCampos(String historial) {               //Este proceso carga los campos recibiendo como parámetro el id del historial
+	private void cargarCampos(String historial) {     //Este proceso carga los campos recibiendo como parámetro el id del historial
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -122,7 +122,7 @@ public class Modificar_Historial extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();           //Realiza la conexión
 			
-			String SSQL = "SELECT description, date\r\n"
+			String SSQL = "SELECT description, date\r\n"		//Sentencia sql
 					+ "FROM Medical_History\r\n"
 					+ "WHERE id_Medical_History = ?";
 			pst = cn.prepareStatement(SSQL);
@@ -236,7 +236,7 @@ public class Modificar_Historial extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
-				th.setVisible(true);
+				th.setVisible(true);		//Abre la ventana Tabla_Historial recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
@@ -268,7 +268,7 @@ public class Modificar_Historial extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModHis bmh = new Buscar_Mascota_ModHis(perfil,historial);
-				bmh.setVisible(true);
+				bmh.setVisible(true);		//Abre la ventana Buscar_Mascota_ModHis recibienco como parámetro el perfil del usuairo y el id del historial
 				dispose();
 			}
 		});
@@ -371,7 +371,7 @@ public class Modificar_Historial extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
-				th.setVisible(true);
+				th.setVisible(true);		//Abre la ventana Tabla_Historial recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
@@ -403,7 +403,7 @@ public class Modificar_Historial extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_ModHis bmh = new Buscar_Mascota_ModHis(perfil,historial);
-				bmh.setVisible(true);
+				bmh.setVisible(true);		//Abre la ventana Buscar_Mascota_ModHis recibiendo como parámetro el perfil del usuario y el id del historial
 				dispose();
 			}
 		});

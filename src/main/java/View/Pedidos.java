@@ -71,7 +71,7 @@ public class Pedidos extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();         //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));      //El primer elemento es en blanco
@@ -100,7 +100,7 @@ public class Pedidos extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"		//Sentencia sql
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
@@ -145,7 +145,7 @@ public class Pedidos extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();         //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Orders WHERE id_Product = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Orders WHERE id_Product = ? AND id_Branch = ?;";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) producto);
 			pst.setString(2,(String) sucursal);
@@ -225,7 +225,7 @@ public class Pedidos extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Pedido tp = new Tabla_Pedido();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Pedido
 				dispose();
 			}
 		});

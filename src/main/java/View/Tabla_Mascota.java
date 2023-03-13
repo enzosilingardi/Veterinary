@@ -44,7 +44,7 @@ public class Tabla_Mascota extends JFrame {
 	       
 	        try {
 	        	Connection con = Connect.getConexion();     //Realiza la conexión
-	        	
+	        	//Sentencia Sql
 	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type,Pet.birthdate, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
 	        			+ "FROM Pet\r\n"
 	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"

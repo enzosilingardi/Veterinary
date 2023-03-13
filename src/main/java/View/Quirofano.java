@@ -117,7 +117,7 @@ public class Quirofano extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();        //Realiza la conexión
 			
-			String SSQL = "SELECT count(room_Number) FROM Operating_Room WHERE room_Number = ?;";
+			String SSQL = "SELECT count(room_Number) FROM Operating_Room WHERE room_Number = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, numero);
 			result = pst.executeQuery();
@@ -219,7 +219,7 @@ public class Quirofano extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
-				tq.setVisible(true);
+				tq.setVisible(true);		//Abre la ventana Tabla_Quirofano
 				dispose();
 			}
 		});

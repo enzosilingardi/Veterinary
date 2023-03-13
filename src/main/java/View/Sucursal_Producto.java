@@ -73,7 +73,7 @@ public class Sucursal_Producto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";
+			String SSQL = "SELECT * FROM Product ORDER BY id_Product";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));    //El primer elemento es en blanco
@@ -102,7 +102,7 @@ public class Sucursal_Producto extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();    //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"		//Sentencia Sql
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
@@ -149,7 +149,7 @@ public class Sucursal_Producto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Rel_Branch_Product WHERE id_Product = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Branch_Product WHERE id_Product = ? AND id_Branch = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) producto);
 			pst.setString(2, (String) sucursal);

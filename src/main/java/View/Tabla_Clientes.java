@@ -164,7 +164,7 @@ public class Tabla_Clientes extends JFrame {
 					try {
 						Connection con = Connect.getConexion();   //Realiza la conexión
 						
-						PreparedStatement ps = con.prepareStatement("DELETE FROM Client WHERE id_Client = ?" );   
+						PreparedStatement ps = con.prepareStatement("DELETE FROM Client WHERE id_Client = ?" );
 						
 							ps.setInt(1, id);
 						

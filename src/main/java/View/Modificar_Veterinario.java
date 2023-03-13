@@ -119,7 +119,7 @@ private JTextField txtDireccion;
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT name, surname, medical_License\r\n"
+			String SSQL = "SELECT name, surname, medical_License\r\n"		//Sentencia sql
 					+ "FROM Veterinarian WHERE id_Veterinarian = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
@@ -188,7 +188,7 @@ private JTextField txtDireccion;
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Veterinario tv = new Tabla_Veterinario();
-				tv.setVisible(true);
+				tv.setVisible(true);		//Abre la ventana Tabla_Veterinario
 				dispose();
 			}
 		});

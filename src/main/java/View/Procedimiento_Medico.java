@@ -110,10 +110,10 @@ public class Procedimiento_Medico extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";
+			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";  //Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
+			modelo.addElement(new ComboItem("",""));         //El primer elemento del ComboBox es en blanco
 			
 			while (result.next()) {
 				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));    //El elemento del ComboBox recibe el nombre del procedimiento como label y el id del procedimiento como valor
@@ -152,7 +152,7 @@ public class Procedimiento_Medico extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? And proced_Time = ?;";
+			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? And proced_Time = ?;";  // Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setDate(1,date);
 			pst.setTime(2, time);
@@ -280,7 +280,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
-				tt.setVisible(true);
+				tt.setVisible(true);    // Abre la ventana Tabla_Turnos
 				dispose();
 			}
 		});
@@ -325,7 +325,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Pro bmp = new Buscar_Mascota_Pro();
-				bmp.setVisible(true);
+				bmp.setVisible(true);			//Abre la ventana Buscar_Mascota_Pro
 				dispose();
 			}
 		});
@@ -442,7 +442,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Turnos tt = new Tabla_Turnos();
-				tt.setVisible(true);
+				tt.setVisible(true);		// Abre la ventana Tabla_Turnos
 				dispose();
 			}
 		});
@@ -487,7 +487,7 @@ public class Procedimiento_Medico extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Pro bmp = new Buscar_Mascota_Pro();
-				bmp.setVisible(true);
+				bmp.setVisible(true);		// Abre la ventana Buscar_Mascota_Pro
 				dispose();
 			}
 		});

@@ -105,7 +105,7 @@ public class Modificar_Producto extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();                                //Realiza la conexión
-			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";
+			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";	//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));              //El primer elemento es en blanco
@@ -150,7 +150,7 @@ public class Modificar_Producto extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();         //Realiza la conexión
 			
-			String SSQL = "SELECT product_Type, product_Name, description, cost_Price, sale_Price\r\n"
+			String SSQL = "SELECT product_Type, product_Name, description, cost_Price, sale_Price\r\n"		//Sentencia sql
 					+ "FROM Product WHERE id_Product = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
@@ -240,7 +240,7 @@ public class Modificar_Producto extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Productos tp = new Tabla_Productos();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Productos
 				dispose();
 			}
 		});
@@ -261,7 +261,7 @@ public class Modificar_Producto extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();    //Realiza la red neuronal
+					Connection con = Connect.getConexion();    //Realiza la conexión
 					
 					PreparedStatement ps = con.prepareStatement("UPDATE Product SET id_Provider = ?, product_Name = ?, id_Product_Type = ?, description = ?, cost_Price = ?, sale_Price = ? WHERE id_Product = ?" );
 					
@@ -325,11 +325,11 @@ public class Modificar_Producto extends JFrame {
 		cargarCampos(producto);
 		txtId.setText(producto);
 		
-		btnSelec = new JButton("Seleccionar");                 //Este botón permite seleccionar un proveedor
+		btnSelec = new JButton("Seleccionar");               //Este botón permite seleccionar un proveedor
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor_ModPro bpm = new Buscar_Proveedor_ModPro(producto);
-				bpm.setVisible(true);
+				bpm.setVisible(true);		//Abre la ventana Buscar_Proveedor_ModPro recibiendo como parámetro el id del producto
 				dispose();
 			}
 		});
@@ -415,7 +415,7 @@ public class Modificar_Producto extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Productos tp = new Tabla_Productos();
-				tp.setVisible(true);
+				tp.setVisible(true);		//Abre la ventana Tabla_Productos
 				dispose();
 			}
 		});
@@ -504,7 +504,7 @@ public class Modificar_Producto extends JFrame {
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Proveedor_ModPro bpm = new Buscar_Proveedor_ModPro(producto);
-				bpm.setVisible(true);
+				bpm.setVisible(true);		//Abre la ventana Buscar_Proveedor_ModPro recibiencdo como parámetro el id del producto
 				dispose();
 			}
 		});

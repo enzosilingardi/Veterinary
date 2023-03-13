@@ -317,7 +317,7 @@ public class Tabla_Historial extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota bm = new Buscar_Mascota(perfil);     //Envía el perfil como parámetro
-				bm.setVisible(true);
+				bm.setVisible(true);		//Abre la ventana Buscar_Mascota
 				dispose();
 			}
 		});
@@ -464,7 +464,7 @@ public class Tabla_Historial extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota bm = new Buscar_Mascota(perfil);    //Envía el perfil como parámetro
-				bm.setVisible(true);
+				bm.setVisible(true);		//Abre la ventana Buscar_Mascota
 				dispose();
 			}
 		});

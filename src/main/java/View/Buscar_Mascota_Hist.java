@@ -35,7 +35,7 @@ public class Buscar_Mascota_Hist extends JFrame {
 	private JLabel lblNombre;
 	private JComboBox cbAnimal;
 	
-	void mostrarTabla(){                                      //Tabla que muestra las mascotas
+	void mostrarTabla(){                 //Tabla que muestra las mascotas
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -48,7 +48,7 @@ public class Buscar_Mascota_Hist extends JFrame {
        
         try {
         	Connection con = Connect.getConexion();               //Realiza la conexión
-        	
+        	//Sentencia sql
         	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
         			+ "FROM Pet\r\n"
         			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
@@ -125,7 +125,7 @@ public class Buscar_Mascota_Hist extends JFrame {
         	
         	
             ResultSet rs = ps.executeQuery();   
-            while (rs.next()){                                             //Llena las columnas de la tabla con las columnas de la base de datos         
+            while (rs.next()){                     //Llena las columnas de la tabla con las columnas de la base de datos         
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -152,13 +152,13 @@ public class Buscar_Mascota_Hist extends JFrame {
         
     }
 	
-	class ComboItem                                      //Clase utilizada para armar un ComboBox
+	class ComboItem            //Clase utilizada para armar un ComboBox
 	{
-	    private String key;                                 //Label visible del ComboBox
+	    private String key;             //Label visible del ComboBox
 	    
-	    private String value;                               //Valor del ComboBox
+	    private String value;          //Valor del ComboBox
 
-	    public ComboItem(String key, String value)                //Genera el label que se verá en el combobox y el valor del objeto seleccionado
+	    public ComboItem(String key, String value)       //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
 	        this.key = key;
 	        this.value = value;
@@ -182,7 +182,7 @@ public class Buscar_Mascota_Hist extends JFrame {
 	}
 	
 	
-	public DefaultComboBoxModel cargarAnimal() {                            //Carga el ComboBox animal
+	public DefaultComboBoxModel cargarAnimal() {            //Carga el ComboBox animal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -191,7 +191,7 @@ public class Buscar_Mascota_Hist extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();
+			cn = (Connection) Connect.getConexion();					//Realiza la conexión
 			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";         //Realiza una sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
@@ -231,7 +231,7 @@ public class Buscar_Mascota_Hist extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Mascota_Hist(final String perfil) {                       //Crea la ventana recibiendo por parámetro el perfil del usuario
+	public Buscar_Mascota_Hist(final String perfil) {            //Crea la ventana recibiendo por parámetro el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 459);
 		contentPane = new JPanel();
@@ -255,21 +255,21 @@ public class Buscar_Mascota_Hist extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Historial_Medico hm = new Historial_Medico(perfil);
-				hm.setVisible(true);
+				hm.setVisible(true);	//Abre la ventana Historial_Medico recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
 		btnVolver.setBounds(497, 386, 89, 23);
 		contentPane.add(btnVolver);
 		
-		btnSelec = new JButton("Seleccionar");                            //Este boton permite seleccionar una mascota y la devuelve a la ventana Historial_Medico
+		btnSelec = new JButton("Seleccionar");                //Este boton permite seleccionar una mascota y la devuelve a la ventana Historial_Medico
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
 				String id = table.getValueAt(fila,0).toString();
 				String nom = table.getValueAt(fila,1).toString();
 				
-				Historial_Medico hm = new Historial_Medico(perfil,id,nom);            //Abre la ventana Historial_Medico , recibiendo como parámetro el perfil del usuario, el id de la mascota y su nombre
+				Historial_Medico hm = new Historial_Medico(perfil,id,nom);      //Abre la ventana Historial_Medico , recibiendo como parámetro el perfil del usuario, el id de la mascota y su nombre
 				hm.setVisible(true);     
 				dispose();
 			}

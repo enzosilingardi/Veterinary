@@ -228,7 +228,7 @@ public class Historial_Medico extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
-				th.setVisible(true);
+				th.setVisible(true);		//Abre la ventana Tabla_Historial recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
@@ -258,11 +258,11 @@ public class Historial_Medico extends JFrame {
 		contentPane.add(txtMascota);
 		txtMascota.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Buscar");                       //Este botón permite buscar una mascota
+		JButton btnNewButton = new JButton("Buscar");                //Este botón permite buscar una mascota
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Hist bmh = new Buscar_Mascota_Hist(perfil);
-				bmh.setVisible(true);
+				bmh.setVisible(true);		//Abre la ventana Buscar_Mascota_Hist recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
@@ -300,7 +300,7 @@ public class Historial_Medico extends JFrame {
 		lblMascota.setBounds(74, 64, 77, 14);
 		contentPane.add(lblMascota);
 		
-		JButton btnAgregar = new JButton("Agregar");                            //Este boton permite agregar un nuevo historial
+		JButton btnAgregar = new JButton("Agregar");                //Este boton permite agregar un nuevo historial
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String descripcion = txtDescripcion.getText();
@@ -353,7 +353,7 @@ public class Historial_Medico extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Historial th = new Tabla_Historial(perfil);
-				th.setVisible(true);
+				th.setVisible(true);			//Abre la ventana Tabla_Historial recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
@@ -387,7 +387,7 @@ public class Historial_Medico extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Mascota_Hist bmh = new Buscar_Mascota_Hist(perfil);
-				bmh.setVisible(true);
+				bmh.setVisible(true);			//Abre la ventana Buscar_Mascota_Hist recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});

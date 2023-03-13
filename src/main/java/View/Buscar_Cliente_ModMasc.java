@@ -44,8 +44,8 @@ public class Buscar_Cliente_ModMasc extends JFrame {
         String datos[] = new String[5];			//Declara que va a haber 5 columnas
        
         try {
-        	Connection con = Connect.getConexion();
-        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
+        	Connection con = Connect.getConexion();  		//Realiz la conexion
+        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"  //sentencia sql
         			+ "FROM Client;" );
             ResultSet rs = ps.executeQuery();
             while (rs.next()){							//Carga las columnas de la base de datos
@@ -88,7 +88,7 @@ public class Buscar_Cliente_ModMasc extends JFrame {
         try {
         	Connection con = Connect.getConexion();			//Realiza la conexión
         	
-        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {														// Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
+        	if(txtDni.getText().isBlank() && txtDir.getText().isBlank()) {											// Realiza la consulta, Dependiendo de cuales campos tengan algo escritos y cuales esten vacios
         		ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"
             			+ "FROM Client WHERE name ='"+txtNombre.getText()+"' OR surname ='"+txtNombre.getText()+"' ;" );
         	}else {
@@ -168,7 +168,7 @@ public class Buscar_Cliente_ModMasc extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Cliente_ModMasc(final String id) {				//Crea la ventana
+	public Buscar_Cliente_ModMasc(final String id) {				//Crea la ventana recibiendo como parametro el id de la mascota
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 633, 480);
 		contentPane = new JPanel();
@@ -190,7 +190,7 @@ public class Buscar_Cliente_ModMasc extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Modificar_Mascota mascota = new Modificar_Mascota(id);
-				mascota.setVisible(true);
+				mascota.setVisible(true);				//abre la ventana Modificar_Mascota recibiendo como parametro el id de la mascota
 				dispose();
 			}
 		});

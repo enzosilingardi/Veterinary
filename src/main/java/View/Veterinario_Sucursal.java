@@ -72,7 +72,7 @@ public class Veterinario_Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();          //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"		//Sentencia Sql
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
@@ -103,7 +103,7 @@ public class Veterinario_Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();   //Realiza la conexión
-			String SSQL = "Select *"
+			String SSQL = "Select *"		//Sentencia Sql
 					+ "FROM Veterinarian";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
@@ -184,7 +184,7 @@ public class Veterinario_Sucursal extends JFrame {
 		});
 	}
 
-	public int existeRel(Object veterinario, Object sucursal) {        // Es una funcion que determina si ya existe la relacion entre veterinario y sucursal
+	public int existeRel(Object veterinario, Object sucursal) {   // Es una funcion que determina si ya existe la relacion entre veterinario y sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -192,7 +192,7 @@ public class Veterinario_Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Rel_Veterinarian_Branch WHERE id_Veterinarian = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Veterinarian_Branch WHERE id_Veterinarian = ? AND id_Branch = ?;";	//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) veterinario);
 			pst.setString(2, (String) sucursal);

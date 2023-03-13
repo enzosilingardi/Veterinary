@@ -35,11 +35,11 @@ public class Instrumento_Quirofano extends JFrame {
 	private JTable table;
 	private JTextField txtCantidad;
 
-	class ComboItem                                     //Clase utilizada para armar el ComboBox
+	class ComboItem               //Clase utilizada para armar el ComboBox
 	{
-	    private String key;                             //Label visible del ComboBox
+	    private String key;                 //Label visible del ComboBox
 	    
-	    private String value;                           //Valor del ComboBox
+	    private String value;                //Valor del ComboBox
 
 	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
 	    {
@@ -64,7 +64,7 @@ public class Instrumento_Quirofano extends JFrame {
 	    }
 	}
 	
-	public DefaultComboBoxModel cargarQuirofano() {                   //Carga el ComboBox quirófano
+	public DefaultComboBoxModel cargarQuirofano() {        //Carga el ComboBox quirófano
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -73,9 +73,9 @@ public class Instrumento_Quirofano extends JFrame {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();                          //Realiza la conexión
+			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Operating_Room ORDER BY id_Operating_Room";
+			String SSQL = "SELECT * FROM Operating_Room ORDER BY id_Operating_Room";	//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
@@ -94,7 +94,7 @@ public class Instrumento_Quirofano extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarInstrumento() {                        //Carga el ComboBox instrumento
+	public DefaultComboBoxModel cargarInstrumento() {         //Carga el ComboBox instrumento
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -105,7 +105,7 @@ public class Instrumento_Quirofano extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();                    //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Medical_Instrument ORDER BY id_Medical_Instrument";
+			String SSQL = "SELECT * FROM Medical_Instrument ORDER BY id_Medical_Instrument";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
@@ -125,7 +125,7 @@ public class Instrumento_Quirofano extends JFrame {
     }
 	
 
-	void mostrarTabla(){                        //Tabla que muestra las relaciones entre instrumento y quirófano
+	void mostrarTabla(){            //Tabla que muestra las relaciones entre instrumento y quirófano
         
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -139,13 +139,13 @@ public class Instrumento_Quirofano extends JFrame {
        
         try {
         	Connection con = Connect.getConexion();         //Realiza la conexión
-        	
+        	//Sentencia sql
         	PreparedStatement ps = con.prepareStatement("SELECT id_ORMI, room_Number, instrument_Name, quantity\r\n"
         			+ "FROM Rel_Operating_R_Medical_I\r\n"
         			+ "INNER JOIN Operating_Room ON Operating_Room.id_Operating_Room = Rel_Operating_R_Medical_I.id_Operating_Room\r\n"
         			+ "INNER JOIN Medical_Instrument ON Medical_Instrument.id_Medical_Instrument = Rel_Operating_R_Medical_I.id_Medical_Instrument;" );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){                          // cargan las columnas de la base de datos a la tabla           
+            while (rs.next()){                   // cargan las columnas de la base de datos a la tabla           
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -155,7 +155,7 @@ public class Instrumento_Quirofano extends JFrame {
 
             }
             
-            table.setModel(modelo);                                   //Setea el modelo
+            table.setModel(modelo);       //Setea el modelo
 
             table.getColumnModel().getColumn(0).setMaxWidth(0);           // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
@@ -185,13 +185,13 @@ public class Instrumento_Quirofano extends JFrame {
 		});
 	}
 
-	public int existeRel(Object quirofano, Object instrumento) {              //Determina si ya se encuentra el instrumento en el quirófano
+	public int existeRel(Object quirofano, Object instrumento) {          //Determina si ya se encuentra el instrumento en el quirófano
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();                           //Realiza la conexión
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			
 			String SSQL = "SELECT count(*) FROM Rel_Operating_R_Medical_I WHERE id_Operating_Room = ? AND id_Medical_Instrument = ?;";   //Sentencia sql
 			pst = cn.prepareStatement(SSQL);
@@ -257,7 +257,7 @@ public class Instrumento_Quirofano extends JFrame {
 		lblTitulo.setBounds(111, 11, 193, 14);
 		contentPane.add(lblTitulo);
 		
-		JButton btnVolver = new JButton("Volver");
+		JButton btnVolver = new JButton("Volver");		//Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -268,7 +268,7 @@ public class Instrumento_Quirofano extends JFrame {
 		btnVolver.setBounds(635, 418, 89, 23);
 		contentPane.add(btnVolver);
 		
-		JButton btnEliminar = new JButton("Eliminar");                             //Este botón elimina la relación seleccionada
+		JButton btnEliminar = new JButton("Eliminar");           //Este botón elimina la relación seleccionada
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
@@ -307,7 +307,7 @@ public class Instrumento_Quirofano extends JFrame {
 		btnEliminar.setBounds(625, 210, 89, 23);
 		contentPane.add(btnEliminar);
 		
-		JButton btnAgregar = new JButton("Agregar");                         //Este boton permite agregar un instrumento a un quirófano
+		JButton btnAgregar = new JButton("Agregar");          //Este boton permite agregar un instrumento a un quirófano
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -318,12 +318,12 @@ public class Instrumento_Quirofano extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();                 //Realiza la conexión
+					Connection con = Connect.getConexion();      //Realiza la conexión
 					
 					PreparedStatement ps = con.prepareStatement("INSERT INTO Rel_Operating_R_Medical_I (id_Operating_Room,id_Medical_Instrument,quantity) VALUES (?,?,?)" );
 					
 					
-					if (((ComboItem) quirofano).getValue() == "") {                          //Revisa que los ComboBox no estén en blanco
+					if (((ComboItem) quirofano).getValue() == "") {                     //Revisa que los ComboBox no estén en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un quirófano");
 					}else {
 						if(((ComboItem) instrumento).getValue() == ""){
@@ -344,12 +344,12 @@ public class Instrumento_Quirofano extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento colocado");                                          //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
+		                JOptionPane.showMessageDialog(null, "Instrumento colocado");             //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                ControlFiles.addContent("Se ha asociado el instrumento "+instrumento+" al quirofano "+quirofano);
 		                limpiar();
 		                mostrarTabla();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al colocar instrumento");             //En caso de fallar, lo avisa en pantalla
+		                JOptionPane.showMessageDialog(null, "Error al colocar instrumento");       //En caso de fallar, lo avisa en pantalla
 		                limpiar();
 		            }
 				
@@ -382,7 +382,7 @@ public class Instrumento_Quirofano extends JFrame {
 		lblCantidad.setBounds(467, 163, 46, 14);
 		contentPane.add(lblCantidad);
 		
-		JButton btnModificar = new JButton("Modificar cantidad");                  //Modifica la cantidad del instrumento seleccionado
+		JButton btnModificar = new JButton("Modificar cantidad");      //Modifica la cantidad del instrumento seleccionado
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -390,7 +390,7 @@ public class Instrumento_Quirofano extends JFrame {
 				boolean flagError = false;
 				String cantidadAux = table.getValueAt(fila,3).toString();
 				
-				for(int i=0; i < cantidadAux.length(); i++ ) {              //Revisa que todos los caracteres sean números
+				for(int i=0; i < cantidadAux.length(); i++ ) {           //Revisa que todos los caracteres sean números
 					
 					if (Character.isLetter(cantidadAux.charAt(i))){
 						
@@ -403,7 +403,7 @@ public class Instrumento_Quirofano extends JFrame {
 				
 				if (flagError) {
 					
-					JOptionPane.showMessageDialog(null, "Solo se permiten números",null,JOptionPane.ERROR_MESSAGE);         //En caso de haber letras lo avisa en pantalla
+					JOptionPane.showMessageDialog(null, "Solo se permiten números",null,JOptionPane.ERROR_MESSAGE);      //En caso de haber letras lo avisa en pantalla
 					
 				}else {
 				
@@ -414,7 +414,7 @@ public class Instrumento_Quirofano extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();           //Realiza la conexión
+					Connection con = Connect.getConexion();        //Realiza la conexión
 					
 					PreparedStatement ps = con.prepareStatement("UPDATE Rel_Operating_R_Medical_I SET quantity = ? WHERE id_ORMI = ?");
 					
@@ -437,7 +437,7 @@ public class Instrumento_Quirofano extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cantidad modificada");                                       //Si fue existoso, lo avisa mediante un mensaje en pantalla y lo añade al log
+		                JOptionPane.showMessageDialog(null, "Cantidad modificada");        //Si fue existoso, lo avisa mediante un mensaje en pantalla y lo añade al log
 		                
 		                ControlFiles.addContent("Se ha modificado la cantidad del instrumento "+table.getValueAt(fila,3).toString()+" en el quirófano "+table.getValueAt(fila,1).toString());
 		                mostrarTabla();
@@ -460,7 +460,7 @@ public class Instrumento_Quirofano extends JFrame {
 		btnModificar.setBounds(533, 278, 151, 23);
 		contentPane.add(btnModificar);
 		
-		JButton btnAgregarT = new JButton("Agregar a todos");                 //Este botón agrega el instrumento seleccionado a todos los quirófanos
+		JButton btnAgregarT = new JButton("Agregar a todos");      //Este botón agrega el instrumento seleccionado a todos los quirófanos
 		btnAgregarT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -476,7 +476,7 @@ public class Instrumento_Quirofano extends JFrame {
 					
 					
 					
-					if(((ComboItem) instrumento).getValue() == ""){                     //Revisa que el ComboBox no esté vacío
+					if(((ComboItem) instrumento).getValue() == ""){        //Revisa que el ComboBox no esté vacío
 						
 						JOptionPane.showMessageDialog(null, "Seleccione un instrumento");
 						

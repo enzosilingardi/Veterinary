@@ -28,7 +28,7 @@ public class Tabla_Veterinario extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 
-	void mostrarTabla(){                // Carga la tabla con la informacion de la base de datos
+	void mostrarTabla(){     // Carga la tabla con la informacion de la base de datos
 	        
 	        DefaultTableModel modelo = new DefaultTableModel(); 
 	        
@@ -90,7 +90,7 @@ public class Tabla_Veterinario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Veterinario(String perfil) {                //Crea la ventana recibiendo como parámetro el perfil del usuario
+	public Tabla_Veterinario(String perfil) {    //Crea la ventana recibiendo como parámetro el perfil del usuario
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);
 		contentPane = new JPanel();
@@ -223,7 +223,7 @@ public class Tabla_Veterinario extends JFrame {
 	}
 
 
-	public Tabla_Veterinario() {                   //Crea la ventana
+	public Tabla_Veterinario() {		 //Crea la ventana
 		// TODO Auto-generated constructor stub
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 597, 382);

@@ -28,7 +28,7 @@ public class Emisor extends JFrame {
 	private JTextField txtCuit;
 	private JTextField txtEmpresa;
 
-	void cargarEmisor() {                                    //Este proceso carga los datos del emisor actual
+	void cargarEmisor() {             //Este proceso carga los datos del emisor actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -37,12 +37,12 @@ public class Emisor extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();           //Realiza la conexión
-			String SSQL = "SELECT * FROM Emitter";
+			String SSQL = "SELECT * FROM Emitter";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			
 			
-			while (result.next()) {                                       //Carga los campos con los datos en el registro
+			while (result.next()) {                       //Carga los campos con los datos en el registro
 				txtEmisor.setText(result.getString("name"));
 				txtCuit.setText(result.getString("cuit"));
 				txtEmpresa.setText(result.getString("address"));
@@ -75,7 +75,7 @@ public class Emisor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Emisor() {                                             //Crea la ventana
+	public Emisor() {         //Crea la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);                  
 		setBounds(100, 100, 293, 336);
 		contentPane = new JPanel();
@@ -113,7 +113,7 @@ public class Emisor extends JFrame {
 		contentPane.add(txtEmpresa);
 		txtEmpresa.setColumns(10);
 		
-		JButton btnEditar = new JButton("Editar");                 //Actualiza los datos del emisor
+		JButton btnEditar = new JButton("Editar");          //Actualiza los datos del emisor
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtEmisor.getText();
@@ -141,12 +141,12 @@ public class Emisor extends JFrame {
 					result = ps.executeUpdate();
 					
 					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Emisor modificado");             //En caso de ser exitoso, lo muestra en pantalla y vuelve a la ventana Factura
+		                JOptionPane.showMessageDialog(null, "Emisor modificado");       //En caso de ser exitoso, lo muestra en pantalla y vuelve a la ventana Factura
 		                Factura factura = new Factura();
 						factura.setVisible(true);
 						dispose();
 		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar emisor");         //En caso de fallar, lo muestra en pantalla
+		                JOptionPane.showMessageDialog(null, "Error al modificar emisor");      //En caso de fallar, lo muestra en pantalla
 		               
 		            }
 				
@@ -162,11 +162,11 @@ public class Emisor extends JFrame {
 		btnEditar.setBounds(23, 252, 89, 23);
 		contentPane.add(btnEditar);
 		
-		JButton btnVolver = new JButton("Volver");                 //Este botón cierra la ventana
+		JButton btnVolver = new JButton("Volver");            //Este botón cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Factura factura = new Factura();
-				factura.setVisible(true);
+				factura.setVisible(true);		//Abre la ventana Factura
 				dispose();
 			}
 		});

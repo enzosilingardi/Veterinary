@@ -80,7 +80,7 @@ public class Modificar_Mascota extends JFrame {
 	
 
 	
-	public DefaultComboBoxModel cargarCliente() {                       //Este ComboBox no es utilizado en la versión actual
+	public DefaultComboBoxModel cargarCliente() {            //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -120,7 +120,7 @@ public class Modificar_Mascota extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();                    //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";
+			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("Seleccionar animal",""));      //El primer elemento es "Seleccionar animal"
@@ -186,7 +186,7 @@ public class Modificar_Mascota extends JFrame {
 		});
 	}
 
-	public int existeMascota(Object duenio, String nombre) {               //Ese procedimiento determina si ya existe la mascota
+	public int existeMascota(Object duenio, String nombre) {          //Ese procedimiento determina si ya existe la mascota
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -194,7 +194,7 @@ public class Modificar_Mascota extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();     //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Pet WHERE name = ? AND id_Client = ? ;";
+			String SSQL = "SELECT count(*) FROM Pet WHERE name = ? AND id_Client = ? ;";	//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			pst.setString(2,(String) duenio);
@@ -227,7 +227,7 @@ public class Modificar_Mascota extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();                          //Realiza la conexión
-			String SSQL = "SELECT name, age FROM Pet WHERE id_Pet = ?";
+			String SSQL = "SELECT name, age FROM Pet WHERE id_Pet = ?";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
@@ -252,7 +252,7 @@ public class Modificar_Mascota extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Mascota(final String mascota,String id,String nom) {                     //Crea la ventana recibiendo por parámetro el id de la mascota, y el ide y el nombre del cliente
+	public Modificar_Mascota(final String mascota,String id,String nom) {          //Crea la ventana recibiendo por parámetro el id de la mascota, y el ide y el nombre del cliente
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 479);
 		contentPane = new JPanel();
@@ -427,7 +427,7 @@ public class Modificar_Mascota extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota);
-				bcm.setVisible(true);
+				bcm.setVisible(true);		//Abre la ventana Buscar_Cliente_ModMasc recibiendo como parámetro el id de la mascota
 				dispose();
 			}
 		});
@@ -454,7 +454,7 @@ public class Modificar_Mascota extends JFrame {
 				LocalDate date = LocalDate.parse(fecha);
 				LocalDate dateA = LocalDate.now(); 
 				Period diff_anio = Period.between(date, dateA);
-				txtEdad.setText(diff_anio.getYears()+"");                    //Coloca la edad obtenida en el campo edad
+				txtEdad.setText(diff_anio.getYears()+"");            //Coloca la edad obtenida en el campo txtEdad
 			}
 		});
 		btnGen.setBounds(315, 177, 114, 23);
@@ -466,14 +466,14 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(lblFecha);
 	}
 
-	public Modificar_Mascota(final String mascota) {                      //Crea la ventana recibiendo por parámetro el id de la mascota
+	public Modificar_Mascota(final String mascota) {          //Crea la ventana recibiendo por parámetro el id de la mascota
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 477);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));                //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));           //Setea el icono de la ventana
 		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -542,7 +542,7 @@ public class Modificar_Mascota extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Mascota tm = new Tabla_Mascota();
-				tm.setVisible(true);
+				tm.setVisible(true);		//Abre la ventana Tabla_Mascota
 				dispose();
 			}
 		});
@@ -573,7 +573,7 @@ public class Modificar_Mascota extends JFrame {
 				int result = 0;
 				
 				try {
-					Connection con = Connect.getConexion();
+					Connection con = Connect.getConexion();		//Realiza la conexión
 					
 					
 						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ?, birthdate = ? WHERE id_Pet = ?" );
@@ -639,7 +639,7 @@ public class Modificar_Mascota extends JFrame {
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota);
-				bcm.setVisible(true);
+				bcm.setVisible(true);		//Abre la ventana Buscar_Cliente_ModMasc recibiendo como parámetro el id de la mascota
 				dispose();
 			}
 		});
@@ -669,7 +669,7 @@ public class Modificar_Mascota extends JFrame {
 				LocalDate date = LocalDate.parse(fecha);
 				LocalDate dateA = LocalDate.now(); 
 				Period diff_anio = Period.between(date, dateA);
-				txtEdad.setText(diff_anio.getYears()+"");             //Coloca la edad obtenida en el campo edad
+				txtEdad.setText(diff_anio.getYears()+"");             //Coloca la edad obtenida en el campo txtEdad
 			}
 		});
 		contentPane.add(btnGen);

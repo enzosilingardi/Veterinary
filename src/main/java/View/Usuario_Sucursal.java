@@ -64,7 +64,7 @@ public class Usuario_Sucursal extends JFrame {
 	}
 	
 
-	public DefaultComboBoxModel cargarUsuario() {          //Carga el ComboBox usuario
+	public DefaultComboBoxModel cargarUsuario() {  //Carga el ComboBox usuario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -75,7 +75,7 @@ public class Usuario_Sucursal extends JFrame {
 		try { 
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT * FROM Users ORDER BY id_User";
+			String SSQL = "SELECT * FROM Users ORDER BY id_User";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			modelo.addElement(new ComboItem("",""));     //El primer elemento está en blanco
@@ -104,7 +104,7 @@ public class Usuario_Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"		//sentencia Sql
 					+ "FROM Branch";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
@@ -185,7 +185,7 @@ public class Usuario_Sucursal extends JFrame {
 		});
 	}
 
-	public int existeRel(Object usuario, Object sucursal) {          // Es una funcion que determina si ya existe la relacion entre usuario y sucursal
+	public int existeRel(Object usuario, Object sucursal) {   // Es una funcion que determina si ya existe la relacion entre usuario y sucursal
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -193,7 +193,7 @@ public class Usuario_Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();       //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Rel_Users_Branch WHERE id_User = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Users_Branch WHERE id_User = ? AND id_Branch = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) usuario);
 			pst.setString(2, (String) sucursal);
@@ -230,7 +230,7 @@ public class Usuario_Sucursal extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));       //Setea el icono de la ventana
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png"))); //Setea el icono de la ventana
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

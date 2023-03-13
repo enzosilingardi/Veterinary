@@ -53,7 +53,7 @@ public class Modificar_Quirofano extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();    //Realiza la conexión
 			
-			String SSQL = "SELECT room_Number FROM Operating_Room WHERE id_Operating_Room = ?";
+			String SSQL = "SELECT room_Number FROM Operating_Room WHERE id_Operating_Room = ?";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
 			
@@ -97,7 +97,7 @@ public class Modificar_Quirofano extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
-				tq.setVisible(true);
+				tq.setVisible(true);		//Abre la ventana Tabla_Quirofano recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});

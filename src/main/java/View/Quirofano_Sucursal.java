@@ -102,7 +102,7 @@ public class Quirofano_Sucursal extends JFrame {
 		
 		try {
 			cn = (Connection) Connect.getConexion();         //Realiza la conexión
-			String SSQL = "Select *\r\n"
+			String SSQL = "Select *\r\n"			//Sentencia Sql
 					+ "FROM Branch\r\n"
 					+ "ORDER BY Branch.address";
 			pst = cn.prepareStatement(SSQL);
@@ -147,7 +147,7 @@ public class Quirofano_Sucursal extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();      //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Rel_Branch_Operating_R WHERE id_Operating_Room = ? AND id_Branch = ?;";
+			String SSQL = "SELECT count(*) FROM Rel_Branch_Operating_R WHERE id_Operating_Room = ? AND id_Branch = ?;";		//Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1,(String) quirofano);
 			pst.setString(2, (String) sucursal);
@@ -202,7 +202,7 @@ void mostrarTabla(){            // Carga la tabla con la informacion de la base 
             
             table.setModel(modelo);     //Setea el modelo
             
-            table.getColumnModel().getColumn(0).setMaxWidth(0);          // los 4 siguientes hacen que la columna del id sea invisible para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);     // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -362,7 +362,7 @@ void mostrarTabla(){            // Carga la tabla con la informacion de la base 
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
-				tq.setVisible(true);
+				tq.setVisible(true);		//Abre la ventana Tabla_Quirofano
 				dispose();
 			}
 		});

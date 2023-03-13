@@ -31,7 +31,7 @@ public class Tipo_Procedimiento extends JFrame {
 	private JTable table;
 
 
-	void mostrarTabla(){                 // Carga la tabla con la informacion de la base de datos
+	void mostrarTabla(){        // Carga la tabla con la informacion de la base de datos
         
         DefaultTableModel modelo = new DefaultTableModel(); 
         
@@ -58,7 +58,7 @@ public class Tipo_Procedimiento extends JFrame {
             
             table.setModel(modelo);        //Setea el modelo
 
-            table.getColumnModel().getColumn(0).setMaxWidth(0);          // los 4 siguientes hacen que la columna del id sea invisible para el usuario
+            table.getColumnModel().getColumn(0).setMaxWidth(0);    // los 4 siguientes hacen que la columna del id sea invisible para el usuario
     		table.getColumnModel().getColumn(0).setMinWidth(0);
     		table.getColumnModel().getColumn(0).setPreferredWidth(0);
     		table.getColumnModel().getColumn(0).setResizable(false);
@@ -93,9 +93,9 @@ public class Tipo_Procedimiento extends JFrame {
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();   //Revisa la conexión
+			cn = (Connection) Connect.getConexion();   //Realiza la conexión
 			
-			String SSQL = "SELECT count(proced_Name) FROM Procedure_Type WHERE proced_Name = ?;";
+			String SSQL = "SELECT count(proced_Name) FROM Procedure_Type WHERE proced_Name = ?;";   //Sentencia Sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, nombre);
 			result = pst.executeQuery();
@@ -119,7 +119,7 @@ public class Tipo_Procedimiento extends JFrame {
 	
 	
 	
-	private void limpiar() {              //Este procedimiento limpia los campos
+	private void limpiar() {     //Este procedimiento limpia los campos
 		txtNombre.setText("");
 		
 	}
@@ -149,7 +149,7 @@ public class Tipo_Procedimiento extends JFrame {
 		contentPane.add(txtNombre);
 		txtNombre.setColumns(10);
 		
-		JButton btnAgregar = new JButton("Agregar");             //Este boton permite agregar un tipo de procedimiento
+		JButton btnAgregar = new JButton("Agregar");   //Este boton permite agregar un tipo de procedimiento
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
@@ -237,7 +237,7 @@ public class Tipo_Procedimiento extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Procedimiento_Medico pm = new Procedimiento_Medico();
-				pm.setVisible(true);
+				pm.setVisible(true);		//Abre la ventana Procedimiento_Medico
 				dispose();
 			}
 		});

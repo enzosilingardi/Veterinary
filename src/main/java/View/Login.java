@@ -53,15 +53,15 @@ public class Login extends JFrame {
 		});
 	}
 	
-	public int existeUsuario(String usuario, String contrasenia) {              //Revisa si existe el usuario
+	public int existeUsuario(String usuario, String contrasenia) {        //Revisa si existe el usuario
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
 		
 		try {
-			cn = (Connection) Connect.getConexion();               //Realiza la conexión
+			cn = (Connection) Connect.getConexion();       //Realiza la conexión
 			
-			String SSQL = "SELECT count(*) FROM Users WHERE username = ? AND password = ?   ;";
+			String SSQL = "SELECT count(*) FROM Users WHERE username = ? AND password = ?   ;";		//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, usuario);
 			pst.setString(2, contrasenia);
@@ -83,7 +83,7 @@ public class Login extends JFrame {
 		
 	}
 	
-	public String perfilUsuario(String usuario, String contrasenia) {               //Toma el perfil del usuario ingresado según su nombre de usuario y contraseña
+	public String perfilUsuario(String usuario, String contrasenia) {          //Toma el perfil del usuario ingresado según su nombre de usuario y contraseña
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;
@@ -91,7 +91,7 @@ public class Login extends JFrame {
 		try {
 			cn = (Connection) Connect.getConexion();          //Realiza la contraseña
 			
-			String SSQL = "SELECT profile FROM Users WHERE username = ? AND password = ?   ;";
+			String SSQL = "SELECT profile FROM Users WHERE username = ? AND password = ?   ;";	//Sentencia sql
 			pst = cn.prepareStatement(SSQL);
 			pst.setString(1, usuario);
 			pst.setString(2, contrasenia);
@@ -115,7 +115,7 @@ public class Login extends JFrame {
 	}
 
 	
-	private void setScaleImage(JLabel lblFoto, String rutaFoto) {          //Setea la escala de la imagen ingresada
+	private void setScaleImage(JLabel lblFoto, String rutaFoto) {        //Setea la escala de la imagen ingresada
 		ImageIcon foto = new ImageIcon(rutaFoto);
 		Icon icono = new ImageIcon(foto.getImage().getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), 1));
 		lblFoto.setIcon(icono);
@@ -125,7 +125,7 @@ public class Login extends JFrame {
 	 */
 	public Login() {          //Crea la ventana
 		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");		//Setea el LookAndFeel
 		} catch (ClassNotFoundException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -183,7 +183,7 @@ public class Login extends JFrame {
 				String usuario = txtUsuario.getText();
 				String contrasenia = new String (txtContrasenia.getPassword());
 				
-					if(existeUsuario(usuario,contrasenia) != 0) {                       //Revisa si el usuario ingresado existe
+					if(existeUsuario(usuario,contrasenia) != 0) {            //Revisa si el usuario ingresado existe
 						
 						Main main = new Main(perfilUsuario(usuario,contrasenia));         //Abre la ventana principal usando como parámetro el perfil del usuario
 						main.setVisible(true);
@@ -199,7 +199,7 @@ public class Login extends JFrame {
 		btnIngresar.setBounds(244, 196, 89, 23);
 		contentPane.add(btnIngresar);
 		
-		JButton btnCerrar = new JButton("Cerrar");                //Cierra el programa
+		JButton btnCerrar = new JButton("Cerrar");            //Cierra el programa
 		btnCerrar.setForeground(new Color(255, 255, 255));
 		btnCerrar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnCerrar.setBackground(new Color(86, 211, 243));
@@ -217,7 +217,7 @@ public class Login extends JFrame {
 		txtContrasenia.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if (txtContrasenia.getText().length() >= 16 )         //Permite que solo se ingresen hasta 16 caracteres en el campo contraseña
+				if (txtContrasenia.getText().length() >= 16 )       //Permite que solo se ingresen hasta 16 caracteres en el campo contraseña
 		            e.consume(); 
 			}
 		});

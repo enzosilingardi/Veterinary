@@ -138,7 +138,7 @@ public class Modificar_Cliente extends JFrame {
 			try {
 				cn = (Connection) Connect.getConexion();   //Realiza la conexión
 				
-				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate FROM Client WHERE id_Client = ?";
+				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate FROM Client WHERE id_Client = ?";	//Sentencia sql
 				pst = cn.prepareStatement(SSQL);
 				pst.setInt(1, id);
 				
@@ -212,7 +212,7 @@ public class Modificar_Cliente extends JFrame {
 		
 		cbGenero = new JComboBox();
 		cbGenero.setBounds(226, 252, 171, 22);
-		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));             //Crea un ComboBox con los generos que puede tener el cliente
+		cbGenero.setModel(new DefaultComboBoxModel(new String[] {"Hombre", "Mujer", "Otros"}));         //Crea un ComboBox con los generos que puede tener el cliente
 		contentPane.add(cbGenero);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
@@ -224,12 +224,12 @@ public class Modificar_Cliente extends JFrame {
 		contentPane.add(txtTelefono);
 		txtTelefono.setColumns(10);
 		
-		JButton btnVolver = new JButton("Volver");                //Cierra la ventana
+		JButton btnVolver = new JButton("Volver");        //Cierra la ventana
 		btnVolver.setBounds(254, 447, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Clientes tc = new Tabla_Clientes();
-				tc.setVisible(true);
+				tc.setVisible(true);	//Abre la ventana Tabla_Clientes
 				dispose();
 			}
 		});
@@ -302,7 +302,7 @@ public class Modificar_Cliente extends JFrame {
 						if(validaEmail(email)) {             //Revisa si el formato del E-Mail es correcto
 							ps.setString(8,email);
 						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");      //Si no es correcot lo avisa en pantalla
+							JOptionPane.showMessageDialog(null, "E-Mail no válido");      //Si no es correcto lo avisa en pantalla
 						}
 						
 						
