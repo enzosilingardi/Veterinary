@@ -236,6 +236,8 @@ public class Main extends JFrame {
 		panel.add(btnClientes);
 		btnClientes.setBackground(new Color(86, 211, 243));
 		
+		if (perfil.equals("Admin") || perfil.equals("Manager")) { 
+		
 		JButton btnUsuarios = new JButton("Usuarios");            //Abre la ventana Tabla_Usuarios usando como parámetro el perfil del usuario
 		btnUsuarios.setForeground(new Color(255, 255, 255));
 		btnUsuarios.setFont(new Font("Roboto", Font.BOLD, 14));
@@ -243,6 +245,8 @@ public class Main extends JFrame {
 		btnUsuarios.setBorder(null);
 		btnUsuarios.setBounds(0, 490, 207, 23);
 		panel.add(btnUsuarios);
+		
+		}
 		
 		JLabel lblLogo = new JLabel("");
 		lblLogo.setBorder(null);
