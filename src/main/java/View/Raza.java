@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Raza;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -35,42 +36,7 @@ public class Raza extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Raza"});        //Nombre de las columnas
-       
-        table.setModel(modelo);           //Setea el modelo
-        
-        
-        
-        String datos[] = new String[2];      //Declara que va a haber 2 columnas
-       
-        try {
-        	Connection con = Connect.getConexion();      //Realiza la conexión
-        	
-        	PreparedStatement ps = con.prepareStatement("SELECT * FROM Breed;" );   //Sentencia sql
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){                 //Carga las columnas de la base de datos en la tabla
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                
-                modelo.addRow(datos);
-
-            }
-            
-            table.setModel(modelo);     //Setea el modelo
-            
-            table.getColumnModel().getColumn(0).setMaxWidth(0);        // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-    		
-    		
-    		
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        Consulta_Raza.tabla(modelo, table);
         
     }
 	/**
@@ -94,35 +60,7 @@ public class Raza extends JFrame {
 		txtTipo.setText("");    
 	}
 	
-	public int existeRaza(String raza) {          //Este procedimiento revisa si ya existe la raza
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			
-			String SSQL = "SELECT count(type) FROM Breed WHERE type = ?;";		//Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, raza);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);          //Si ya existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+
 	
 	public int razaEnUso(String raza) {       //Este procedimiento no es utilizado en la versión actual
 		Connection cn = null;
@@ -192,37 +130,15 @@ public class Raza extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");              //Este botón elimina la raza seleccionada
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
+				
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String tipo = table.getValueAt(fila,1).toString();
 				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Breed WHERE id_Breed = ?" );
-					
-					ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Raza eliminada");             //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado la raza "+table.getValueAt(fila,1).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar raza");    //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Raza está en uso, por favor elimine todos los registros relacionados");   //En caso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Raza.eliminar(id, tipo);
+				
+				mostrarTabla();
+				
 			}
 		});
 		btnEliminar.setBounds(466, 91, 89, 23);
@@ -231,37 +147,13 @@ public class Raza extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");            //Este botón permite agragar una raza
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
+				
 				String tipo = txtTipo.getText();
 				
-				try {
-					Connection con = Connect.getConexion();
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Breed (type) VALUES (?)" );  //Crea el statement
-					if(existeRaza(tipo) != 0) {
-						JOptionPane.showMessageDialog(null, "Raza ya existe");            //Revisa si ya existe el registro
-					}else {
-						ps.setString(1, tipo);
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Raza guardada");       //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha agregado la raza "+tipo);
-		                limpiar();
-		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar raza");     //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		                mostrarTabla();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Raza.agregar(tipo);
+				limpiar();
+				mostrarTabla();
+				
 			}
 		});
 		btnAgregar.setBounds(369, 91, 89, 23);
@@ -287,38 +179,17 @@ public class Raza extends JFrame {
 		JButton btnModificar = new JButton("Modificar");           //Este botón permite modificar la raza seleccionada
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
+				
 				
 				int fila = table.getSelectedRow();
 				String tipo = table.getValueAt(fila,1).toString();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				try {
-					Connection con = Connect.getConexion();  //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Breed SET type = ? WHERE id_Breed = ?" );  
-					
-					ps.setString(1, tipo);
-					ps.setInt(2, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Raza modificada");       //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha modificado la raza "+table.getValueAt(fila,1).toString());
-		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar raza");    //En caso de fallar, lo avisa en pantalla
-		                mostrarTabla();
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				String nombre = table.getValueAt(fila,1).toString();
+				
+				Consulta_Raza.modificar(tipo, id, nombre);
+				
+				mostrarTabla();
+				
 			}
 		});
 		btnModificar.setBounds(421, 136, 89, 23);
