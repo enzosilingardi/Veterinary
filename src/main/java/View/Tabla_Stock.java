@@ -144,7 +144,7 @@ public class Tabla_Stock extends JFrame {
 		btnVolver.setBounds(452, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
-		if (perfil.equals("Admin") || perfil.equals("Manager")) {        //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
+		
 		
 			
 			JButton btnModificar = new JButton("Modificar cantidad");      //Este botón permite modificar la cantidad del producto
@@ -292,7 +292,7 @@ public class Tabla_Stock extends JFrame {
 			});
 			btnEliminar.setBounds(193, 275, 143, 23);
 			contentPane.add(btnEliminar);
-		}
+		
 		mostrarTabla();
 		
 	}

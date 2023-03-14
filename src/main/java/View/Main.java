@@ -213,7 +213,7 @@ public class Main extends JFrame {
 		btnHistoriales.setBounds(0, 320, 207, 23);
 		panel.add(btnHistoriales);
 		
-		JButton btnTurnos = new JButton("Turnos");            //Abre la ventana Tabla_Turnos usando como parámetro el perfil del usuario
+		JButton btnTurnos = new JButton("Turnos");            //Abre la ventana Tabla_Turnos 
 		btnTurnos.setBorder(null);
 		btnTurnos.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnTurnos.setForeground(new Color(255, 255, 255));
@@ -222,7 +222,7 @@ public class Main extends JFrame {
 		panel.add(btnTurnos);
 		btnTurnos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Turnos tt = new Tabla_Turnos(perfil);
+				Tabla_Turnos tt = new Tabla_Turnos();
 				tt.setVisible(true);
 				
 			}
@@ -291,19 +291,19 @@ public class Main extends JFrame {
 		});
 		mnVentas.add(mntmProveedores);
 		
-		JMenuItem mntmStock = new JMenuItem("Stock");             //Abre la ventana Tabla_Stock usando como parámetro el perfil del usuario
+		JMenuItem mntmStock = new JMenuItem("Stock");             //Abre la ventana Tabla_Stock 
 		mntmStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Stock ts = new Tabla_Stock(perfil);
+				Tabla_Stock ts = new Tabla_Stock();
 				ts.setVisible(true);
 			}
 		});
 		mnVentas.add(mntmStock);
 		
-		JMenuItem mntmPedidos = new JMenuItem("Pedidos");         //Abre la ventana Tabla_Pedido usando como parámetro el perfil del usuario
+		JMenuItem mntmPedidos = new JMenuItem("Pedidos");         //Abre la ventana Tabla_Pedido 
 		mntmPedidos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Pedido tp = new Tabla_Pedido(perfil);
+				Tabla_Pedido tp = new Tabla_Pedido();
 				tp.setVisible(true);
 			}
 		});
@@ -334,8 +334,14 @@ public class Main extends JFrame {
 		panel_1.setLayout(null);
 		
 		JLabel lblProximos = new JLabel("Proximos Turnos");
-		lblProximos.setBounds(262, 37, 133, 14);
+		lblProximos.setFont(new Font("Roboto Black", Font.BOLD, 14));
+		lblProximos.setBounds(262, 37, 144, 17);
 		panel_1.add(lblProximos);
+		
+		JLabel lblPerfil = new JLabel("Usuario: Manager");
+		lblPerfil.setFont(new Font("Roboto Black", Font.BOLD, 14));
+		lblPerfil.setBounds(10, 11, 153, 17);
+		panel_1.add(lblPerfil);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(207, 110, 579, 453);
@@ -365,6 +371,18 @@ public class Main extends JFrame {
 		
 		
 		mostrarTabla();
+		
+		if(perfil.equals("Admin")) {
+			lblPerfil.setText("Usuario: Admin");  //Si el usuario logueado es un Admin, el label dirá "Usuario: Admin"
+		}
+		
+		if(perfil.equals("Manager")) {
+			lblPerfil.setText("Usuario: Manager");  //Si el usuario logueado es un Manager, el label dirá "Usuario: Manager"
+		}
+		
+		if(perfil.equals("Regular")) {
+			lblPerfil.setText("Usuario: Regular");	  //Si el usuario logueado es un Regular, el label dirá "Usuario: Regular"
+		}
 		
 	}
 

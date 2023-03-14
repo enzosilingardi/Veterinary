@@ -134,7 +134,7 @@ public class Tipo_Proveedor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tipo_Proveedor() {           //Crea la ventana
+	public Tipo_Proveedor(final String perfil) {           //Crea la ventana
 		setTitle("Tipo Proveedor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 581, 394);
@@ -239,7 +239,7 @@ public class Tipo_Proveedor extends JFrame {
 		JButton btnVolver = new JButton("Volver");           //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Proveedor tp = new Proveedor();
+				Proveedor tp = new Proveedor(perfil);
 				tp.setVisible(true);		//Abre la ventana Proveedor
 				dispose();
 			}
@@ -304,6 +304,9 @@ public class Tipo_Proveedor extends JFrame {
 		contentPane.add(btnModificar);
 		
 		mostrarTabla();
+	}
+	public Tipo_Proveedor() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

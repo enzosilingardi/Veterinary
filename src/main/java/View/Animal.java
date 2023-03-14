@@ -155,7 +155,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 	/**
 	 * Create the frame.
 	 */
-	public Animal() {												// Construye la ventana
+	public Animal(final String perfil) {												// Construye la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 581, 394);
 		contentPane = new JPanel();
@@ -170,7 +170,9 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dispose();											// cierra la ventana
+				Mascota mascota = new Mascota(perfil);
+				mascota.setVisible(true);
+				dispose();											// cierra la ventana y vuelve a la ventana Mascota
 			}
 		});
 		btnVolver.setBounds(466, 321, 89, 23);
@@ -307,5 +309,8 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 		scrollPane.setViewportView(table);
 		
 		mostrarTabla();
+	}
+	public Animal() {
+		// TODO Auto-generated constructor stub
 	}
 }

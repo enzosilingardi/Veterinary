@@ -166,7 +166,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Cliente_Masc(){									// Crea la ventana
+	public Buscar_Cliente_Masc(final String perfil){			// Crea la ventana
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 633, 480);
 		contentPane = new JPanel();
@@ -188,7 +188,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 		JButton btnVolver = new JButton("Volver");					// Este boton cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Mascota mascota = new Mascota();
+				Mascota mascota = new Mascota(perfil);
 				mascota.setVisible(true);					// Abre la ventana mascota
 				dispose();
 			}
@@ -203,7 +203,7 @@ public class Buscar_Cliente_Masc extends JFrame {
 				String nom = table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString();
 				String id = table.getValueAt(fila,0).toString();
 				
-				Mascota mascota = new Mascota(id,nom);			// abre la ventana mascota, recibiendo como parametro el id y el nombre del cliente
+				Mascota mascota = new Mascota(id,nom,perfil);			// abre la ventana mascota, recibiendo como parametro el id y el nombre del cliente
 				mascota.setVisible(true);
 				dispose();								//Cierra la ventana
 				
@@ -262,6 +262,10 @@ public class Buscar_Cliente_Masc extends JFrame {
 		contentPane.add(btnLimpiar);
 		
 		mostrarTabla();
+	}
+
+	public Buscar_Cliente_Masc() {
+		// TODO Auto-generated constructor stub
 	}
 
 }

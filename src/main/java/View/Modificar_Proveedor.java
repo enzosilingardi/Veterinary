@@ -188,7 +188,7 @@ public class Modificar_Proveedor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Proveedor(String proveedor) {			//Crea la ventana recibiendo como parámetro el id del proveedor
+	public Modificar_Proveedor(String proveedor, final String perfil) {			//Crea la ventana recibiendo como parámetro el id del proveedor
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 460);
 		contentPane = new JPanel();
@@ -269,7 +269,7 @@ public class Modificar_Proveedor extends JFrame {
 		JButton btnVolver = new JButton("Volver");              //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Proveedor tp = new Tabla_Proveedor();
+				Tabla_Proveedor tp = new Tabla_Proveedor(perfil);
 				tp.setVisible(true);		//Abre la ventana Tabla_Proveedor
 				dispose();
 			}
@@ -333,7 +333,7 @@ public class Modificar_Proveedor extends JFrame {
 					if(result > 0){
 		                JOptionPane.showMessageDialog(null, "Proveedor modificado");            //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después vuelve a la ventana Tabla_Proveedor
 		                ControlFiles.addContent("Se ha modificado el proveedor "+nombre);
-		                Tabla_Proveedor tp = new Tabla_Proveedor();
+		                Tabla_Proveedor tp = new Tabla_Proveedor(perfil);
 						tp.setVisible(true);
 						dispose();
 		            } else {

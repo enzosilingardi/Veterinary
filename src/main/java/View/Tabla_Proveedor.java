@@ -137,7 +137,7 @@ public class Tabla_Proveedor extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					int fila = table.getSelectedRow();
 					
-					Modificar_Proveedor mp = new Modificar_Proveedor(table.getValueAt(fila,0).toString());       //Envía como parámetro el id de la fila seleccionada
+					Modificar_Proveedor mp = new Modificar_Proveedor(table.getValueAt(fila,0).toString(), perfil);       //Envía como parámetro el id de la fila seleccionada
 					mp.setVisible(true);
 					dispose();
 				}
@@ -187,7 +187,7 @@ public class Tabla_Proveedor extends JFrame {
 			});
 			btnEliminar.setBounds(242, 268, 91, 23);
 			contentPane.add(btnEliminar);
-			
+		}
 			JButton btnAgregar = new JButton("Agregar");            //Abre la ventana Proveedor
 			btnAgregar.setForeground(new Color(255, 255, 255));
 			btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
@@ -195,7 +195,7 @@ public class Tabla_Proveedor extends JFrame {
 			btnAgregar.setBackground(new Color(86, 211, 243));
 			btnAgregar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Proveedor proveedor = new Proveedor();
+					Proveedor proveedor = new Proveedor(perfil);
 					proveedor.setVisible(true);
 					dispose();
 				}
@@ -203,122 +203,12 @@ public class Tabla_Proveedor extends JFrame {
 			btnAgregar.setBounds(40, 268, 91, 23);
 			contentPane.add(btnAgregar);
 		
-		}
+		
 		mostrarTabla();
 	}
 
-	public Tabla_Proveedor() {                     //Construye la ventana
-		// TODO Auto-generated constructor stub
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 750, 382);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/images/vet.png")));   //Setea el icono de la ventana
-
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+	public Tabla_Proveedor() {   
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(new Color(255, 255, 255));
-		scrollPane.setBounds(40, 11, 650, 238);
-		contentPane.add(scrollPane);
-		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		
-		JButton btnVolver = new JButton("Volver");          //Cierra la ventana
-		btnVolver.setForeground(new Color(255, 255, 255));
-		btnVolver.setFont(new Font("Roboto", Font.BOLD, 14));
-		btnVolver.setBorder(null);
-		btnVolver.setBackground(new Color(86, 211, 243));
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-			}
-		});
-		btnVolver.setBounds(601, 311, 89, 23);
-		contentPane.add(btnVolver);
-		
-		JButton btnModificar = new JButton("Modificar");          //Abre la ventana Modificar_Proveedor
-		btnModificar.setForeground(new Color(255, 255, 255));
-		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
-		btnModificar.setBorder(null);
-		btnModificar.setBackground(new Color(86, 211, 243));
-		btnModificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int fila = table.getSelectedRow();
-				
-				Modificar_Proveedor mp = new Modificar_Proveedor(table.getValueAt(fila,0).toString());  //Envía como parámetro el id de la fila seleccionada
-				mp.setVisible(true);
-				dispose();
-			}
-		});
-		btnModificar.setBounds(141, 268, 91, 23);
-		contentPane.add(btnModificar);
-		
-		JButton btnEliminar = new JButton("Eliminar");                //Este botón elimina la fila seleccionada
-		btnEliminar.setForeground(new Color(255, 255, 255));
-		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
-		btnEliminar.setBorder(null);
-		btnEliminar.setBackground(new Color(86, 211, 243));
-		btnEliminar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int result = 0;
-				int fila = table.getSelectedRow();
-				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Provider WHERE id_Provider = ?" );
-					
-					ps.setInt(1, id);
-					
-				
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor eliminado");    //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado el proveedor "+table.getValueAt(fila,1).toString());
-		                
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar proveedor");       //En caso de fallar, lo avisa en pantalla
-		               
-		            }
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Proveedor está en uso, por favor elimine todos los registros relacionados");     //En caso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnEliminar.setBounds(242, 268, 91, 23);
-		contentPane.add(btnEliminar);
-		
-		JButton btnAgregar = new JButton("Agregar");          //Abre la ventana Proveedor
-		btnAgregar.setForeground(new Color(255, 255, 255));
-		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
-		btnAgregar.setBorder(null);
-		btnAgregar.setBackground(new Color(86, 211, 243));
-		btnAgregar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Proveedor proveedor = new Proveedor();
-				proveedor.setVisible(true);
-				dispose();
-			}
-		});
-		btnAgregar.setBounds(40, 268, 91, 23);
-		contentPane.add(btnAgregar);
-		
-		
-		
-		mostrarTabla();
 	}
 
 }

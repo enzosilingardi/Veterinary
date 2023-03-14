@@ -241,7 +241,7 @@ public class Mascota extends JFrame {
 	/**
 	 * Create the frame.
 	 */ 
-	public Mascota(String id, String nom) {               //Crea la ventana recibiendo como parámetros en id y nombre de la mascota
+	public Mascota(String id, String nom, final String perfil) {               //Crea la ventana recibiendo como parámetros en id y nombre de la mascota
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 473, 510);
@@ -375,7 +375,7 @@ public class Mascota extends JFrame {
 		JButton btnVolver = new JButton("Volver");                 //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Mascota tm = new Tabla_Mascota();
+				Tabla_Mascota tm = new Tabla_Mascota(perfil);
 				tm.setVisible(true);		//Abre la ventana Tabla_Mascota
 				dispose();
 			}
@@ -412,8 +412,9 @@ public class Mascota extends JFrame {
 		JButton btnAnimales = new JButton("Animales");              //Abre la ventana Animal
 		btnAnimales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Animal animal = new Animal();
+				Animal animal = new Animal(perfil);
 				animal.setVisible(true);
+				dispose();
 			}
 		});
 		btnAnimales.setBounds(326, 150, 121, 23);
@@ -432,7 +433,7 @@ public class Mascota extends JFrame {
 		JButton btnSelec = new JButton("Seleccionar");                  //Este boton permite seleccionar un cliente
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Buscar_Cliente_Masc bcm = new Buscar_Cliente_Masc();
+				Buscar_Cliente_Masc bcm = new Buscar_Cliente_Masc(perfil);
 				bcm.setVisible(true);		//Abre la ventana Buscar_Cliente_Mas
 				dispose();
 			}
@@ -480,7 +481,7 @@ public class Mascota extends JFrame {
 		contentPane.add(lblFecha);
 	}
 
-	public Mascota() {           //Crea la ventana
+	public Mascota(final String perfil) {           //Crea la ventana
 		setTitle("Mascota");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 473, 510);
@@ -614,7 +615,7 @@ public class Mascota extends JFrame {
 		JButton btnVolver = new JButton("Volver");           //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Mascota tm = new Tabla_Mascota();
+				Tabla_Mascota tm = new Tabla_Mascota(perfil);
 				tm.setVisible(true);		//Abre la ventana Tabla_Mascota
 				dispose();
 			}
@@ -651,8 +652,9 @@ public class Mascota extends JFrame {
 		JButton btnAnimales = new JButton("Animales");              //Abre la ventana Animal
 		btnAnimales.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Animal animal = new Animal();
+				Animal animal = new Animal(perfil);
 				animal.setVisible(true);
+				dispose();
 			}
 		});
 		btnAnimales.setBounds(326, 150, 121, 23);
@@ -671,7 +673,7 @@ public class Mascota extends JFrame {
 		JButton btnSelec = new JButton("Seleccionar");               //Este boton permite seleccionar un cliente
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Buscar_Cliente_Masc bcm = new Buscar_Cliente_Masc();
+				Buscar_Cliente_Masc bcm = new Buscar_Cliente_Masc(perfil);
 				bcm.setVisible(true);		//Abre la ventana Buscar_Cliente_Masc
 				dispose();
 			}
@@ -713,5 +715,9 @@ public class Mascota extends JFrame {
 		btnGen.setBounds(326, 200, 121, 23);
 		contentPane.add(btnGen);
 		txtIdDue.setVisible(false);
+	}
+
+	public Mascota() {
+		// TODO Auto-generated constructor stub
 	}
 }

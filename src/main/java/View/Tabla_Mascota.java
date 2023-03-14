@@ -99,7 +99,7 @@ public class Tabla_Mascota extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Tabla_Mascota(String perfil) {                        //Crea la ventana recibiento el perfil como parámetro
+	public Tabla_Mascota(final String perfil) {                        //Crea la ventana recibiento el perfil como parámetro
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 612, 382);
 		contentPane = new JPanel();
@@ -132,6 +132,20 @@ public class Tabla_Mascota extends JFrame {
 		btnVolver.setBounds(467, 309, 89, 23);
 		contentPane.add(btnVolver);
 		
+		btnAgregar = new JButton("Agregar");     //Abre la ventana Mascota
+		btnAgregar.setBorder(null);
+		btnAgregar.setBackground(new Color(86, 211, 243));
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnAgregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Mascota mascota = new Mascota(perfil);
+				mascota.setVisible(true);
+				dispose();
+			}
+		});
+		btnAgregar.setBounds(40, 277, 91, 23);
+		contentPane.add(btnAgregar);
 
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {         //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
@@ -152,20 +166,7 @@ public class Tabla_Mascota extends JFrame {
 			btnModificar.setBounds(139, 277, 91, 23);
 			contentPane.add(btnModificar);
 			
-			btnAgregar = new JButton("Agregar");     //Abre la ventana Mascota
-			btnAgregar.setBorder(null);
-			btnAgregar.setBackground(new Color(86, 211, 243));
-			btnAgregar.setForeground(new Color(255, 255, 255));
-			btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
-			btnAgregar.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Mascota mascota = new Mascota();
-					mascota.setVisible(true);
-					dispose();
-				}
-			});
-			btnAgregar.setBounds(40, 277, 91, 23);
-			contentPane.add(btnAgregar);
+			
 			
 			btnEliminar = new JButton("Eliminar");        //Este botón elimina la fila seleccionada
 			btnEliminar.setBorder(null);

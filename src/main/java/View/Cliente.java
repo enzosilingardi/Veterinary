@@ -338,7 +338,7 @@ public class Cliente extends JFrame {
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Tabla_Clientes tc = new Tabla_Clientes(perfil);
-				tc.setVisible(true);		//Abre la ventana Tabla_Clientes
+				tc.setVisible(true);		//Abre la ventana Tabla_Clientes recibiendo como parámetro el perfil del usuario
 				dispose();
 			}
 		});
