@@ -197,7 +197,7 @@ public class Modificar_Cliente extends JFrame {
 		JButton btnModificar = new JButton("Modificar");              //Este boton modifica el cliente según los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PreparedStatement ps = null;
+				
 				int id = Integer.parseInt(txtId.getText());
 				String nombre = txtNombre.getText();
 				String apellido = txtApellido.getText();

@@ -134,37 +134,14 @@ public class Tabla_Clientes extends JFrame {
 			btnEliminar.setBorder(null);
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					int result = 0;
+					
 					int fila = table.getSelectedRow();
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					String nombre = table.getValueAt(fila,1).toString();
 					
-					try {
-						Connection con = Connect.getConexion();   //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("DELETE FROM Client WHERE id_Client = ?" );
-						
-							ps.setInt(1, id);
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Cliente eliminado");    //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                
-			                ControlFiles.addContent("Se ha eliminado el cliente "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
-			               mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar país");      //En caso de fallar, lo avisa en pantalla
-			                
-			            }
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Cliente está en uso, por favor elimine todos los registros relacionados");   //En caso de fallar, lo avisa en pantalla
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					Consulta_Cliente.eliminar(id, nombre);
+					
+					mostrarTabla();
 				}
 			});
 			btnEliminar.setBounds(220, 330, 91, 23);

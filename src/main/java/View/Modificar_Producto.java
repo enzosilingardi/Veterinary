@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Producto.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,34 +37,7 @@ public class Modificar_Producto extends JFrame {
 	private JTextField txtIdPro;
 	private JTextField txtPro;
 	
-	class ComboItem                      //Clase usada para armar el ComboBox
-	{
-	    private String key;               //Label visible del ComboBox
-	    
-	    private String value;            //Valor del ComboBox
 
-	    public ComboItem(String key, String value)          //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarProveedor() {            //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;

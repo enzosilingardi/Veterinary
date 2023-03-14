@@ -105,7 +105,7 @@ DefaultTableModel modelo = new DefaultTableModel();
 	/**
 	 * Create the frame.
 	 */
-	public Buscar_Cliente_ModMasc(final String id) {				//Crea la ventana recibiendo como parametro el id de la mascota
+	public Buscar_Cliente_ModMasc(final String id, final String perfil) {				//Crea la ventana recibiendo como parametro el id de la mascota
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 633, 480);
 		contentPane = new JPanel();
@@ -126,7 +126,7 @@ DefaultTableModel modelo = new DefaultTableModel();
 		JButton btnVolver = new JButton("Volver");					//Este boton cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Modificar_Mascota mascota = new Modificar_Mascota(id);
+				Modificar_Mascota mascota = new Modificar_Mascota(id,perfil);
 				mascota.setVisible(true);				//abre la ventana Modificar_Mascota recibiendo como parametro el id de la mascota
 				dispose();
 			}
@@ -141,7 +141,7 @@ DefaultTableModel modelo = new DefaultTableModel();
 				String nom = table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString();
 				String idC = table.getValueAt(fila,0).toString();
 				
-				Modificar_Mascota mascota = new Modificar_Mascota(id,idC,nom); 			// abre la ventana Modificar_Mascota, recibiendo como parametro el id y el nombre del cliente
+				Modificar_Mascota mascota = new Modificar_Mascota(id,idC,nom,perfil); 			// abre la ventana Modificar_Mascota, recibiendo como parametro el id y el nombre del cliente
 				mascota.setVisible(true);
 				dispose();
 				

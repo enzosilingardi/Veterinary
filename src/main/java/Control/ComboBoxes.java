@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 import Model.ComboItem;
 
@@ -77,5 +78,34 @@ public class ComboBoxes {
 			return modelo;
 	    }
 		
-		
+		public static DefaultComboBoxModel CBTipoProv(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();    //Realiza la conexión
+				
+				String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";		//Sentencia Sql
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));         //El primer elemento es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));    //El elemento del ComboBox recibe el tipo de proveedor como label y el id del tipo como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+			return modelo;
+			
+		}
 }

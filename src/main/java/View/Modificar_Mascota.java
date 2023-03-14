@@ -185,7 +185,7 @@ public class Modificar_Mascota extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Mascota(final String mascota,String id,String nom) {          //Crea la ventana recibiendo por parámetro el id de la mascota, y el ide y el nombre del cliente
+	public Modificar_Mascota(final String mascota,String id,String nom,final String perfil) {          //Crea la ventana recibiendo por parámetro el id de la mascota, y el ide y el nombre del cliente
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 479);
 		contentPane = new JPanel();
@@ -260,7 +260,7 @@ public class Modificar_Mascota extends JFrame {
 		JButton btnVolver = new JButton("Volver");           // Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Mascota tm = new Tabla_Mascota();
+				Tabla_Mascota tm = new Tabla_Mascota(perfil);
 				tm.setVisible(true);
 				dispose();
 			}
@@ -290,7 +290,7 @@ public class Modificar_Mascota extends JFrame {
 				
 				Consulta_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
 				
-		                Tabla_Mascota tm = new Tabla_Mascota();
+		                Tabla_Mascota tm = new Tabla_Mascota(perfil);
 						tm.setVisible(true);
 						dispose();
 			}
@@ -319,7 +319,7 @@ public class Modificar_Mascota extends JFrame {
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota);
+				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota,perfil);
 				bcm.setVisible(true);		//Abre la ventana Buscar_Cliente_ModMasc recibiendo como parámetro el id de la mascota
 				dispose();
 			}
@@ -359,7 +359,7 @@ public class Modificar_Mascota extends JFrame {
 		contentPane.add(lblFecha);
 	}
 
-	public Modificar_Mascota(final String mascota) {          //Crea la ventana recibiendo por parámetro el id de la mascota
+	public Modificar_Mascota(final String mascota, final String perfil) {          //Crea la ventana recibiendo por parámetro el id de la mascota
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 455, 477);
 		contentPane = new JPanel();
@@ -434,7 +434,7 @@ public class Modificar_Mascota extends JFrame {
 		JButton btnVolver = new JButton("Volver");                   //Cierra la ventana
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Mascota tm = new Tabla_Mascota();
+				Tabla_Mascota tm = new Tabla_Mascota(perfil);
 				tm.setVisible(true);		//Abre la ventana Tabla_Mascota
 				dispose();
 			}
@@ -464,7 +464,7 @@ public class Modificar_Mascota extends JFrame {
 				
 				Consulta_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
 				
-		                Tabla_Mascota tm = new Tabla_Mascota();
+		                Tabla_Mascota tm = new Tabla_Mascota(perfil);
 						tm.setVisible(true);
 						dispose();
 		          
@@ -492,7 +492,7 @@ public class Modificar_Mascota extends JFrame {
 		JButton btnSelec = new JButton("Seleccionar");                    //Este botón permite seleccionar un cliente
 		btnSelec.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota);
+				Buscar_Cliente_ModMasc bcm = new Buscar_Cliente_ModMasc(mascota,perfil);
 				bcm.setVisible(true);		//Abre la ventana Buscar_Cliente_ModMasc recibiendo como parámetro el id de la mascota
 				dispose();
 			}

@@ -412,7 +412,7 @@ public class Consulta_Cliente {
                 ControlFiles.addContent("Se ha eliminado el cliente "+nombre);
                
             } else {
-                JOptionPane.showMessageDialog(null, "Error al eliminar país");     //En caso de fallar, lo avisa en pantalla
+                JOptionPane.showMessageDialog(null, "Error al eliminar cliente");     //En caso de fallar, lo avisa en pantalla
                 
             }
 			con.close();

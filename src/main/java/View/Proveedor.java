@@ -7,9 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Proveedor;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Sucursal.ComboItem;
+
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,35 +41,7 @@ public class Proveedor extends JFrame {
 	private JComboBox cbTipo;
 	private JTextField txtDireccion;
 
-	
-	class ComboItem             //Clase usada para armar el ComboBox
-	{
-	    private String key;      //Label visible del ComboBox
-	    
-	    private String value;     //Valor del ComboBox
 
-	    public ComboItem(String key, String value)    //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarDireccion() {           //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
@@ -100,32 +75,12 @@ public class Proveedor extends JFrame {
     }
 	
 	public DefaultComboBoxModel cargarTipo() {           //Carga el ComboBox tipo
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
+		
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
+		ComboBoxes.CBTipoProv(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();    //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Provider_Type ORDER BY id_Provider_Type";		//Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));         //El primer elemento es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Provider_Type")));    //El elemento del ComboBox recibe el tipo de proveedor como label y el id del tipo como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 	/**
@@ -144,36 +99,7 @@ public class Proveedor extends JFrame {
 		});
 	}
 	
-	public int existeProveedor(String nombre) {        //Este procedimiento revisa si existe el proveedor, recibiendo como parámetro el nombre
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();   //Realiza la conexión
-			
-			String SSQL = "SELECT count(*) FROM Provider WHERE provider_Name = ? ;";		//Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,nombre);
 
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);     //Si ya existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
 	
 	public static Boolean validaEmail (String email) {      //Valida el formato del E-Mail
 		
@@ -284,60 +210,15 @@ public class Proveedor extends JFrame {
 				String apellido = txtApellido.getText();
 				String cuit = txtCuit.getText();
 				
-				int result = 0;
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Provider (id_Provider_Type, address, provider_Name, name, surname, phone_Number, email, cuit) VALUES (?,?,?,?,?,?,?,?)" );
-					
-					
 				
 						if (((ComboItem) tipo).getValue() == "") {                      //Revisa si el ComboBox está en blanco
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
-							if(existeProveedor(nombrePro)!=0) {                         //Revisa si el proveedor ya existe
-								JOptionPane.showMessageDialog(null, "Proveedor ya existe");
-							}else {
-								ps.setString(1, ((ComboItem) tipo).getValue());
-								ps.setString(2, direccion);
-								ps.setString(3, nombrePro);
-								ps.setString(4, nombre);
-								ps.setString(5, apellido);
-								
-								ps.setString(6, telefono); 
-								
-								
-								
-								if(validaEmail(email)) {        //Revisa si el E-Mail es válido
-									ps.setString(7,email);
-								} else {
-									JOptionPane.showMessageDialog(null, "E-Mail no válido");
-								}
-								
-								ps.setString(8, cuit);
-							}
+							Consulta_Proveedor.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), direccion, nombrePro, nombre, apellido, telefono, email, cuit);
 						}
 						
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Proveedor guardado");                   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha añadido un proveedor de nombre "+nombre);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar proveedor");      //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					limpiar();
 				
 			}
 		});

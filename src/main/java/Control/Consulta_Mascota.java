@@ -46,7 +46,7 @@ public class Consulta_Mascota {
 		}
 	
 	
-		public static Connection agregar(int idDue, String nombre, String animal,int edad,String genero, Object raza,Date date) {
+		public static Connection agregar(int idDue, String nombre, Object animal,int edad,String genero, Object raza,Date date) {
 			
 			int result = 0;
 			

@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Proveedor;
 
 public class Buscar_Proveedor_ModPro extends JFrame {
 
@@ -35,116 +36,51 @@ public class Buscar_Proveedor_ModPro extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","CUIT","Dirección"});        //Nombre de las columnas
-       
-        table.setModel(modelo);    //Setea el modelo
-        
-        
-        String datos[] = new String[4];   //Declara que va a haber 4 columnas
-       
-        try {
-        	Connection con = Connect.getConexion();     //Realiza la conexión
-        	
-        	PreparedStatement ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"		//Sentencia sql
-        			+ "FROM Provider;" );
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){                   //Llena las columnas de la tabla con las columnas de la base de datos
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                datos[3] = rs.getString(4);
-                
-                modelo.addRow(datos);
-
-            }
-            table.setModel(modelo);   //Setea el modelo
-            
-            table.getColumnModel().getColumn(0).setMaxWidth(0);     //Las siguientes 4 vuelven invisible la columna id, para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
+        Consulta_Proveedor.tablaBus(modelo, table);
     }
 	
 	void mostrarTablaParametro(){      //Muestra la tabla segun los parametros recibidos
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","DNI","Dirección"});      //Nombre de las columnas
-       
-        table.setModel(modelo);         //Setea el modelo
-        
-        PreparedStatement ps = null;
-        
-        String datos[] = new String[4];         //Declara que va a haber 4 columnas
-       
-        try {
-        	Connection con = Connect.getConexion();       //Realiza la conexión
-        	
-        	if(txtCuit.getText().isBlank() && txtDir.getText().isBlank()) {                           // Realiza la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
-        		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
-            			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"';" );
-        	}else {
-        		if(txtNombre.getText().isBlank() && txtDir.getText().isBlank()) {
-            		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
-                			+ "FROM Provider WHERE cuit ='"+txtCuit.getText()+"';" );
-            	} else {
-            		if(txtNombre.getText().isBlank() && txtCuit.getText().isBlank()) {
-                		ps = con.prepareStatement("Select id_Provider, provider_Name,  cuit, address\r\n"
-                    			+ "FROM Provider WHERE address ='"+txtDir.getText()+"';" );
-            		
-            	} else {
-            		if(txtDir.getText().isBlank()) {
-                		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
-                    			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"' AND cuit ='"+txtCuit.getText() +"';" );
-            	} else {
-            		if(txtCuit.getText().isBlank()) {
-                		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
-                    			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"' AND address ='"+txtDir.getText() +"';" );
-            	} else {
-            		if(txtNombre.getText().isBlank()) {
-                		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
-                    			+ "FROM Provider WHERE cuit ='"+txtCuit.getText()+"' AND address ='"+txtDir.getText() +"';" );
-            	} else {
-            		ps = con.prepareStatement("Select id_Provider, provider_Name, cuit, address\r\n"
-                			+ "FROM Provider WHERE cuit ='"+txtCuit.getText()+"' AND address ='"+txtDir.getText() +"' AND provider_Name ='"+txtNombre.getText()+"';" );
-            	}
+        String url;
+    	
+    	if(txtCuit.getText().isBlank() && txtDir.getText().isBlank()) {                     // Realiza la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
+    		url = "Select id_Provider, provider_Name, cuit, address\r\n"
+        			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"';" ;
+    	}else {
+    		if(txtNombre.getText().isBlank() && txtDir.getText().isBlank()) {
+    			url =  "Select id_Provider, provider_Name, cuit, address\r\n"
+            			+ "FROM Provider WHERE cuit ='"+txtCuit.getText()+"';" ;
+        	} else {
+        		if(txtNombre.getText().isBlank() && txtCuit.getText().isBlank()) {
+        			url = "Select id_Provider, provider_Name,  cuit, address\r\n"
+                			+ "FROM Provider WHERE address ='"+txtDir.getText()+"';" ;
+        		
+        	} else {
+        		if(txtDir.getText().isBlank()) {
+        			url = "Select id_Provider, provider_Name, cuit, address\r\n"
+                			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"' AND cuit ='"+txtCuit.getText() +"';" ;
+        	} else {
+        		if(txtCuit.getText().isBlank()) {
+        			url = "Select id_Provider, provider_Name, cuit, address\r\n"
+                			+ "FROM Provider WHERE provider_Name ='"+txtNombre.getText()+"' AND address ='"+txtDir.getText() +"';" ;
+        	} else {
+        		if(txtNombre.getText().isBlank()) {
+        			url = "Select id_Provider, provider_Name, cuit, address\r\n"
+                			+ "FROM Provider WHERE cuit ='"+txtCuit.getText()+"' AND address ='"+txtDir.getText() +"';" ;
+        	} else {
+        		url = "Select id_Provider, provider_Name, cuit, address\r\n"
+            			+ "FROM Provider WHERE cuit ='"+txtCuit.getText()+"' AND address ='"+txtDir.getText() +"' AND provider_Name ='"+txtNombre.getText()+"';";
         	}
-            	}
-            	}
-            	}
+    	}
         	}
-        	
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){               //Llena las columnas de la tabla con las columnas de la base de datos 
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                datos[3] = rs.getString(4);
-                
-                
-                modelo.addRow(datos);
-
-            }
-            table.setModel(modelo);      //Setea el modelo
-            
-            table.getColumnModel().getColumn(0).setMaxWidth(0);        //Las siguientes 4 vuelven invisible la columna id, para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
+        	}
+        	}
+    	}
+    	
+        Consulta_Proveedor.tablaBusPar(modelo, table, url);
+    
     }
 
 	/**
