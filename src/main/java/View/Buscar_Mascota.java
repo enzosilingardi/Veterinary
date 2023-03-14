@@ -21,7 +21,10 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Mascota;
+import Model.ComboItem;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -40,47 +43,7 @@ public class Buscar_Mascota extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});        //Nombre de las columnas
-       
-        table.setModel(modelo);       //Setea el modelo
-        
-        
-        String datos[] = new String[7];      //Declara que va a haber 7 columnas
-       
-        try {
-        	Connection con = Connect.getConexion();      //Realiza la conexión
-        	//Sentencia sql
-        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
-        			+ "FROM Pet\r\n"
-        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
-        			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
-        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client;" );
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){               //Llena las columnas de la tabla con las columnas de la base de datos
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                datos[3] = rs.getString(4);
-                datos[4] = rs.getString(5);
-                datos[5] = rs.getString(6);
-                datos[6] = rs.getString(7)+" "+rs.getString(8);
-                
-                modelo.addRow(datos);
-
-            }
-            table.setModel(modelo);     //Setea el modelo
-            
-            table.getColumnModel().getColumn(0).setMaxWidth(0);       //Las siguientes 4 vuelven invisible la columna id, para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
+        Consulta_Mascota.tablaBus(modelo, table);
     }
 	
 	
@@ -88,126 +51,50 @@ public class Buscar_Mascota extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});     //Nombre de las columnas
-       
-        table.setModel(modelo);       //Setea el modelo
+        String url;
         
-        PreparedStatement ps = null;
+       
         
         Object animal = cbAnimal.getSelectedItem();
         
-        String datos[] = new String[7];        //Declara que va a haber 7 columnas
-        
-        try {
-        	Connection con = Connect.getConexion();        //Realiza la conexión
+       
         	
-        	if(((ComboItem) animal).getValue() == "") {       // Realiza la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
+        	if(((ComboItem) cbAnimal.getSelectedItem()).getValue() == "") {       // Arma la consulta, Dependiendo de cuales campos tengan algo escrito y cuales esten vacios
         		
-        		ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
+        		url = "SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
             			+ "FROM Pet\r\n"
             			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
             			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
-            			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client  WHERE Pet.name ='"+ txtNombre.getText() +"';" );
+            			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client  WHERE Pet.name ='"+ txtNombre.getText() +"';" ;
         	} else {
         		if(txtNombre.getText().isBlank()) {
-        			ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
+        			url = "SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
                 			+ "FROM Pet\r\n"
                 			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
                 			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
-                			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client  WHERE Animal.type ='"+ animal +"';" );
+                			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client  WHERE Animal.type ='"+ animal +"';";
         		} else {
-        			ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
+        			url = "SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
         			+ "FROM Pet\r\n"
         			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
         			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
-        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client  WHERE Pet.name ='"+ txtNombre.getText() +"' AND Animal.type ='"+ animal +"';" );
+        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client  WHERE Pet.name ='"+ txtNombre.getText() +"' AND Animal.type ='"+ animal +"';" ;
         		}
         	}
-        	
-        	
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){                //Llena las columnas de la tabla con las columnas de la base de datos     
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                datos[3] = rs.getString(4);
-                datos[4] = rs.getString(5);
-                datos[5] = rs.getString(6);
-                datos[6] = rs.getString(7)+" "+rs.getString(8);
-                
-                modelo.addRow(datos);
-
-            }
-            table.setModel(modelo);     //Setea el modelo
-             
-            table.getColumnModel().getColumn(0).setMaxWidth(0);      //Las siguientes 4 vuelven invisible la columna id, para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        
+        	Consulta_Mascota.tablaBusPar(modelo, table, url);
+            
+        
         
     }
 	
-	class ComboItem        //Clase utilizada para armar el ComboBox
-	{
-	    private String key;        //Label visible del ComboBox
-	    
-	    private String value;         //Valor del ComboBox
 
-	    public ComboItem(String key, String value)    //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
-	
 	
 	public DefaultComboBoxModel cargarAnimal() {      //Carga el ComboBox animal
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel(); 
 		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+		ComboBoxes.CBAnimal(modelo);
 		
-		
-		try {
-			cn = (Connection) Connect.getConexion();
-			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";    //Realiza una sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("Seleccionar animal",""));     //El primer elemento del ComboBox dice "Seleccionar animal"
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));       //El elemento del ComboBox recibe el tipo de animal como label y el id como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 

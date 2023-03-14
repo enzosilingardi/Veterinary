@@ -25,54 +25,26 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Control.Consulta_Cliente;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Cliente.ComboItem;
 
 public class Modificar_Cliente extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNombre;
-	private JTextField txtDni;
-	private JDateChooser txtFechaNacimiento;
-	private JTextField txtTelefono;
+	public static JTextField txtNombre;
+	public static JTextField txtDni;
+	public static JDateChooser txtFechaNacimiento;
+	public static JTextField txtTelefono;
 	private JComboBox cbGenero;
-	private JTextField txtEmail;
-	private JTextField txtApellido;
+	public static JTextField txtEmail;
+	public static JTextField txtApellido;
 	private JTextField txtId;
 	private JLabel lblTelefonoOp;
 	private JTextField txtTelefonoOp;
 	private JTextField txtDir;
 	
-	
-	
-	class ComboItem                     //Clase utilizada para armar el ComboBox
-	{
-	    private String key;               //Label visible del ComboBox
-	    
-	    private String value;            //Valor del ComboBox
 
-	    public ComboItem(String key, String value)         //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarDireccion() {           //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
@@ -128,38 +100,7 @@ public class Modificar_Cliente extends JFrame {
 			return matcher.matches();
 		}
 	 
-	 private void cargarCampos(String cliente) {              //Carga los campos recibiendo al id del cliente como parámetro
-			Connection cn = null;
-			PreparedStatement pst = null;
-			ResultSet result = null;
-			
-			int id = Integer.parseInt(cliente);
-			
-			try {
-				cn = (Connection) Connect.getConexion();   //Realiza la conexión
-				
-				String SSQL = "SELECT dni, name, surname, phone_Number, email, birthdate FROM Client WHERE id_Client = ?";	//Sentencia sql
-				pst = cn.prepareStatement(SSQL);
-				pst.setInt(1, id);
-				
-				
-				result = pst.executeQuery();
-				while (result.next()){                       //Carga los campos según los resultados en la base de datos
-				txtDni.setText(result.getString(1));
-				txtNombre.setText(result.getString(2));
-				txtApellido.setText(result.getString(3));
-				txtTelefono.setText(result.getString(4));
-				txtEmail.setText(result.getString(5));
-				txtFechaNacimiento.setDate(result.getDate(6));
-				}
-				cn.close();
-			}catch(SQLException e) {
-				e.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		}
+
 	/**
 	 * Create the frame.
 	 */
@@ -343,7 +284,7 @@ public class Modificar_Cliente extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		cargarCampos(cliente);
+		Consulta_Cliente.cargar(cliente);
 		txtId.setText(cliente);
 		
 		lblTelefonoOp = new JLabel("Telefono Secundario (Opcional)");

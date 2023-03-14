@@ -128,37 +128,7 @@ public class Mascota extends JFrame {
 		});
 	}
 
-	public int existeMascota(int duenio, String nombre) {           //Ese procedimiento determina si ya existe la mascota
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();        //Realiza la conexión
-			
-			String SSQL = "SELECT count(*) FROM Pet WHERE name = ? AND id_Client = ? ;";	//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, nombre);
-			pst.setInt(2,duenio);
 
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);          //Si la mascota existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
 	
 	
 	
@@ -255,12 +225,10 @@ public class Mascota extends JFrame {
 					genero = "Macho";        //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
-				if(existeMascota(idDue,nombre)!=0) {                          //Revisa si ya existe la mascota
-					JOptionPane.showMessageDialog(null, "Mascota ya existe");
-				}else {
-					Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
+				
+				Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
 					
-				}
+				
 				
 				
 			}
@@ -457,12 +425,10 @@ public class Mascota extends JFrame {
 					genero = "Macho";        //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
-				if(existeMascota(idDue,nombre)!=0) {                          //Revisa si ya existe la mascota
-					JOptionPane.showMessageDialog(null, "Mascota ya existe");
-				}else {
-					Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
+			
+				Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
 					
-				}
+				
 				
 				
 				

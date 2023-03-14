@@ -18,6 +18,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Cliente;
+import Control.Consulta_Mascota;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
@@ -32,48 +34,7 @@ public class Tabla_Clientes extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        //Nombre de las columnas
-        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Teléfono","Telefono secundario","Género","DNI","Fecha de nacimiento","E-Mail","Dirección"});
-       
-        table.setModel(modelo);     //Setea el modelo
-        
-        
-        String datos[] = new String[10];    //Declara que va a haber 10 columnas
-       
-        try {
-        	Connection con = Connect.getConexion();   //Realiza la conexión
-        	//Sentencia sql
-        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, phone_Number, phone_Optional, gender, dni, CONVERT(varchar(10),birthdate,103), email, address\r\n"
-        			+ "FROM Client;" );
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){                    //Carga las columnas de la base de datos en la tabla
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                datos[2] = rs.getString(3);
-                datos[3] = rs.getString(4);
-                datos[4] = rs.getString(5);
-                datos[5] = rs.getString(6);
-                datos[6] = rs.getString(7);
-                datos[7] = rs.getString(8);
-                datos[8] = rs.getString(9);
-                datos[9] = rs.getString(10);
-                
-                modelo.addRow(datos); 
-
-            }
-            table.setModel(modelo);    //Setea el modelo
-            
-            table.getColumnModel().getColumn(0).setMaxWidth(0);          // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
+        Consulta_Cliente.tabla(modelo, table);
     }
 
 	/**
@@ -276,37 +237,14 @@ public class Tabla_Clientes extends JFrame {
 		btnEliminar.setBorder(null);
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
+				
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String nombre = table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString();
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Client WHERE id_Client = ?" );
-					
-						ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cliente eliminado");      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado el cliente "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar país");     //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Cliente está en uso, por favor elimine todos los registros relacionados");     //En cso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Cliente.eliminar(id, nombre);
+				
+				mostrarTabla();
 			}
 		});
 		btnEliminar.setBounds(220, 330, 91, 23);

@@ -12,8 +12,10 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Control.Consulta_Cliente;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Direccion.ComboItem;
+
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -47,35 +49,7 @@ public class Cliente extends JFrame {
 	private JTextField txtTelefonoOp;
 	
 	
-	
-	class ComboItem             //Clase utilizada para armar el ComboBox
-	{
-	    private String key;         //Label visible del ComboBox
-	    
-	    private String value;              //Valor del ComboBox
 
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarDireccion() {       //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
@@ -135,37 +109,8 @@ public class Cliente extends JFrame {
 		}
 	    
 
-	public int existeCliente(String nombre, String dni) {     // Verifica si ya existe el cliente en la base de datos
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();       //Realiza la conexión
-			
-			String SSQL = "SELECT count(*) FROM Client WHERE name = ? AND dni = ?   ;";   //Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,nombre);
-			pst.setString(2,dni);
-			
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);        // si ya existe, la variable la coloca como 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+
+
 	
 	
 	
@@ -261,72 +206,22 @@ public class Cliente extends JFrame {
 				String email = txtEmail.getText();
 				String fecha = ((JTextField) txtFechaNacimiento.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
+				String telefonoOp = txtTelefonoOp.getText();
 				
 				
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();         //Realiza la conexión
 					
 					if (txtTelefonoOp.getText().isBlank()) {          //Realiza la consulta dependiendo si el campo telefono opcional está vacío
+						Consulta_Cliente.agregar(direccion, dni, nombre, apellido, telefonoOp, date, genero, email);
 						
-						ps = con.prepareStatement("INSERT INTO Client (address, dni, name,surname,  phone_Number , birthdate, gender, email) VALUES (?,?,?,?,?,?,?,?)" );
 					} else {
-						ps = con.prepareStatement("INSERT INTO Client (address, dni, name,surname,  phone_Number , birthdate, gender, email, phone_Optional) VALUES (?,?,?,?,?,?,?,?,?)" );
-						String telefonoOp = txtTelefonoOp.getText();
-						ps.setString(9,telefonoOp);
+						Consulta_Cliente.agregarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp);
 					}
 					
 					
-						if(existeCliente(nombre,dni)!=0) {                  //Si ya existe el cliente no lo agrega y muestra el error por pantalla
-						JOptionPane.showMessageDialog(null, "Cliente ya existe");
-					}else {
-						ps.setString(1, direccion);
-						ps.setString(2, dni);
-						ps.setString(3, nombre);
-						ps.setString(4, apellido);
-						
-						ps.setString(5,telefono);
-						
-						
-						
-						ps.setDate(6, date);
-						
-
-						ps.setString(7, genero);
-						
-						if(validaEmail(email)) {
-							ps.setString(8,email);
-						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");        //Si el E-Mail no es válido, no lo agrega y muestra por pantalla el error
-						}
-						
-						
-						
-					}
+					
 						
 					
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cliente guardado");                   //En caso de ser exitoso, lo muestra en pantalla y lo agrega al log
-		                ControlFiles.addContent("Se ha añadido un cliente de nombre "+nombre+" "+apellido);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar cliente");        //En caso de fallar, muestra el error por pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				
 			}
 		});

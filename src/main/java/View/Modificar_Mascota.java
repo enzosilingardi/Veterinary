@@ -39,8 +39,8 @@ import java.awt.event.ActionEvent;
 public class Modificar_Mascota extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNombre;
-	private JTextField txtEdad;
+	public static JTextField txtNombre;
+	public static JTextField txtEdad;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JComboBox cbAnimal;
 	private JComboBox cbRaza;
