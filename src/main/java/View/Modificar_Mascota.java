@@ -18,9 +18,12 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Mascota;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Mascota.ComboItem;
+
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -48,36 +51,7 @@ public class Modificar_Mascota extends JFrame {
 	private JTextField txtIdDue;
 	private JDateChooser txtFecha;
 
-	
-	class ComboItem                               //Clase usada para armar el ComboBox
-	{
-	    private String key;                            //Label visible del ComboBox
-	    
-	    private String value;                         //Valor del ComboBox
 
-	    public ComboItem(String key, String value)   //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
-	
 
 	
 	public DefaultComboBoxModel cargarCliente() {            //Este ComboBox no es utilizado en la versión actual
@@ -109,64 +83,23 @@ public class Modificar_Mascota extends JFrame {
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarAnimal() {             //Carga el ComboBox animal
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+	public DefaultComboBoxModel cargarAnimal() {           //Carga el ComboBox animal
 		
 		
-		try {
-			cn = (Connection) Connect.getConexion();                    //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Animal ORDER BY id_Animal";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("Seleccionar animal",""));      //El primer elemento es "Seleccionar animal"
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Animal")));          //El elemento recibe el tipo de animal como label y el id como valor  
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		DefaultComboBoxModel modelo = new DefaultComboBoxModel(); 
+		
+		ComboBoxes.CBAnimal(modelo);
+		
 		return modelo;
     }
 	
-	public DefaultComboBoxModel cargarRaza(Object animal) {         //Carga el ComboBox raza recibiendo como parámetro el animal
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
+	public DefaultComboBoxModel cargarRaza(Object animal) {          //Carga el ComboBox raza recibiendo como parámetro el animal
+		
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
+		ComboBoxes.CBRaza(modelo,animal);
 		
-		try {
-			cn = (Connection) Connect.getConexion();        //Realiza la conexión
-			String SSQL = "SELECT *\r\n"
-					+ "FROM Breed\r\n"
-					+ "INNER JOIN Rel_Animal_Breed ON Rel_Animal_Breed.id_Breed = Breed.id_Breed\r\n"   //Toma solo las razas que están relacionadas al animal elegido
-					+ "WHERE Rel_Animal_Breed.id_Animal = "+animal;
-			pst = cn.prepareStatement(SSQL);
-			
-			result = pst.executeQuery();
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));     //El elemento del ComboBox recibe el tipo de raza como label y el id como valor 
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 
@@ -310,8 +243,8 @@ public class Modificar_Mascota extends JFrame {
 		cbAnimal = new JComboBox();
 		cbAnimal.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				Object animal = (ComboItem) cbAnimal.getSelectedItem();             // Revisa el estado del primer combobox y según este cambia el model del segundo
-				cbRaza.setModel(cargarRaza(((ComboItem) animal).getValue()));
+				Object animal = (ComboItem) cbAnimal.getSelectedItem();            // Revisa el estado del primer combobox y según este cambia el model del segundo
+				cbRaza.setModel(cargarRaza(((ComboItem) cbAnimal.getSelectedItem()).getValue()));
 				
 				
 			}
@@ -348,58 +281,19 @@ public class Modificar_Mascota extends JFrame {
 				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
 				String genero;
-				if(rdbtnMacho.isSelected()) {                 //Revisa el genero seleccionado
+				if(rdbtnMacho.isSelected()) {              //Revisa el genero seleccionado
 					genero = "Macho";
 				} else if (rdbtnHembra.isSelected()) {
 					genero = "Hembra";
 				} else {
-					genero = "Macho";                      //En caso de no seleccionarse alguno, se coloca macho por defecto
+					genero = "Macho";                  //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
-				int result = 0;
+				Consulta_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
 				
-				try {
-					Connection con = Connect.getConexion();       //Realiza la conexión
-					
-					
-						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ?, birthdate = ? WHERE id_Pet = ?" );
-						
-
-					
-					
-						
-						ps.setInt(1, idDue);
-						ps.setString(2, nombre);
-						ps.setString(3, ((ComboItem) animal).getValue());
-						ps.setInt(4, edad);
-						ps.setString(5, genero);
-						ps.setString(6, ((ComboItem) raza).getValue());
-						ps.setDate(7, date);
-						ps.setInt(8, id);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Mascota modificada");           //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Mascota
-		                ControlFiles.addContent("Se ha modificado la mascota "+nombre);
 		                Tabla_Mascota tm = new Tabla_Mascota();
 						tm.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar mascota");           //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 		btnModificar.setBounds(34, 387, 89, 23);
@@ -524,8 +418,8 @@ public class Modificar_Mascota extends JFrame {
 		cbAnimal = new JComboBox();
 		cbAnimal.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
-				Object animal = (ComboItem) cbAnimal.getSelectedItem();             // Revisa el estado del primer combobox y según este cambia el model del segundo
-				cbRaza.setModel(cargarRaza(((ComboItem) animal).getValue()));
+				Object animal = (ComboItem) cbAnimal.getSelectedItem();            // Revisa el estado del primer combobox y según este cambia el model del segundo
+				cbRaza.setModel(cargarRaza(((ComboItem) cbAnimal.getSelectedItem()).getValue()));
 				
 				
 			}
@@ -570,50 +464,12 @@ public class Modificar_Mascota extends JFrame {
 					genero = "Macho";                  //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
-				int result = 0;
+				Consulta_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
 				
-				try {
-					Connection con = Connect.getConexion();		//Realiza la conexión
-					
-					
-						ps = con.prepareStatement("UPDATE Pet SET id_Client = ?, name = ?, id_Animal = ?, age = ?, gender = ?, id_Breed = ?, birthdate = ? WHERE id_Pet = ?" );
-						
-
-					
-					
-						
-						ps.setInt(1, idDue);
-						ps.setString(2, nombre);
-						ps.setString(3, ((ComboItem) animal).getValue());
-						ps.setInt(4, edad);
-						ps.setString(5, genero);
-						ps.setString(6, ((ComboItem) raza).getValue());
-						ps.setDate(7, date);
-						ps.setInt(8, id);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Mascota modificada");             //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Mascota
-		                ControlFiles.addContent("Se ha modificado la mascota "+nombre);
 		                Tabla_Mascota tm = new Tabla_Mascota();
 						tm.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar mascota");       //En caso de fallar, lo avisa en pantalla
-		                 
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					JOptionPane.showMessageDialog(null,E);
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		          
 			}
 		});
 		btnModificar.setBounds(34, 374, 89, 23);

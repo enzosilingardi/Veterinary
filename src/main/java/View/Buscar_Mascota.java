@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import View.Mascota.ComboItem;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
