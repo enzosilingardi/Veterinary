@@ -431,46 +431,79 @@ public class Consulta_Cliente {
 	
 	
 	public static Connection tablaBus(DefaultTableModel modelo, JTable table) {
-		  modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});        //Nombre de las columnas
+		modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","DNI","Dirección"});      // Nombre de las columnas
 	       
-	        table.setModel(modelo);       //Setea el modelo
-	        
-	        
-	        String datos[] = new String[7];      //Declara que va a haber 7 columnas
-	       
-	        try {
-	        	Connection con = Connect.getConexion();      //Realiza la conexión
-	        	//Sentencia sql
-	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
-	        			+ "FROM Pet\r\n"
-	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
-	        			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
-	        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client;" );
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){               //Llena las columnas de la tabla con las columnas de la base de datos
-	                datos[0] = rs.getString(1);
-	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5);
-	                datos[5] = rs.getString(6);
-	                datos[6] = rs.getString(7)+" "+rs.getString(8);
-	                
-	                modelo.addRow(datos);
+        table.setModel(modelo);                  //Setea el modelo
+        
+        
+        String datos[] = new String[5];              //Declara que va a haber 5 columnas
+       
+        try {
+        	Connection con = Connect.getConexion();		//Realiza la conexión
+        	PreparedStatement ps = con.prepareStatement("Select id_Client, name, surname, dni, address\r\n"		//Sentencia sql
+        			+ "FROM Client;" );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){                       //Carga las columnas de la base de datos
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                
+                modelo.addRow(datos);
 
-	            }
-	            table.setModel(modelo);     //Setea el modelo
-	            
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);       //Las siguientes 4 vuelven invisible la columna id, para el usuario
-	    		table.getColumnModel().getColumn(0).setMinWidth(0);
-	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-	    		table.getColumnModel().getColumn(0).setResizable(false);
-	        } catch(SQLException E) {
-				JOptionPane.showMessageDialog(null,E);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+            }
+            table.setModel(modelo);                                               //Setea el modelo
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);                   //Las siguientes 4 hacen que la columna id, sea invisible para el usuario
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	        
+		return null;
+	}
+	
+	
+	public static Connection tablaBusPar(DefaultTableModel modelo, JTable table,String url) {
+		modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","DNI","Dirección"});      // Nombre de las columnas
+	       
+        table.setModel(modelo);                  //Setea el modelo
+        
+        
+        String datos[] = new String[5];              //Declara que va a haber 5 columnas
+       
+        try {
+        	Connection con = Connect.getConexion();		//Realiza la conexión
+        	PreparedStatement ps = con.prepareStatement(url);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){                       //Carga las columnas de la base de datos
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                
+                modelo.addRow(datos);
+
+            }
+            table.setModel(modelo);                                               //Setea el modelo
+            
+            table.getColumnModel().getColumn(0).setMaxWidth(0);                   //Las siguientes 4 hacen que la columna id, sea invisible para el usuario
+    		table.getColumnModel().getColumn(0).setMinWidth(0);
+    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+    		table.getColumnModel().getColumn(0).setResizable(false);
+        } catch(SQLException E) {
+			JOptionPane.showMessageDialog(null,E);
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	        
 		return null;
 	}
