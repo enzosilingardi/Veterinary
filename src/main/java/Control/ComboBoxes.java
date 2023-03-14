@@ -78,6 +78,35 @@ public class ComboBoxes {
 			return modelo;
 	    }
 		
+		public static DefaultComboBoxModel CBRazaS(DefaultComboBoxModel modelo) {          //Carga el ComboBox raza recibiendo como parámetro el animal
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();
+				String SSQL = "SELECT * FROM Breed ORDER BY id_Breed";      // realiza una sentencia sql
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("type"),result.getString("id_Breed")));           //El elemento del ComboBox recibe el tipo de raza como label y el id como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+	    }
+		
 		public static DefaultComboBoxModel CBTipoProv(DefaultComboBoxModel modelo) {
 			Connection cn = null;
 			PreparedStatement pst = null;
