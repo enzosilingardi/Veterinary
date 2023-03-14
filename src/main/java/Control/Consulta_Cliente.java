@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.ControlFiles;
 import View.Cliente;
 import View.Modificar_Cliente;
+import View.Tabla_Clientes;
 
 public class Consulta_Cliente {
 
@@ -217,6 +218,132 @@ public class Consulta_Cliente {
 		
 	}
 	
+	public static Connection modificar(String direccion, String dni, String nombre, String apellido, String telefono, Date date, String genero, String email,  int id) {
+		PreparedStatement ps = null;
+		int result = 0;
+		
+		try {
+			Connection con = Connect.getConexion();         //Realiza la conexión
+			
+			
+			ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? WHERE id_Client = ?" );
+				
+				
+			
+				
+				ps.setString(1, direccion);
+				ps.setString(2, dni);
+				ps.setString(3, nombre);
+				ps.setString(4, apellido);
+				
+				ps.setString(5,telefono);
+	
+				ps.setDate(6, date);
+				
+
+				ps.setString(7, genero);
+				 
+				if(Cliente.validaEmail(email)) {             //Revisa si el formato del E-Mail es correcto
+					ps.setString(8,email);
+				} else {
+					JOptionPane.showMessageDialog(null, "E-Mail no válido");      //Si no es correcto lo avisa en pantalla
+				}
+				
+
+				
+				ps.setInt(9, id);
+
+			
+			result = ps.executeUpdate();
+			
+			if(result > 0){
+                JOptionPane.showMessageDialog(null, "Cliente modificado");       //Si fue exitoso, lo avisa en un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Clientes
+                
+                ControlFiles.addContent("Se ha modificado un cliente con el nombre "+nombre+" "+apellido);
+                
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al modificar cliente");       //Si falla, lo avisa en pantalla
+                
+            }
+		
+			con.close();
+		}catch(SQLException E) {
+			E.printStackTrace();
+			
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	
+	public static Connection modificarOp(String direccion, String dni, String nombre, String apellido, String telefono, Date date, String genero, String email, String telefonoOp, int id) {
+		PreparedStatement ps = null;
+		int result = 0;
+		
+		try {
+			Connection con = Connect.getConexion();         //Realiza la conexión
+			
+			
+				ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? , phone_Optional = ? WHERE id_Client = ?" );
+				
+				
+			
+				
+				ps.setString(1, direccion);
+				ps.setString(2, dni);
+				ps.setString(3, nombre);
+				ps.setString(4, apellido);
+				
+				ps.setString(5,telefono);
+	
+				ps.setDate(6, date);
+				
+
+				ps.setString(7, genero);
+				 
+				if(Cliente.validaEmail(email)) {             //Revisa si el formato del E-Mail es correcto
+					ps.setString(8,email);
+				} else {
+					JOptionPane.showMessageDialog(null, "E-Mail no válido");      //Si no es correcto lo avisa en pantalla
+				}
+				
+				ps.setString(9,telefonoOp);
+				
+				ps.setInt(10, id);
+
+			
+			result = ps.executeUpdate();
+			
+			if(result > 0){
+                JOptionPane.showMessageDialog(null, "Cliente modificado");       //Si fue exitoso, lo avisa en un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Clientes
+                
+                ControlFiles.addContent("Se ha modificado un cliente con el nombre "+nombre+" "+apellido);
+                
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al modificar cliente");       //Si falla, lo avisa en pantalla
+                
+            }
+		
+			con.close();
+		}catch(SQLException E) {
+			E.printStackTrace();
+			
+		}catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		return null;
+		
+	}
+	
+	
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		//Nombre de las columnas
         modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Teléfono","Telefono secundario","Género","DNI","Fecha de nacimiento","E-Mail","Dirección"});
@@ -300,6 +427,52 @@ public class Consulta_Cliente {
 		
 		return null;
 		
+	}
+	
+	
+	public static Connection tablaBus(DefaultTableModel modelo, JTable table) {
+		  modelo.setColumnIdentifiers(new Object[] {"id_Pet","Nombre","Animal","Edad","Género","Raza","Dueño"});        //Nombre de las columnas
+	       
+	        table.setModel(modelo);       //Setea el modelo
+	        
+	        
+	        String datos[] = new String[7];      //Declara que va a haber 7 columnas
+	       
+	        try {
+	        	Connection con = Connect.getConexion();      //Realiza la conexión
+	        	//Sentencia sql
+	        	PreparedStatement ps = con.prepareStatement("SELECT Pet.id_Pet, Pet.name, Animal.type, age, Pet.gender, Breed.type, Client.name, Client.surname\r\n"
+	        			+ "FROM Pet\r\n"
+	        			+ "INNER JOIN Animal ON Animal.id_Animal = Pet.id_Animal\r\n"
+	        			+ "INNER JOIN Breed ON Breed.id_Breed = Pet.id_Breed\r\n"
+	        			+ "INNER JOIN Client ON Client.id_Client = Pet.id_Client;" );
+	            ResultSet rs = ps.executeQuery();
+	            while (rs.next()){               //Llena las columnas de la tabla con las columnas de la base de datos
+	                datos[0] = rs.getString(1);
+	                datos[1] = rs.getString(2);
+	                datos[2] = rs.getString(3);
+	                datos[3] = rs.getString(4);
+	                datos[4] = rs.getString(5);
+	                datos[5] = rs.getString(6);
+	                datos[6] = rs.getString(7)+" "+rs.getString(8);
+	                
+	                modelo.addRow(datos);
+
+	            }
+	            table.setModel(modelo);     //Setea el modelo
+	            
+	            table.getColumnModel().getColumn(0).setMaxWidth(0);       //Las siguientes 4 vuelven invisible la columna id, para el usuario
+	    		table.getColumnModel().getColumn(0).setMinWidth(0);
+	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
+	    		table.getColumnModel().getColumn(0).setResizable(false);
+	        } catch(SQLException E) {
+				JOptionPane.showMessageDialog(null,E);
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        
+		return null;
 	}
 	
 }

@@ -208,70 +208,21 @@ public class Modificar_Cliente extends JFrame {
 				String email = txtEmail.getText();
 				String fecha = ((JTextField) txtFechaNacimiento.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
+				String telefonoOp = txtTelefonoOp.getText();
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();         //Realiza la conexión
+
 					
 					
 					if (txtTelefonoOp.getText().isBlank()) {        //Realiza la consulta sql dependiendo si el campo telefono opcional está vacío
 						
-						ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? WHERE id_Client = ?" );
-						ps.setInt(9, id);
+						Consulta_Cliente.modificar(direccion, dni, nombre, apellido, telefono, date, genero, email, id);
 					} else {
-						ps = con.prepareStatement("UPDATE Client SET address = ?, dni = ?, name = ? ,surname = ?,  phone_Number = ? , birthdate = ?, gender = ?, email = ? , phone_Optional = ? WHERE id_Client = ?" );
-						String telefonoOp = txtTelefonoOp.getText();
-						
-						ps.setString(9,telefonoOp);
-						ps.setInt(10, id);
+						Consulta_Cliente.modificarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp, id);
 					}
 					
-						
-						ps.setString(1, direccion);
-						ps.setString(2, dni);
-						ps.setString(3, nombre);
-						ps.setString(4, apellido);
-						
-						ps.setString(5,telefono);
-			
-						ps.setDate(6, date);
-						
-
-						ps.setString(7, genero);
-						 
-						if(validaEmail(email)) {             //Revisa si el formato del E-Mail es correcto
-							ps.setString(8,email);
-						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");      //Si no es correcto lo avisa en pantalla
-						}
-						
-						
-
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Cliente modificado");       //Si fue exitoso, lo avisa en un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Clientes
-		                
-		                ControlFiles.addContent("Se ha modificado un cliente con el nombre "+nombre+" "+apellido);
-		                Tabla_Clientes tc = new Tabla_Clientes(perfil);
-		                tc.setVisible(true);
-		                dispose();
-		                
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar cliente");       //Si falla, lo avisa en pantalla
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					Tabla_Clientes tc = new Tabla_Clientes(perfil);
+					tc.setVisible(true);
+					dispose();
 			}
 		});
 		btnModificar.setBounds(76, 447, 89, 23);

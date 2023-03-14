@@ -271,12 +271,11 @@ public class Modificar_Mascota extends JFrame {
 		JButton btnModificar = new JButton("Modificar");            //Este botón modifica la mascota de acuerdo a los datos ingresados
 		btnModificar.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
-				PreparedStatement ps = null;
+				
 				int id = Integer.parseInt(txtId.getText());
 				String nombre = txtNombre.getText();
 				int idDue = Integer.parseInt(txtIdDue.getText());
-				Object animal = cbAnimal.getSelectedItem();
-				Object raza = cbRaza.getSelectedItem();
+				
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
@@ -446,12 +445,11 @@ public class Modificar_Mascota extends JFrame {
 		JButton btnModificar = new JButton("Modificar");                 //Este botón modifica la mascota de acuerdo a los datos ingresados
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PreparedStatement ps = null;
+				
 				int id = Integer.parseInt(txtId.getText());
 				String nombre = txtNombre.getText();
 				int idDue = Integer.parseInt(txtIdDue.getText());
-				Object animal = cbAnimal.getSelectedItem();
-				Object raza = cbRaza.getSelectedItem();
+				
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				int edad = Integer.parseInt(txtEdad.getText());
