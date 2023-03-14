@@ -212,7 +212,7 @@ public class Cliente extends JFrame {
 				
 					
 					if (txtTelefonoOp.getText().isBlank()) {          //Realiza la consulta dependiendo si el campo telefono opcional está vacío
-						Consulta_Cliente.agregar(direccion, dni, nombre, apellido, telefonoOp, date, genero, email);
+						Consulta_Cliente.agregar(direccion, dni, nombre, apellido, telefono, date, genero, email);
 						
 					} else {
 						Consulta_Cliente.agregarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp);
@@ -221,7 +221,7 @@ public class Cliente extends JFrame {
 					
 					
 						
-					
+					limpiar();
 				
 			}
 		});

@@ -104,7 +104,7 @@ public class Modificar_Cliente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Modificar_Cliente(String cliente) {                //Crea la ventana reccibiendo por parámetro el id del cliente
+	public Modificar_Cliente(String cliente, final String perfil) {                //Crea la ventana reccibiendo por parámetro el id del cliente
 		setTitle("Cliente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 459, 520);
@@ -169,7 +169,7 @@ public class Modificar_Cliente extends JFrame {
 		btnVolver.setBounds(254, 447, 89, 23);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tabla_Clientes tc = new Tabla_Clientes();
+				Tabla_Clientes tc = new Tabla_Clientes(perfil);
 				tc.setVisible(true);	//Abre la ventana Tabla_Clientes
 				dispose();
 			}
@@ -255,7 +255,7 @@ public class Modificar_Cliente extends JFrame {
 		                JOptionPane.showMessageDialog(null, "Cliente modificado");       //Si fue exitoso, lo avisa en un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Clientes
 		                
 		                ControlFiles.addContent("Se ha modificado un cliente con el nombre "+nombre+" "+apellido);
-		                Tabla_Clientes tc = new Tabla_Clientes();
+		                Tabla_Clientes tc = new Tabla_Clientes(perfil);
 		                tc.setVisible(true);
 		                dispose();
 		                

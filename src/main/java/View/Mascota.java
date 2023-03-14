@@ -428,7 +428,7 @@ public class Mascota extends JFrame {
 			
 				Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
 					
-				
+				limpiar();
 				
 				
 				
