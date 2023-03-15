@@ -322,4 +322,34 @@ public class ComboBoxes {
 			return modelo;
 		}
 		
+		public static DefaultComboBoxModel CBVeterinario(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();   //Realiza la conexión
+				String SSQL = "Select *"		//Sentencia Sql
+						+ "FROM Veterinarian";
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));     //El primer elemento está en blanco
+				
+				while (result.next()) {
+					 //El elemento del ComboBox recibe el nombre y apellido del veterinario como label y el id del veterinario como valor
+					modelo.addElement(new ComboItem(result.getString("name")+" "+result.getString("surname"),result.getString("id_Veterinarian")));
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }
