@@ -20,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 import Control.Connect;
 import Control.Consulta_Turno;
 import Model.ControlFiles;
-import View.Instrumento_Quirofano.ComboItem;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
