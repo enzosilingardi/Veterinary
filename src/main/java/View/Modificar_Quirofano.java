@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 public class Modificar_Quirofano extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNumero;
+	public static JTextField txtNumero;
 	private JTextField txtId;
 
 	/**
@@ -44,33 +44,7 @@ public class Modificar_Quirofano extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String quirofano) {         //Carga los campos recibiendo como parámetro el id del quirófano
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		int id = Integer.parseInt(quirofano);
-		
-		try {
-			cn = (Connection) Connect.getConexion();    //Realiza la conexión
-			
-			String SSQL = "SELECT room_Number FROM Operating_Room WHERE id_Operating_Room = ?";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, id);
-			
-			
-			result = pst.executeQuery();
-			while (result.next()){                       //Carga los campos con los resultados de la base de datos
-			txtNumero.setText(result.getString(1));
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
+
 	/**
 	 * Create the frame.
 	 */
@@ -129,7 +103,7 @@ public class Modificar_Quirofano extends JFrame {
 		txtId.setVisible(false);
 		txtId.setEnabled(false);
 		
-		cargarCampos(quirofano);
+		Consulta_Quirofano.cargar(quirofano);
 		txtId.setText(quirofano);
 		
 	}

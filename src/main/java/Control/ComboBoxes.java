@@ -442,4 +442,33 @@ public class ComboBoxes {
 			return modelo;
 		}
 		
+		public static DefaultComboBoxModel CBProducto2(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();                       //Realiza la conexión 
+				
+				String SSQL = "SELECT * FROM Product ORDER BY id_Product";       //Realiza una sentencia sql
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));             //El primer elemento es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));      //El elemento del ComboBox recibe el nombre del producto como label y el precio del producto como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }

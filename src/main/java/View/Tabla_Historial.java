@@ -28,7 +28,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import Control.Connect;
 import Control.Consulta_Historial;
 import Model.ControlFiles;
-import View.Factura.ComboItem;
 
 import java.awt.Font;
 import java.awt.Toolkit;

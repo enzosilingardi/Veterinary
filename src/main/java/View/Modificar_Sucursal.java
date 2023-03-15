@@ -25,7 +25,9 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class Modificar_Sucursal extends JFrame {
-
+	
+	//Esta ventana no es utilizada en la versión actual
+	
 	private JPanel contentPane;
 	private JTextField txtId;
 	private JTextField txtDireccion;

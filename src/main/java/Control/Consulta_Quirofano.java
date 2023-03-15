@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Model.ControlFiles;
+import View.Modificar_Quirofano;
 import View.Tabla_Quirofano;
 
 public class Consulta_Quirofano {
@@ -181,4 +182,32 @@ public class Consulta_Quirofano {
 		return null;
 	}
 	
+	public static Connection cargar(String quirofano){
+		Connection cn = null;
+		PreparedStatement pst = null;
+		ResultSet result = null;
+		
+		int id = Integer.parseInt(quirofano);
+		
+		try {
+			cn = (Connection) Connect.getConexion();    //Realiza la conexión
+			
+			String SSQL = "SELECT room_Number FROM Operating_Room WHERE id_Operating_Room = ?";		//Sentencia sql
+			pst = cn.prepareStatement(SSQL);
+			pst.setInt(1, id);
+			
+			
+			result = pst.executeQuery();
+			while (result.next()){                       //Carga los campos con los resultados de la base de datos
+			Modificar_Quirofano.txtNumero.setText(result.getString(1));
+			}
+			cn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			}catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		return null;
+	}
 }

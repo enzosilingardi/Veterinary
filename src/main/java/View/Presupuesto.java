@@ -22,8 +22,10 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 
+import Control.ComboBoxes;
 import Control.Connect;
-import View.Factura.ComboItem;
+import Control.Consulta_Presupuesto;
+import Model.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -50,41 +52,13 @@ public class Presupuesto extends JFrame {
 	private JTextField txtCliente;
 	private JTextField txtDom;
 	private JTextField txtDni;
-	private JTextField txtDir;
+	public static JTextField txtDir;
 	private JTable table;
 	private JComboBox cbPro;
-	private JTextField txtCuit;
-	private JTextField txtEmisor;
+	public static JTextField txtCuit;
+	public static JTextField txtEmisor;
 	
-	class ComboItem         //Clase utilizada para armar el ComboBox
-	{
-	    private String key;      //Label visible del ComboBox
-	    
-	    private String value;      //Valor del ComboBox
 
-	    public ComboItem(String key, String value)          //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
-	
 
 	public DefaultComboBoxModel cargarCliente() {       //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
@@ -177,63 +151,15 @@ public class Presupuesto extends JFrame {
 	
 
 	public DefaultComboBoxModel cargarProducto() {         //Carga el ComboBox Producto
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
+	
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
 		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));      //El primer elemento es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("sale_Price")));      //El elemento del ComboBox recibe el nombre del producto como label y el precio del producto como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		ComboBoxes.CBProducto2(modelo);
 		return modelo;
     }
 	
-	void cargarEmisor() {                   //Este proceso carga los datos del emisor actual
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		
-		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			String SSQL = "SELECT * FROM Emitter";
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			
-			
-			while (result.next()) {                            //Carga los campos según los resultados de la base de datos
-				txtEmisor.setText(result.getString("name"));
-				txtCuit.setText(result.getString("cuit"));
-				txtDir.setText(result.getString("address"));
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-    }
+
 
 	/**
 	 * Launch the application.
@@ -541,7 +467,7 @@ public class Presupuesto extends JFrame {
 		btnCalcular.setBounds(578, 325, 129, 23);
 		contentPane.add(btnCalcular);
 		
-		cargarEmisor();
+		Consulta_Presupuesto.cargar();
 		
 	}
 
@@ -754,6 +680,6 @@ public class Presupuesto extends JFrame {
 		btnCalcular.setBounds(578, 325, 129, 23);
 		contentPane.add(btnCalcular);
 		
-		cargarEmisor();
+		Consulta_Presupuesto.cargar();
 	}
 }

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Emisor;
 import View.Modificar_Ciudad.ComboItem;
 
 import javax.swing.JTextField;
@@ -24,38 +25,11 @@ import java.awt.event.ActionEvent;
 public class Emisor extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtEmisor;
-	private JTextField txtCuit;
-	private JTextField txtEmpresa;
+	public static JTextField txtEmisor;
+	public static JTextField txtCuit;
+	public static JTextField txtEmpresa;
 
-	void cargarEmisor() {             //Este proceso carga los datos del emisor actual
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		
-		
-		try {
-			cn = (Connection) Connect.getConexion();           //Realiza la conexión
-			String SSQL = "SELECT * FROM Emitter";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			
-			
-			while (result.next()) {                       //Carga los campos con los datos en el registro
-				txtEmisor.setText(result.getString("name"));
-				txtCuit.setText(result.getString("cuit"));
-				txtEmpresa.setText(result.getString("address"));
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-    }
+
 	/**
 	 * Launch the application.
 	 */
@@ -119,44 +93,12 @@ public class Emisor extends JFrame {
 				String nombre = txtEmisor.getText();
 				String cuit = txtCuit.getText();
 				String empresa = txtEmpresa.getText();
-				int result = 0;
 				
-				try {
-					Connection con = Connect.getConexion();       //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Emitter SET name = ?, cuit = ?, address = ? WHERE id_Emitter = 1" );
-					
-					
+				Consulta_Emisor.editar(nombre, empresa, cuit);
 				
-						
-						ps.setString(1, nombre);
-						ps.setString(3, empresa);
-						ps.setString(2,cuit);
-					
-						
-					
-					
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Emisor modificado");       //En caso de ser exitoso, lo muestra en pantalla y vuelve a la ventana Factura
-		                Factura factura = new Factura();
-						factura.setVisible(true);
-						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar emisor");      //En caso de fallar, lo muestra en pantalla
-		               
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				 Factura factura = new Factura();
+					factura.setVisible(true);
+					dispose();
 			}
 		});
 		btnEditar.setBounds(23, 252, 89, 23);
@@ -173,7 +115,7 @@ public class Emisor extends JFrame {
 		btnVolver.setBounds(156, 252, 89, 23);
 		contentPane.add(btnVolver);
 		
-		cargarEmisor();
+		Consulta_Emisor.cargar();
 	}
 
 }
