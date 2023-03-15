@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Usuario;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -28,13 +29,13 @@ import java.awt.event.ActionEvent;
 public class Modificar_Usuario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtContrasenia;
-	private JTextField txtNombreUsuario;
-	private JTextField txtNombre;
-	private JTextField txtApellido;
-	private JTextField txtEmail;
+	public static JTextField txtContrasenia;
+	public static JTextField txtNombreUsuario;
+	public static JTextField txtNombre;
+	public static JTextField txtApellido;
+	public static JTextField txtEmail;
 	private JTextField txtId;
-	private JComboBox cbPerfil;
+	public static JComboBox cbPerfil;
 
 	/**
 	 * Launch the application.
@@ -59,38 +60,7 @@ public class Modificar_Usuario extends JFrame {
 		return matcher.matches();
 	}
 	
-	private void cargarCampos(String usuario) {        //Carga los campos recibiendo como parámetro el id del usuario
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		int id = Integer.parseInt(usuario);
-		
-		try {
-			cn = (Connection) Connect.getConexion();     //Realiza la conexión
-			String SSQL = "SELECT profile, name, surname, username, password, email\r\n"		//Sentencia sql
-					+ "FROM Users WHERE id_User = ?";
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, id);
-			
-			
-			result = pst.executeQuery();
-			while (result.next()){                           //Carga los campos según los resultados de la base de datos
-			cbPerfil.setSelectedItem(result.getString(1));	
-			txtNombre.setText(result.getString(2));
-			txtApellido.setText(result.getString(3));
-			txtNombreUsuario.setText(result.getString(4));
-			txtContrasenia.setText(result.getString(5));
-			txtEmail.setText(result.getString(6));
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
+
 	/**
 	 * Create the frame.
 	 */
@@ -170,65 +140,12 @@ public class Modificar_Usuario extends JFrame {
 				String contrasenia = txtContrasenia.getText();
 				String email = txtEmail.getText();
 				
-				int result = 0;
+				Consulta_Usuario.modificar(perfil, nombre, apellido, nombreU, contrasenia, email, id);
 				
-				try {
-					Connection con = Connect.getConexion();           //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Users SET profile = ?, name = ?, surname = ?, username = ?, password = ?, email = ? WHERE id_User = ?" );
-					
-					
-					if (perfil == "") {              //Revisa si el ComboBox está en blanco
-						
-						JOptionPane.showMessageDialog(null, "Seleccione un perfil");
-					}else {
-					
-						ps.setString(1, perfil);
-						ps.setString(2, nombre);
-						ps.setString(3, apellido);
-						ps.setString(4, nombreU);
-						
-						if(contrasenia.length()<8) {          //Verifica si le contraseña tiene por lo menos 8 caracteres
-							
-							JOptionPane.showMessageDialog(null, "La contraseña debe tener por lo menos 8 caracteres");
-						}else {
-							ps.setString(5, contrasenia);
-						}
-						
-						
-						if(validaEmail(email)) {             //Verifica que el E-Mail sea valido
-							ps.setString(6,email);
-						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");
-						}
-						
-						ps.setInt(7, id);
-						
-					}
-						
-					
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario modificado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues regresa a la ventana Tabla_Usuarios
-		                ControlFiles.addContent("Se ha modificado el usuario "+nombreU);
 		                Tabla_Usuarios tu = new Tabla_Usuarios();
 						tu.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar usuario");      //En caso de fallar, lo avisa en pantalla
-		               
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		        
 			}
 		});
 		btnModificar.setBounds(87, 336, 89, 23);
@@ -252,7 +169,7 @@ public class Modificar_Usuario extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		cargarCampos(usuario);
+		Consulta_Usuario.cargar(usuario);
 		txtId.setText(usuario);
 	}
 

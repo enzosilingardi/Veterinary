@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Usuario;
 import Model.ControlFiles;
-import View.Ciudad.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,34 +38,7 @@ public class Usuario extends JFrame {
 	private JTextField txtEmail;
 	private JComboBox cbPerfil;
 	
-	class ComboItem                 //Clase utilizada para armar un ComboBox
-	{
-	    private String key;           //Label visible del ComboBox
-	    
-	    private String value;         //Valor del ComboBox
 
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	
 	
@@ -157,7 +130,7 @@ public class Usuario extends JFrame {
 		lblContrasenia.setBounds(70, 97, 74, 14);
 		contentPane.add(lblContrasenia);
 		
-		JButton btnAgregar = new JButton("Agregar");              //Esste botón permite agregar un usuario
+		JButton btnAgregar = new JButton("Agregar");              //Este botón permite agregar un usuario
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -168,65 +141,9 @@ public class Usuario extends JFrame {
 				String contrasenia = txtContrasenia.getText();
 				String email = txtEmail.getText();
 				
-				int result = 0;
+				Consulta_Usuario.agregar(perfil, nombre, apellido, nombreU, contrasenia, email);
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Users (profile,name,surname,username,password,email) VALUES (?,?,?,?,?,?)" );
-					
-					
-					if (perfil == "") {      //Revisa si el ComboBox está en blanco
-						
-						JOptionPane.showMessageDialog(null, "Seleccione un perfil");
-					}else {
-						//Revisa si el usuario ya existe
-						if(existeUsuario(nombreU)!=0) {
-						JOptionPane.showMessageDialog(null, "Usuario ya existe");
-					}else {
-						ps.setString(1, perfil);
-						ps.setString(2, nombre);
-						ps.setString(3, apellido);
-						ps.setString(4, nombreU);
-						
-						if(contrasenia.length()<8) {             //Revisa que la contraseña tenga por lo menos 8 caracteres
-							JOptionPane.showMessageDialog(null, "La contraseña debe tener por lo menos 8 caracteres");
-						}else {
-							ps.setString(5, contrasenia);
-						}
-						
-						
-						if(validaEmail(email)) {        //Revisa si el E-Mail es válido
-							ps.setString(6,email);
-						} else {
-							JOptionPane.showMessageDialog(null, "E-Mail no válido");
-						}
-						
-						
-						
-					}
-						
-					}
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Usuario guardado");         //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha agregado el usuario "+nombreU);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar usuario");  //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				limpiar();
 				
 			}
 		});
