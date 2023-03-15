@@ -10,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
 import Model.ControlFiles;
-import View.Instrumento.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

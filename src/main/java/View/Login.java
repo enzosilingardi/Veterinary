@@ -34,6 +34,8 @@ import java.awt.FlowLayout;
 
 public class Login extends JFrame {
 
+	//Esta ventana es la que se debe ejecutar primero
+	
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField txtContrasenia;

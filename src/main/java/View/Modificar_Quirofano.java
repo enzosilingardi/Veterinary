@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Quirofano;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -110,39 +111,12 @@ public class Modificar_Quirofano extends JFrame {
 				int id = Integer.parseInt(txtId.getText());
 				int numero = Integer.parseInt(txtNumero.getText());
 
+				Consulta_Quirofano.modificar(numero, id);
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Operating_Room SET room_Number = ? WHERE id_Operating_Room = ?" );
-					
-					ps.setInt(1, numero);
-					ps.setInt(2, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano modificado");            //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo agrega al log, después regresa a la ventana Table_Quirofano
-		                ControlFiles.addContent("Se ha modificado el quirófano "+numero);
-		                Tabla_Quirofano tq = new Tabla_Quirofano();
+		                Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
 						tq.setVisible(true);
 						dispose();
-		                
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar quirófano");     //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		           
 			}
 		});
 		btnModificar.setBounds(82, 137, 89, 23);

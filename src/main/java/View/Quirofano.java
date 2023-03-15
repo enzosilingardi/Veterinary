@@ -8,8 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Quirofano;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Direccion.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,34 +32,7 @@ public class Quirofano extends JFrame {
 	private JButton btnAgregar;
 	private JButton btnVolver;
 	 
-	class ComboItem                //Clase usada para armar el ComboBox
-	{
-	    private String key;       //Label visible del ComboBox
-	    
-	    private String value;      //Valor del ComboBox
 
-	    public ComboItem(String key, String value)       //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarSucursal() {       //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
@@ -108,36 +82,7 @@ public class Quirofano extends JFrame {
 		});
 	}
 
-	
-	public int existeQuirofano(int numero) {       //Este procedimiento revisa si ya existe el quirófano, recibiendo como parámetro el número
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();        //Realiza la conexión
-			
-			String SSQL = "SELECT count(room_Number) FROM Operating_Room WHERE room_Number = ?;";		//Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, numero);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);        //Si ya existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+
 	
 	
 	
@@ -179,37 +124,10 @@ public class Quirofano extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int numero = Integer.parseInt(txtNumero.getText());
 
+				Consulta_Quirofano.agregar(numero);
 				
-				int result = 0;
+				limpiar();
 				
-				try {
-					Connection con = Connect.getConexion();        //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Operating_Room (room_Number) VALUES (?)" );
-					if(existeQuirofano(numero) != 0) {
-						JOptionPane.showMessageDialog(null, "Quirofano ya existe");
-					}else {
-						ps.setInt(1, numero);
-					}
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirófano agrgado");                      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha agregado el quirófano "+txtNumero.getText());
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al agregar quirófano");        //En caso de fallar, lo avisa en pantalla
-		                limpiar(); 
-		            }
-					
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 		btnAgregar.setBounds(168, 142, 89, 23);

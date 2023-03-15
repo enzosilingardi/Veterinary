@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Quirofano;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
@@ -32,42 +33,7 @@ public class Tabla_Quirofano extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano","Sucursal"});      //Nombre de las columnas
-	       
-	        table.setModel(modelo);     //Setea el modelo
-	        
-	        
-	        String datos[] = new String[3];      //Declara que va a haber 3 columnas
-	       
-	        try {
-	        	Connection con = Connect.getConexion();    //Realiza la conexión
-	        	//Sentencia sql
-	        	PreparedStatement ps = con.prepareStatement("SELECT Operating_Room.id_Operating_Room, address, Operating_Room.room_Number\r\n"
-	        			+ "FROM Operating_Room\r\n"
-	        			+ "INNER JOIN Rel_Branch_Operating_R ON Rel_Branch_Operating_R.id_Operating_Room = Operating_Room.id_Operating_Room\r\n"
-	        			+ "INNER JOIN Branch ON Rel_Branch_Operating_R.id_Branch = Branch.id_Branch;" );
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){                    //Carga las columnas de la base de datos en la tabla
-	            	datos[0] = rs.getString(1);
-	            	datos[1] = rs.getString(3);
-	                datos[2] = rs.getString(2);
-	                
-	                
-	                modelo.addRow(datos);
-
-	            }
-	            table.setModel(modelo);     //Setea el modelo
-
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);            // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-	    		table.getColumnModel().getColumn(0).setMinWidth(0);
-	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-	    		table.getColumnModel().getColumn(0).setResizable(false);
-	        } catch(SQLException E) {
-				JOptionPane.showMessageDialog(null,E);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+	        Consulta_Quirofano.tabla(modelo, table);
 	        
 	    }
 
@@ -126,6 +92,10 @@ public class Tabla_Quirofano extends JFrame {
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {      //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
 		JButton btnRel = new JButton("Añadir a sucursal");      //Abre la ventana Quirófano_Sucursal
+		btnRel.setForeground(new Color(255, 255, 255));
+		btnRel.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnRel.setBorder(null);
+		btnRel.setBackground(new Color(86, 211, 243));
 		btnRel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Quirofano_Sucursal qs = new Quirofano_Sucursal(perfil);      //Envía el perfil como parámetro
@@ -142,6 +112,10 @@ public class Tabla_Quirofano extends JFrame {
 		if (perfil.equals("Admin") || perfil.equals("Manager")) {        //Muestra los siguientes botones solo si el usuario es "Admin" o "Manager"
 		
 		JButton btnModificar = new JButton("Modificar");         //Abre la ventana Modificar_Quirófano
+		btnModificar.setForeground(new Color(255, 255, 255));
+		btnModificar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnModificar.setBorder(null);
+		btnModificar.setBackground(new Color(86, 211, 243));
 		btnModificar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int fila = table.getSelectedRow();
@@ -155,45 +129,31 @@ public class Tabla_Quirofano extends JFrame {
 		contentPane.add(btnModificar);
 		
 		JButton btnEliminar = new JButton("Eliminar");           //Este botón elimina la fila seleccionada
+		btnEliminar.setForeground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnEliminar.setBorder(null);
+		btnEliminar.setBackground(new Color(86, 211, 243));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int result = 0;
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String numero = table.getValueAt(fila,1).toString();
 				
-				try {
-					Connection con = Connect.getConexion();        //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Operating_Room WHERE id_Operating_Room = ?" );
-					
-						ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Quirofano eliminado");        //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado el quirofano "+table.getValueAt(fila,1).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar quirofano");     //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Quirofano está en uso, por favor elimine todos los registros relacionados");     //En caso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Quirofano.eliminar(id, numero);
+				
+				mostrarTabla();
+				
 			}
 		});
 		btnEliminar.setBounds(312, 277, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JButton btnAgregar = new JButton("Agregar");          //Abre la ventana quirófano
+		btnAgregar.setForeground(new Color(255, 255, 255));
+		btnAgregar.setFont(new Font("Roboto", Font.BOLD, 14));
+		btnAgregar.setBorder(null);
+		btnAgregar.setBackground(new Color(86, 211, 243));
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Quirofano quirofano = new Quirofano(perfil);     //Envía como parámetro el perfil
