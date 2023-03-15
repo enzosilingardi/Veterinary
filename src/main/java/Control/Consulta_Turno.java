@@ -182,9 +182,7 @@ public class Consulta_Turno {
 			PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
 			
 			
-			if (((ComboItem) tipo).getValue() == "") {                      //Revisa que si el ComboBox está en blanco
-				JOptionPane.showMessageDialog(null, "Seleccione un tipo");
-			}else {
+			
 				ps.setString(1, (String) tipo);
 				ps.setInt(2, idM);
 				ps.setDate(3, date);
@@ -193,7 +191,7 @@ public class Consulta_Turno {
 				
 				
 					
-				}
+		
 				
 			
 			
