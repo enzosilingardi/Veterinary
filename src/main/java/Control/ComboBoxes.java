@@ -408,4 +408,38 @@ public class ComboBoxes {
 				}
 			return modelo;
 		}
+		
+		public static DefaultComboBoxModel CBProcedimiento(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();     //Realiza la conexión
+				String SSQL = "SELECT DISTINCT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103) as pd,CONVERT(varchar(10),proced_Time,8) as pt\r\n"		//Sentencia Sql
+						+ "FROM Medical_Procedure\r\n"
+						+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
+						+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type\r\n"
+						+ "INNER JOIN Medical_History ON Medical_History.id_Pet = Pet.id_Pet";
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));     //El primer elemento es en blanco
+				
+				while (result.next()) {
+					//El elemento del ComboBox recibe el nombre de la mascota y el nombre, fecha y hora del procedimiento como label, y el id del procedimiento como valor
+					modelo.addElement(new ComboItem(result.getString("name")+" - "+result.getString("proced_Name")+" "+result.getString("pd")+" "+result.getString("pt"),result.getString("id_Procedure")));
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }
