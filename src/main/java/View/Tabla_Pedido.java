@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Pedido;
 import Model.ControlFiles;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -32,44 +33,7 @@ public class Tabla_Pedido extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Proveedor","Sucursal","Cantidad"});       //Nombre de las columnas
-	       
-	        table.setModel(modelo);     //Setea el modelo
-	        
-	        
-	        String datos[] = new String[5];  //Declara que va a haber 5 columnas
-	       
-	        try {
-	        	Connection con = Connect.getConexion();     //Realiza la conexión
-	        	//Sentencia sql
-	        	PreparedStatement ps = con.prepareStatement("SELECT Orders.id_Order, Product.product_Name, Provider.provider_Name, Branch.address, Orders.quantity\r\n"
-	        			+ "FROM Orders\r\n"
-	        			+ "INNER JOIN Product ON Product.id_Product = Orders.id_Product\r\n"
-	        			+ "INNER JOIN Provider ON Provider.id_Provider = Product.id_Provider\r\n"
-	        			+ "INNER JOIN Branch ON Branch.id_Branch = Orders.id_Branch;" );
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){                    //Carga las columnas de la base de datos en la tabla
-	                datos[0] = rs.getString(1);
-	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5);
-	                
-	                modelo.addRow(datos);
-
-	            }
-	            table.setModel(modelo);       //Setea el modelo
-	            
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);           // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-	    		table.getColumnModel().getColumn(0).setMinWidth(0);
-	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-	    		table.getColumnModel().getColumn(0).setResizable(false);
-	        } catch(SQLException E) {
-				JOptionPane.showMessageDialog(null,E);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+	        Consulta_Pedido.tabla(modelo, table);
 	        
 	    }
 
@@ -168,37 +132,14 @@ public class Tabla_Pedido extends JFrame {
 			btnEliminar.setBackground(new Color(86, 211, 243));
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					int result = 0;
+					
 					int fila = table.getSelectedRow();
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					String producto = table.getValueAt(fila,1).toString();
+					String sucursal = table.getValueAt(fila,3).toString();
 					
-					try {
-						Connection con = Connect.getConexion();     //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("DELETE FROM Orders WHERE id_Order = ?" );
-						
-							ps.setInt(1, id);
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Pedido eliminado");      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                
-			                ControlFiles.addContent("Se ha eliminado un pedido de "+table.getValueAt(fila,1).toString()+" para la sucursal "+table.getValueAt(fila,3).toString());
-			               mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");      //En caso de fallar, lo avisa en pantalla
-			                
-			            }
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Pedido está en uso, por favor elimine todos los registros relacionados");   //En caso de fallar, lo avisa en pantalla
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					Consulta_Pedido.eliminar(id, producto, sucursal);
+					mostrarTabla();
 				}
 			});
 			btnEliminar.setBounds(139, 260, 91, 23);
@@ -282,37 +223,13 @@ public class Tabla_Pedido extends JFrame {
 		btnEliminar.setBackground(new Color(86, 211, 243));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String producto = table.getValueAt(fila,1).toString();
+				String sucursal = table.getValueAt(fila,3).toString();
 				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Orders WHERE id_Order = ?" );
-					
-						ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Pedido eliminado");      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado un pedido de "+table.getValueAt(fila,1).toString()+" para la sucursal "+table.getValueAt(fila,3).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar pedido");     //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Pedido está en uso, por favor elimine todos los registros relacionados");   //En caso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Pedido.eliminar(id, producto, sucursal);
+				mostrarTabla();
 			}
 		});
 		btnEliminar.setBounds(139, 260, 91, 23);

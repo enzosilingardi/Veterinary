@@ -7,7 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Pedido;
+import Model.ComboItem;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -29,95 +32,23 @@ public class Pedidos extends JFrame {
 	private JTextField txtCantidad;
 	private JComboBox cbProducto;
 	private JComboBox cbSucursal;
-	
-	class ComboItem              //Clase usada para armar el ComboBox
-	{
-	    private String key;         //Label visible del ComboBox
-	    
-	    private String value;        //Valor del ComboBox
 
-	    public ComboItem(String key, String value)  //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
-	
 	
 	public DefaultComboBoxModel cargarProducto() {           //Carga el ComboBox producto
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
+
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
+		ComboBoxes.CBProducto(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();         //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Product ORDER BY id_Product";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));      //El primer elemento es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));    //El elemento del ComboBox recibe el nombre dle producto como Label y el id del Producto como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 	
 	public DefaultComboBoxModel cargarSucursal() {      //Carga el ComboBox sucursal
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
+
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();   
 		
+		ComboBoxes.CBSucursal(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();     //Realiza la conexión
-			String SSQL = "Select *\r\n"		//Sentencia sql
-					+ "FROM Branch\r\n"
-					+ "ORDER BY Branch.address";
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));    //El primer elemento es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));     //El elemento del ComboBox recibe la dirección de la sucursal como label y el id de la sucursal como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 	
@@ -137,37 +68,7 @@ public class Pedidos extends JFrame {
 		});
 	}
 
-	public int existePedido(Object producto, Object sucursal) {         //Esta función determina si ya existe el pedido
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();         //Realiza la conexión
-			
-			String SSQL = "SELECT count(*) FROM Orders WHERE id_Product = ? AND id_Branch = ?;";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,(String) producto);
-			pst.setString(2,(String) sucursal);
 
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);          //Si ya existe el pedido, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
 	
 	private void limpiar() {              //Este procedimiento limpia los campos
 		cbProducto.setSelectedIndex(0);
@@ -239,14 +140,9 @@ public class Pedidos extends JFrame {
 				int cantidad = Integer.parseInt(txtCantidad.getText());
 				Object producto = cbProducto.getSelectedItem();
 				Object sucursal = cbSucursal.getSelectedItem();
+				String nombreProducto = cbProducto.getSelectedItem().toString();
+				String nombreSucursal = cbSucursal.getSelectedItem().toString();
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();     //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Orders (id_Product,id_Branch,quantity) VALUES (?,?,?)" );
-					
 					
 					if (((ComboItem) producto).getValue() == "") {                       //Revisa si los ComboBox están en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un producto");
@@ -254,41 +150,23 @@ public class Pedidos extends JFrame {
 						if (((ComboItem) sucursal).getValue() == "") {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
-							if(existePedido(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Consulta_Pedido.existe(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 						         //Revisa si ya existe el pedido
 								JOptionPane.showMessageDialog(null, "Pedido ya existe");
 					
 							}else {
-						
-								ps.setString(1, ((ComboItem) producto).getValue());
-								ps.setString(2, ((ComboItem) sucursal).getValue());
-								ps.setInt(3, cantidad);
+								
+								Consulta_Pedido.agregar(((ComboItem) cbProducto.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), cantidad, nombreProducto, nombreSucursal);
+								
 						
 					}
+
+
 						}
-						
-						
 					}
+						
+						
 					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Pedido guardado");      //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha creado un pedido de "+producto+" para la sucursal "+sucursal);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar pedido");      //En caso de fallar, lo avisa en pantalla 
-		                limpiar();
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				
 			}
 		});

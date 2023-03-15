@@ -145,6 +145,7 @@ public class Sucursal_Producto extends JFrame {
 						
 					}
 					
+					limpiar();
 					
 				
 			}
