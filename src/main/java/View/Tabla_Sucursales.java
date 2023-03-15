@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Sucursales;
 import Model.ControlFiles;
 import View.Sucursal.ComboItem;
 
@@ -42,38 +43,7 @@ public class Tabla_Sucursales extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        modelo.setColumnIdentifiers(new Object[] {"ID","Dirección"});  //Nombre de las columnas
-       
-        table.setModel(modelo);      //Setea el modelo
-        
-        
-        String datos[] = new String[2];  //Declara que va a haber 2 columnas
-       
-        try {
-        	Connection con = Connect.getConexion();     //Realiza la conexión
-        	//Sentencia sql
-        	PreparedStatement ps = con.prepareStatement("SELECT Branch.id_Branch, address\r\n"
-        			+ "FROM Branch;" );
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){                      //Carga las columnas de la base de datos en la tabla
-                datos[0] = rs.getString(1);
-                datos[1] = rs.getString(2);
-                
-                modelo.addRow(datos);
-
-            }
-            table.setModel(modelo);        //Setea el modelo
-
-            table.getColumnModel().getColumn(0).setMaxWidth(0);    // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-    		table.getColumnModel().getColumn(0).setMinWidth(0);
-    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-    		table.getColumnModel().getColumn(0).setResizable(false);
-        } catch(SQLException E) {
-			JOptionPane.showMessageDialog(null,E);
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+        Consulta_Sucursales.tabla(modelo, table);
         
     }
 	
@@ -96,35 +66,7 @@ public class Tabla_Sucursales extends JFrame {
 	}
 	
 
-	public int existeSucursal(String direccion) {        //Este procedimiento revisa si existe la sucursal
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			String SSQL = "SELECT count(*) FROM Branch WHERE address = ? ;";
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, direccion);
 
-			result = pst.executeQuery();
-			
-			if (result.next()) {               
-				return result.getInt(1);       //Si ya existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
 	
 	 
 	private void limpiar() {           //Este procedimiento limpia los campos
@@ -186,38 +128,11 @@ public class Tabla_Sucursales extends JFrame {
 					
 					String direccion = table.getValueAt(fila,1).toString();
 					
-					int result = 0;
+					Consulta_Sucursales.modificar(direccion, id);
 					
-					try {
-						Connection con = Connect.getConexion();        //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
-						
-						
-						ps.setString(1, direccion);
-						
-						ps.setInt(2, id);
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Sucursal modificada");          //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 			                limpiar();
 			                mostrarTabla();
-			            } else { 
-			                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");     //En caso de fallar, lo avisa en pantalla
-			                limpiar();
-			            }
-					
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace();
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+			           
 					
 				}
 			});
@@ -233,43 +148,11 @@ public class Tabla_Sucursales extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					String direccion = txtDireccion.getText();
 					
-					int result = 0;
+					Consulta_Sucursales.agregar(direccion);
 					
-					try {
-						Connection con = Connect.getConexion();     //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
-						
-						
-						
-						if(existeSucursal(direccion)!=0) {     //Revisa si la sucursal ya existe
-							
-							JOptionPane.showMessageDialog(null, "Sucursal ya existe");
-						}else {
-							ps.setString(1, direccion);
-						}
-							
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Sucursal guardada");         //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
 			                limpiar();
 			                mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");    //En caso de fallar, lo avisa en pantalla
-			                limpiar();
-			            }
-					
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace();
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+			         
 				}
 			});
 			btnAgregar.setBounds(385, 83, 89, 23);
@@ -282,37 +165,15 @@ public class Tabla_Sucursales extends JFrame {
 			btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					int result = 0;
+					
 					int fila = table.getSelectedRow();
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					String nombre = table.getValueAt(fila,1).toString();
 					
-					try {
-						Connection con = Connect.getConexion();      //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
-						
-							ps.setInt(1, id);
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Sucursal eliminada");     //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                
-			                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
+					Consulta_Sucursales.eliminar(id, nombre);
+					
 			               mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");   //En caso de fallar, lo avisa en pantalla
-			                
-			            }
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");       //En caso de fallar, lo avisa en pantalla
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+			            
 				}
 			});
 			btnEliminar.setBounds(435, 122, 91, 23);
@@ -383,38 +244,10 @@ public class Tabla_Sucursales extends JFrame {
 				
 				String direccion = table.getValueAt(fila,1).toString();
 				
-				int result = 0;
+				Consulta_Sucursales.modificar(direccion, id);
 				
-				try {
-					Connection con = Connect.getConexion();  //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Branch SET address = ? WHERE id_Branch = ?" );
-					
-					
-					ps.setString(1, direccion);
-					
-					ps.setInt(2, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal modificada");   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha modificado la sucursal "+direccion);
 		                limpiar();
 		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar sucursal");      //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				
 			}
 		});
@@ -430,43 +263,10 @@ public class Tabla_Sucursales extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String direccion = txtDireccion.getText();
 				
-				int result = 0;
+				Consulta_Sucursales.agregar(direccion);
 				
-				try {
-					Connection con = Connect.getConexion();        //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Branch (address) VALUES (?)" );
-					
-					
-					
-					if(existeSucursal(direccion)!=0) {       //Revisa si ya existe la sucursal
-						
-						JOptionPane.showMessageDialog(null, "Sucursal ya existe");
-					}else {
-						ps.setString(1, direccion);
-					}
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal guardada");             //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha añadido la sucursal "+direccion);
 		                limpiar();
 		                mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar sucursal");      //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 		btnAgregar.setBounds(385, 83, 89, 23);
@@ -479,37 +279,14 @@ public class Tabla_Sucursales extends JFrame {
 		btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
+
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String nombre = table.getValueAt(fila,1).toString();
 				
-				try {
-					Connection con = Connect.getConexion();       //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Branch WHERE id_Branch = ?" );
-					
-						ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Sucursal eliminada");      //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado la sucursal "+table.getValueAt(fila,1).toString());
+				Consulta_Sucursales.eliminar(id, nombre);
+				
 		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar sucursal");      //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Sucursal está en uso, por favor elimine todos los registros relacionados");       //En caso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 		btnEliminar.setBounds(435, 122, 91, 23);
