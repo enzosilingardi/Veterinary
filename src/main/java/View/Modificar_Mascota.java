@@ -151,36 +151,7 @@ public class Modificar_Mascota extends JFrame {
 		
 	}
 	
-	private void cargarCampos(String mascota) {           //Carga los campos recibiendo como parámetro el id de la mascota
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		int id = Integer.parseInt(mascota);
-		
-		try {
-			cn = (Connection) Connect.getConexion();                          //Realiza la conexión
-			String SSQL = "SELECT name, age FROM Pet WHERE id_Pet = ?";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, id);
-			
-			
-			result = pst.executeQuery();
-			while (result.next()){                        //Carga los campos de acuerdo a los resultados de la base de datos
-			txtNombre.setText(result.getString(1));
-			txtEdad.setText(result.getString(2));
-			
-			
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
-	
+
 	
 	/**
 	 * Create the frame.
@@ -305,7 +276,7 @@ public class Modificar_Mascota extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		cargarCampos(mascota);
+		Consulta_Mascota.cargar(mascota);
 		txtId.setText(mascota);
 		
 		txtDue = new JTextField();
@@ -480,7 +451,7 @@ public class Modificar_Mascota extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		cargarCampos(mascota);
+		Consulta_Mascota.cargar(mascota);
 		txtId.setText(mascota);
 		
 		txtDue = new JTextField();

@@ -7,7 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Producto;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -68,32 +70,10 @@ public class Producto extends JFrame {
 	
 
 	public DefaultComboBoxModel cargarTipo() {           //Carga el ComboBox tipo
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
+		ComboBoxes.CBTipoProd(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();    //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Product_Type ORDER BY id_Product_Type";	//Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));     //El primer elemento es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("type_Name"),result.getString("id_Product_Type")));     //El elemento del ComboBox recibe el tipo de producto como label y el id del tipo como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 	
@@ -113,36 +93,7 @@ public class Producto extends JFrame {
 		});
 	}
 	
-	public int existeProducto(String nombre) {       //Este procedimiento revisa si ya existe el producto, recibiendo por parametro el nombre
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			
-			String SSQL = "SELECT count(*) FROM Product WHERE product_Name = ?;";	//Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1,nombre);
 
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);         //Si ya existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
 	
 	public int productoEnUso(String producto) {       //Este procedimiento no es utilizado en la versión actual
 		Connection cn = null;
@@ -260,60 +211,14 @@ public class Producto extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				int idPro = Integer.parseInt(txtIdPro.getText());
-				Object tipo = cbTipo.getSelectedItem();
 				String nombre = txtNombre.getText();
 				String descripcion = txtDescripcion.getText();
 				float costo = Float.parseFloat(txtCosto.getText());
 				float precio = Float.parseFloat(txtPrecio.getText());
 				
-				int result = 0;
+				Consulta_Producto.agregar(idPro, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio);
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Product (id_Provider, product_Name, id_Product_Type, description, cost_Price, sale_Price) VALUES (?,?,?,?,?,?)" );
-					
-					
-					
-						ps.setInt(1, idPro);
-						ps.setString(2, nombre);
-						ps.setString(3, ((ComboItem) tipo).getValue());
-						ps.setString(4, descripcion);
-						if (costo < 0) {                //Revisa que en el costo no hayan números negativos
-							
-							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
-						} else {
-							ps.setFloat(5,costo);
-						}
-						
-						if (precio < 0) {           //Revisa que en el precio no hayan números negativos
-							
-							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
-						} else {
-							ps.setFloat(6,precio);
-						}
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto guardado");                   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se a añadido un producto de nombre "+nombre);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar producto");    //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+				limpiar();
 			}
 		});
 		btnAgregar.setBounds(156, 336, 89, 23);
@@ -437,62 +342,15 @@ public class Producto extends JFrame {
 		JButton btnAgregar = new JButton("Agregar");            //Este botón permite agregar un producto
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				int idPro = Integer.parseInt(txtIdPro.getText());
-				Object tipo = cbTipo.getSelectedItem();
 				String nombre = txtNombre.getText();
 				String descripcion = txtDescripcion.getText();
 				float costo = Float.parseFloat(txtCosto.getText());
 				float precio = Float.parseFloat(txtPrecio.getText());
 				
-				int result = 0;
+				Consulta_Producto.agregar(idPro, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio);
 				
-				try {
-					Connection con = Connect.getConexion();  //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Product (id_Provider, product_Name, id_Product_Type, description, cost_Price, sale_Price) VALUES (?,?,?,?,?,?)" );
-					
-					
-					
-						ps.setInt(1, idPro);
-						ps.setString(2, nombre);
-						ps.setString(3, ((ComboItem) tipo).getValue());
-						ps.setString(4, descripcion);
-						
-						if (costo < 0) {      //Revisa que en el costo no hayan números negativos
-							
-							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
-						} else {
-							ps.setFloat(5,costo);
-						}
-						
-						if (precio < 0) {     //Revisa que en el precio no hayan números negativos
-							
-							JOptionPane.showMessageDialog(null, "No se permiten números negativos");
-						} else {
-							ps.setFloat(6,precio);
-						}
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Producto guardado");                  //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se a añadido un producto de nombre "+nombre);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar producto");        //En caso de fallar, lo muestra en pantalla
-		                limpiar();
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				limpiar();
 				
 			}
 		});
