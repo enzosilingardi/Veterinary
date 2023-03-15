@@ -55,7 +55,7 @@ public class Consulta_Relaciones {
 		
 	}
 	
-	public static int existeAR(Object animal, Object raza) {
+	public static int existeAR(Object animal, Object raza) {	//revisa si ya existe la relación entre animal y raza
 		Connection cn = null;
 		PreparedStatement pst = null;
 		ResultSet result = null;

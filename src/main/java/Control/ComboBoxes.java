@@ -232,4 +232,64 @@ public class ComboBoxes {
 			return modelo;
 		}
 		
+		public static DefaultComboBoxModel CBProducto(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();      //Realiza la conexión
+				
+				String SSQL = "SELECT * FROM Product ORDER BY id_Product";		//Sentencia Sql
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));    //El primer elemento es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("product_Name"),result.getString("id_Product")));     //El elemento del ComboBox recibe el nombre del producto como label y el id como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
+		public static DefaultComboBoxModel CBSucursal(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();    //Realiza la conexión
+				String SSQL = "Select *\r\n"		//Sentencia Sql
+						+ "FROM Branch\r\n"
+						+ "ORDER BY Branch.address";
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));       //El primer elemento es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("address"),result.getString("id_Branch")));      //El elemento del ComboBox recibe la dirección de la sucursal como label y el id como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }
