@@ -9,9 +9,11 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Historial;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Instrumento_Quirofano.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,35 +37,7 @@ public class Historial_Medico extends JFrame {
 	private JTextField txtMascota;
 	private JTextField txtIdM;
 
-	
-	class ComboItem                                     //Clase utilizada para armar el ComboBox
-	{
-	    private String key;                             //Label visible del ComboBox
-	    
-	    private String value;                           //Valor del ComboBox
 
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarMascota() {                  //Carga el ComboBox mascota
 		Connection cn = null;
@@ -72,29 +46,8 @@ public class Historial_Medico extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();     
 		
+		ComboBoxes.CBMascota(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();         //Realiza la conexión
-			
-			String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN, Client.surname as ClientS\r\n"       //Realiza una sentencia sql
-					+ "FROM Pet\r\n"
-					+ "INNER JOIN Client ON Pet.id_Client = Client.id_Client\r\n"
-					+ "ORDER BY id_Pet";
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));   //El elemento del ComboBox recibe el nombre de la mascota, el nombre y apellido de su dueño como label y como valor el id de la mascota
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 	/**
@@ -184,41 +137,9 @@ public class Historial_Medico extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				int result = 0;
+				Consulta_Historial.agregar(idM, descripcion, date, mascota);
 				
-				try {
-					Connection con = Connect.getConexion();   //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
-					
-					
-				
-					
-						ps.setInt(1, idM);
-						ps.setString(2, descripcion);
-						ps.setDate(3, date);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");                            //Si fue existoso, lo avisa mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha añadido un historial para la mascota "+mascota);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");                   //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				limpiar();
 			}
 		});
 		btnAgregar.setBounds(164, 259, 89, 23);
@@ -309,41 +230,9 @@ public class Historial_Medico extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				int result = 0;
+				Consulta_Historial.agregar(idM, descripcion, date, mascota);
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_History (id_Pet,description,date) VALUES (?,?,?)" );
-					
-					
-				
-					
-						ps.setInt(1, idM);
-						ps.setString(2, descripcion);
-						ps.setDate(3, date);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");                          //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha añadido un historial para la mascota "+mascota);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");                 //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				limpiar();
 			}
 		});
 		btnAgregar.setBounds(164, 259, 89, 23);

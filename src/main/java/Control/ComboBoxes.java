@@ -166,4 +166,39 @@ public class ComboBoxes {
 				}
 			return modelo;
 		}
+		
+		public static DefaultComboBoxModel CBMascota(DefaultComboBoxModel modelo) {
+			
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			   
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();         //Realiza la conexión
+				
+				String SSQL = "SELECT id_Pet,Pet.name as petN, Client.name as clientN, Client.surname as ClientS\r\n"       //Realiza una sentencia sql
+						+ "FROM Pet\r\n"
+						+ "INNER JOIN Client ON Pet.id_Client = Client.id_Client\r\n"
+						+ "ORDER BY id_Pet";
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("petN")+" - Dueño: "+result.getString("clientN")+" "+result.getString("clientS"),result.getString("id_Pet")));   //El elemento del ComboBox recibe el nombre de la mascota, el nombre y apellido de su dueño como label y como valor el id de la mascota
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }

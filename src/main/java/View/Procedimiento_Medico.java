@@ -10,8 +10,8 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Historial_Medico.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,34 +38,7 @@ public class Procedimiento_Medico extends JFrame {
 	private JTextField txtIdM;
 	
 
-	class ComboItem              //Clase usada para armar el ComboBox
-	{
-	    private String key;        //Label visible del ComboBox
-	    
-	    private String value;       //Valor del ComboBox
-
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
+	
 	
 	public DefaultComboBoxModel cargarMascota() {        //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;

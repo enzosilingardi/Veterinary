@@ -18,8 +18,9 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
+import Control.Consulta_Historial;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Historial_Medico.ComboItem;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -29,40 +30,13 @@ import java.awt.event.ActionEvent;
 public class Modificar_Historial extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtDescripcion;
-	private JDateChooser txtFecha;
+	public static JTextField txtDescripcion;
+	public static JDateChooser txtFecha;
 	private JTextField txtId;
 	private JTextField txtMascota;
 	private JTextField txtIdM;
 	
-	class ComboItem                    //Clase usada para armar el ComboBox
-	{
-	    private String key;             //Label visible del ComboBox
-	    
-	    private String value;                 //Valor del ComboBox
 
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarMascota() {             //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
@@ -111,37 +85,7 @@ public class Modificar_Historial extends JFrame {
 			}
 		});
 	}
-	
-	private void cargarCampos(String historial) {     //Este proceso carga los campos recibiendo como parámetro el id del historial
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		int id = Integer.parseInt(historial);
-		
-		try {
-			cn = (Connection) Connect.getConexion();           //Realiza la conexión
-			
-			String SSQL = "SELECT description, date\r\n"		//Sentencia sql
-					+ "FROM Medical_History\r\n"
-					+ "WHERE id_Medical_History = ?";
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, id);
-			
-			
-			result = pst.executeQuery();
-			while (result.next()){                              //Carga los campos segun el resultado en la base de datos
-			txtDescripcion.setText(result.getString(1));
-			txtFecha.setDate(result.getDate(2));
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
+
 
 	/**
 	 * Create the frame.
@@ -189,44 +133,12 @@ public class Modificar_Historial extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				int result = 0;
+				Consulta_Historial.modificar(idM, descripcion, date, id, mascota);
 				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
-					
-					
-					
-					
-						ps.setInt(1, idM);
-						ps.setString(2, descripcion);
-						ps.setDate(3, date);
-						ps.setInt(4, id);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");                         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo agrega al log, despues regresa a la ventana Tabla_Historial
-		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
 		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");       //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		           
 			}
 		});
 		btnModificar.setBounds(99, 209, 89, 23);
@@ -275,7 +187,7 @@ public class Modificar_Historial extends JFrame {
 		btnBuscar.setBounds(365, 33, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		cargarCampos(historial);
+		Consulta_Historial.cargar(historial);
 		
 		txtIdM.setText(idMas);
 		txtMascota.setText(nomMas);
@@ -324,44 +236,11 @@ public class Modificar_Historial extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				int result = 0;
+				Consulta_Historial.modificar(idM, descripcion, date, id, mascota);
 				
-				try {
-					Connection con = Connect.getConexion();            //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Medical_History SET id_Pet = ?, description = ?, date = ? WHERE id_Medical_History = ?" );
-					
-					
-					
-					
-						ps.setInt(1, idM);
-						ps.setString(2, descripcion);
-						ps.setDate(3, date);
-						ps.setInt(4, id);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Historial guardado");                             //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después regresa a la ventana Tabla_Historial
-		                ControlFiles.addContent("Se ha modificado un historial de la mascota "+mascota);
 		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar historial");             //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 		btnModificar.setBounds(99, 209, 89, 23);
@@ -410,7 +289,7 @@ public class Modificar_Historial extends JFrame {
 		btnBuscar.setBounds(365, 33, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		cargarCampos(historial);
+		Consulta_Historial.cargar(historial);
 	}
 
 	public Modificar_Historial() {
