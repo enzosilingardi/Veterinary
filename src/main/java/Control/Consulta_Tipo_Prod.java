@@ -162,7 +162,7 @@ public class Consulta_Tipo_Prod {
 		try {
 			Connection con = Connect.getConexion();       //Realiza la conexión
 			
-			PreparedStatement ps = con.prepareStatement("DELETE FROM Product_Type WHERE id_Provider_Type = ?" );
+			PreparedStatement ps = con.prepareStatement("DELETE FROM Product_Type WHERE id_Product_Type = ?" );
 			
 			ps.setInt(1, id);
 			
