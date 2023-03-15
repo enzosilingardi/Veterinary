@@ -292,4 +292,34 @@ public class ComboBoxes {
 			return modelo;
 		}
 		
+		public static DefaultComboBoxModel CBUsuario(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			
+			try { 
+				cn = (Connection) Connect.getConexion();      //Realiza la conexión
+				
+				String SSQL = "SELECT * FROM Users ORDER BY id_User";		//Sentencia Sql
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));     //El primer elemento está en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("username"),result.getString("id_User")));      //El elemento del ComboBox recibe el nombre de usuario como label y el id como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }
