@@ -8,8 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Veterinario;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Veterinario.ComboItem;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -27,40 +28,13 @@ import java.awt.event.ActionEvent;
 public class Modificar_Veterinario extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtMatricula;
-	private JTextField txtApellido;
-	private JTextField txtNombre;
+	public static JTextField txtMatricula;
+	public static JTextField txtApellido;
+	public static JTextField txtNombre;
 private JTextField txtId;
 private JTextField txtDireccion;
 	
-	class ComboItem                 //Clase usada para armar el ComboBox
-	{
-	    private String key;           //Label visible del ComboBox
-	    
-	    private String value;         //Valor del ComboBox
 
-	    public ComboItem(String key, String value)     //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarDireccion() {      //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
@@ -109,36 +83,7 @@ private JTextField txtDireccion;
 		});
 	}
 
-	private void cargarCampos(String veterinario) {       //Carga los campos recibiendo como parámetro el id del veterinario
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		int id = Integer.parseInt(veterinario);
-		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			
-			String SSQL = "SELECT name, surname, medical_License\r\n"		//Sentencia sql
-					+ "FROM Veterinarian WHERE id_Veterinarian = ?";
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, id);
-			
-			
-			result = pst.executeQuery();
-			while (result.next()){                    //Carga los campos según los resultados de la base de datos
-			txtNombre.setText(result.getString(1));
-			txtApellido.setText(result.getString(2));
-			txtMatricula.setText(result.getString(3));
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
+
 	/**
 	 * Create the frame.
 	 */
@@ -204,44 +149,12 @@ private JTextField txtDireccion;
 				String apellido = txtApellido.getText();
 				String matricula = txtMatricula.getText();
 				
-				int result = 0;
+				Consulta_Veterinario.modificar(direccion, nombre, apellido, matricula, id);
 				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Veterinarian SET address = ?, name = ? ,surname = ? ,medical_License = ?  WHERE id_Veterinarian = ?" );
-					
-					
-						ps.setString(1, direccion);
-						ps.setString(2,nombre);
-						ps.setString(3,apellido);
-						ps.setString(4,matricula);
-						ps.setInt(5, id);
-					
-						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Veterinario guardado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, después regresa a la ventna Tabla_Veterinario
-		                
-		                ControlFiles.addContent("Se ha modificado el veterinario "+nombre+" "+apellido);
 		                Tabla_Veterinario tv = new Tabla_Veterinario();
 						tv.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar veterinario");      //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		            
 			}
 		});
 		btnModificar.setBounds(61, 261, 89, 23);
@@ -254,7 +167,7 @@ private JTextField txtDireccion;
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		cargarCampos(veterinario);
+		Consulta_Veterinario.cargar(veterinario);
 		txtId.setText(veterinario);
 		
 		txtDireccion = new JTextField();

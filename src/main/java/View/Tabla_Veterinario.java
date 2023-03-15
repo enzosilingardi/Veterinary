@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Veterinario;
 import Model.ControlFiles;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -32,41 +33,7 @@ public class Tabla_Veterinario extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel(); 
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Nombre","Apellido","Matrícula","Dirección"});     //Nombre de las columnas
-	       
-	        table.setModel(modelo);      //Setea el modelo
-	        
-	        
-	        String datos[] = new String[5];      //Declara que va a haber 5 columnas
-	       
-	        try {
-	        	Connection con = Connect.getConexion();     //Realiza la conexión
-	        	//Sentencia sql
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Veterinarian, name, surname, medical_License, address\r\n"
-	        			+ "FROM Veterinarian;" );
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){                
-	                datos[0] = rs.getString(1);   //Carga las columnas de la base de datos en la tabla
-	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5);
-	                
-	                modelo.addRow(datos);
-
-	            }
-	            table.setModel(modelo);     //Setea el modelo
-	            
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);       // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-	    		table.getColumnModel().getColumn(0).setMinWidth(0);
-	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-	    		table.getColumnModel().getColumn(0).setResizable(false);
-	        } catch(SQLException E) {
-				JOptionPane.showMessageDialog(null,E);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+	        Consulta_Veterinario.tabla(modelo, table);
 	        
 	    }
 		
@@ -166,37 +133,14 @@ public class Tabla_Veterinario extends JFrame {
 			btnEliminar.setFont(new Font("Roboto", Font.BOLD, 14));
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					int result = 0;
+					
 					int fila = table.getSelectedRow();
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					String nombre = table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString();
 					
-					try {
-						Connection con = Connect.getConexion();   //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("DELETE FROM Veterinarian WHERE id_Veterinarian = ?" );
-						
-							ps.setInt(1, id);
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Veterinario eliminado");        //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                
-			                ControlFiles.addContent("Se ha eliminado el veterinario "+table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString());
-			               mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar veterinario");      //En caso de fallar, lo avisa en pantalla
-			                
-			            }
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace(); 
-						JOptionPane.showMessageDialog(null, "Veterinario está en uso, por favor elimine todos los registros relacionados");    //En caso de fallar, lo avisa en pantalla
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					Consulta_Veterinario.eliminar(id, nombre);
+					
+					mostrarTabla();
 				}
 			});
 			btnEliminar.setBounds(233, 260, 91, 23);
