@@ -112,7 +112,7 @@ public class Consulta_Producto {
 		try {
 			cn = (Connection) Connect.getConexion();         //Realiza la conexión
 			
-			String SSQL = "SELECT product_Type, product_Name, description, cost_Price, sale_Price\r\n"		//Sentencia sql
+			String SSQL = "SELECT id_product_Type, product_Name, description, cost_Price, sale_Price\r\n"		//Sentencia sql
 					+ "FROM Product WHERE id_Product = ?";
 			pst = cn.prepareStatement(SSQL);
 			pst.setInt(1, id);
