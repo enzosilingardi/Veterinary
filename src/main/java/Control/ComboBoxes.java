@@ -352,4 +352,33 @@ public class ComboBoxes {
 			return modelo;
 		}
 		
+		public static DefaultComboBoxModel CBQuirofano(DefaultComboBoxModel modelo) {
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			try {
+				cn = (Connection) Connect.getConexion();         //Realiza la conexión
+				
+				String SSQL = "SELECT * FROM Operating_Room ORDER BY id_Operating_Room";
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("room_Number"),result.getString("id_Operating_Room")));       //El elemento del ComboBox recibe el número del quirófano como label y el id como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+			
+			return modelo;
+		}
+		
 }

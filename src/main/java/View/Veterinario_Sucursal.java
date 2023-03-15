@@ -163,8 +163,8 @@ public class Veterinario_Sucursal extends JFrame {
 				int result = 0;
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
-				String nombreV = cbVeterinario.getSelectedItem().toString();
-				String nombreS = cbSucursal.getSelectedItem().toString();
+				String nombreV = table.getValueAt(fila,1).toString();
+				String nombreS = table.getValueAt(fila,2).toString();
 				
 				Consulta_Veterinario_Sucursal.eliminar(id, nombreV, nombreS);
 				
