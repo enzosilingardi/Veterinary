@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Control.ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Relaciones;
+import Control.Consulta_Animal_Raza;
 import Model.ControlFiles;
 import Model.ComboItem;
 
@@ -59,7 +59,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Relaciones.tablaAR(modelo, table);
+        Consulta_Animal_Raza.tablaAR(modelo, table);
         
     }
 	
@@ -138,10 +138,10 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 						if(((ComboItem) raza).getValue() == ""){
 							JOptionPane.showMessageDialog(null, "Seleccione una raza");
 						}else {
-							if(Consulta_Relaciones.existeAR(((ComboItem) cbAnimal.getSelectedItem()).getValue(),((ComboItem) cbRaza.getSelectedItem()).getValue())!=0) {        //Revisa que no exista la relación
+							if(Consulta_Animal_Raza.existeAR(((ComboItem) cbAnimal.getSelectedItem()).getValue(),((ComboItem) cbRaza.getSelectedItem()).getValue())!=0) {        //Revisa que no exista la relación
 								JOptionPane.showMessageDialog(null, "Raza ya se encuentra asociada al animal");
 							}else {
-								Consulta_Relaciones.agregarAr(((ComboItem) cbAnimal.getSelectedItem()).getValue(), ((ComboItem) cbRaza.getSelectedItem()).getValue());
+								Consulta_Animal_Raza.agregarAr(((ComboItem) cbAnimal.getSelectedItem()).getValue(), ((ComboItem) cbRaza.getSelectedItem()).getValue());
 							}
 						}
 						
@@ -161,7 +161,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
-				Consulta_Relaciones.eliminarAR(id);
+				Consulta_Animal_Raza.eliminarAR(id);
 				mostrarTabla();
 			}
 		});

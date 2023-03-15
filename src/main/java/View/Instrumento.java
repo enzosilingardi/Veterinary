@@ -8,8 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
+import Control.Consulta_Instrumento;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Quirofano.ComboItem;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,34 +32,6 @@ public class Instrumento extends JFrame {
 	private JTextField txtDescripcion;
 
 	
-	class ComboItem              //Clase utilizada para armar el ComboBox
-	{
-	    private String key;          //Label visible del ComboBox
-	    
-	    private String value;           //Valor del ComboBox
-
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el ComboBox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarQuirofano() {             //Este ComboBox no se utiliza en la versión actual
 		Connection cn = null;
@@ -104,35 +77,7 @@ public class Instrumento extends JFrame {
 		});
 	}
 
-	public int existeInstrumento(String nombre) {            //Determina si ya existe el instrumento
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();          //Realiza la conexión
-			
-			String SSQL = "SELECT count(instrument_Name) FROM Medical_Instrument WHERE instrument_Name = ?;";	//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setString(1, nombre);
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				return result.getInt(1);           //Si la relación ya existe, la variable se pone en 1
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+
 	
 	public int instrumentoEnUso(String nombre) {         //Este procedimiento no se utiliza en la versión actual
 		Connection cn = null;
@@ -215,40 +160,8 @@ public class Instrumento extends JFrame {
 				String nombre = txtNombre.getText();
 				String descripcion = txtDescripcion.getText();
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();        //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Instrument (instrument_Name, instrument_Description) VALUES (?,?)" );
-					
-					if(existeInstrumento(nombre) != 0) {                                   //Revisa si el instrumento ya existe
-						JOptionPane.showMessageDialog(null, "Instrumento ya existe");
-					}else {
-						ps.setString(1, nombre);
-						ps.setString(2, descripcion);
-					}
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Instrumento guardado");                    //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
-		                ControlFiles.addContent("Se ha añadido un instrumento de nombre "+nombre);
-		                
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar instrumento");             //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Instrumento.agregar(nombre, descripcion);
+				limpiar();
 			}
 		});
 		btnAgregar.setBounds(164, 171, 89, 23);

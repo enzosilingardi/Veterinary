@@ -166,7 +166,7 @@ public class Pedidos extends JFrame {
 					}
 						
 						
-					
+					limpiar();
 				
 			}
 		});
