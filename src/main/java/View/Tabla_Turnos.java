@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
+import Control.Consulta_Turno;
 import Model.ControlFiles;
 import View.Instrumento_Quirofano.ComboItem;
 import java.awt.Color;
@@ -33,44 +34,7 @@ public class Tabla_Turnos extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});       //Nombre de las columnas
-	       
-	        table.setModel(modelo);     //Setea el modelo
-	        
-	        
-	        String datos[] = new String[5];     //Declara que va a haber 5 columnas
-	       
-	        try {
-	        	Connection con = Connect.getConexion();      //Realiza la conexión
-	        	//Sentencia sql
-	        	PreparedStatement ps = con.prepareStatement("SELECT id_Procedure, name, proced_Name, CONVERT(varchar(10),proced_Date,103),CONVERT(varchar(10),proced_Time,8)\r\n"
-	        			+ "FROM Medical_Procedure\r\n"
-	        			+ "INNER JOIN Pet ON Pet.id_Pet = Medical_Procedure.id_Pet\r\n"
-	        			+ "INNER JOIN Procedure_Type ON Procedure_Type.id_Procedure_Type = Medical_Procedure.id_Procedure_Type;" );
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()){                  //Carga las columnas de la base de datos en la tabla
-	                datos[0] = rs.getString(1);
-	                datos[1] = rs.getString(2);
-	                datos[2] = rs.getString(3);
-	                datos[3] = rs.getString(4);
-	                datos[4] = rs.getString(5);
-	                
-	                modelo.addRow(datos);
-	                
-
-	            }
-	            table.setModel(modelo);    //Setea el modelo
-	            
-	            table.getColumnModel().getColumn(0).setMaxWidth(0);          // los 4 siguientes hacen que la columna del id sea invisible para el usuario
-	    		table.getColumnModel().getColumn(0).setMinWidth(0);
-	    		table.getColumnModel().getColumn(0).setPreferredWidth(0);
-	    		table.getColumnModel().getColumn(0).setResizable(false);
-	        } catch(SQLException E) {
-				JOptionPane.showMessageDialog(null,E);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+	        Consulta_Turno.tabla(modelo, table);
 	        
 	    }
 
@@ -211,37 +175,13 @@ public class Tabla_Turnos extends JFrame {
 			btnEliminar.setBorder(null);
 			btnEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					int result = 0;
 					int fila = table.getSelectedRow();
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+					String fecha = table.getValueAt(fila,3).toString();
+					String hora = table.getValueAt(fila,4).toString();
 					
-					try {
-						Connection con = Connect.getConexion();       //Realiza la conexión
-						
-						PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Procedure WHERE id_Procedure = ?" );
-						
-							ps.setInt(1, id);
-						
-						
-						result = ps.executeUpdate();
-						
-						if(result > 0){
-			                JOptionPane.showMessageDialog(null, "Turno eliminado");        //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-			                
-			                ControlFiles.addContent("Se ha eliminado el turno para la fecha "+table.getValueAt(fila,3).toString()+" y hora "+table.getValueAt(fila,4).toString());
-			               mostrarTabla();
-			            } else {
-			                JOptionPane.showMessageDialog(null, "Error al eliminar turno");    //En caso de fallar, lo avisa en pantalla
-			                
-			            }
-						con.close();
-					}catch(SQLException E) {
-						E.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");     //En caso de fallar, lo avisa en pantalla
-					}catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					Consulta_Turno.eliminar(id, fecha, hora);
+					mostrarTabla();
 				}
 			});
 			btnEliminar.setBounds(252, 260, 100, 23);
@@ -354,37 +294,14 @@ public class Tabla_Turnos extends JFrame {
 		btnEliminar.setBorder(null);
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int result = 0;
+				
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
+				String fecha = table.getValueAt(fila,3).toString();
+				String hora = table.getValueAt(fila,4).toString();
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("DELETE FROM Medical_Procedure WHERE id_Procedure = ?" );
-					
-						ps.setInt(1, id);
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno eliminado");   //Si fue exitoso, lo muestra mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha eliminado el turno para la fecha "+table.getValueAt(fila,3).toString()+" y hora "+table.getValueAt(fila,4).toString());
-		               mostrarTabla();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al eliminar turno");      //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Turno está en uso, por favor elimine todos los registros relacionados");     //En caso de fallar, lo avisa en pantalla
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Consulta_Turno.eliminar(id, fecha, hora);
+				mostrarTabla();
 			}
 		});
 		btnEliminar.setBounds(252, 260, 100, 23);

@@ -9,7 +9,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Turno;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -73,32 +75,11 @@ public class Procedimiento_Medico extends JFrame {
     }
 	
 	public DefaultComboBoxModel cargarTipo() {            //Carga el ComboBox tipo
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
+		ComboBoxes.CBTipoProc(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();      //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";  //Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));         //El primer elemento del ComboBox es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));    //El elemento del ComboBox recibe el nombre del procedimiento como label y el id del procedimiento como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 	/**
@@ -117,39 +98,7 @@ public class Procedimiento_Medico extends JFrame {
 		});
 	}
 
-	public int existeTurno(Date date, Time time) {        //Esta función verifica si ya existe el turno
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		try {
-			cn = (Connection) Connect.getConexion();     //Realiza la conexión
-			
-			String SSQL = "SELECT count(*) FROM Medical_Procedure WHERE proced_Date = ? And proced_Time = ?;";  // Sentencia Sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setDate(1,date);
-			pst.setTime(2, time);
-			
-			result = pst.executeQuery();
-			
-			if (result.next()) {
-				
-				return result.getInt(1);    //Si ya existe el turno, la variable se pone en 1
-				
-			}
-			return 1;
-			
-		} catch(SQLException e) {
-			JOptionPane.showMessageDialog(null,e);
-			return 1;
-		}catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return 0;
-		
-		
-	}
+
 
 	
 	private void limpiar() {          //Este procedimiento limpia los campos
@@ -196,52 +145,20 @@ public class Procedimiento_Medico extends JFrame {
 				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
 				Time start = Time.valueOf(hora);
 				
-				int result = 0;
 				
-				try {
-					Connection con = Connect.getConexion();    //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Time) VALUES (?,?,?,?)" );
-					
 					
 					if (((ComboItem) tipo).getValue() == "") {                      //Revisa si el ComboBox está en blanco                    
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
-						ps.setString(1, ((ComboItem) tipo).getValue());
-						ps.setInt(2, idM);
-						ps.setDate(3, date);
 						
-						if(existeTurno(date,start) != 0) {                           //Revisa si ya existe el turno
-							JOptionPane.showMessageDialog(null, "Turno ya existe");
-						}else {
-							ps.setTime(4, start);
-						}
-						
+						Consulta_Turno.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start);
 						
 							
 						}
 						
+					limpiar();
 					
 					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno guardado");    //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha añadido un turno para la fecha "+date+" y hora "+start);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar turno");    //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 				
 			}
 		});
@@ -358,52 +275,18 @@ public class Procedimiento_Medico extends JFrame {
 				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
 				Time start = Time.valueOf(hora);
 				
-				int result = 0;
 				
-				try {
-					Connection con = Connect.getConexion();      //Realiza la conexión
 					
-					PreparedStatement ps = con.prepareStatement("INSERT INTO Medical_Procedure (id_Procedure_Type, id_Pet, proced_Date,proced_Time) VALUES (?,?,?,?)" );
-					
-					
-					if (((ComboItem) tipo).getValue() == "") {                        //Revisa si el ComboBox está en blanco            
+					if (((ComboItem) tipo).getValue() == "") {                      //Revisa si el ComboBox está en blanco                    
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
-						ps.setString(1, ((ComboItem) tipo).getValue());
-						ps.setInt(2, idM);
-						ps.setDate(3, date);
 						
-						if(existeTurno(date,start) != 0) {                              //Revisa si el turno ya existe
-							JOptionPane.showMessageDialog(null, "Turno ya existe"); 
-						}else {
-							ps.setTime(4, start);
-						}
-						
+						Consulta_Turno.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start);
 						
 							
 						}
 						
-					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno guardado");     //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log
-		                
-		                ControlFiles.addContent("Se ha añadido un turno para la fecha "+date+" y hora "+start);
-		                limpiar();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al guardar turno");   //En caso de fallar, lo avisa en pantalla
-		                limpiar();
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+					limpiar();
 				
 			}
 		});

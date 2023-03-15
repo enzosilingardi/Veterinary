@@ -201,4 +201,35 @@ public class ComboBoxes {
 			return modelo;
 		}
 		
+		public static DefaultComboBoxModel CBTipoProc(DefaultComboBoxModel modelo) {
+			
+			Connection cn = null;
+			PreparedStatement pst = null;
+			ResultSet result = null;
+			
+			
+			
+			
+			try {
+				cn = (Connection) Connect.getConexion();      //Realiza la conexión
+				
+				String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";  //Sentencia Sql
+				pst = cn.prepareStatement(SSQL);
+				result = pst.executeQuery();
+				modelo.addElement(new ComboItem("",""));         //El primer elemento del ComboBox es en blanco
+				
+				while (result.next()) {
+					modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));    //El elemento del ComboBox recibe el nombre del procedimiento como label y el id del procedimiento como valor
+					
+				}
+				cn.close();
+			}catch(SQLException e) {
+					JOptionPane.showMessageDialog(null,e);
+				}catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			return modelo;
+		}
+		
 }

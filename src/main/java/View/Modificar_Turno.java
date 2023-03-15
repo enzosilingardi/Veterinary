@@ -15,9 +15,12 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import Control.ComboBoxes;
 import Control.Connect;
+import Control.Consulta_Turno;
+import Model.ComboItem;
 import Model.ControlFiles;
-import View.Procedimiento_Medico.ComboItem;
+
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -32,8 +35,8 @@ public class Modificar_Turno extends JFrame {
 
 	private JPanel contentPane;
 	private JComboBox cbTipo;
-	private JDateChooser txtFecha;
-	private JDateChooser txtHora;
+	public static JDateChooser txtFecha;
+	public static JDateChooser txtHora;
 	private JButton btnModificar;
 	private JButton btnVolver;
 	private JTextField txtId;
@@ -42,34 +45,6 @@ public class Modificar_Turno extends JFrame {
 	private JButton btnBuscar;
 	
 
-	class ComboItem                    //Clase usada para armar el ComboBox
-	{
-	    private String key;            //Label visible del ComboBox
-	    
-	    private String value;         //Valor del ComboBox
-
-	    public ComboItem(String key, String value)      //Genera el label que se verá en el combobox y el valor del objeto seleccionado
-	    {
-	        this.key = key;
-	        this.value = value;
-	    }
-
-	    @Override
-	    public String toString()
-	    {
-	        return key;
-	    }
-
-	    public String getKey()
-	    {
-	        return key;
-	    }
-
-	    public String getValue()
-	    {
-	        return value;
-	    }
-	}
 	
 	public DefaultComboBoxModel cargarMascota() {      //Este ComboBox no es utilizado en la versión actual
 		Connection cn = null;
@@ -104,32 +79,11 @@ public class Modificar_Turno extends JFrame {
     }
 	
 	public DefaultComboBoxModel cargarTipo() {         //Carga el combobox tipo
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
+		ComboBoxes.CBTipoProc(modelo);
 		
-		try {
-			cn = (Connection) Connect.getConexion();    //Realiza la conexión
-			
-			String SSQL = "SELECT * FROM Procedure_Type ORDER BY id_Procedure_Type";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			result = pst.executeQuery();
-			modelo.addElement(new ComboItem("",""));             //El primer elemento del ComboBox es en blanco
-			
-			while (result.next()) {
-				modelo.addElement(new ComboItem(result.getString("proced_Name"),result.getString("id_Procedure_Type")));    //El elemento recibe el nombre del procedimiento como label y el tipo de procedimiento como valor
-				
-			}
-			cn.close();
-		}catch(SQLException e) {
-				JOptionPane.showMessageDialog(null,e);
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		return modelo;
     }
 
@@ -149,34 +103,6 @@ public class Modificar_Turno extends JFrame {
 		});
 	}
 
-	private void cargarCampos(String turno) {           //Carga los campos recibiendo el id de turno como parámetro
-		Connection cn = null;
-		PreparedStatement pst = null;
-		ResultSet result = null;
-		
-		int id = Integer.parseInt(turno);
-		
-		try {
-			cn = (Connection) Connect.getConexion();     //Realiza la conexión
-			
-			String SSQL = "SELECT proced_Date, proced_Time FROM Medical_Procedure WHERE id_Procedure = ?";		//Sentencia sql
-			pst = cn.prepareStatement(SSQL);
-			pst.setInt(1, id);
-			
-			
-			result = pst.executeQuery();
-			while (result.next()){                   //Carga los campos según los resultados de la base de datos
-			txtFecha.setDate(result.getDate(1));
-			txtHora.setDate(result.getTime(2));
-			}
-			cn.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	}
 	/**
 	 * Create the frame.
 	 */
@@ -233,50 +159,20 @@ public class Modificar_Turno extends JFrame {
 				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
 				Time start = Time.valueOf(hora);
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();        //Realiza la conexión
-					
-					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
-					
 					
 					if (((ComboItem) tipo).getValue() == "") {                      //Revisa que si el ComboBox está en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
-						ps.setString(1, ((ComboItem) tipo).getValue());
-						ps.setInt(2, idM);
-						ps.setDate(3, date);
-						ps.setTime(4, start);
-						ps.setInt(5, id);
 						
+						Consulta_Turno.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start, id);
 						
 							
 						}
-						
 					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno modificado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues vuelve a la ventana Tabla_Turnos
-		                
-		                ControlFiles.addContent("Se ha modificado el turno para la fecha "+date+" y hora "+start);
 		                Tabla_Turnos tt = new Tabla_Turnos();
 						tt.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar turno");   //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		          
 			}
 		});
 		btnModificar.setBounds(57, 230, 89, 23);
@@ -326,7 +222,7 @@ public class Modificar_Turno extends JFrame {
 		});
 		btnBuscar.setBounds(334, 77, 89, 23);
 		contentPane.add(btnBuscar);
-		cargarCampos(turno);
+		Consulta_Turno.cargar(turno);
 	}
 
 	public Modificar_Turno(final String turno, String idMas, String nomMas) {           //Crea la ventana recibiendo como parámetros el id del turno y el id y el nombre de la mascota
@@ -382,50 +278,19 @@ public class Modificar_Turno extends JFrame {
 				String hora = ((JTextField) txtHora.getDateEditor().getUiComponent()).getText();
 				Time start = Time.valueOf(hora);
 				
-				int result = 0;
-				
-				try {
-					Connection con = Connect.getConexion();   //Realiza la conexión
 					
-					PreparedStatement ps = con.prepareStatement("UPDATE Medical_Procedure SET id_Procedure_Type = ?, id_Pet = ?, proced_Date = ?,proced_Time = ? WHERE id_Procedure = ?" );
-					
-					
-					if (((ComboItem) tipo).getValue() == "") {                       //Revisa si el ComboBox está en blanco
+					if (((ComboItem) tipo).getValue() == "") {                      //Revisa que si el ComboBox está en blanco
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
-						ps.setString(1, ((ComboItem) tipo).getValue());
-						ps.setInt(2, idM);
-						ps.setDate(3, date);
-						ps.setTime(4, start);
-						ps.setInt(5, id);
 						
+						Consulta_Turno.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start, id);
 						
 							
 						}
-						
 					
-					
-					result = ps.executeUpdate();
-					
-					if(result > 0){
-		                JOptionPane.showMessageDialog(null, "Turno modificado");         //Si fue exitoso, lo avisa mediante un mensaje en pantalla y lo añade al log, despues regresa a la ventana Tabla_Turnos
-		                
-		                ControlFiles.addContent("Se ha modificado el turno para la fecha "+date+" y hora "+start);
 		                Tabla_Turnos tt = new Tabla_Turnos();
 						tt.setVisible(true);
 						dispose();
-		            } else {
-		                JOptionPane.showMessageDialog(null, "Error al modificar turno");     //En caso de fallar, lo avisa en pantalla
-		                
-		            }
-				
-					con.close();
-				}catch(SQLException E) {
-					E.printStackTrace();
-				}catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 		btnModificar.setBounds(57, 230, 89, 23);
@@ -475,7 +340,7 @@ public class Modificar_Turno extends JFrame {
 		});
 		btnBuscar.setBounds(334, 77, 89, 23);
 		contentPane.add(btnBuscar);
-		cargarCampos(turno);
+		Consulta_Turno.cargar(turno);
 		
 		txtIdM.setText(idMas);
 		txtMascota.setText(nomMas);
