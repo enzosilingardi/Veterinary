@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Producto;
+import Control.Control_Producto;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -72,7 +72,7 @@ public class Producto extends JFrame {
 	public DefaultComboBoxModel cargarTipo() {           //Carga el ComboBox tipo
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBTipoProd(modelo);
+		Control_ComboBoxes.CBTipoProd(modelo);
 		
 		return modelo;
     }
@@ -216,7 +216,7 @@ public class Producto extends JFrame {
 				float costo = Float.parseFloat(txtCosto.getText());
 				float precio = Float.parseFloat(txtPrecio.getText());
 				
-				Consulta_Producto.agregar(idPro, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio);
+				Control_Producto.agregar(idPro, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio);
 				
 				limpiar();
 			}
@@ -348,7 +348,7 @@ public class Producto extends JFrame {
 				float costo = Float.parseFloat(txtCosto.getText());
 				float precio = Float.parseFloat(txtPrecio.getText());
 				
-				Consulta_Producto.agregar(idPro, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio);
+				Control_Producto.agregar(idPro, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio);
 				
 				limpiar();
 				

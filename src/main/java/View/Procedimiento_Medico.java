@@ -9,9 +9,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Turno;
+import Control.Control_Turno;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -78,7 +78,7 @@ public class Procedimiento_Medico extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBTipoProc(modelo);
+		Control_ComboBoxes.CBTipoProc(modelo);
 		
 		return modelo;
     }
@@ -151,7 +151,7 @@ public class Procedimiento_Medico extends JFrame {
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
 						
-						Consulta_Turno.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start);
+						Control_Turno.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start);
 						
 							
 						}
@@ -281,7 +281,7 @@ public class Procedimiento_Medico extends JFrame {
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
 						
-						Consulta_Turno.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start);
+						Control_Turno.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start);
 						
 							
 						}

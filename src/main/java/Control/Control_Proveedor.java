@@ -15,7 +15,7 @@ import View.Modificar_Proveedor;
 import View.Proveedor;
 import View.Tabla_Proveedor;
 
-public class Consulta_Proveedor {
+public class Control_Proveedor {
 
 	public static int existe(String nombre) {	//Verifica si ya existe el proveedor en la base de datos
 		Connection cn = null;
@@ -58,7 +58,7 @@ public class Consulta_Proveedor {
 			
 		
 				
-					if(Consulta_Proveedor.existe(nombrePro)!=0) {                         //Revisa si el proveedor ya existe
+					if(Control_Proveedor.existe(nombrePro)!=0) {                         //Revisa si el proveedor ya existe
 						JOptionPane.showMessageDialog(null, "Proveedor ya existe");
 					}else {
 						ps.setString(1, (String) tipo);

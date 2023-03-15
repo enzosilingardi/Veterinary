@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Instrumento_Quirofano;
+import Control.Control_Instrumento_Quirofano;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -43,7 +43,7 @@ public class Instrumento_Quirofano extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBQuirofano(modelo);
+		Control_ComboBoxes.CBQuirofano(modelo);
 		return modelo;
     }
 	
@@ -51,7 +51,7 @@ public class Instrumento_Quirofano extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBInstrumento(modelo);
+		Control_ComboBoxes.CBInstrumento(modelo);
 		return modelo;
     }
 	
@@ -60,7 +60,7 @@ public class Instrumento_Quirofano extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Instrumento_Quirofano.tabla(modelo, table);
+        Control_Instrumento_Quirofano.tabla(modelo, table);
         
     }
 	/**
@@ -141,7 +141,7 @@ public class Instrumento_Quirofano extends JFrame {
 				String nombreI = table.getValueAt(fila,2).toString();
 				String nombreQ = table.getValueAt(fila,1).toString();
 				
-				Consulta_Instrumento_Quirofano.eliminar(id, nombreI, nombreQ);
+				Control_Instrumento_Quirofano.eliminar(id, nombreI, nombreQ);
 				
 				mostrarTabla();
 				
@@ -168,10 +168,10 @@ public class Instrumento_Quirofano extends JFrame {
 						if(((ComboItem) instrumento).getValue() == ""){
 							JOptionPane.showMessageDialog(null, "Seleccione un instrumento");
 						}else {
-							if(Consulta_Instrumento_Quirofano.existe(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),((ComboItem) cbInstrumento.getSelectedItem()).getValue())!=0) {         //Revisa que el instrumento no se encuentre en el quirófano
+							if(Control_Instrumento_Quirofano.existe(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),((ComboItem) cbInstrumento.getSelectedItem()).getValue())!=0) {         //Revisa que el instrumento no se encuentre en el quirófano
 								JOptionPane.showMessageDialog(null, "Instrumento ya se encuentra en el quirófano");
 							}else {
-								Consulta_Instrumento_Quirofano.agregar(((ComboItem) cbQuirofano.getSelectedItem()).getValue(), ((ComboItem) cbInstrumento.getSelectedItem()).getValue(), cantidad, nombreQ, nombreI);
+								Control_Instrumento_Quirofano.agregar(((ComboItem) cbQuirofano.getSelectedItem()).getValue(), ((ComboItem) cbInstrumento.getSelectedItem()).getValue(), cantidad, nombreQ, nombreI);
 							}
 						}
 						
@@ -232,7 +232,7 @@ public class Instrumento_Quirofano extends JFrame {
 				String nombreI = table.getValueAt(fila,2).toString();
 				String nombreQ = table.getValueAt(fila,1).toString();
 				
-				Consulta_Instrumento_Quirofano.modificar(cantidad, id, nombreI, nombreQ);
+				Control_Instrumento_Quirofano.modificar(cantidad, id, nombreI, nombreQ);
 				
 				
 				}
@@ -250,7 +250,7 @@ public class Instrumento_Quirofano extends JFrame {
 				int cantidad = Integer.parseInt(txtCantidad.getText());
 				int result = 0;
 				
-				Consulta_Instrumento_Quirofano.todos(((ComboItem) cbInstrumento.getSelectedItem()).getValue(), cantidad);
+				Control_Instrumento_Quirofano.todos(((ComboItem) cbInstrumento.getSelectedItem()).getValue(), cantidad);
 				
 				mostrarTabla();
 				limpiar();

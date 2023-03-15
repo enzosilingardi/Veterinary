@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Model.ControlFiles;
 
-public class Consulta_Animal {
+public class Control_Animal {
 
 	public static int existe(String animal) {	//Verifica si ya existe el animal en la base de datos
 		Connection cn = null;

@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
-import Control.Consulta_Cliente;
+import Control.Control_Cliente;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -215,9 +215,9 @@ public class Modificar_Cliente extends JFrame {
 					
 					if (txtTelefonoOp.getText().isBlank()) {        //Realiza la consulta sql dependiendo si el campo telefono opcional está vacío
 						
-						Consulta_Cliente.modificar(direccion, dni, nombre, apellido, telefono, date, genero, email, id);
+						Control_Cliente.modificar(direccion, dni, nombre, apellido, telefono, date, genero, email, id);
 					} else {
-						Consulta_Cliente.modificarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp, id);
+						Control_Cliente.modificarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp, id);
 					}
 					
 					Tabla_Clientes tc = new Tabla_Clientes(perfil);
@@ -235,7 +235,7 @@ public class Modificar_Cliente extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Cliente.cargar(cliente);
+		Control_Cliente.cargar(cliente);
 		txtId.setText(cliente);
 		
 		lblTelefonoOp = new JLabel("Telefono Secundario (Opcional)");

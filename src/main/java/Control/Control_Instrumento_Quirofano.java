@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.ComboItem;
 import Model.ControlFiles;
 
-public class Consulta_Instrumento_Quirofano {
+public class Control_Instrumento_Quirofano {
 
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 

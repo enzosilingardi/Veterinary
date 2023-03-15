@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Turno;
+import Control.Control_Turno;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +33,7 @@ public class Tabla_Turnos extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Turno.tabla(modelo, table);
+	        Control_Turno.tabla(modelo, table);
 	        
 	    }
 
@@ -179,7 +179,7 @@ public class Tabla_Turnos extends JFrame {
 					String fecha = table.getValueAt(fila,3).toString();
 					String hora = table.getValueAt(fila,4).toString();
 					
-					Consulta_Turno.eliminar(id, fecha, hora);
+					Control_Turno.eliminar(id, fecha, hora);
 					mostrarTabla();
 				}
 			});
@@ -299,7 +299,7 @@ public class Tabla_Turnos extends JFrame {
 				String fecha = table.getValueAt(fila,3).toString();
 				String hora = table.getValueAt(fila,4).toString();
 				
-				Consulta_Turno.eliminar(id, fecha, hora);
+				Control_Turno.eliminar(id, fecha, hora);
 				mostrarTabla();
 			}
 		});

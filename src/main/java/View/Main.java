@@ -34,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
-import Control.Consulta_Main;
+import Control.Control_Main;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -54,7 +54,7 @@ public class Main extends JFrame {
 		
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Main.tabla(modelo, table);
+	        Control_Main.tabla(modelo, table);
 	        
 	    }
 	

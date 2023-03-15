@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.ComboItem;
 import Model.ControlFiles;
 
-public class Consulta_Quirofano_Sucursal {
+public class Control_Quirofano_Sucursal {
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 
         modelo.setColumnIdentifiers(new Object[] {"ID","Sucursal","Quirófano"});        //Nombre de las columnas

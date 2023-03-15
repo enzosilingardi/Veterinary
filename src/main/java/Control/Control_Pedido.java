@@ -14,7 +14,7 @@ import Model.ControlFiles;
 import View.Modificar_Pedido;
 import View.Tabla_Pedido;
 
-public class Consulta_Pedido {
+public class Control_Pedido {
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Proveedor","Sucursal","Cantidad"});       //Nombre de las columnas
 	       

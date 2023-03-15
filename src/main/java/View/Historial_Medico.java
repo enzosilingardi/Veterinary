@@ -9,9 +9,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Historial;
+import Control.Control_Historial;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -46,7 +46,7 @@ public class Historial_Medico extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();     
 		
-		ComboBoxes.CBMascota(modelo);
+		Control_ComboBoxes.CBMascota(modelo);
 		
 		return modelo;
     }
@@ -137,7 +137,7 @@ public class Historial_Medico extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				Consulta_Historial.agregar(idM, descripcion, date, mascota);
+				Control_Historial.agregar(idM, descripcion, date, mascota);
 				
 				limpiar();
 			}
@@ -230,7 +230,7 @@ public class Historial_Medico extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				Consulta_Historial.agregar(idM, descripcion, date, mascota);
+				Control_Historial.agregar(idM, descripcion, date, mascota);
 				
 				limpiar();
 			}

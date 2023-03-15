@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.ComboItem;
 import Model.ControlFiles;
 
-public class Consulta_Procedimiento_Veterinario {
+public class Control_Procedimiento_Veterinario {
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Veterinario","Procedimiento"});     //Nombre de las columnas
 	       

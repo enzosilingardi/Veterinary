@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Quirofano;
+import Control.Control_Quirofano;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -124,7 +124,7 @@ public class Quirofano extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int numero = Integer.parseInt(txtNumero.getText());
 
-				Consulta_Quirofano.agregar(numero);
+				Control_Quirofano.agregar(numero);
 				
 				limpiar();
 				

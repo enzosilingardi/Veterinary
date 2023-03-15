@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Usuario_Sucursal;
+import Control.Control_Usuario_Sucursal;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -42,7 +42,7 @@ public class Usuario_Sucursal extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBUsuario(modelo);
+		Control_ComboBoxes.CBUsuario(modelo);
 		
 		return modelo;
     }
@@ -54,7 +54,7 @@ public class Usuario_Sucursal extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		
 		return modelo;
     }
@@ -63,7 +63,7 @@ public class Usuario_Sucursal extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Usuario_Sucursal.tabla(modelo, table);
+        Control_Usuario_Sucursal.tabla(modelo, table);
         
     }
 	/**
@@ -143,10 +143,10 @@ public class Usuario_Sucursal extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							//Revisa si existe la relación
-							if(Consulta_Usuario_Sucursal.existe(((ComboItem) cbUsuario.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Control_Usuario_Sucursal.existe(((ComboItem) cbUsuario.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Usuario ya se encuentra en la sucursal");
 							}else {
-								Consulta_Usuario_Sucursal.agregar(((ComboItem) cbUsuario.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreU, nombreS);
+								Control_Usuario_Sucursal.agregar(((ComboItem) cbUsuario.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreU, nombreS);
 								
 							}
 						}
@@ -172,7 +172,7 @@ public class Usuario_Sucursal extends JFrame {
 				String usuario = table.getValueAt(fila,1).toString();
 				String sucursal = table.getValueAt(fila,2).toString();
 				
-				Consulta_Usuario_Sucursal.eliminar(id, usuario, sucursal);
+				Control_Usuario_Sucursal.eliminar(id, usuario, sucursal);
 				
 				mostrarTabla();
 			}

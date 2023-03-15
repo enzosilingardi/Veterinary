@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Quirofano;
+import Control.Control_Quirofano;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +33,7 @@ public class Tabla_Quirofano extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Quirofano.tabla(modelo, table);
+	        Control_Quirofano.tabla(modelo, table);
 	        
 	    }
 
@@ -140,7 +140,7 @@ public class Tabla_Quirofano extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String numero = table.getValueAt(fila,1).toString();
 				
-				Consulta_Quirofano.eliminar(id, numero);
+				Control_Quirofano.eliminar(id, numero);
 				
 				mostrarTabla();
 				

@@ -12,7 +12,7 @@ import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
-import Control.Consulta_Cliente;
+import Control.Control_Cliente;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -212,10 +212,10 @@ public class Cliente extends JFrame {
 				
 					
 					if (txtTelefonoOp.getText().isBlank()) {          //Realiza la consulta dependiendo si el campo telefono opcional está vacío
-						Consulta_Cliente.agregar(direccion, dni, nombre, apellido, telefono, date, genero, email);
+						Control_Cliente.agregar(direccion, dni, nombre, apellido, telefono, date, genero, email);
 						
 					} else {
-						Consulta_Cliente.agregarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp);
+						Control_Cliente.agregarOp(direccion, dni, nombre, apellido, telefono, date, genero, email, telefonoOp);
 					}
 					
 					

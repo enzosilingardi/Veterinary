@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Cliente;
+import Control.Control_Cliente;
 
 public class Buscar_Cliente_ModMasc extends JFrame {
 
@@ -36,7 +36,7 @@ public class Buscar_Cliente_ModMasc extends JFrame {
         
 DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Cliente.tablaBus(modelo, table);
+        Control_Cliente.tablaBus(modelo, table);
         
     }
 	
@@ -82,7 +82,7 @@ DefaultTableModel modelo = new DefaultTableModel();
 	            	}
 	        	}
 	        	
-	         Consulta_Cliente.tablaBusPar(modelo, table, url);
+	         Control_Cliente.tablaBusPar(modelo, table, url);
         
     }
 

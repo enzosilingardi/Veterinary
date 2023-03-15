@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Usuario;
+import Control.Control_Usuario;
 import Model.ControlFiles;
 
 import javax.swing.JComboBox;
@@ -37,7 +37,7 @@ public class Tabla_Usuarios extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Usuario.tabla(modelo, table);
+        Control_Usuario.tabla(modelo, table);
         
     }
 	
@@ -47,7 +47,7 @@ public class Tabla_Usuarios extends JFrame {
 		
 		DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Usuario.tablaPer(modelo, table, per);
+        Control_Usuario.tablaPer(modelo, table, per);
         
     }
 	
@@ -167,7 +167,7 @@ public class Tabla_Usuarios extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString();
 					
-					Consulta_Usuario.eliminar(id, nombre);
+					Control_Usuario.eliminar(id, nombre);
 					
 					mostrarTabla();
 					
@@ -303,7 +303,7 @@ public class Tabla_Usuarios extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Usuario.eliminar(id, nombre);
+				Control_Usuario.eliminar(id, nombre);
 				
 				mostrarTabla();
 			}

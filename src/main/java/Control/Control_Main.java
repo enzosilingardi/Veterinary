@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Consulta_Main {
+public class Control_Main {
 	public static Connection tabla(DefaultTableModel modelo, JTable table ) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});      //Nombres de las columnas
 	       

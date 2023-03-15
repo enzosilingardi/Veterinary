@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Model.ControlFiles;
 
-public class Consulta_Tipo_Prod {
+public class Control_Tipo_Prod {
 
 	public static int existe(String nombre) {
 		Connection cn = null;

@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Pedido;
+import Control.Control_Pedido;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -38,7 +38,7 @@ public class Pedidos extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBProducto(modelo);
+		Control_ComboBoxes.CBProducto(modelo);
 		
 		return modelo;
     }
@@ -47,7 +47,7 @@ public class Pedidos extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();   
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		
 		return modelo;
     }
@@ -150,13 +150,13 @@ public class Pedidos extends JFrame {
 						if (((ComboItem) sucursal).getValue() == "") {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
-							if(Consulta_Pedido.existe(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Control_Pedido.existe(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 						         //Revisa si ya existe el pedido
 								JOptionPane.showMessageDialog(null, "Pedido ya existe");
 					
 							}else {
 								
-								Consulta_Pedido.agregar(((ComboItem) cbProducto.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), cantidad, nombreProducto, nombreSucursal);
+								Control_Pedido.agregar(((ComboItem) cbProducto.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), cantidad, nombreProducto, nombreSucursal);
 								
 						
 					}

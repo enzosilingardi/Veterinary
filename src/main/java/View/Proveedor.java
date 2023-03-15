@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Proveedor;
+import Control.Control_Proveedor;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -79,7 +79,7 @@ public class Proveedor extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBTipoProv(modelo);
+		Control_ComboBoxes.CBTipoProv(modelo);
 		
 		return modelo;
     }
@@ -215,7 +215,7 @@ public class Proveedor extends JFrame {
 						if (((ComboItem) tipo).getValue() == "") {                      //Revisa si el ComboBox está en blanco
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
-							Consulta_Proveedor.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), direccion, nombrePro, nombre, apellido, telefono, email, cuit);
+							Control_Proveedor.agregar(((ComboItem) cbTipo.getSelectedItem()).getValue(), direccion, nombrePro, nombre, apellido, telefono, email, cuit);
 						}
 						
 					limpiar();

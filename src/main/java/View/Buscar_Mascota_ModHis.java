@@ -23,9 +23,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Mascota;
+import Control.Control_Mascota;
 import Model.ComboItem;
 
 public class Buscar_Mascota_ModHis extends JFrame {
@@ -41,7 +41,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 		 
 		DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Mascota.tablaBus(modelo, table);
+        Control_Mascota.tablaBus(modelo, table);
         
     }
 	
@@ -81,7 +81,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
         		}
         	}
         
-        	Consulta_Mascota.tablaBusPar(modelo, table, url);
+        	Control_Mascota.tablaBusPar(modelo, table, url);
 		}
         
     
@@ -91,7 +91,7 @@ public class Buscar_Mascota_ModHis extends JFrame {
 	public DefaultComboBoxModel cargarAnimal() {      //Carga el ComboBox animal
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel(); 
 		
-		ComboBoxes.CBAnimal(modelo);
+		Control_ComboBoxes.CBAnimal(modelo);
 		
 		return modelo;
     }

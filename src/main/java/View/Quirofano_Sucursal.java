@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Quirofano_Sucursal;
+import Control.Control_Quirofano_Sucursal;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -41,7 +41,7 @@ public class Quirofano_Sucursal extends JFrame {
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
 		
-		ComboBoxes.CBQuirofano(modelo);
+		Control_ComboBoxes.CBQuirofano(modelo);
 		
 		return modelo;
     }
@@ -50,7 +50,7 @@ public class Quirofano_Sucursal extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		
 		return modelo;
     }
@@ -76,7 +76,7 @@ void mostrarTabla(){            // Carga la tabla con la informacion de la base 
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Quirofano_Sucursal.tabla(modelo, table);
+        Control_Quirofano_Sucursal.tabla(modelo, table);
         
     }
 	
@@ -143,10 +143,10 @@ void mostrarTabla(){            // Carga la tabla con la informacion de la base 
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							//Revisa si ya existe la relación
-							if(Consulta_Quirofano_Sucursal.existe(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Control_Quirofano_Sucursal.existe(((ComboItem) cbQuirofano.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Quirófano ya se encuentra en la sucursal");
 							}else {
-								Consulta_Quirofano_Sucursal.agregar(((ComboItem) cbQuirofano.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreQ, nombreS);
+								Control_Quirofano_Sucursal.agregar(((ComboItem) cbQuirofano.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreQ, nombreS);
 							}
 						}
 						
@@ -170,7 +170,7 @@ void mostrarTabla(){            // Carga la tabla con la informacion de la base 
 				String nombreQ = table.getValueAt(fila,2).toString();
 				String nombreS = table.getValueAt(fila,1).toString();
 				
-				Consulta_Quirofano_Sucursal.eliminar(id, nombreQ, nombreS);
+				Control_Quirofano_Sucursal.eliminar(id, nombreQ, nombreS);
 				
 				mostrarTabla();
 				

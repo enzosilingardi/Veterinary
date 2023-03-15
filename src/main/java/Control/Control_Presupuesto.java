@@ -7,12 +7,9 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import View.Factura;
+import View.Presupuesto;
 
-
-
-public class Consulta_Factura {
-
+public class Control_Presupuesto {
 	public static Connection cargar() {
 		Connection cn = null;
 		PreparedStatement pst = null;
@@ -21,16 +18,16 @@ public class Consulta_Factura {
 		
 		
 		try {
-			cn = (Connection) Connect.getConexion();           //Realiza la conexión
-			String SSQL = "SELECT * FROM Emitter";		//Sentencia sql
+			cn = (Connection) Connect.getConexion();      //Realiza la conexión
+			String SSQL = "SELECT * FROM Emitter";
 			pst = cn.prepareStatement(SSQL);
 			result = pst.executeQuery();
 			
 			
-			while (result.next()) {                       //Carga los campos con los datos en el registro
-				Factura.txtEmisor.setText(result.getString("name"));
-				Factura.txtCuit.setText(result.getString("cuit"));
-				Factura.txtDir.setText(result.getString("address"));
+			while (result.next()) {                            //Carga los campos según los resultados de la base de datos
+				Presupuesto.txtEmisor.setText(result.getString("name"));
+				Presupuesto.txtCuit.setText(result.getString("cuit"));
+				Presupuesto.txtDir.setText(result.getString("address"));
 				
 			}
 			cn.close();
@@ -42,5 +39,4 @@ public class Consulta_Factura {
 			}
 		return null;
 	}
-	
 }

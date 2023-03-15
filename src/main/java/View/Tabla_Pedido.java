@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Pedido;
+import Control.Control_Pedido;
 import Model.ControlFiles;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -33,7 +33,7 @@ public class Tabla_Pedido extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Pedido.tabla(modelo, table);
+	        Control_Pedido.tabla(modelo, table);
 	        
 	    }
 
@@ -138,7 +138,7 @@ public class Tabla_Pedido extends JFrame {
 					String producto = table.getValueAt(fila,1).toString();
 					String sucursal = table.getValueAt(fila,3).toString();
 					
-					Consulta_Pedido.eliminar(id, producto, sucursal);
+					Control_Pedido.eliminar(id, producto, sucursal);
 					mostrarTabla();
 				}
 			});
@@ -228,7 +228,7 @@ public class Tabla_Pedido extends JFrame {
 				String producto = table.getValueAt(fila,1).toString();
 				String sucursal = table.getValueAt(fila,3).toString();
 				
-				Consulta_Pedido.eliminar(id, producto, sucursal);
+				Control_Pedido.eliminar(id, producto, sucursal);
 				mostrarTabla();
 			}
 		});

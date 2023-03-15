@@ -18,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Cliente;
-import Control.Consulta_Mascota;
+import Control.Control_Cliente;
+import Control.Control_Mascota;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
@@ -34,7 +34,7 @@ public class Tabla_Clientes extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Cliente.tabla(modelo, table);
+        Control_Cliente.tabla(modelo, table);
     }
 
 	/**
@@ -139,7 +139,7 @@ public class Tabla_Clientes extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString();
 					
-					Consulta_Cliente.eliminar(id, nombre);
+					Control_Cliente.eliminar(id, nombre);
 					
 					mostrarTabla();
 				}

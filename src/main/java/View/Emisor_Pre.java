@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Emisor;
+import Control.Control_Emisor;
 
 public class Emisor_Pre extends JFrame {
 
@@ -92,7 +92,7 @@ public class Emisor_Pre extends JFrame {
 				String cuit = txtCuit.getText();
 				String empresa = txtEmpresa.getText();
 				
-				Consulta_Emisor.editar(nombre, empresa, cuit);
+				Control_Emisor.editar(nombre, empresa, cuit);
 				
 				Presupuesto pre = new Presupuesto();
 				pre.setVisible(true);
@@ -115,7 +115,7 @@ public class Emisor_Pre extends JFrame {
 		btnVolver.setBounds(156, 252, 89, 23);
 		contentPane.add(btnVolver);
 		
-		Consulta_Emisor.cargarPre();
+		Control_Emisor.cargarPre();
 	}
 
 }

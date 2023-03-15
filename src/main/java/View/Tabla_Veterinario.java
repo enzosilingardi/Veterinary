@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Veterinario;
+import Control.Control_Veterinario;
 import Model.ControlFiles;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -33,7 +33,7 @@ public class Tabla_Veterinario extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel(); 
 	        
-	        Consulta_Veterinario.tabla(modelo, table);
+	        Control_Veterinario.tabla(modelo, table);
 	        
 	    }
 		
@@ -138,7 +138,7 @@ public class Tabla_Veterinario extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString()+" "+table.getValueAt(fila,2).toString();
 					
-					Consulta_Veterinario.eliminar(id, nombre);
+					Control_Veterinario.eliminar(id, nombre);
 					
 					mostrarTabla();
 				}

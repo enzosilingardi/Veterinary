@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Usuario;
+import Control.Control_Usuario;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -141,7 +141,7 @@ public class Usuario extends JFrame {
 				String contrasenia = txtContrasenia.getText();
 				String email = txtEmail.getText();
 				
-				Consulta_Usuario.agregar(perfil, nombre, apellido, nombreU, contrasenia, email);
+				Control_Usuario.agregar(perfil, nombre, apellido, nombreU, contrasenia, email);
 				
 				limpiar();
 				

@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Login;
+import Control.Control_Login;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -127,9 +127,9 @@ public class Login extends JFrame {
 				String usuario = txtUsuario.getText();
 				String contrasenia = new String (txtContrasenia.getPassword());
 				
-					if(Consulta_Login.existeUsuario(usuario,contrasenia) != 0) {            //Revisa si el usuario ingresado existe
+					if(Control_Login.existeUsuario(usuario,contrasenia) != 0) {            //Revisa si el usuario ingresado existe
 						
-						Main main = new Main(Consulta_Login.perfilUsuario(usuario,contrasenia));         //Abre la ventana principal usando como parámetro el perfil del usuario
+						Main main = new Main(Control_Login.perfilUsuario(usuario,contrasenia));         //Abre la ventana principal usando como parámetro el perfil del usuario
 						main.setVisible(true);
 						dispose();
 					}else {

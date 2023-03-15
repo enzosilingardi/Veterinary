@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Proveedor;
+import Control.Control_Proveedor;
 import Model.ControlFiles;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +33,7 @@ public class Tabla_Proveedor extends JFrame {
 	         
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Proveedor.tabla(modelo, table);
+	        Control_Proveedor.tabla(modelo, table);
 	        
 	    }
 
@@ -120,7 +120,7 @@ public class Tabla_Proveedor extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre =  table.getValueAt(fila,1).toString();
 					
-					Consulta_Proveedor.eliminar(id, nombre);
+					Control_Proveedor.eliminar(id, nombre);
 					
 					mostrarTabla();
 					

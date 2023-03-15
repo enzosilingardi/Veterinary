@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Model.ControlFiles;
 
-public class Consulta_Tipo_Procedimiento {
+public class Control_Tipo_Procedimiento {
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Tipo de procedimiento"});       //Nombre de las columnas
 	       

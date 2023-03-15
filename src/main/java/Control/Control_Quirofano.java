@@ -13,7 +13,7 @@ import Model.ControlFiles;
 import View.Modificar_Quirofano;
 import View.Tabla_Quirofano;
 
-public class Consulta_Quirofano {
+public class Control_Quirofano {
 	
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Quirófano"});      //Nombre de las columnas

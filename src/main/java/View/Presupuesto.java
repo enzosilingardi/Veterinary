@@ -22,9 +22,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Presupuesto;
+import Control.Control_Presupuesto;
 import Model.ComboItem;
 
 import javax.swing.JLabel;
@@ -155,7 +155,7 @@ public class Presupuesto extends JFrame {
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
 		
-		ComboBoxes.CBProducto2(modelo);
+		Control_ComboBoxes.CBProducto2(modelo);
 		return modelo;
     }
 	
@@ -467,7 +467,7 @@ public class Presupuesto extends JFrame {
 		btnCalcular.setBounds(578, 325, 129, 23);
 		contentPane.add(btnCalcular);
 		
-		Consulta_Presupuesto.cargar();
+		Control_Presupuesto.cargar();
 		
 	}
 
@@ -680,6 +680,6 @@ public class Presupuesto extends JFrame {
 		btnCalcular.setBounds(578, 325, 129, 23);
 		contentPane.add(btnCalcular);
 		
-		Consulta_Presupuesto.cargar();
+		Control_Presupuesto.cargar();
 	}
 }

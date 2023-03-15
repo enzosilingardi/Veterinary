@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Tipo_Procedimiento;
+import Control.Control_Tipo_Procedimiento;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -36,7 +36,7 @@ public class Tipo_Procedimiento extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel(); 
         
-        Consulta_Tipo_Procedimiento.tabla(modelo, table);
+        Control_Tipo_Procedimiento.tabla(modelo, table);
         
         
     }
@@ -95,7 +95,7 @@ public class Tipo_Procedimiento extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String nombre = txtNombre.getText();
 				
-				Consulta_Tipo_Procedimiento.agregar(nombre);
+				Control_Tipo_Procedimiento.agregar(nombre);
 				
 				mostrarTabla();
 			}
@@ -111,7 +111,7 @@ public class Tipo_Procedimiento extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Tipo_Procedimiento.eliminar(id, nombre);
+				Control_Tipo_Procedimiento.eliminar(id, nombre);
 				
 				mostrarTabla();
 			}
@@ -139,7 +139,7 @@ public class Tipo_Procedimiento extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Tipo_Procedimiento.modificar(tipo, id, nombre);
+				Control_Tipo_Procedimiento.modificar(tipo, id, nombre);
 				
 				mostrarTabla();
 				

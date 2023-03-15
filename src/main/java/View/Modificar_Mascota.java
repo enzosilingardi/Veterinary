@@ -18,9 +18,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Mascota;
+import Control.Control_Mascota;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -88,7 +88,7 @@ public class Modificar_Mascota extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel(); 
 		
-		ComboBoxes.CBAnimal(modelo);
+		Control_ComboBoxes.CBAnimal(modelo);
 		
 		return modelo;
     }
@@ -98,7 +98,7 @@ public class Modificar_Mascota extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBRaza(modelo,animal);
+		Control_ComboBoxes.CBRaza(modelo,animal);
 		
 		return modelo;
     }
@@ -259,7 +259,7 @@ public class Modificar_Mascota extends JFrame {
 					genero = "Macho";                  //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
-				Consulta_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
+				Control_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
 				
 		                Tabla_Mascota tm = new Tabla_Mascota(perfil);
 						tm.setVisible(true);
@@ -276,7 +276,7 @@ public class Modificar_Mascota extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Mascota.cargar(mascota);
+		Control_Mascota.cargar(mascota);
 		txtId.setText(mascota);
 		
 		txtDue = new JTextField();
@@ -433,7 +433,7 @@ public class Modificar_Mascota extends JFrame {
 					genero = "Macho";                  //En caso de no seleccionarse alguno, se coloca macho por defecto
 				}
 				
-				Consulta_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
+				Control_Mascota.modificar(idDue,nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(),date, id);
 				
 		                Tabla_Mascota tm = new Tabla_Mascota(perfil);
 						tm.setVisible(true);
@@ -451,7 +451,7 @@ public class Modificar_Mascota extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Mascota.cargar(mascota);
+		Control_Mascota.cargar(mascota);
 		txtId.setText(mascota);
 		
 		txtDue = new JTextField();

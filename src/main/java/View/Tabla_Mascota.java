@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Mascota;
+import Control.Control_Mascota;
 import Model.ControlFiles;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -36,7 +36,7 @@ public class Tabla_Mascota extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Mascota.tabla(modelo, table);
+	        Control_Mascota.tabla(modelo, table);
 	        
 	    }
 		
@@ -140,7 +140,7 @@ public class Tabla_Mascota extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString();
 					
-					Consulta_Mascota.eliminar(id, nombre);
+					Control_Mascota.eliminar(id, nombre);
 					
 					mostrarTabla();
 				}

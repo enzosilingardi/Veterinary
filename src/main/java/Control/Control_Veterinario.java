@@ -13,7 +13,7 @@ import Model.ControlFiles;
 import View.Modificar_Veterinario;
 import View.Tabla_Veterinario;
 
-public class Consulta_Veterinario {
+public class Control_Veterinario {
 
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		

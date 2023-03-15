@@ -14,7 +14,7 @@ import Model.ControlFiles;
 import View.Modificar_Producto;
 import View.Tabla_Productos;
 
-public class Consulta_Producto {
+public class Control_Producto {
 	
 	public static int existe(String nombre) {	//Verifica si ya existe el producto en la base de datos
 		Connection cn = null;

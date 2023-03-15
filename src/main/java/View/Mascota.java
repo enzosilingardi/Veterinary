@@ -9,9 +9,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Mascota;
+import Control.Control_Mascota;
 import Model.Breed;
 import Model.ComboItem;
 import Model.ControlFiles;
@@ -94,7 +94,7 @@ public class Mascota extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel(); 
 		
-		ComboBoxes.CBAnimal(modelo);
+		Control_ComboBoxes.CBAnimal(modelo);
 		
 		return modelo;
     }
@@ -104,7 +104,7 @@ public class Mascota extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBRaza(modelo,animal);
+		Control_ComboBoxes.CBRaza(modelo,animal);
 		
 		return modelo;
     }
@@ -226,7 +226,7 @@ public class Mascota extends JFrame {
 				}
 				
 				
-				Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
+				Control_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
 					
 				limpiar();
 				
@@ -426,7 +426,7 @@ public class Mascota extends JFrame {
 				}
 				
 			
-				Consulta_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
+				Control_Mascota.agregar(idDue, nombre, ((ComboItem) cbAnimal.getSelectedItem()).getValue(), edad, genero, ((ComboItem) cbRaza.getSelectedItem()).getValue(), date);
 					
 				limpiar();
 				

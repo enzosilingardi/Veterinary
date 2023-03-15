@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Producto;
+import Control.Control_Producto;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -73,7 +73,7 @@ public class Modificar_Producto extends JFrame {
 	public DefaultComboBoxModel cargarTipo() {             //Carga el combobox con los tipos de producto
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBTipoProd(modelo);
+		Control_ComboBoxes.CBTipoProd(modelo);
 		
 		return modelo;
     }
@@ -181,7 +181,7 @@ public class Modificar_Producto extends JFrame {
 				float costo = Float.parseFloat(txtCosto.getText());
 				float precio = Float.parseFloat(txtPrecio.getText());
 				
-				Consulta_Producto.modificar(idP, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio, id);
+				Control_Producto.modificar(idP, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio, id);
 				
 		                Tabla_Productos tp = new Tabla_Productos();
 						tp.setVisible(true);
@@ -198,7 +198,7 @@ public class Modificar_Producto extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Producto.cargar(producto);
+		Control_Producto.cargar(producto);
 		txtId.setText(producto);
 		
 		btnSelec = new JButton("Seleccionar");               //Este botón permite seleccionar un proveedor
@@ -309,7 +309,7 @@ public class Modificar_Producto extends JFrame {
 				float costo = Float.parseFloat(txtCosto.getText());
 				float precio = Float.parseFloat(txtPrecio.getText());
 				
-				Consulta_Producto.modificar(idP, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio, id);
+				Control_Producto.modificar(idP, nombre, ((ComboItem) cbTipo.getSelectedItem()).getValue(), descripcion, costo, precio, id);
 				
 		                Tabla_Productos tp = new Tabla_Productos();
 						tp.setVisible(true);
@@ -327,7 +327,7 @@ public class Modificar_Producto extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Producto.cargar(producto);
+		Control_Producto.cargar(producto);
 		txtId.setText(producto);
 		
 		btnSelec = new JButton("Seleccionar");                  //Este botón permite seleccionar un proveedor

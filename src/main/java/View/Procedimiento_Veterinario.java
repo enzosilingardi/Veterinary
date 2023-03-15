@@ -21,9 +21,9 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Procedimiento_Veterinario;
+import Control.Control_Procedimiento_Veterinario;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -40,7 +40,7 @@ public class Procedimiento_Veterinario extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBVeterinario(modelo);
+		Control_ComboBoxes.CBVeterinario(modelo);
 		
 		return modelo;
     }
@@ -50,7 +50,7 @@ public class Procedimiento_Veterinario extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBProcedimiento(modelo);
+		Control_ComboBoxes.CBProcedimiento(modelo);
 		return modelo;
     }
 	
@@ -59,7 +59,7 @@ public class Procedimiento_Veterinario extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Procedimiento_Veterinario.tabla(modelo, table);
+        Control_Procedimiento_Veterinario.tabla(modelo, table);
         
     }
 	/**
@@ -137,11 +137,11 @@ public class Procedimiento_Veterinario extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione un veterinario");
 						}else {
 							//Revisa si ya existe la relación
-							if(Consulta_Procedimiento_Veterinario.existe(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(),((ComboItem) cbVeterinario.getSelectedItem()).getValue())!=0) {
+							if(Control_Procedimiento_Veterinario.existe(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(),((ComboItem) cbVeterinario.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Veterinario ya está asociado al procedimiento");
 							}else {
 								
-								Consulta_Procedimiento_Veterinario.agregar(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(), ((ComboItem) cbVeterinario.getSelectedItem()).getValue(), nombreP, nombreV);
+								Control_Procedimiento_Veterinario.agregar(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(), ((ComboItem) cbVeterinario.getSelectedItem()).getValue(), nombreP, nombreV);
 								
 							}
 						}
@@ -164,7 +164,7 @@ public class Procedimiento_Veterinario extends JFrame {
 				String nombreV = table.getValueAt(fila,1).toString();
 				String nombreP = table.getValueAt(fila,2).toString();
 				
-				Consulta_Procedimiento_Veterinario.eliminar(id, nombreV, nombreP);
+				Control_Procedimiento_Veterinario.eliminar(id, nombreV, nombreP);
 				
 				mostrarTabla();
 				

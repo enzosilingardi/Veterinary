@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Instrumento;
+import Control.Control_Instrumento;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -160,7 +160,7 @@ public class Instrumento extends JFrame {
 				String nombre = txtNombre.getText();
 				String descripcion = txtDescripcion.getText();
 				
-				Consulta_Instrumento.agregar(nombre, descripcion);
+				Control_Instrumento.agregar(nombre, descripcion);
 				limpiar();
 			}
 		});

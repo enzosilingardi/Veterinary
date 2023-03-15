@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Animal_Raza;
+import Control.Control_Animal_Raza;
 import Model.ControlFiles;
 import Model.ComboItem;
 
@@ -40,7 +40,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBAnimal(modelo);
+		Control_ComboBoxes.CBAnimal(modelo);
 		
 		return modelo;
     }
@@ -49,7 +49,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBRazaS(modelo);
+		Control_ComboBoxes.CBRazaS(modelo);
 		
 		return modelo;
     }
@@ -59,7 +59,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Animal_Raza.tablaAR(modelo, table);
+        Control_Animal_Raza.tablaAR(modelo, table);
         
     }
 	
@@ -138,10 +138,10 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 						if(((ComboItem) raza).getValue() == ""){
 							JOptionPane.showMessageDialog(null, "Seleccione una raza");
 						}else {
-							if(Consulta_Animal_Raza.existeAR(((ComboItem) cbAnimal.getSelectedItem()).getValue(),((ComboItem) cbRaza.getSelectedItem()).getValue())!=0) {        //Revisa que no exista la relación
+							if(Control_Animal_Raza.existeAR(((ComboItem) cbAnimal.getSelectedItem()).getValue(),((ComboItem) cbRaza.getSelectedItem()).getValue())!=0) {        //Revisa que no exista la relación
 								JOptionPane.showMessageDialog(null, "Raza ya se encuentra asociada al animal");
 							}else {
-								Consulta_Animal_Raza.agregarAr(((ComboItem) cbAnimal.getSelectedItem()).getValue(), ((ComboItem) cbRaza.getSelectedItem()).getValue());
+								Control_Animal_Raza.agregarAr(((ComboItem) cbAnimal.getSelectedItem()).getValue(), ((ComboItem) cbRaza.getSelectedItem()).getValue());
 							}
 						}
 						
@@ -161,7 +161,7 @@ public class Animal_Raza extends JFrame {       // Esta clase añade o remueve u
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
-				Consulta_Animal_Raza.eliminarAR(id);
+				Control_Animal_Raza.eliminarAR(id);
 				mostrarTabla();
 			}
 		});

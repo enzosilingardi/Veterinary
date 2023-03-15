@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Raza;
+import Control.Control_Raza;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -36,7 +36,7 @@ public class Raza extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Raza.tabla(modelo, table);
+        Control_Raza.tabla(modelo, table);
         
     }
 	/**
@@ -135,7 +135,7 @@ public class Raza extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String tipo = table.getValueAt(fila,1).toString();
 				
-				Consulta_Raza.eliminar(id, tipo);
+				Control_Raza.eliminar(id, tipo);
 				
 				mostrarTabla();
 				
@@ -150,7 +150,7 @@ public class Raza extends JFrame {
 				
 				String tipo = txtTipo.getText();
 				
-				Consulta_Raza.agregar(tipo);
+				Control_Raza.agregar(tipo);
 				limpiar();
 				mostrarTabla();
 				
@@ -186,7 +186,7 @@ public class Raza extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Raza.modificar(tipo, id, nombre);
+				Control_Raza.modificar(tipo, id, nombre);
 				
 				mostrarTabla();
 				

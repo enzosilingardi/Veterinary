@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Stock;
+import Control.Control_Stock;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -41,7 +41,7 @@ public class Sucursal_Producto extends JFrame {
 	public DefaultComboBoxModel cargarProducto() {      //Carga el ComboBox producto
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBProducto(modelo);
+		Control_ComboBoxes.CBProducto(modelo);
 		
 		return modelo;
     }
@@ -49,7 +49,7 @@ public class Sucursal_Producto extends JFrame {
 	public DefaultComboBoxModel cargarSucursal() {     //Carga el combobox sucursal
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		
 		return modelo;
     }
@@ -133,11 +133,11 @@ public class Sucursal_Producto extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							//Revisa si la relación ya existe
-							if(Consulta_Stock.existe(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Control_Stock.existe(((ComboItem) cbProducto.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Producto ya se encuentra en la sucursal");
 							}else {
 								
-								Consulta_Stock.agregar(((ComboItem) cbSucursal.getSelectedItem()).getValue(), ((ComboItem) cbProducto.getSelectedItem()).getValue(), cantidad, productoNombre, sucursalNombre);
+								Control_Stock.agregar(((ComboItem) cbSucursal.getSelectedItem()).getValue(), ((ComboItem) cbProducto.getSelectedItem()).getValue(), cantidad, productoNombre, sucursalNombre);
 								
 							}
 						}

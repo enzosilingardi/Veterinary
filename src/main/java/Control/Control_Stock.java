@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.ComboItem;
 import Model.ControlFiles;
 
-public class Consulta_Stock {
+public class Control_Stock {
 
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Producto","Cantidad","Dirección Sucursal"});    //Nombre de las columnas

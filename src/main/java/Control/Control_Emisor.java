@@ -11,7 +11,7 @@ import View.Emisor;
 import View.Emisor_Pre;
 import View.Factura;
 
-public class Consulta_Emisor {
+public class Control_Emisor {
 	public static Connection cargar() {
 		Connection cn = null;
 		PreparedStatement pst = null;

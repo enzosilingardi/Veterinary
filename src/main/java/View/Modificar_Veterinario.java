@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Veterinario;
+import Control.Control_Veterinario;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -149,7 +149,7 @@ private JTextField txtDireccion;
 				String apellido = txtApellido.getText();
 				String matricula = txtMatricula.getText();
 				
-				Consulta_Veterinario.modificar(direccion, nombre, apellido, matricula, id);
+				Control_Veterinario.modificar(direccion, nombre, apellido, matricula, id);
 				
 		                Tabla_Veterinario tv = new Tabla_Veterinario();
 						tv.setVisible(true);
@@ -167,7 +167,7 @@ private JTextField txtDireccion;
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Veterinario.cargar(veterinario);
+		Control_Veterinario.cargar(veterinario);
 		txtId.setText(veterinario);
 		
 		txtDireccion = new JTextField();

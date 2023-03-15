@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Proveedor;
+import Control.Control_Proveedor;
 
 public class Buscar_Proveedor extends JFrame {
 
@@ -35,7 +35,7 @@ public class Buscar_Proveedor extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Proveedor.tablaBus(modelo, table);
+        Control_Proveedor.tablaBus(modelo, table);
         
     }
 	
@@ -79,7 +79,7 @@ public class Buscar_Proveedor extends JFrame {
             	}
         	}
         	
-            Consulta_Proveedor.tablaBusPar(modelo, table, url);
+            Control_Proveedor.tablaBusPar(modelo, table, url);
         
     }
 

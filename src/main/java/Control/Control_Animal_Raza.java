@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.ControlFiles;
 
 
-public class Consulta_Animal_Raza {
+public class Control_Animal_Raza {
 
 	public static Connection tablaAR(DefaultTableModel modelo, JTable table ) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Animal","Raza"});       // Nombre de las columnas

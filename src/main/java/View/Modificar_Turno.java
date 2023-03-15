@@ -15,9 +15,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Turno;
+import Control.Control_Turno;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -82,7 +82,7 @@ public class Modificar_Turno extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBTipoProc(modelo);
+		Control_ComboBoxes.CBTipoProc(modelo);
 		
 		return modelo;
     }
@@ -164,7 +164,7 @@ public class Modificar_Turno extends JFrame {
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
 						
-						Consulta_Turno.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start, id);
+						Control_Turno.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start, id);
 						
 							
 						}
@@ -222,7 +222,7 @@ public class Modificar_Turno extends JFrame {
 		});
 		btnBuscar.setBounds(334, 77, 89, 23);
 		contentPane.add(btnBuscar);
-		Consulta_Turno.cargar(turno);
+		Control_Turno.cargar(turno);
 	}
 
 	public Modificar_Turno(final String turno, String idMas, String nomMas) {           //Crea la ventana recibiendo como parámetros el id del turno y el id y el nombre de la mascota
@@ -283,7 +283,7 @@ public class Modificar_Turno extends JFrame {
 						JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 					}else {
 						
-						Consulta_Turno.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start, id);
+						Control_Turno.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), idM, date, start, id);
 						
 							
 						}
@@ -340,7 +340,7 @@ public class Modificar_Turno extends JFrame {
 		});
 		btnBuscar.setBounds(334, 77, 89, 23);
 		contentPane.add(btnBuscar);
-		Consulta_Turno.cargar(turno);
+		Control_Turno.cargar(turno);
 		
 		txtIdM.setText(idMas);
 		txtMascota.setText(nomMas);

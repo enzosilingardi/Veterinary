@@ -13,9 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Proveedor;
+import Control.Control_Proveedor;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -78,7 +78,7 @@ public class Modificar_Proveedor extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBTipoProv(modelo);
+		Control_ComboBoxes.CBTipoProv(modelo);
 		
 		return modelo;
     }
@@ -218,7 +218,7 @@ public class Modificar_Proveedor extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione un tipo");
 						}else {
 							
-							Consulta_Proveedor.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), direccion, nombrePro, nombre, apellido, telefono, email, cuit, id);
+							Control_Proveedor.modificar(((ComboItem) cbTipo.getSelectedItem()).getValue(), direccion, nombrePro, nombre, apellido, telefono, email, cuit, id);
 							
 						}
 		                Tabla_Proveedor tp = new Tabla_Proveedor(perfil);
@@ -237,7 +237,7 @@ public class Modificar_Proveedor extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Proveedor.cargar(proveedor);
+		Control_Proveedor.cargar(proveedor);
 		txtId.setText(proveedor);
 		
 		txtDireccion = new JTextField();

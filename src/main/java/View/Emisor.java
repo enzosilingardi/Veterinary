@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Emisor;
+import Control.Control_Emisor;
 import View.Modificar_Ciudad.ComboItem;
 
 import javax.swing.JTextField;
@@ -94,7 +94,7 @@ public class Emisor extends JFrame {
 				String cuit = txtCuit.getText();
 				String empresa = txtEmpresa.getText();
 				
-				Consulta_Emisor.editar(nombre, empresa, cuit);
+				Control_Emisor.editar(nombre, empresa, cuit);
 				
 				 Factura factura = new Factura();
 					factura.setVisible(true);
@@ -115,7 +115,7 @@ public class Emisor extends JFrame {
 		btnVolver.setBounds(156, 252, 89, 23);
 		contentPane.add(btnVolver);
 		
-		Consulta_Emisor.cargar();
+		Control_Emisor.cargar();
 	}
 
 }

@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Procedimiento_Sucursal;
+import Control.Control_Procedimiento_Sucursal;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -40,7 +40,7 @@ public class Procedimiento_Sucursal extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		return modelo;
     }
 	
@@ -51,7 +51,7 @@ public class Procedimiento_Sucursal extends JFrame {
 		
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBProcedimiento(modelo);
+		Control_ComboBoxes.CBProcedimiento(modelo);
 		return modelo;
     }
 	
@@ -59,7 +59,7 @@ public class Procedimiento_Sucursal extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Procedimiento_Sucursal.tabla(modelo, table);
+        Control_Procedimiento_Sucursal.tabla(modelo, table);
         
     }
 	/**
@@ -137,10 +137,10 @@ public class Procedimiento_Sucursal extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							//Revisa si ya existe la relación
-							if(Consulta_Procedimiento_Sucursal.existe(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Control_Procedimiento_Sucursal.existe(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Procedimiento ya se encuentra en la sucursal");
 							}else {
-								Consulta_Procedimiento_Sucursal.agregar(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreP, nombreS);
+								Control_Procedimiento_Sucursal.agregar(((ComboItem) cbProcedimiento.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreP, nombreS);
 								
 							}
 						}
@@ -164,7 +164,7 @@ public class Procedimiento_Sucursal extends JFrame {
 				String nombreP = table.getValueAt(fila,1).toString();
 				String nombreS = table.getValueAt(fila,2).toString();
 				
-				Consulta_Procedimiento_Sucursal.eliminar(id, nombreP, nombreS);
+				Control_Procedimiento_Sucursal.eliminar(id, nombreP, nombreS);
 				mostrarTabla();
 			}
 		});

@@ -14,7 +14,7 @@ import View.Modificar_Usuario;
 import View.Tabla_Usuarios;
 import View.Usuario;
 
-public class Consulta_Usuario {
+public class Control_Usuario {
 	public static int existe(String nombre) {
 		Connection cn = null;
 		PreparedStatement pst = null;

@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Pedido;
+import Control.Control_Pedido;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -41,7 +41,7 @@ public class Modificar_Pedido extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBProducto(modelo);
+		Control_ComboBoxes.CBProducto(modelo);
 		
 		return modelo;
     }
@@ -50,7 +50,7 @@ public class Modificar_Pedido extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();   
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		
 		return modelo;
     }
@@ -150,7 +150,7 @@ public class Modificar_Pedido extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							
-						Consulta_Pedido.modificar(((ComboItem) cbProducto.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), cantidad, id, nombreProducto);
+						Control_Pedido.modificar(((ComboItem) cbProducto.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), cantidad, id, nombreProducto);
 						
 					}
 						}
@@ -165,7 +165,7 @@ public class Modificar_Pedido extends JFrame {
 		btnModificar.setBounds(35, 224, 89, 23);
 		contentPane.add(btnModificar);
 		
-		Consulta_Pedido.cargar(pedido);
+		Control_Pedido.cargar(pedido);
 		txtId.setText(pedido);
 	}
 

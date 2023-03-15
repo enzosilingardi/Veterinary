@@ -22,9 +22,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Factura;
+import Control.Control_Factura;
 import Model.ComboItem;
 
 import javax.swing.JLabel;
@@ -157,7 +157,7 @@ public class Factura extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBProducto2(modelo);
+		Control_ComboBoxes.CBProducto2(modelo);
 		
 		return modelo;
     }
@@ -508,7 +508,7 @@ public class Factura extends JFrame {
 		btnTotal.setBounds(608, 314, 147, 23);
 		contentPane.add(btnTotal);
 		
-		Consulta_Factura.cargar();
+		Control_Factura.cargar();
 	}
 
 
@@ -749,6 +749,6 @@ public class Factura extends JFrame {
 		btnTotal.setBounds(608, 314, 147, 23);
 		contentPane.add(btnTotal);
 		
-		Consulta_Factura.cargar();
+		Control_Factura.cargar();
 	}
 }

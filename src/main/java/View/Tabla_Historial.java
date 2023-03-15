@@ -26,7 +26,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import Control.Connect;
-import Control.Consulta_Historial;
+import Control.Control_Historial;
 import Model.ControlFiles;
 
 import java.awt.Font;
@@ -42,7 +42,7 @@ public class Tabla_Historial extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Historial.tabla(modelo, table);
+	        Control_Historial.tabla(modelo, table);
 	        
 	    }
 
@@ -50,7 +50,7 @@ public class Tabla_Historial extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Historial.tablaId(modelo, table, id);
+        Control_Historial.tablaId(modelo, table, id);
         
     }
 	/**
@@ -175,7 +175,7 @@ public class Tabla_Historial extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString();
 					
-					Consulta_Historial.eliminar(id, nombre);
+					Control_Historial.eliminar(id, nombre);
 					
 					mostrarTabla();
 				}
@@ -302,7 +302,7 @@ public class Tabla_Historial extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Historial.eliminar(id, nombre);
+				Control_Historial.eliminar(id, nombre);
 				
 				mostrarTabla();
 			}

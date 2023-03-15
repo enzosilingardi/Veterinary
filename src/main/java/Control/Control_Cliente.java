@@ -15,7 +15,7 @@ import View.Cliente;
 import View.Modificar_Cliente;
 import View.Tabla_Clientes;
 
-public class Consulta_Cliente {
+public class Control_Cliente {
 
 	public static int existe(String nombre, String dni) {	//Verifica si el cliente existe en la base de datos
 		
@@ -64,7 +64,7 @@ public class Consulta_Cliente {
 			
 			
 			
-				if(Consulta_Cliente.existe(nombre,dni)!=0) {                  //Si ya existe el cliente no lo agrega y muestra el error por pantalla
+				if(Control_Cliente.existe(nombre,dni)!=0) {                  //Si ya existe el cliente no lo agrega y muestra el error por pantalla
 				JOptionPane.showMessageDialog(null, "Cliente ya existe");
 			}else {
 				ps.setString(1, direccion);
@@ -130,7 +130,7 @@ public class Consulta_Cliente {
 			
 			
 			
-				if(Consulta_Cliente.existe(nombre,dni)!=0) {                  //Si ya existe el cliente no lo agrega y muestra el error por pantalla
+				if(Control_Cliente.existe(nombre,dni)!=0) {                  //Si ya existe el cliente no lo agrega y muestra el error por pantalla
 				JOptionPane.showMessageDialog(null, "Cliente ya existe");
 			}else {
 				ps.setString(1, direccion);

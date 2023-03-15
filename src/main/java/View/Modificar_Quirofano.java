@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Quirofano;
+import Control.Control_Quirofano;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -85,7 +85,7 @@ public class Modificar_Quirofano extends JFrame {
 				int id = Integer.parseInt(txtId.getText());
 				int numero = Integer.parseInt(txtNumero.getText());
 
-				Consulta_Quirofano.modificar(numero, id);
+				Control_Quirofano.modificar(numero, id);
 				
 		                Tabla_Quirofano tq = new Tabla_Quirofano(perfil);
 						tq.setVisible(true);
@@ -103,7 +103,7 @@ public class Modificar_Quirofano extends JFrame {
 		txtId.setVisible(false);
 		txtId.setEnabled(false);
 		
-		Consulta_Quirofano.cargar(quirofano);
+		Control_Quirofano.cargar(quirofano);
 		txtId.setText(quirofano);
 		
 	}

@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Model.ControlFiles;
 
-public class Consulta_Instrumento {
+public class Control_Instrumento {
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Instrumento","Descripción"});   //Nombre de las columnas
 	       

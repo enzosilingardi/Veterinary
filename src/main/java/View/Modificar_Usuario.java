@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Usuario;
+import Control.Control_Usuario;
 import Model.ControlFiles;
 
 import javax.swing.JLabel;
@@ -140,7 +140,7 @@ public class Modificar_Usuario extends JFrame {
 				String contrasenia = txtContrasenia.getText();
 				String email = txtEmail.getText();
 				
-				Consulta_Usuario.modificar(perfil, nombre, apellido, nombreU, contrasenia, email, id);
+				Control_Usuario.modificar(perfil, nombre, apellido, nombreU, contrasenia, email, id);
 				
 		                Tabla_Usuarios tu = new Tabla_Usuarios();
 						tu.setVisible(true);
@@ -169,7 +169,7 @@ public class Modificar_Usuario extends JFrame {
 		txtId.setColumns(10);
 		txtId.setVisible(false);
 		
-		Consulta_Usuario.cargar(usuario);
+		Control_Usuario.cargar(usuario);
 		txtId.setText(usuario);
 	}
 

@@ -15,7 +15,7 @@ import Model.ComboItem;
 
 
 
-public class ComboBoxes {
+public class Control_ComboBoxes {
 		public static  DefaultComboBoxModel CBAnimal(DefaultComboBoxModel modelo){
 			Connection cn = null;
 			PreparedStatement pst = null;

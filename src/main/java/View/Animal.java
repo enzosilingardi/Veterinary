@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Animal;
+import Control.Control_Animal;
 import Model.ControlFiles;
 
 import javax.swing.JButton;
@@ -35,7 +35,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Animal.tabla(modelo, table);
+        Control_Animal.tabla(modelo, table);
     }
 	/**
 	 * Launch the application.
@@ -124,7 +124,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 				int fila = table.getSelectedRow();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
-				Consulta_Animal.eliminar(id);
+				Control_Animal.eliminar(id);
 				
 		        mostrarTabla();
 		         
@@ -139,7 +139,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 				
 				String tipo = txtTipo.getText();
 				
-				Consulta_Animal.agregar(tipo);
+				Control_Animal.agregar(tipo);
 				
 
 		                limpiar();
@@ -168,7 +168,7 @@ public class Animal extends JFrame {  			//Esta clase añade o remueve un animal
 				String tipo = table.getValueAt(fila,1).toString();
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				
-				Consulta_Animal.modificar(tipo, id);
+				Control_Animal.modificar(tipo, id);
 				
 		                mostrarTabla();
 		           

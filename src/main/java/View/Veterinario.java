@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Control.Connect;
-import Control.Consulta_Veterinario;
+import Control.Control_Veterinario;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -129,7 +129,7 @@ public class Veterinario extends JFrame {
 				String apellido = txtApellido.getText();
 				String matricula = txtMatricula.getText();
 				
-				Consulta_Veterinario.agregar(direccion, nombre, apellido, matricula);
+				Control_Veterinario.agregar(direccion, nombre, apellido, matricula);
 				
 				limpiar();
 				

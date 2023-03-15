@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Stock;
+import Control.Control_Stock;
 import Model.ControlFiles;
 
 import javax.swing.JTextField;
@@ -44,7 +44,7 @@ public class Tabla_Stock extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel(); 
 	        
-	        Consulta_Stock.tabla(modelo, table);
+	        Control_Stock.tabla(modelo, table);
 	        
 	    }
 
@@ -142,7 +142,7 @@ public class Tabla_Stock extends JFrame {
 					String producto = table.getValueAt(fila,1).toString();
 					String sucursal = table.getValueAt(fila,3).toString();
 					
-					Consulta_Stock.modificar(cantidad, id, producto, sucursal);
+					Control_Stock.modificar(cantidad, id, producto, sucursal);
 					
 					mostrarTabla();
 					
@@ -180,7 +180,7 @@ public class Tabla_Stock extends JFrame {
 					String producto = table.getValueAt(fila,1).toString();
 					String sucursal = table.getValueAt(fila,3).toString();
 					
-					Consulta_Stock.eliminar(id, producto, sucursal);
+					Control_Stock.eliminar(id, producto, sucursal);
 					
 					mostrarTabla();
 				}
@@ -262,7 +262,7 @@ public class Tabla_Stock extends JFrame {
 				String producto = table.getValueAt(fila,1).toString();
 				String sucursal = table.getValueAt(fila,3).toString();
 				
-				Consulta_Stock.modificar(cantidad, id, producto, sucursal);
+				Control_Stock.modificar(cantidad, id, producto, sucursal);
 				
 				mostrarTabla();
 				
@@ -300,7 +300,7 @@ public class Tabla_Stock extends JFrame {
 				String producto = table.getValueAt(fila,1).toString();
 				String sucursal = table.getValueAt(fila,3).toString();
 				
-				Consulta_Stock.eliminar(id, producto, sucursal);
+				Control_Stock.eliminar(id, producto, sucursal);
 				
 				mostrarTabla();
 			}

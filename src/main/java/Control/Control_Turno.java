@@ -16,7 +16,7 @@ import Model.ControlFiles;
 import View.Modificar_Turno;
 import View.Tabla_Turnos;
 
-public class Consulta_Turno {
+public class Control_Turno {
 	public static Connection tabla(DefaultTableModel modelo, JTable table) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Procedimiento","Fecha","Hora"});       //Nombre de las columnas
 	       

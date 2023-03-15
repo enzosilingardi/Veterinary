@@ -14,7 +14,7 @@ import Model.ControlFiles;
 import View.Modificar_Historial;
 import View.Tabla_Historial;
 
-public class Consulta_Historial {
+public class Control_Historial {
 
 	public static Connection tabla(DefaultTableModel modelo, JTable table ) {
 		modelo.setColumnIdentifiers(new Object[] {"ID","Mascota","Dueño","Descripción","Fecha","IDMas"});   //Nombre de las columnas

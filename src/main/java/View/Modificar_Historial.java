@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 
 import Control.Connect;
-import Control.Consulta_Historial;
+import Control.Control_Historial;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -133,7 +133,7 @@ public class Modificar_Historial extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				Consulta_Historial.modificar(idM, descripcion, date, id, mascota);
+				Control_Historial.modificar(idM, descripcion, date, id, mascota);
 				
 		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
@@ -187,7 +187,7 @@ public class Modificar_Historial extends JFrame {
 		btnBuscar.setBounds(365, 33, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		Consulta_Historial.cargar(historial);
+		Control_Historial.cargar(historial);
 		
 		txtIdM.setText(idMas);
 		txtMascota.setText(nomMas);
@@ -236,7 +236,7 @@ public class Modificar_Historial extends JFrame {
 				String fecha = ((JTextField) txtFecha.getDateEditor().getUiComponent()).getText();
 				Date date = Date.valueOf(fecha);
 				
-				Consulta_Historial.modificar(idM, descripcion, date, id, mascota);
+				Control_Historial.modificar(idM, descripcion, date, id, mascota);
 				
 		                Tabla_Historial th = new Tabla_Historial(perfil);
 						th.setVisible(true);
@@ -289,7 +289,7 @@ public class Modificar_Historial extends JFrame {
 		btnBuscar.setBounds(365, 33, 89, 23);
 		contentPane.add(btnBuscar);
 		
-		Consulta_Historial.cargar(historial);
+		Control_Historial.cargar(historial);
 	}
 
 	public Modificar_Historial() {

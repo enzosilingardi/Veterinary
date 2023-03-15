@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-public class Consulta_Login {
+public class Control_Login {
 
 	public static int existeUsuario(String usuario, String contrasenia) {
 		Connection cn = null;

@@ -22,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Tipo_Prod;
+import Control.Control_Tipo_Prod;
 import Model.ControlFiles;
 
 public class Tipo_Producto extends JFrame {
@@ -38,7 +38,7 @@ public class Tipo_Producto extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Tipo_Prod.tabla(modelo, table);
+        Control_Tipo_Prod.tabla(modelo, table);
         
     }
 
@@ -88,7 +88,7 @@ public class Tipo_Producto extends JFrame {
 				
 				String nombre = txtNombre.getText();
 
-				Consulta_Tipo_Prod.agregar(nombre);
+				Control_Tipo_Prod.agregar(nombre);
 				
 		                limpiar();
 		                mostrarTabla();
@@ -108,7 +108,7 @@ public class Tipo_Producto extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Tipo_Prod.eliminar(id, nombre);
+				Control_Tipo_Prod.eliminar(id, nombre);
 				mostrarTabla();
 				
 			}
@@ -153,7 +153,7 @@ public class Tipo_Producto extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre =  table.getValueAt(fila,1).toString();
 				
-				Consulta_Tipo_Prod.modificar(tipo, id, nombre);
+				Control_Tipo_Prod.modificar(tipo, id, nombre);
 				mostrarTabla();
 
 			}

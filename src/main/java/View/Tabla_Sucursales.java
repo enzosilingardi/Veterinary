@@ -13,7 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Sucursales;
+import Control.Control_Sucursales;
 import Model.ControlFiles;
 import View.Sucursal.ComboItem;
 
@@ -43,7 +43,7 @@ public class Tabla_Sucursales extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Sucursales.tabla(modelo, table);
+        Control_Sucursales.tabla(modelo, table);
         
     }
 	
@@ -128,7 +128,7 @@ public class Tabla_Sucursales extends JFrame {
 					
 					String direccion = table.getValueAt(fila,1).toString();
 					
-					Consulta_Sucursales.modificar(direccion, id);
+					Control_Sucursales.modificar(direccion, id);
 					
 			                limpiar();
 			                mostrarTabla();
@@ -148,7 +148,7 @@ public class Tabla_Sucursales extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					String direccion = txtDireccion.getText();
 					
-					Consulta_Sucursales.agregar(direccion);
+					Control_Sucursales.agregar(direccion);
 					
 			                limpiar();
 			                mostrarTabla();
@@ -170,7 +170,7 @@ public class Tabla_Sucursales extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString();
 					
-					Consulta_Sucursales.eliminar(id, nombre);
+					Control_Sucursales.eliminar(id, nombre);
 					
 			               mostrarTabla();
 			            
@@ -244,7 +244,7 @@ public class Tabla_Sucursales extends JFrame {
 				
 				String direccion = table.getValueAt(fila,1).toString();
 				
-				Consulta_Sucursales.modificar(direccion, id);
+				Control_Sucursales.modificar(direccion, id);
 				
 		                limpiar();
 		                mostrarTabla();
@@ -263,7 +263,7 @@ public class Tabla_Sucursales extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String direccion = txtDireccion.getText();
 				
-				Consulta_Sucursales.agregar(direccion);
+				Control_Sucursales.agregar(direccion);
 				
 		                limpiar();
 		                mostrarTabla();
@@ -284,7 +284,7 @@ public class Tabla_Sucursales extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Sucursales.eliminar(id, nombre);
+				Control_Sucursales.eliminar(id, nombre);
 				
 		               mostrarTabla();
 			}

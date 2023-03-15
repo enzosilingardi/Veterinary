@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Control.ComboBoxes;
+import Control.Control_ComboBoxes;
 import Control.Connect;
-import Control.Consulta_Veterinario_Sucursal;
+import Control.Control_Veterinario_Sucursal;
 import Model.ComboItem;
 import Model.ControlFiles;
 
@@ -41,7 +41,7 @@ public class Veterinario_Sucursal extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBSucursal(modelo);
+		Control_ComboBoxes.CBSucursal(modelo);
 		
 		return modelo;
     }
@@ -50,7 +50,7 @@ public class Veterinario_Sucursal extends JFrame {
 
 		DefaultComboBoxModel modelo = new DefaultComboBoxModel();
 		
-		ComboBoxes.CBVeterinario(modelo);
+		Control_ComboBoxes.CBVeterinario(modelo);
 		
 		return modelo;
     }
@@ -59,7 +59,7 @@ public class Veterinario_Sucursal extends JFrame {
         
         DefaultTableModel modelo = new DefaultTableModel();
         
-        Consulta_Veterinario_Sucursal.tabla(modelo, table);
+        Control_Veterinario_Sucursal.tabla(modelo, table);
         
     }
 	/**
@@ -139,10 +139,10 @@ public class Veterinario_Sucursal extends JFrame {
 							JOptionPane.showMessageDialog(null, "Seleccione una sucursal");
 						}else {
 							//Revisa si ya existe la relación
-							if(Consulta_Veterinario_Sucursal.existe(((ComboItem) cbVeterinario.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
+							if(Control_Veterinario_Sucursal.existe(((ComboItem) cbVeterinario.getSelectedItem()).getValue(),((ComboItem) cbSucursal.getSelectedItem()).getValue())!=0) {
 								JOptionPane.showMessageDialog(null, "Veterinario ya se encuentra en la sucursal");
 							}else {
-								Consulta_Veterinario_Sucursal.agregar(((ComboItem) cbVeterinario.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreV, nombreS);
+								Control_Veterinario_Sucursal.agregar(((ComboItem) cbVeterinario.getSelectedItem()).getValue(), ((ComboItem) cbSucursal.getSelectedItem()).getValue(), nombreV, nombreS);
 								
 							}
 						}
@@ -166,7 +166,7 @@ public class Veterinario_Sucursal extends JFrame {
 				String nombreV = table.getValueAt(fila,1).toString();
 				String nombreS = table.getValueAt(fila,2).toString();
 				
-				Consulta_Veterinario_Sucursal.eliminar(id, nombreV, nombreS);
+				Control_Veterinario_Sucursal.eliminar(id, nombreV, nombreS);
 				
 				mostrarTabla();
 				

@@ -11,7 +11,7 @@ import View.Modificar_Mascota;
 import View.Tabla_Mascota;
 
 
-public class Consulta_Mascota {
+public class Control_Mascota {
 		
 		public static int existe(int duenio, String nombre) {	//Verifica si la mascota ya existe en la base de datos
 			
@@ -57,7 +57,7 @@ public class Consulta_Mascota {
 					ps = con.prepareStatement("INSERT INTO Pet (id_Client,name,id_Animal,age,gender,id_Breed,birthdate ) VALUES (?,?,?,?,?,?,?)" );
 					
 
-					if(Consulta_Mascota.existe(idDue,nombre)!=0) {                          //Revisa si ya existe la mascota
+					if(Control_Mascota.existe(idDue,nombre)!=0) {                          //Revisa si ya existe la mascota
 						JOptionPane.showMessageDialog(null, "Mascota ya existe");
 					}else {
 				

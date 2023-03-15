@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Control.Connect;
-import Control.Consulta_Instrumento;
+import Control.Control_Instrumento;
 import Model.ControlFiles;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -33,7 +33,7 @@ public class Tabla_Instrumento extends JFrame {
 	        
 	        DefaultTableModel modelo = new DefaultTableModel();
 	        
-	        Consulta_Instrumento.tabla(modelo, table);
+	        Control_Instrumento.tabla(modelo, table);
 	        
 	    }
 
@@ -118,7 +118,7 @@ public class Tabla_Instrumento extends JFrame {
 					String nombre = table.getValueAt(fila,1).toString();
 					String descripcion = table.getValueAt(fila,2).toString();
 					
-					Consulta_Instrumento.modificar(nombre, descripcion, id);
+					Control_Instrumento.modificar(nombre, descripcion, id);
 					
 					mostrarTabla();
 				}
@@ -138,7 +138,7 @@ public class Tabla_Instrumento extends JFrame {
 					int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 					String nombre = table.getValueAt(fila,1).toString();
 					
-					Consulta_Instrumento.eliminar(id, nombre);
+					Control_Instrumento.eliminar(id, nombre);
 					
 					mostrarTabla();
 				}
@@ -227,7 +227,7 @@ public class Tabla_Instrumento extends JFrame {
 				String nombre = table.getValueAt(fila,1).toString();
 				String descripcion = table.getValueAt(fila,2).toString();
 				
-				Consulta_Instrumento.modificar(nombre, descripcion, id);
+				Control_Instrumento.modificar(nombre, descripcion, id);
 				
 				mostrarTabla();
 			}
@@ -246,7 +246,7 @@ public class Tabla_Instrumento extends JFrame {
 				int id = Integer.parseInt(table.getValueAt(fila,0).toString());
 				String nombre = table.getValueAt(fila,1).toString();
 				
-				Consulta_Instrumento.eliminar(id, nombre);
+				Control_Instrumento.eliminar(id, nombre);
 				
 				mostrarTabla();
 			}
